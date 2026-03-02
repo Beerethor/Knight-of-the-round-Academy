@@ -2,7 +2,7 @@
   "items": [
     {
       "nome": "Andruid",
-      "immagine": "img/bibioteca/razze/andruid.png",
+      "immagine": "andruid.png",
       "descrizione": "Esseri bio-meccanici sviluppati dal dr. Merlin, che sperava di sostituire i Knight, gli Andruid sono legati al Respiro del Drago a un livello profondissimo, tanto da essere influenzati sia nell’aspetto che nel carattere dal tipo di radiazioni che consumano. Re Pendragon ha riconosciuto la loro indipendenza dopo la battaglia di Lyonesse, 30 anni fa, chiedendo loro di rimanere a vivere a Kamel’oth per aiutare il Round a sviluppare una tecnologia Knight migliore e più sostenibile. Nessuno sa veramente quali siano le potenzialità degli Andruid, anche se la loro capacità di manipolare le energie del Respiro a mani nude li rende importantissimi nell’economia e nello sviluppo scientifico di Kamel’oth, nonostante il dr. Merlin nutra ormai seri dubbi su di loro.",
       "temi_da_esplorare": ["Postumanesimo", "Anima", "Intelligenza Artificiale"],
       "tratti_consigliati": ["Connettore", "Hardware modificabile", "Aggiornamento software"],
