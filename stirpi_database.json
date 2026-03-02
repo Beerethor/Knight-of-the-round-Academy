@@ -3,7 +3,7 @@
     {
       "nome": "Andruid",
       "immagine": "andruid.png",
-      "descrizione": "Esseri bio-meccanici sviluppati dal dr. Merlin, che sperava di sostituire i Knight, gli Andruid sono legati al Respiro del Drago a un livello profondissimo, tanto da essere influenzati sia nell’aspetto che nel carattere dal tipo di radiazioni che consumano. Re Pendragon ha riconosciuto la loro indipendenza dopo la battaglia di Lyonesse, 30 anni fa, chiedendo loro di rimanere a vivere a Kamel’oth per aiutare il Round a sviluppare una tecnologia Knight migliore e più sostenibile. Nessuno sa veramente quali siano le potenzialità degli Andruid, anche se la loro capacità di manipolare le energie del Respiro a mani nude li rende importantissimi nell’economia e nello sviluppo scientifico di Kamel’oth, nonostante il dr. Merlin nutra ormai seri dubbi su di loro.",
+      "descrizione": "Esseri bio-meccanici sviluppati dal dr. Merlin, che sperava di sostituire i Knight, gli Andruid sono legati al Respiro del Drago a un livello profondissimo, tanto da essere influenzati sia nell’aspetto che nel carattere dal tipo di radiazioni che consumano. /nRe Pendragon ha riconosciuto la loro indipendenza dopo la battaglia di Lyonesse, 30 anni fa, chiedendo loro di rimanere a vivere a Kamel’oth per aiutare il Round a sviluppare una tecnologia Knight migliore e più sostenibile. /nNessuno sa veramente quali siano le potenzialità degli Andruid, anche se la loro capacità di manipolare le energie del Respiro a mani nude li rende importantissimi nell’economia e nello sviluppo scientifico di Kamel’oth, nonostante il dr. Merlin nutra ormai seri dubbi su di loro.",
       "temi_da_esplorare": ["Postumanesimo", "Anima", "Intelligenza Artificiale"],
       "tratti_consigliati": ["Connettore", "Hardware modificabile", "Aggiornamento software"],
      "eredita": [
@@ -32,16 +32,32 @@
     {
       "nome": "Avalon",
       "immagine": "avalon.png",
-      "descrizione": "Popolo antico con orecchie a punta e pelle bianca. La loro società matriarcale vive un dualismo tra tradizioni millenarie e tecnologia futura.",
+      "descrizione": "Il popolo di Avalon è uno dei più antichi di Brit’an, erano qui prima dell’arrivo degli umani e saranno probabilmente qui quando l’ultimo re umano avrà occupato il proprio trono. Con lunghe orecchie a punta e la pelle completamente bianca, gli Avaloniani si riconoscono facilmente, ma raramente escono dai confini della propria isola. /nLa loro società matriarcale premia il merito più che la discendenza, ma molte delle loro leggende e delle loro profezie parlano dell’importanza dei legami di sangue, rendendo gli Avaloniani un popolo segnato da un profondo dualismo, continuamente divisi tra futuro e tradizione, tra famiglia e dovere verso la comunità. /nI primi Knight, sono stati costruiti da loro per difendere Avalon, e il dr. Merlin, un Avaloniano in esilio, ha sviluppato i suoi Knight a partire da essi.",
       "temi_da_esplorare": ["Tecnologia perduta", "Dovere e lealtà", "Isolazionismo e razzismo"],
       "tratti_consigliati": ["Tradizionalista", "Sete di conoscenza", "Profeta"],
       "eredita": [
-        { "nome": "Legame atavico", "description": "Usa memorie degli avi per attivare Tecniche di Job non posseduti spendendo 2 Punti Limite extra." },
-        { "nome": "Sangue antico", "description": "Intriso di Respiro; non esci di scena al sovraccarico, ma resti in Pericolo di Vita." },
-        { "nome": "Onore al merito", "description": "Incoraggia una Matricola che ha successo pieno per farle recuperare 1d6 Punti Limite." },
-        { "nome": "Turista", "description": "Bonus di +1 alle prove di conoscenza su usi e costumi di luoghi stranieri." }
-      ]
+    {
+      "nome": "Legame atavico",
+      "descrizione": "Le leggende dicono che quando un Avaloniano muore, il suo spirito non abbandona Brit’an, ma rimane nel Respiro del Drago, che ci circonda e lega tutti quanti.",
+      "effetto": "Il tuo legame con Avalon è così forte che concentrandoti puoi accedere alle memorie collettive degli Avaloniani venuti prima di te. In questo stato di trance, i tuoi avi guidano le tue azioni e puoi accedere a poteri a te altrimenti preclusi. Puoi usare una Tecnica Base di un Job che non possiedi come se fosse tua, spendendo 2 Punti Limite (oltre a eventuali Punti da spendere per la Tecnica che vuoi copiare)."
     },
+    {
+      "nome": "Onore al merito",
+      "descrizione": "Un colpo magistrale! Il coach Vortex sarà orgoglioso di te almeno quanto lo sono io! Continua così!",
+      "effetto": "Ogni volta che un’altra Matricola ottiene un Successo Pieno, le tue parole di incoraggiamento possono farle recuperare 1d6 Punti Limite, come se avesse ottenuto un Trionfo. Devi però essere presente per incoraggiarlo veramente. /nNon puoi usare questa Eredità più di una volta per Scena per Matricola, ma puoi usarla più volte su Matricole diverse."
+    },
+    {
+      "nome": "Sangue antico",
+      "descrizione": "Il mio sangue è più oscuro del crepuscolo, più antico del tempo stesso. Sopito dal passare degli eoni, riposa in attesa del momento in cui avrò bisogno del suo potere per oltrepassare i miei limiti.",
+      "effetto": "Il tuo sangue è intriso di Respiro del Drago più di quello di un Sangue di Drago: non esci di Scena quando raggiungi la tua Capacità di Sovraccarico, ma sei ritenuto in Pericolo di Vita."
+    },
+    {
+      "nome": "Turista",
+      "descrizione": "Conosco questo posto, ci ho passato molto tempo con la mia famiglia, quando abbiamo lasciato Avalon. Sembra un posto inospitale, ma le persone del luogo sono sempre disponibili a parlare con qualcuno che offre loro un dolce appena sfornato.",
+      "effetto": "Hai abbandonato Avalon da tempo - non importa perché - e da allora hai viaggiato in diversi luoghi, accumulando conoscenze molto variegate. Quando fai una prova per conoscere usi e costumi di un popolo o caratteristiche regionali di un luogo, hai un bonus di +1."
+    }
+   ]
+  },
     {
       "nome": "Bret'on",
       "immagine": "breton.png",
