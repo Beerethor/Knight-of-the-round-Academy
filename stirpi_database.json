@@ -3,7 +3,7 @@
     {
       "nome": "Andruid",
       "immagine": "img/bibioteca/razze/andruid.png",
-      "descrizione": "Esseri bio-meccanici sviluppati dal dr. Merlin, che sperava di sostituire i Knight, gli Andruid sono legati al Respiro del Drago a un livello profondissimo, tanto da essere influenzati sia nell’aspetto che nel carattere dal tipo di radiazioni che consumano. /nRe Pendragon ha riconosciuto la loro indipendenza dopo la battaglia di Lyonesse, 30 anni fa, chiedendo loro di rimanere a vivere a Kamel’oth per aiutare il Round a sviluppare una tecnologia Knight migliore e più sostenibile. /nNessuno sa veramente quali siano le potenzialità degli Andruid, anche se la loro capacità di manipolare le energie del Respiro a mani nude li rende importantissimi nell’economia e nello sviluppo scientifico di Kamel’oth, nonostante il dr. Merlin nutra ormai seri dubbi su di loro.",
+      "descrizione": "Esseri bio-meccanici sviluppati dal dr. Merlin, che sperava di sostituire i Knight, gli Andruid sono legati al Respiro del Drago a un livello profondissimo, tanto da essere influenzati sia nell’aspetto che nel carattere dal tipo di radiazioni che consumano. \nRe Pendragon ha riconosciuto la loro indipendenza dopo la battaglia di Lyonesse, 30 anni fa, chiedendo loro di rimanere a vivere a Kamel’oth per aiutare il Round a sviluppare una tecnologia Knight migliore e più sostenibile. \nNessuno sa veramente quali siano le potenzialità degli Andruid, anche se la loro capacità di manipolare le energie del Respiro a mani nude li rende importantissimi nell’economia e nello sviluppo scientifico di Kamel’oth, nonostante il dr. Merlin nutra ormai seri dubbi su di loro.",
       "temi_da_esplorare": ["Postumanesimo", "Anima", "Intelligenza Artificiale"],
       "tratti_consigliati": ["Connettore", "Hardware modificabile", "Aggiornamento software"],
      "eredita": [
@@ -32,7 +32,7 @@
     {
       "nome": "Avalon",
       "immagine": "img/bibioteca/razze/avalon.png",
-      "descrizione": "Il popolo di Avalon è uno dei più antichi di Brit’an, erano qui prima dell’arrivo degli umani e saranno probabilmente qui quando l’ultimo re umano avrà occupato il proprio trono. Con lunghe orecchie a punta e la pelle completamente bianca, gli Avaloniani si riconoscono facilmente, ma raramente escono dai confini della propria isola. /nLa loro società matriarcale premia il merito più che la discendenza, ma molte delle loro leggende e delle loro profezie parlano dell’importanza dei legami di sangue, rendendo gli Avaloniani un popolo segnato da un profondo dualismo, continuamente divisi tra futuro e tradizione, tra famiglia e dovere verso la comunità. /nI primi Knight, sono stati costruiti da loro per difendere Avalon, e il dr. Merlin, un Avaloniano in esilio, ha sviluppato i suoi Knight a partire da essi.",
+      "descrizione": "Il popolo di Avalon è uno dei più antichi di Brit’an, erano qui prima dell’arrivo degli umani e saranno probabilmente qui quando l’ultimo re umano avrà occupato il proprio trono. Con lunghe orecchie a punta e la pelle completamente bianca, gli Avaloniani si riconoscono facilmente, ma raramente escono dai confini della propria isola. \nLa loro società matriarcale premia il merito più che la discendenza, ma molte delle loro leggende e delle loro profezie parlano dell’importanza dei legami di sangue, rendendo gli Avaloniani un popolo segnato da un profondo dualismo, continuamente divisi tra futuro e tradizione, tra famiglia e dovere verso la comunità. \nI primi Knight, sono stati costruiti da loro per difendere Avalon, e il dr. Merlin, un Avaloniano in esilio, ha sviluppato i suoi Knight a partire da essi.",
       "temi_da_esplorare": ["Tecnologia perduta", "Dovere e lealtà", "Isolazionismo e razzismo"],
       "tratti_consigliati": ["Tradizionalista", "Sete di conoscenza", "Profeta"],
       "eredita": [
@@ -44,7 +44,7 @@
     {
       "nome": "Onore al merito",
       "descrizione": "Un colpo magistrale! Il coach Vortex sarà orgoglioso di te almeno quanto lo sono io! Continua così!",
-      "effetto": "Ogni volta che un’altra Matricola ottiene un Successo Pieno, le tue parole di incoraggiamento possono farle recuperare 1d6 Punti Limite, come se avesse ottenuto un Trionfo. Devi però essere presente per incoraggiarlo veramente. /nNon puoi usare questa Eredità più di una volta per Scena per Matricola, ma puoi usarla più volte su Matricole diverse."
+      "effetto": "Ogni volta che un’altra Matricola ottiene un Successo Pieno, le tue parole di incoraggiamento possono farle recuperare 1d6 Punti Limite, come se avesse ottenuto un Trionfo. Devi però essere presente per incoraggiarlo veramente. \nNon puoi usare questa Eredità più di una volta per Scena per Matricola, ma puoi usarla più volte su Matricole diverse."
     },
     {
       "nome": "Sangue antico",
