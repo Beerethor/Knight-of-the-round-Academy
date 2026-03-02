@@ -1,0 +1,108 @@
+{
+  "items": [
+    {
+      "nome": "Andruid",
+      "immagine": "andruid.png",
+      "descrizione": "Esseri bio-meccanici sviluppati dal dr. Merlin, legati al Respiro del Drago a un livello profondissimo. Il loro aspetto e carattere variano in base alle radiazioni che consumano.",
+      "temi_da_esplorare": ["Postumanesimo", "Anima", "Intelligenza Artificiale"],
+      "tratti_consigliati": ["Connettore", "Hardware modificabile", "Aggiornamento software"],
+      "eredita": [
+        { "nome": "Bio-Logica", "description": "Usa sensori per leggere battito e pupille altrui; permette di tirare 1d8 anche senza i Tratti necessari." },
+        { "nome": "Interfaccia bio-meccanica", "description": "Parla con le macchine come creature viventi; ti capiscono ma non sono sempre collaborative." },
+        { "nome": "Doppio Core", "description": "Scegli un secondo elemento affine per creare combo creative; se la Stirpe è ferita, perdi il secondario." },
+        { "nome": "Memorie nel GR.A.A.L.", "description": "Usa un Tratto come Backup per scaricare nuove conoscenze dal cloud una volta per Sessione." }
+      ]
+    },
+    {
+      "nome": "Avalon",
+      "immagine": "avalon.png",
+      "descrizione": "Popolo antico con orecchie a punta e pelle bianca. La loro società matriarcale vive un dualismo tra tradizioni millenarie e tecnologia futura.",
+      "temi_da_esplorare": ["Tecnologia perduta", "Dovere e lealtà", "Isolazionismo e razzismo"],
+      "tratti_consigliati": ["Tradizionalista", "Sete di conoscenza", "Profeta"],
+      "eredita": [
+        { "nome": "Legame atavico", "description": "Usa memorie degli avi per attivare Tecniche di Job non posseduti spendendo 2 Punti Limite extra." },
+        { "nome": "Sangue antico", "description": "Intriso di Respiro; non esci di scena al sovraccarico, ma resti in Pericolo di Vita." },
+        { "nome": "Onore al merito", "description": "Incoraggia una Matricola che ha successo pieno per farle recuperare 1d6 Punti Limite." },
+        { "nome": "Turista", "description": "Bonus di +1 alle prove di conoscenza su usi e costumi di luoghi stranieri." }
+      ]
+    },
+    {
+      "nome": "Bret'on",
+      "immagine": "breton.png",
+      "descrizione": "Abitanti originari di Brit'an e dominatori tecnologici di Kamel'oth. Credono di essere gli unici in grado di pilotare i Knight correttamente.",
+      "temi_da_esplorare": ["Nobiltà", "Famiglia e legami di sangue", "Sfruttamento tecnologico"],
+      "tratti_consigliati": ["Eredità importante", "Cimelio di famiglia", "Istruzione superiore"],
+      "eredita": [
+        { "nome": "Affinità elettiva", "description": "Raddoppia l'aiuto verso uno Spirito Affine se basato su sentimenti espliciti (max +6d12/+6 dadi)." },
+        { "nome": "Sangue nobile", "description": "Ottieni favori da Personaggi Secondari grazie al lignaggio senza dover fare prove." },
+        { "nome": "Popolano", "description": "Orgoglio di Kamel'oth; permette di ritirare i propri Dadi Positivi una volta per Sessione." },
+        { "nome": "Talento naturale", "description": "Scegli un Job extra; dà accesso alle Tecniche finché la Stirpe non viene ferita." }
+      ]
+    },
+    {
+      "nome": "Colonie",
+      "immagine": "colonie.png",
+      "descrizione": "Abitanti delle stazioni orbitali con pelle cinerea. Ricordano che l'umanità non è nata su Brit'an e sono spesso visti come complottisti.",
+      "temi_da_esplorare": ["Colonialismo", "Separatismo", "Reclamare il dovuto"],
+      "tratti_consigliati": ["Archeologia", "Tecnologia terrestre", "Adattamento spaziale"],
+      "eredita": [
+        { "nome": "Memorie della Terra", "description": "Successo automatico in prove di conoscenza se altre Matricole falliscono, grazie agli archivi planetari." },
+        { "nome": "Una prospettiva diversa", "description": "Orientamento istintivo perfetto anche nello spazio profondo o sott'acqua." },
+        { "nome": "Newkind", "description": "Prossimo stadio evolutivo; una volta per scena chiedi onestamente lo stato d'animo di qualcuno." },
+        { "nome": "Volo spaziale", "description": "Abituato alla gravità zero; riduce di 1 la Difficoltà delle prove di pilotaggio nello spazio." }
+      ]
+    },
+    {
+      "nome": "Sangue di Drago",
+      "immagine": "sanguedidrago.png",
+      "descrizione": "Mutati dall'esposizione alle Particelle Dragon. Hanno temperature corporee di 42°C e sono immuni al fuoco.",
+      "temi_da_esplorare": ["Mutazioni impreviste", "Ostracismo", "Radioattività"],
+      "tratti_consigliati": ["Sbuffone", "Segno della profezia", "Stazza enorme"],
+      "eredita": [
+        { "nome": "Forza straordinaria", "description": "Combatti i mecha a mani nude e ignori i Tratti nemici basati su forza o stazza." },
+        { "nome": "Percepire il Respiro", "description": "Senti il flusso di energia nelle creature e localizzi macchinari alimentati dal Respiro." },
+        { "nome": "Mutante", "description": "Mutazioni fisiche evidenti come ali, code o corna che alterano la tua fisiologia." },
+        { "nome": "Testa calda", "description": "Immune alle fiamme; difficoltà dimezzata per ignorare veleni e malattie naturali." }
+      ]
+    },
+    {
+      "nome": "Sax'on",
+      "immagine": "saxon.png",
+      "descrizione": "Popolo di frontiera che vive in territori aspri o sotterranei. Accusano i Bret'on di aver prosciugato le risorse del pianeta.",
+      "temi_da_esplorare": ["Scarsità di risorse", "Vita di frontiera", "Guerra incombente"],
+      "tratti_consigliati": ["Arrangiarsi", "Riparazioni d'emergenza", "La legge del più forte"],
+      "eredita": [
+        { "nome": "Hybrid Frame", "description": "Scegli un secondo Frame per il tuo Knight; puoi usarli insieme o alternarli." },
+        { "nome": "Sopravvivere a ogni costo", "description": "Usa il tuo Nome come Ferita aggiuntiva contro la tua Nemesi per non cadere." },
+        { "nome": "Senza Core", "description": "Il Knight usa energia alternativa basata sulla Scintilla (ideale o motivazione) anziché sul Respiro." },
+        { "nome": "Vita nell'Impero", "description": "Nelle prove disperate tiri solo 1d12: o successo totale o fallimento netto." }
+      ]
+    },
+    {
+      "nome": "Sidhe",
+      "immagine": "sidhe.png",
+      "descrizione": "Popolazione autoctona nota come 'Piccolo Popolo'. Spie eccezionali capaci di mutare forma in piccoli animali.",
+      "temi_da_esplorare": ["Vita nomade", "Tribalismo", "Animismo"],
+      "tratti_consigliati": ["Lupo solitario", "Andare in bestia", "Il mio branco"],
+      "eredita": [
+        { "nome": "Girovagare", "description": "Conosci sempre qualcuno con l'informazione giusta, ma ti chiederà un favore in cambio." },
+        { "nome": "Mutaforma", "description": "Ti trasformi in qualsiasi creatura vista o immaginata spendendo Punti Limite." },
+        { "nome": "La forma del Respiro", "description": "Il tuo Knight muta aspetto, facendo crescere arti o ali quasi organici." },
+        { "nome": "Taboo", "description": "Assorbi il Respiro di una creatura morente per prenderne forma e ricordi." }
+      ]
+    },
+    {
+      "nome": "Senza Famiglia",
+      "immagine": "senzafamiglia.png",
+      "descrizione": "Matricole dalle origini ignote, cresciute per strada o nascoste. Sono destinate a scoprire il proprio passato durante l'avventura.",
+      "temi_da_esplorare": ["Famiglia", "Appartenenza", "Eredità"],
+      "tratti_consigliati": ["Poteri nascosti", "Contare solo su di me", "Vita di strada"],
+      "eredita": [
+        { "nome": "Amnesia", "description": "Usa un oggetto misterioso come Item anche dopo aver effettuato una Prova." },
+        { "nome": "Anomalia", "description": "Corpo unico (code, corna); curi la Stirpe ferita entrando in Sovraccarico." },
+        { "nome": "Segno del Destino", "description": "Un marchio che ti identifica come salvatore; considera ogni avversario come Nemesi per la scena." },
+        { "nome": "Appetito bizzarro", "description": "Mangi cose incredibili; stupire gli altri con i tuoi pasti ti fa recuperare 1d6 Punti Limite." }
+      ]
+    }
+  ]
+}
