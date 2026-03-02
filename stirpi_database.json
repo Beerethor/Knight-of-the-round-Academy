@@ -3,18 +3,14 @@
     {
       "nome": "Andruid",
       "immagine": "img/bibioteca/razze/andruid.png",
-      "descrizione": "Esseri bio-meccanici sviluppati dal dr. Merlin, che sperava di sostituire i Knight, gli Andruid sono legati al Respiro del Drago a un livello profondissimo, tanto da essere influenzati sia nell’aspetto che nel carattere 
-      dal tipo di radiazioni che consumano. Re Pendragon ha riconosciuto la loro indipendenza dopo la battaglia di Lyonesse, 30 anni fa, chiedendo loro di rimanere a vivere a Kamel’oth per aiutare il Round a sviluppare una tecnologia Knight migliore e più 
-      sostenibile. Nessuno sa veramente quali siano le potenzialità degli Andruid, anche se la loro capacità di manipolare le energie del Respiro a mani nude li rende importantissimi nell’economia e nello sviluppo scientifico di Kamel’oth, nonostante 
-      il dr. Merlin nutra ormai seri dubbi su di loro.",
+      "descrizione": "Esseri bio-meccanici sviluppati dal dr. Merlin, che sperava di sostituire i Knight, gli Andruid sono legati al Respiro del Drago a un livello profondissimo, tanto da essere influenzati sia nell’aspetto che nel carattere dal tipo di radiazioni che consumano. Re Pendragon ha riconosciuto la loro indipendenza dopo la battaglia di Lyonesse, 30 anni fa, chiedendo loro di rimanere a vivere a Kamel’oth per aiutare il Round a sviluppare una tecnologia Knight migliore e più sostenibile. Nessuno sa veramente quali siano le potenzialità degli Andruid, anche se la loro capacità di manipolare le energie del Respiro a mani nude li rende importantissimi nell’economia e nello sviluppo scientifico di Kamel’oth, nonostante il dr. Merlin nutra ormai seri dubbi su di loro.",
       "temi_da_esplorare": ["Postumanesimo", "Anima", "Intelligenza Artificiale"],
       "tratti_consigliati": ["Connettore", "Hardware modificabile", "Aggiornamento software"],
      "eredita": [
     {
       "nome": "Bio-Logica",
       "descrizione": "I miei sensori indicano un chiaro aumento del tuo battito cardiaco e un arrossamento degli zigomi ogni volta che provo ad avvicinarmi a te. Suggerisco un urgente controllo medico, a meno che tu non voglia confessarmi qualcosa.",
-      "effetto": "Quando cerchi di comprendere lo stato d’animo di qualcuno puoi fare affidamento sui tuoi sensori bio-logici e leggere i dati fisiologici più basilari: temperatura, battito cardiaco, dilatazione delle pupille… Se lo 
-      fai, puoi tirare 1d8 anche se non hai abbastanza Tratti per superare la Difficoltà della Prova."
+      "effetto": "Quando cerchi di comprendere lo stato d’animo di qualcuno puoi fare affidamento sui tuoi sensori bio-logici e leggere i dati fisiologici più basilari: temperatura, battito cardiaco, dilatazione delle pupille… Se lo fai, puoi tirare 1d8 anche se non hai abbastanza Tratti per superare la Difficoltà della Prova."
     },
     {
       "nome": "Doppio Core",
