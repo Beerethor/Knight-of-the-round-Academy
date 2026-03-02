@@ -213,55 +213,55 @@
         }
 
         function showDetail(item) {
-            document.getElementById('list-view').style.display = 'none';
-            document.getElementById('detail-view').style.display = 'block';
-            document.getElementById('back-to-list').style.display = 'inline-block';
+    document.getElementById('list-view').style.display = 'none';
+    document.getElementById('detail-view').style.display = 'block';
+    document.getElementById('back-to-list').style.display = 'inline-block';
+    
+    // Gestione descrizione (stringa o array)
+    const descrizionePulita = Array.isArray(item.descrizione) 
+        ? item.descrizione.join('<br><br>') 
+        : item.descrizione;
+
+    // Generazione Eredità
+    const ereditaHtml = item.eredita.map(e => `
+        <div class="eredita-box">
+            <b style="color:var(--neon-blue); text-transform:uppercase;">${e.nome}</b>
+            <p style="margin: 10px 0; font-size: 0.95rem; color: #ddd; line-height:1.5;">${e.descrizione}</p>
+            <div class="effetto-tag">
+                <i style="color:var(--neon-pink); font-style:normal; font-weight:bold;">MECCANICA:</i> ${e.effetto || e.description}
+            </div>
+        </div>
+    `).join('');
+
+    document.getElementById('detail-view').innerHTML = `
+        <div class="detail-header">
+            <h1 style="margin:0; font-size: 2.5rem; letter-spacing:4px;">${item.nome}</h1>
+        </div>
+        
+        <div style="display: flex; gap: 30px; flex-wrap: wrap;">
+            <div style="flex: 1; min-width: 300px;">
+                <img src="${item.immagine}" style="width:100%; border-radius:12px; border:1px solid var(--neon-blue); box-shadow: 0 0 20px rgba(0,242,255,0.1);" onerror="this.style.display='none'">
+            </div>
             
-            // Gestione descrizione (stringa singola o array di paragrafi)
-            const descrizionePulita = Array.isArray(item.descrizione) 
-                ? item.descrizione.join('<br><br>') 
-                : item.descrizione;
-
-            // Generazione Eredità con separazione Descrizione/Effetto
-            const ereditaHtml = item.eredita.map(e => `
-                <div class="eredita-box">
-                    <b style="color:var(--neon-blue); text-transform:uppercase;">${e.nome}</b>
-                    <p style="margin: 10px 0; font-size: 0.95rem; color: #ddd; line-height:1.5;">${e.descrizione}</p>
-                    <div class="effetto-tag">
-                        <i style="color:var(--neon-pink); font-style:normal; font-weight:bold;">MECCANICA:</i> ${e.effetto}
-                    </div>
-                </div>
-            `).join('');
-
-            document.getElementById('detail-view').innerHTML = `
-                <div class="detail-header">
-                    <h1 style="margin:0; font-size: 2.5rem; letter-spacing:4px;">${item.nome}</h1>
-                </div>
+            <div style="flex: 2; min-width: 300px;">
+                <div class="section-title">Inquadramento Narrativo</div>
+                <p style="line-height:1.8; font-size:1.05rem; color: #eee;">${descrizionePulita}</p>
                 
-                <div style="display: flex; gap: 30px; flex-wrap: wrap;">
-                    <div style="flex: 1; min-width: 300px;">
-                        <img src="${item.immagine}" style="width:100%; border-radius:12px; border:1px solid var(--neon-blue); box-shadow: 0 0 20px rgba(0,242,255,0.1);" onerror="this.style.display='none'">
-                    </div>
-                    
-                    <div style="flex: 2; min-width: 300px;">
-                        <div class="section-title">Inquadramento Narrativo</div>
-                        <p style="line-height:1.8; font-size:1.05rem; color: #eee;">${descrizionePulita}</p>
-                        
-                        <div class="section-title">Temi da esplorare</div>
-                        <p style="color: var(--neon-pink); font-weight: bold; letter-spacing: 1px;">${item.temi_da_esplorare.join(' • ')}</p>
+                <div class="section-title">Temi da esplorare</div>
+                <p style="color: var(--neon-pink); font-weight: bold; letter-spacing: 1px;">${item.temi_da_esplorare.join(' • ')}</p>
 
-                        <div class="section-title">Tratti Consigliati</div>
-                        <p>${item.tratti_consigliati.join(', ')}</p>
-                    </div>
-                </div>
+                <div class="section-title">Tratti Consigliati</div>
+                <p>${item.tratti_consigliati.join(', ')}</p>
 
                 <div class="section-title">Eredità di Stirpe</div>
-                <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 15px;">
+                <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 15px; margin-top: 15px;">
                     ${ereditaHtml}
                 </div>
-                <div style="height:80px"></div>
-            `;
-        }
+            </div>
+        </div>
+        <div style="height:80px"></div>
+    `;
+}
 
         function showList() {
             document.getElementById('list-view').style.display = 'block';
