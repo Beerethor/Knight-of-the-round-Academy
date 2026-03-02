@@ -16,6 +16,31 @@
     <meta name="theme-color" content="#0a0b10">
 
     <style>
+        .mobile-tip {
+    margin-top: 30px;
+    padding: 15px;
+    background: rgba(0, 242, 255, 0.05);
+    border: 1px dashed var(--neon-blue);
+    border-radius: 8px;
+    font-size: 0.85rem;
+    color: #ccc;
+    max-width: 400px;
+    text-align: center;
+    line-height: 1.4;
+    animation: pulse 2s infinite;
+}
+        
+        @keyframes pulse {
+    0% { opacity: 0.7; }
+    50% { opacity: 1; border-color: var(--neon-pink); }
+    100% { opacity: 0.7; }
+}
+
+        @media (min-width: 768px) {
+    .mobile-tip {
+        display: none;
+    }
+}
         :root {
             --neon-blue: #00f2ff;
             --neon-pink: #ff007a;
@@ -300,5 +325,9 @@
     }
 </script>
 
+    <div class="mobile-tip">
+    <span style="color: var(--neon-blue);">📱 TIPS:</span> 
+    Per usare l'archivio come un'App, tocca i tre puntini (Android) o l'icona Condividi (iOS) e seleziona <b>"Aggiungi a Home"</b>.
+</div>
 </body>
 </html>
