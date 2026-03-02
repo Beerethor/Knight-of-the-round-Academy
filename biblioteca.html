@@ -10,23 +10,22 @@
             --neon-blue: #00f2ff;
             --neon-pink: #ff007a;
             --bg-dark: #0a0b10;
+            --glass: rgba(255, 255, 255, 0.08);
         }
         
         body {
             background-color: var(--bg-dark);
-            /* Il percorso deve essere esatto: controlla minuscole/maiuscole su GitHub */
-            background-image: url('img/bibioteca/sfondo.png'); 
+            background-image: url('img/biblioteca/sfondo.png'); 
             background-size: cover; 
             background-position: center; 
             background-attachment: fixed;
             color: white; 
-            font-family: 'Segoe UI', sans-serif; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0; 
             height: 100vh;
             overflow: hidden;
         }
 
-        /* Overlay per garantire che i tasti si vedano anche se lo sfondo è nero */
         .hub-container {
             height: 100vh; 
             display: flex; 
@@ -34,37 +33,40 @@
             justify-content: center; 
             align-items: center; 
             gap: 20px;
-            background: rgba(0, 0, 0, 0.6); 
+            background: rgba(0, 0, 0, 0.6);
         }
 
         .menu-btn {
-            width: 280px; 
-            padding: 25px; 
-            background: rgba(255, 255, 255, 0.1);
+            width: 320px; 
+            padding: 20px; 
+            background: var(--glass);
             border: 1px solid var(--neon-blue); 
-            border-radius: 15px;
+            border-radius: 12px;
             color: white; 
             text-transform: uppercase; 
             font-weight: bold;
             cursor: pointer; 
             backdrop-filter: blur(10px); 
-            transition: 0.3s;
+            transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            letter-spacing: 1px;
         }
 
         .menu-btn:hover { 
             background: rgba(0, 242, 255, 0.2); 
-            box-shadow: 0 0 15px var(--neon-blue); 
+            box-shadow: 0 0 25px var(--neon-blue); 
+            transform: scale(1.05);
         }
 
+        /* SISTEMA MODALE */
         .modal {
             display: none; 
             position: fixed; 
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(10, 11, 16, 0.95); 
-            backdrop-filter: blur(20px); 
+            background: rgba(5, 6, 10, 0.95); 
+            backdrop-filter: blur(15px); 
             z-index: 1000;
             flex-direction: column; 
-            padding: 20px; 
+            padding: 40px; 
             box-sizing: border-box;
         }
 
@@ -72,56 +74,106 @@
             display: flex; 
             justify-content: space-between; 
             align-items: center; 
-            border-bottom: 1px solid var(--neon-blue);
-            padding-bottom: 10px;
-            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(0, 242, 255, 0.3);
+            padding-bottom: 20px;
+            margin-bottom: 25px;
         }
 
         .search-bar {
-            width: 100%; padding: 12px; background: rgba(255,255,255,0.05);
-            border: 1px solid var(--neon-blue); color: white; border-radius: 8px; margin-bottom: 20px;
+            width: 100%; padding: 15px; background: rgba(255,255,255,0.05);
+            border: 1px solid var(--neon-blue); color: white; border-radius: 8px; 
+            margin-bottom: 25px; font-size: 1rem; outline: none;
         }
 
         .items-grid {
             display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-            gap: 15px; 
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px; 
             overflow-y: auto;
+            padding-bottom: 40px;
         }
 
         .item-card {
-            padding: 15px; background: rgba(255,255,255,0.05); 
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 8px; text-align: center; cursor: pointer;
+            padding: 20px; background: rgba(255,255,255,0.03); 
+            border: 1px solid rgba(0, 242, 255, 0.2);
+            border-radius: 12px; text-align: center; cursor: pointer;
+            transition: 0.3s; font-weight: bold; text-transform: uppercase;
         }
 
-        .item-card:hover { border-color: var(--neon-pink); }
+        .item-card:hover { 
+            border-color: var(--neon-pink); 
+            background: rgba(255, 0, 122, 0.15);
+            box-shadow: 0 0 15px rgba(255, 0, 122, 0.3);
+        }
 
-        #detail-view { display: none; overflow-y: auto; }
+        /* VISTA DETTAGLIO */
+        #detail-view { display: none; overflow-y: auto; padding-right: 15px; }
         
-        .close-btn { background: var(--neon-pink); border: none; color: white; padding: 10px 20px; border-radius: 5px; cursor: pointer; }
-        .back-btn { background: #444; border: none; color: white; padding: 10px 20px; border-radius: 5px; cursor: pointer; display: none; }
+        .detail-header { border-left: 5px solid var(--neon-pink); padding-left: 20px; margin-bottom: 30px; }
+        
+        .section-title { 
+            color: var(--neon-blue); 
+            text-transform: uppercase; 
+            margin-top: 35px; 
+            font-size: 0.85rem; 
+            letter-spacing: 3px;
+            border-bottom: 1px solid rgba(0, 242, 255, 0.1);
+            padding-bottom: 5px;
+        }
+
+        .eredita-box { 
+            background: rgba(255,255,255,0.04); 
+            padding: 18px; 
+            border-radius: 10px; 
+            margin-top: 15px; 
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: 0.2s;
+        }
+        
+        .eredita-box:hover { transform: translateX(5px); background: rgba(255,255,255,0.07); }
+
+        .effetto-tag {
+            background: rgba(0, 242, 255, 0.1); 
+            padding: 10px; 
+            border-radius: 6px; 
+            margin-top: 10px; 
+            font-size: 0.95rem; 
+            border-left: 3px solid var(--neon-pink);
+            line-height: 1.4;
+        }
+
+        .close-btn { background: var(--neon-pink); border: none; color: white; padding: 12px 25px; border-radius: 6px; cursor: pointer; font-weight: bold; transition: 0.3s; }
+        .close-btn:hover { background: #ff3399; box-shadow: 0 0 15px var(--neon-pink); }
+
+        .back-btn { background: #222; border: 1px solid #444; color: white; padding: 12px 20px; border-radius: 6px; cursor: pointer; display: none; margin-right: 15px; }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-thumb { background: var(--neon-blue); border-radius: 10px; }
     </style>
 </head>
 <body>
 
     <div class="hub-container">
-        <h1 style="color: var(--neon-blue); margin-bottom: 30px; letter-spacing: 3px;">BIBLIOTECA DIGITALE</h1>
-        <button class="menu-btn" onclick="openModal('stirpi_database.json', 'STIRPI')">🧬 Razze / Stirpi</button>
-        <button class="menu-btn" onclick="openModal('classi_database.json', 'CLASSI')">⚔️ Ruoli / Classi</button>
-        <button class="menu-btn" onclick="openModal('knight_database.json', 'KNIGHT')">🤖 Modelli Knight</button>
-        <a href="index.html" style="color: grey; text-decoration: none; margin-top: 20px;">Torna all'Hub</a>
+        <h1 style="color: var(--neon-blue); letter-spacing: 8px; margin-bottom: 40px; text-shadow: 0 0 15px var(--neon-blue);">ARCHIVIO DIGITALE</h1>
+        
+        <button class="menu-btn" onclick="openModal('stirpi_database.json', '🧬 Database Stirpi')">🧬 Stirpi / Razze</button>
+        <button class="menu-btn" onclick="openModal('classi_database.json', '⚔️ Registro Classi')">⚔️ Ruoli / Classi</button>
+        <button class="menu-btn" onclick="openModal('knight_database.json', '🤖 Hangar Knight')">🤖 Modelli Knight</button>
+        
+        <a href="index.html" style="color: #555; text-decoration: none; margin-top: 40px; font-size: 0.8rem; letter-spacing: 2px;">← DISCONNETTI UTENTE</a>
     </div>
 
     <div id="main-modal" class="modal">
         <div class="modal-header">
-            <button id="back-to-list" class="back-btn" onclick="showList()">← LISTA</button>
-            <h2 id="modal-title" style="margin: 0;"></h2>
-            <button class="close-btn" onclick="closeModal()">CHIUDI X</button>
+            <div style="display: flex; align-items: center;">
+                <button id="back-to-list" class="back-btn" onclick="showList()">← LISTA</button>
+                <h2 id="modal-title" style="margin: 0; color: var(--neon-blue); letter-spacing: 2px;"></h2>
+            </div>
+            <button class="close-btn" onclick="closeModal()">ESCI [X]</button>
         </div>
 
         <div id="list-view">
-            <input type="text" class="search-bar" id="search" placeholder="Cerca..." onkeyup="filterItems()">
+            <input type="text" class="search-bar" id="search" placeholder="Inserisci termine di ricerca..." onkeyup="filterItems()">
             <div class="items-grid" id="items-container"></div>
         </div>
 
@@ -130,20 +182,20 @@
 
     <script>
         let currentData = [];
-        let currentType = "";
 
         async function openModal(jsonFile, title) {
-            currentType = jsonFile.split('_')[0]; // stirpi, classi, o knight
             document.getElementById('modal-title').innerText = title;
             document.getElementById('main-modal').style.display = 'flex';
+            document.getElementById('items-container').innerHTML = "<p style='color:var(--neon-blue)'>Caricamento dati in corso...</p>";
             
             try {
                 const response = await fetch(jsonFile);
+                if (!response.ok) throw new Error();
                 const data = await response.json();
-                currentData = data.items || data.stirpi || [];
+                currentData = data.items;
                 renderList(currentData);
             } catch (e) {
-                document.getElementById('items-container').innerHTML = "Errore nel caricamento del file JSON. Controlla che il file esista su GitHub.";
+                document.getElementById('items-container').innerHTML = "<p style='color:var(--neon-pink)'>ERRORE: Database non trovato. Verifica il file JSON su GitHub.</p>";
             }
         }
 
@@ -163,20 +215,51 @@
         function showDetail(item) {
             document.getElementById('list-view').style.display = 'none';
             document.getElementById('detail-view').style.display = 'block';
-            document.getElementById('back-to-list').style.display = 'block';
+            document.getElementById('back-to-list').style.display = 'inline-block';
             
-            let extraContent = "";
-            if(item.eredita) {
-                extraContent = "<h3>EREDITÀ</h3>" + item.eredita.map(e => `<b>${e.nome}</b>: ${e.descrizione}<br><br>`).join('');
-            } else if(item.temi_da_esplorare) {
-                extraContent = "<h3>TEMI</h3>" + item.temi_da_esplorare.join(', ');
-            }
+            // Gestione descrizione (stringa singola o array di paragrafi)
+            const descrizionePulita = Array.isArray(item.descrizione) 
+                ? item.descrizione.join('<br><br>') 
+                : item.descrizione;
+
+            // Generazione Eredità con separazione Descrizione/Effetto
+            const ereditaHtml = item.eredita.map(e => `
+                <div class="eredita-box">
+                    <b style="color:var(--neon-blue); text-transform:uppercase;">${e.nome}</b>
+                    <p style="margin: 10px 0; font-size: 0.95rem; color: #ddd; line-height:1.5;">${e.descrizione}</p>
+                    <div class="effetto-tag">
+                        <i style="color:var(--neon-pink); font-style:normal; font-weight:bold;">MECCANICA:</i> ${e.effetto}
+                    </div>
+                </div>
+            `).join('');
 
             document.getElementById('detail-view').innerHTML = `
-                <img src="img/razze/${item.immagine}" style="width:100%; max-width:400px; border-radius:10px; border:1px solid var(--neon-blue); margin-bottom:20px;" onerror="this.src='img/index/icona_app.png'">
-                <h1>${item.nome}</h1>
-                <p>${item.descrizione}</p>
-                <div style="background:rgba(255,255,255,0.05); padding:15px; border-radius:10px;">${extraContent}</div>
+                <div class="detail-header">
+                    <h1 style="margin:0; font-size: 2.5rem; letter-spacing:4px;">${item.nome}</h1>
+                </div>
+                
+                <div style="display: flex; gap: 30px; flex-wrap: wrap;">
+                    <div style="flex: 1; min-width: 300px;">
+                        <img src="img/razze/${item.immagine}" style="width:100%; border-radius:12px; border:1px solid var(--neon-blue); box-shadow: 0 0 20px rgba(0,242,255,0.1);" onerror="this.style.display='none'">
+                    </div>
+                    
+                    <div style="flex: 2; min-width: 300px;">
+                        <div class="section-title">Inquadramento Narrativo</div>
+                        <p style="line-height:1.8; font-size:1.05rem; color: #eee;">${descrizionePulita}</p>
+                        
+                        <div class="section-title">Temi da esplorare</div>
+                        <p style="color: var(--neon-pink); font-weight: bold; letter-spacing: 1px;">${item.temi_da_esplorare.join(' • ')}</p>
+
+                        <div class="section-title">Tratti Consigliati</div>
+                        <p>${item.tratti_consigliati.join(', ')}</p>
+                    </div>
+                </div>
+
+                <div class="section-title">Eredità di Stirpe</div>
+                <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 15px;">
+                    ${ereditaHtml}
+                </div>
+                <div style="height:80px"></div>
             `;
         }
 
@@ -188,6 +271,7 @@
 
         function closeModal() {
             document.getElementById('main-modal').style.display = 'none';
+            document.getElementById('search').value = "";
         }
 
         function filterItems() {
