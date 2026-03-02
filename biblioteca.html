@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KOTRA - Biblioteca</title>
+    <link rel="icon" type="image/png" href="img/index/icona_app.png">
+    <style>
+        :root {
+            --neon-blue: #00f2ff;
+            --neon-pink: #ff007a;
+            --bg-dark: #0a0b10;
+        }
+        
+        body {
+            background-color: var(--bg-dark);
+            /* Percorso aggiornato per lo sfondo della biblioteca */
+            background-image: url('img/biblioteca/sfondo.png'); 
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: white;
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: rgba(10, 11, 16, 0.9); /* Sfondo semitrasparente per leggere meglio */
+            backdrop-filter: blur(10px); /* Effetto sfocatura sullo sfondo */
+            border: 1px solid var(--neon-blue);
+            border-radius: 15px;
+            padding: 30px;
+        }
+
+        h1 { color: var(--neon-blue); text-align: center; text-transform: uppercase; }
+        h2 { color: var(--neon-pink); border-bottom: 1px solid var(--neon-pink); padding-bottom: 5px; margin-top: 30px; }
+
+        .back-btn {
+            background: none;
+            border: 1px solid var(--neon-blue);
+            color: var(--neon-blue);
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .back-btn:hover { background: rgba(0, 242, 255, 0.1); }
+
+        .card {
+            background: rgba(255,255,255,0.05);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        b { color: var(--neon-blue); }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <a href="index.html" class="back-btn">← TORNA ALL'HUB</a>
+        
+        <h1>Biblioteca di Brit-Annia</h1>
+        <p style="text-align: center; font-style: italic;">Accesso ai database dell'Academy autorizzato.</p>
+
+        <h2>Le Stirpi</h2>
+        <div class="card">
+            <b>Umani:</b> I sopravvissuti della Terra. Versatili, determinati, spesso guidati da un senso di Dovere incrollabile.
+        </div>
+        <div class="card">
+            <b>Nephilim:</b> Individui che manifestano tratti genetici degli antichi "Angeli". Hanno una sincronizzazione naturale superiore con i Knight.
+        </div>
+        <div class="card">
+            <b>Esper:</b> Evoluzioni della psiche umana capaci di manipolare l'energia ambientale o la percezione altrui.
+        </div>
+
+        <h2>I Ruoli (Classi)</h2>
+        <div class="card">
+            <b>Leader:</b> Colui che tiene unita la squadra. Le sue parole possono sollevare l'Ego dei compagni.
+        </div>
+        <div class="card">
+            <b>Asso:</b> Il pilota puro. La sua connessione con il Knight è una danza letale.
+        </div>
+
+        </div>
+
+</body>
+</html>
