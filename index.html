@@ -3,164 +3,302 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KOTRA - Scheda Pilota</title>
+    <title>KOTRA Academy - HUB</title>
+    
+    <link rel="icon" type="image/png" href="img/index/icona_app.png">
+    <link rel="apple-touch-icon" href="img/index/icona_app.png">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#0a0b10">
+
     <style>
         :root {
             --neon-blue: #00f2ff;
             --neon-pink: #ff007a;
             --bg-dark: #0a0b10;
-            --card-bg: #161b22;
+            --card-bg: rgba(22, 27, 34, 0.9); /* Leggermente trasparente per lo sfondo */
         }
-
+        
         body {
             background-color: var(--bg-dark);
+            background-image: url('img/index/sfondo.png'); /* Sfondo personalizzato */
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
             color: white;
-            font-family: 'Segoe UI', Roboto, sans-serif;
+            font-family: 'Segoe UI', sans-serif;
             margin: 0;
-            padding: 10px;
         }
-
-        .container {
+        
+        /* Navbar */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background: rgba(0, 0, 0, 0.8);
+            border-bottom: 2px solid var(--neon-blue);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .nav-links button {
+            background: none;
+            border: none;
+            color: white;
+            margin: 0 5px;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        
+        .nav-links button:hover {
+            color: var(--neon-pink);
+        }
+        
+        /* Pagine */
+        .page {
+            display: none;
+            padding: 20px;
             max-width: 800px;
             margin: auto;
         }
-
-        h1 {
-            text-align: center;
-            color: var(--neon-blue);
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            border-bottom: 2px solid var(--neon-pink);
-            padding-bottom: 10px;
+        
+        .active {
+            display: block;
         }
-
+        
         .section {
             background: var(--card-bg);
-            padding: 15px;
+            padding: 20px;
             border-radius: 8px;
-            margin-bottom: 15px;
             border: 1px solid #30363d;
+            margin-bottom: 20px;
+            backdrop-filter: blur(5px); /* Effetto sfocatura sullo sfondo */
         }
-
-        .grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-        }
-
-        @media (max-width: 600px) {
-            .grid { grid-template-columns: 1fr; }
-        }
-
-        label {
-            display: block;
-            font-size: 0.8rem;
-            color: var(--neon-blue);
-            margin-bottom: 5px;
-            text-transform: uppercase;
-        }
-
+        
         input, select, textarea {
             width: 100%;
             background: #0d1117;
             border: 1px solid #30363d;
             color: white;
-            padding: 8px;
-            border-radius: 4px;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
             box-sizing: border-box;
         }
-
-        .dice-btn {
+        
+        .btn {
             background: linear-gradient(45deg, var(--neon-pink), #b30056);
             border: none;
             color: white;
-            padding: 10px;
+            padding: 12px;
             border-radius: 5px;
             cursor: pointer;
-            font-weight: bold;
             width: 100%;
-            margin-top: 10px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        
+        .pg-card {
+            border-left: 4px solid var(--neon-blue);
+            padding: 15px;
+            background: #1c2128;
+            margin-bottom: 15px;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .master-badge {
+            background: var(--neon-blue);
+            color: black;
+            padding: 2px 6px;
+            font-size: 0.7rem;
+            border-radius: 3px;
+            font-weight: bold;
         }
 
-        .result-area {
-            text-align: center;
-            font-size: 1.5rem;
-            margin-top: 10px;
-            color: var(--neon-blue);
-            min-height: 1.8rem;
+        /* Centrare il logo nella pagina di login */
+        .login-logo {
+            display: block;
+            margin: 0 auto 20px auto;
+            max-width: 150px;
         }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h1>Knight of the Round: Academy</h1>
-
-    <div class="section">
-        <label>Nome Studente / Pilota</label>
-        <input type="text" id="charName" placeholder="Es: Arthur Pendragon" oninput="saveData()">
-        
-        <div class="grid" style="margin-top: 10px;">
-            <div>
-                <label>Stirpe</label>
-                <input type="text" id="lineage" oninput="saveData()">
-            </div>
-            <div>
-                <label>Ego / Dovere</label>
-                <input type="text" id="egoDovere" placeholder="Es: 4 / 6" oninput="saveData()">
-            </div>
-        </div>
+<nav>
+    <div id="auth-status" style="font-size: 0.8rem;">
+        <button onclick="showPage('login-page')">Login</button>
     </div>
-
-    <div class="section">
-        <label>Tratto Principale (Dado)</label>
-        <select id="mainDice" onchange="saveData()">
-            <option value="6">d6</option>
-            <option value="8">d8</option>
-            <option value="10">d10</option>
-            <option value="12">d12</option>
-        </select>
-        <button class="dice-btn" onclick="rollDice()">LANCIA IL DADO</button>
-        <div class="result-area" id="result">---</div>
+    <div class="nav-links">
+        <button onclick="showPage('home-page')">PG</button>
+        <button onclick="showPage('create-page')">Nuovo</button>
+        <button onclick="showPage('library-page')">Biblioteca</button>
     </div>
+</nav>
 
+<div id="login-page" class="page active">
     <div class="section">
-        <label>Note sul Knight / Equipaggiamento</label>
-        <textarea id="notes" rows="5" oninput="saveData()"></textarea>
+        <img src="img/index/icona_app.png" alt="KOTRA Logo" class="login-logo">
+        <h2 style="color:var(--neon-blue); text-align: center;">Accesso Accademia</h2>
+        <input type="email" id="email" placeholder="Email">
+        <input type="password" id="password" placeholder="Password">
+        <button class="btn" onclick="handleAuth('login')">Accedi</button>
+        <button class="btn" style="background: #30363d; margin-top:10px" onclick="handleAuth('signup')">Registrati</button>
     </div>
 </div>
 
-<script>
-    // Funzione per lanciare il dado
-    function rollDice() {
-        const die = document.getElementById('mainDice').value;
-        const roll = Math.floor(Math.random() * die) + 1;
-        document.getElementById('result').innerText = "Risultato: " + roll;
+<div id="home-page" class="page">
+    <div style="display:flex; justify-content:space-between; align-items:center">
+        <h2>Archivio Studenti</h2>
+        <div id="role-tag"></div>
+    </div>
+    <div id="pg-list">Effettua il login per vedere i PG...</div>
+</div>
+
+<div id="create-page" class="page">
+    <div class="section">
+        <h2>Creazione Personaggio</h2>
+        <label>Nome dello Studente (ID Unico)</label>
+        <input type="text" id="new-char-name" placeholder="Es: Galahad_7">
+        
+        <label>Stirpe</label>
+        <select id="new-char-race">
+            <option value="Umano">Umano</option>
+            <option value="Nephilim">Nephilim</option>
+            <option value="Esper">Esper</option>
+            <option value="Bionico">Bionico</option>
+        </select>
+
+        <label>Note Iniziali</label>
+        <textarea id="new-char-notes" placeholder="Descrivi brevemente il tuo pilota o il tuo Knight..."></textarea>
+        
+        <button class="btn" onclick="createCharacter()">Inizializza nel Cloud</button>
+    </div>
+</div>
+
+<div id="library-page" class="page">
+    <h2>Biblioteca di Brit-Annia</h2>
+    <div class="section">
+        <h3 style="color: var(--neon-blue)">Le Stirpi</h3>
+        <p><b>Umani:</b> Cuore e determinazione. Tirano d6 extra in situazioni disperate.</p>
+        <p><b>Nephilim:</b> Legati all'antico DNA del pianeta, eccellono nella sincronizzazione.</p>
+        <hr style="border:0; border-top:1px solid #30363d">
+        <h3 style="color: var(--neon-pink)">I Knight</h3>
+        <p>Gigantesche armature mobili alimentate dall'Ego dei piloti.</p>
+    </div>
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+    import { getFirestore, doc, setDoc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+    // Tua configurazione Firebase
+    const firebaseConfig = {
+        apiKey: "AIzaSyCAMvHn28SY3k9TiLvz2afjn0zpj73Lw5Y",
+        authDomain: "kotra-8da26.firebaseapp.com",
+        projectId: "kotra-8da26",
+        storageBucket: "kotra-8da26.firebasestorage.app",
+        messagingSenderId: "932848394064",
+        appId: "1:932848394064:web:d368c9ae301b54bab01655"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    // Email del Master
+    const MASTER_EMAIL = "t.giuseppeinfante@gmail.com";
+    let currentUser = null;
+
+    // Navigazione
+    window.showPage = (pageId) => {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.getElementById(pageId).classList.add('active');
+        if(pageId === 'home-page' && currentUser) loadCharacters();
     }
 
-    // Funzione per salvare i dati automaticamente sul telefono/PC
-    function saveData() {
-        const data = {
-            name: document.getElementById('charName').value,
-            lineage: document.getElementById('lineage').value,
-            ego: document.getElementById('egoDovere').value,
-            dice: document.getElementById('mainDice').value,
-            notes: document.getElementById('notes').value
-        };
-        localStorage.setItem('kotra_character', JSON.stringify(data));
+    // Autenticazione
+    window.handleAuth = async (type) => {
+        const email = document.getElementById('email').value;
+        const pass = document.getElementById('password').value;
+        try {
+            if(type === 'login') await signInWithEmailAndPassword(auth, email, pass);
+            else await createUserWithEmailAndPassword(auth, email, pass);
+            showPage('home-page');
+        } catch (e) { alert("Errore: " + e.message); }
     }
 
-    // Funzione per caricare i dati all'apertura
-    window.onload = function() {
-        const saved = localStorage.getItem('kotra_character');
-        if (saved) {
-            const data = JSON.parse(saved);
-            document.getElementById('charName').value = data.name || '';
-            document.getElementById('lineage').value = data.lineage || '';
-            document.getElementById('egoDovere').value = data.ego || '';
-            document.getElementById('mainDice').value = data.dice || '6';
-            document.getElementById('notes').value = data.notes || '';
+    onAuthStateChanged(auth, user => {
+        currentUser = user;
+        const statusDiv = document.getElementById('auth-status');
+        const roleDiv = document.getElementById('role-tag');
+        
+        if(user) {
+            statusDiv.innerHTML = `<span style="color:var(--neon-blue)">${user.email.split('@')[0]}</span> | <a href="#" onclick="auth.signOut()" style="color:white">Esci</a>`;
+            if(user.email === MASTER_EMAIL) roleDiv.innerHTML = `<span class="master-badge">MODALITÀ MASTER</span>`;
+            showPage('home-page');
+        } else {
+            statusDiv.innerHTML = `<button onclick="showPage('login-page')">Login</button>`;
+            roleDiv.innerHTML = "";
+            showPage('login-page');
         }
+    });
+
+    // Crea PG
+    window.createCharacter = async () => {
+        if(!currentUser) return alert("Esegui il login!");
+        const name = document.getElementById('new-char-name').value;
+        const race = document.getElementById('new-char-race').value;
+        const notes = document.getElementById('new-char-notes').value;
+
+        if(!name) return alert("Il nome è obbligatorio!");
+
+        try {
+            await setDoc(doc(db, "characters", name), {
+                name: name,
+                race: race,
+                notes: notes,
+                ownerId: currentUser.uid,
+                ownerEmail: currentUser.email,
+                stats: { ego: 4, dovere: 6 }
+            });
+            alert("Studente registrato nell'archivio!");
+            showPage('home-page');
+        } catch (e) { alert("Errore salvataggio: " + e.message); }
+    }
+
+    // Carica PG
+    window.loadCharacters = async () => {
+        const list = document.getElementById('pg-list');
+        list.innerHTML = "Accesso all'archivio...";
+        
+        let q;
+        if(currentUser.email === MASTER_EMAIL) {
+            q = query(collection(db, "characters"));
+        } else {
+            q = query(collection(db, "characters"), where("ownerId", "==", currentUser.uid));
+        }
+
+        const querySnapshot = await getDocs(q);
+        list.innerHTML = querySnapshot.empty ? "Nessun personaggio trovato." : "";
+        
+        querySnapshot.forEach((doc) => {
+            const pg = doc.data();
+            list.innerHTML += `
+                <div class="pg-card">
+                    <div style="color:var(--neon-blue); font-weight:bold; font-size:1.1rem">${pg.name}</div>
+                    <div style="font-size:0.8rem; margin: 5px 0;">Stirpe: ${pg.race}</div>
+                    <div style="font-size:0.8rem; color:#8b949e italic">${pg.notes || 'Nessuna nota'}</div>
+                    <div style="font-size:0.6rem; color:var(--neon-pink); margin-top:5px">PILOTA: ${pg.ownerEmail}</div>
+                </div>
+            `;
+        });
     }
 </script>
 
