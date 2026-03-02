@@ -14,18 +14,18 @@
     },
     {
       "nome": "Doppio Core",
-      "descrizione": "Il tuo corpo ospita due motori energetici distinti.",
-      "effetto": "Scegli un secondo elemento affine; puoi creare combo creative con i due core."
-    }
-    {
-      "nome": "Bio-Logica",
-      "descrizione": "Ti affidi a sensori avanzati per mappare la fisiologia altrui.",
-      "effetto": "Puoi tirare 1d8 anche se non hai abbastanza Tratti per superare la Difficoltà."
+      "descrizione": "Il dr. Merlin mi ha dotato dell’abilità di manipolare sia il Tempo che lo Spazio. Non hai nessuna possibilità di vittoria.",
+      "effetto": "Scegli un secondo elemento a cui sei affine e segnalo nello spazio Stirpe della tua scheda. Puoi usare quell’elemento come se fosse il tuo Core base e puoi anche creare combo creative con i due core. Quando qualcosa Ferisce il tuo Core, devi considerare la Stirpe come se fosse un Core, ma scegli tu quale Core viene Ferito. Se qualcosa Ferisce la tua Stirpe non avrai più accesso al Core secondario."
     },
     {
-      "nome": "Doppio Core",
-      "descrizione": "Il tuo corpo ospita due motori energetici distinti.",
-      "effetto": "Scegli un secondo elemento affine; puoi creare combo creative con i due core."
+      "nome": "Interfaccia bio-meccanica",
+      "descrizione": "Richiedo un accesso diretto al tuo database... Come sarebbe a dire che non ci conosciamo abbastanza da concedermi l’accesso? Prometto di eseguire un backup prima di metterci mano, ora lasciami leggere cosa pensano i professori di Mor Dread...",
+      "effetto": "Puoi letteralmente parlare con le macchine, come se fossero creature viventi. Le macchine ti capiranno, ma potrebbero non essere collaborative, se sono state progettate così."
+    },
+    {
+      "nome": "Memorie nel GR.A.A.L.",
+      "descrizione": "Conosco il Knight-fu.",
+      "effetto": "Riserva un Tratto della tua scheda come Unità di Backup. Durante ogni Sessione puoi sostituirlo con un Tratto che preferisci, perché scarichi le conoscenze necessarie dal cloud del GR.A.A.L. Non puoi sostituirlo più di una volta per Sessione."
     }
    ]
   },
