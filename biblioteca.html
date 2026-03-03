@@ -25,6 +25,24 @@
             --bg-dark: #0a0b10;
             --glass: rgba(255, 255, 255, 0.08);
         }
+
+        .items-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 20px;
+    max-height: 70vh; /* Altezza massima del contenitore */
+    overflow-y: auto; /* Attiva lo scroll */
+    padding: 10px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--neon-blue) transparent;
+}
+
+/* Personalizzazione scrollbar per Chrome/Safari */
+.items-grid::-webkit-scrollbar { width: 6px; }
+.items-grid::-webkit-scrollbar-thumb { 
+    background: var(--neon-blue); 
+    border-radius: 10px; 
+}
         
         body {
             background-color: var(--bg-dark);
