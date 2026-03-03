@@ -1,0 +1,618 @@
+{
+  "items": [
+    {
+      "nome": "Alchemist",
+      "immagine": "img/bibioteca/classi/alchemist.png",
+      "citazione": "Per ottenere qualcosa è necessario dare in cambio qualcos'altro che abbia il medesimo valore. Questo è il Principio dello Scambio Equivalente!",
+      "descrizione": "Anche se il Respiro del Drago è la principale fonte energetica di Brit'an, sicuramente non è l'unica. Il compito di un Alchemist è di trovare metodi alternativi con cui alimentare i Knight e migliorare la vita di tutti attraverso la ricerca.",
+      "temi_da_esplorare": ["Prove ed errori", "Progresso", "Scelte difficili"],
+      "nemesi": ["Scienziato impazzito", "Oscurantismo", "Esperimento andato male"],
+      "tratti_consigliati": ["Sperimentare", "Ricercare", "Prove ed errori"],
+      "tecniche": [
+        { "tipo": "TECNICA BASE", "nome": "Scambio equivalente", "effetto": "Prendi una Ferita per recuperare subito 2d6 Punti Limite. Se hai già una Ferita, mettiti in Pericolo di Vita per recuperare 2d12 Punti Limite (divisibili con le altre Matricole)." },
+        { "tipo": "TECNICA KNIGHT", "nome": "Core filosofale", "effetto": "Spendi 3 PL per cambiare lo stato del Knight da solido a liquido. Con altri 3 PL puoi farlo diventare gassoso." },
+        { "tipo": "TECNICA AVANZATA", "nome": "Plasmare il mondo", "effetto": "Una volta per Sessione puoi invertire il numero di d4 e d12 messi in gioco da te o da un'altra Matricola consenziente in una Prova." },
+        { "tipo": "TECNICA SOVRACCARICO", "nome": "Homunculus", "effetto": "In Sovraccarico, crea un homunculus che assorbe una Ferita fisica tua o di un'altra Matricola al posto vostro (una volta per Scena)." }
+      ]
+    },
+    {
+      "nome": "Athlete",
+      "immagine": "img/bibioteca/classi/athlete.png",
+      "citazione": "Una sconfitta è solo un motivo in più per continuare ad allenarmi!",
+      "descrizione": "Un vero Athlete è qualcuno che si impegna fino allo stremo per diventare il migliore in qualcosa: arti marziali, baseball, Knightball, cucina acrobatica...\n\nNOTE SPECIALI: Al posto del nome del Knight, segna lo SPORT (es. Knightball); al posto del Frame, segna la tua SPECIALITÀ o Ruolo (es. Portiere).",
+      "temi_da_esplorare": ["Diventare più forti", "Accettare la sconfitta", "Mai arrendersi"],
+      "nemesi": ["Squadra rivale", "Le regole del gioco", "Chi ha vinto il torneo"],
+      "tratti_consigliati": ["Impegno!", "Fintare", "Ancora una volta!"],
+      "tecniche": [
+        { "tipo": "TECNICA BASE", "nome": "Montage", "effetto": "Racconta come decidi di prepararti a una sfida per recuperare 1d4 PL. Le Matricole che si allenano con te guadagnano 1 PL." },
+        { "tipo": "TECNICA SPECIALE", "nome": "Finta", "effetto": "Una volta per Scena puoi effettuare due volte la stessa Prova e tenere il risultato che preferisci (senza mischiare i risultati)." },
+        { "tipo": "TECNICA AVANZATA", "nome": "Fermo immagine", "effetto": "Quando usi una Memoria per ri-tirare i dadi, recuperi 1d4 Punti Limite extra." },
+        { "tipo": "TECNICA SOVRACCARICO", "nome": "Memoria muscolare", "effetto": "In Sovraccarico trasforma d6 in d4. Ogni dado trasformato abbassa di 1 la spesa di PL per farti aiutare dalle altre Matricole." }
+      ]
+    },
+    {
+      "nome": "Augur",
+      "immagine": "img/bibioteca/classi/augur.png",
+      "citazione": "Le chiamate Particelle Dragon, come se fossero qualcosa di separato dalla nostra stessa natura, senza capire che tutto ciò che esiste nel cosmo è fatto della stessa materia.",
+      "descrizione": "A differenza dei Champion, gli Augur cercano un equilibrio con il Respiro del Drago per arrivare a comprendere la Natura stessa di Brit'an.",
+      "temi_da_esplorare": ["Equilibrio del mondo", "Magia naturale", "Tradizioni millenarie"],
+      "nemesi": ["Progresso", "Scienziato senza scrupoli", "Bestia impazzita"],
+      "tratti_consigliati": ["Natura", "Equilibrio perfetto", "Magia Naturale"],
+      "tecniche": [
+        { "tipo": "TECNICA BASE", "nome": "Tutt'uno con la natura", "effetto": "Spendi 1 PL per parlare con elementi naturali (piante, rocce, fiamme) per una Scena." },
+        { "tipo": "TECNICA KNIGHT", "nome": "Il risveglio del Respiro", "effetto": "Spendi 5 PL per rendere il Knight un costrutto semi-vivente in grado di muoversi e agire indipendentemente con prove separate." },
+        { "tipo": "TECNICA AVANZATA", "nome": "Il cerchio della vita", "effetto": "Quando una Matricola subisce una Ferita, tira 1d12: con 10+ anche la Minaccia subisce una Ferita." },
+        { "tipo": "TECNICA SOVRACCARICO", "nome": "Meteoropatia", "effetto": "In Sovraccarico gli elementi reagiscono al tuo animo. Gli 11 valgono come Trionfi, ma i 2 sui Dadi Negativi valgono Disastri." }
+      ]
+    },
+    {
+      "nome": "Cadet",
+      "immagine": "img/bibioteca/classi/cadet.png",
+      "citazione": "Il futuro non è ancora deciso per nessuno, siamo noi a plasmare la nostra vita e nessun altro.",
+      "descrizione": "Job assegnato alle Matricole che non hanno ancora deciso quale strada intraprendere, in attesa che sviluppino le loro vere potenzialità.",
+      "temi_da_esplorare": ["Essere il migliore", "Superare i propri limiti", "Idealismo"],
+      "nemesi": ["Pilota rivale", "Mentore diventato malvagio", "Cinismo"],
+      "tratti_consigliati": ["Pilota", "Studente", "Addestramento"],
+      "tecniche": [
+        { "tipo": "TECNICA BASE", "nome": "Una dura lezione", "effetto": "Quando ricevi una Ferita puoi segnarla sul tuo Nome per usarla come Memoria futura (se non già usata nella prova attuale)." },
+        { "tipo": "TECNICA KNIGHT", "nome": "Basta che sia un mecha", "effetto": "La prima volta che sali su un Knight in una Scena, recuperi 1d6 PL o cancelli una Ferita." },
+        { "tipo": "TECNICA AVANZATA", "nome": "Imparare dai propri sbagli", "effetto": "Recupera 1 PL per ogni Disastro ottenuto. Se sei al massimo, i PL vanno a un'altra Matricola." },
+        { "tipo": "TECNICA SOVRACCARICO", "nome": "L'amicizia vince su tutto", "effetto": "In Sovraccarico, se non sei solo, usa questa tecnica per assorbire una tua Ferita tramite la forza dell'amicizia." }
+      ]
+    },
+    {
+      "nome": "Champion",
+      "immagine": "img/bibioteca/classi/champion.png",
+      "citazione": "La Via della Spada e la Via del Respiro non differiscono in nulla, se non nella direzione in cui spingere i propri sforzi.",
+      "descrizione": "Coloro che seguono questa strada sono i più eterogenei ed estroversi, abili tanto con la spada quanto con la magia elementale.",
+      "temi_da_esplorare": ["Combattere allo stremo", "Jack of all trades", "La via della Spada"],
+      "nemesi": ["Entropia", "Famoso spadaccino", "Cavaliere decaduto"],
+      "tratti_consigliati": ["Di tutto un po'", "Spadaccino", "Magia elementale"],
+      "tecniche": [
+        { "tipo": "TECNICA BASE", "nome": "Tutt'uno col Respiro", "effetto": "Spendi 1 PL per teletrasportarti in un luogo visibile. Con +2 PL a testa puoi portare altri con te." },
+        { "tipo": "TECNICA KNIGHT", "nome": "Core elementale", "effetto": "Spendi 5 PL per liberare il Core (un elementale in simbiosi col mecha) e farlo agire indipendentemente." },
+        { "tipo": "TECNICA AVANZATA", "nome": "Armi elementali", "effetto": "Spendi 2 PL per Matricola per creare armi fisiche: chi le impugna ignora un Disastro sacrificando l'arma." },
+        { "tipo": "TECNICA SOVRACCARICO", "nome": "Mille colpi di spada", "effetto": "In Sovraccarico infliggi automaticamente una Ferita a un avversario (o al primo che affronterai)." }
+      ]
+    },
+    {
+      "nome": "Hunter",
+      "immagine": "img/bibioteca/classi/hunter.png",
+      "citazione": "Chi ha forza o potere sufficienti a schiacciare chi è più debole di loro pensa spesso che questo dia loro il diritto di imporsi sugli altri.",
+      "descrizione": "Un Hunter non è solo chi caccia creature del bosco, ma anche chi vuole assicurare alla giustizia i criminali seguendo i colpevoli.",
+      "temi_da_esplorare": ["La crudeltà della società", "Solitudine", "Vendetta"],
+      "nemesi": ["Serial Killer", "Scienziato impazzito", "Bestia leggendaria"],
+      "tratti_consigliati": ["Trovare tracce", "Aspettare il momento", "Arrangiarsi"],
+      "tecniche": [
+        { "tipo": "TECNICA BASE", "nome": "Fiuto", "effetto": "Spendi 2 PL per percepire creature specifiche; con 5 PL capisci dove sono e da quanto tempo sono passate." },
+        { "tipo": "TECNICA KNIGHT", "nome": "Stealth mode", "effetto": "Spendi 3 PL per attivare il camuffamento: invisibilità, silenzio o sparizione dai radar (effetti cumulativi)." },
+        { "tipo": "TECNICA AVANZATA", "nome": "Sinestesia", "effetto": "Per una Scena scambi un senso con un altro (es. vista con olfatto) per percepire cose altrimenti impossibili." },
+        { "tipo": "TECNICA SOVRACCARICO", "nome": "Un valido avversario", "effetto": "In Sovraccarico scegli una Minaccia: finché resti in questo stato ignori i suoi Tratti." }
+      ]
+    },
+    {
+      "nome": "Jester",
+      "immagine": "img/bibioteca/classi/jester.png",
+      "citazione": "Che importa se i professori ci hanno detto di lasciar perdere... Non si impara se non dai propri sbagli, quindi ora passami quel grimaldello!",
+      "descrizione": "Si dice che una risata ci seppellirà, ma il vero motivo è che un bravo Jester è in grado di infondere coraggio nei propri compagni.",
+      "temi_da_esplorare": ["Ribaltare lo status quo", "La risata è una medicina", "Sono solo un comprimario"],
+      "nemesi": ["L'autorità", "Qualcuno che hai ferito", "La disperazione"],
+      "tratti_consigliati": ["Parole taglienti", "Infondere coraggio", "Abbattere il morale"],
+      "tecniche": [
+        { "tipo": "TECNICA BASE", "nome": "Costume", "effetto": "Usa costumi per mascherarti; spendendo PL pari alla Potenza della Minaccia trasformi una Conseguenza in Successo." },
+        { "tipo": "TECNICA KNIGHT", "nome": "Gioco di specchi", "effetto": "Spendi 5 PL per sfruttare i riflessi e muovere il Knight da uno all'altro come un teletrasporto." },
+        { "tipo": "TECNICA AVANZATA", "nome": "Distrazione", "effetto": "Spendi 3 PL per attirare l'attenzione: la prossima Matricola dimezza la Difficoltà base della Minaccia." },
+        { "tipo": "TECNICA SOVRACCARICO", "nome": "Troll", "effetto": "In Sovraccarico, se subisci una Ferita tira 1d12: con 10+ la rifletti sull'avversario (una volta per Scena)." }
+      ]
+    },
+	{
+		"nome": "Paragon",
+		"immagine": "img/bibioteca/classi/paragon.png",
+		"citazione": "Contro gli oppressori, contro la menzogna liberata, contro i traditori, giuro di impugnare la doppia spada: quella d'acciaio levigato e quella della parola splendente e fulminante.",
+		"descrizione": "I seguaci della Spada Divina credono fermamente che la titanica spada che si vede da tutta Brit'an sia il segno che gli dèi hanno scelto questo mondo come loro preferito. Il sacro compito di un Paragon è di esorcizzare il male e difendere Brit'an.",
+		"temi_da_esplorare": ["I peccati dei padri", "Ultima speranza", "Purezza"],
+		"nemesi": ["Demone", "Politico corrotto", "Parente colpevole"],
+		"tratti_consigliati": ["Magia divina", "Ultima speranza", "Cacciatore di demoni"],
+		"tecniche": [
+    {
+      "tipo": "TECNICA BASE",
+      "nome": "Luce divina",
+      "effetto": "La benedizione del Respiro ti rende in grado di compiere piccoli miracoli: puoi spendere 3 Punti Limite per rimuovere una Ferita tua o di un'altra Matricola, raccontando come il potere del Respiro ti renda in grado di manipolare la realtà stessa. Allo stesso modo puoi anche guarire un Personaggio Secondario, ma non puoi riportarlo in vita."
+    },
+    {
+      "tipo": "TECNICA KNIGHT",
+      "nome": "Shining Armour",
+      "effetto": "Il tuo Knight, come la colossale Spada Divina che domina l'orizzonte di Brit'an, arriva dai Cieli ed è in grado di resistere alla corruzione delle Radiazioni del Drago. Quando affronti creature mutate dalle Particelle Dragon puoi ritirare un Dado Negativo senza consumare una Memoria."
+    },
+    {
+      "tipo": "TECNICA AVANZATA",
+      "nome": "Esorcismo",
+      "effetto": "Quando infliggi una Ferita a una Minaccia che fa uso di Particelle Dragon tira un d12: se fai 10+ la Minaccia non potrà più fare affidamento sulle Particelle, su un eventuale Core o usare Tratti e Tecniche legati al Respiro, fino a quando tu non subisci una Ferita. Un Disastro o un Fallimento completo, anche ottenuti da altre Matricole, possono far terminare l'effetto, se chi narra decide di spenderli in questo modo."
+    },
+    {
+      "tipo": "TECNICA SOVRACCARICO",
+      "nome": "Paragone di valore",
+      "effetto": "Quando sei in Sovraccarico e ottieni un Successo pieno in una Prova, tutte le altre Matricole possono scegliere se recuperare 1d6 Punti Limite o aggiungere un bonus di +3 al loro prossimo tiro in questa Scena. Il tuo esempio spronerà il gruppo a dare il massimo in tutto quello che stanno facendo."
+    }
+	]
+	},
+	{
+  "nome": "Seeker",
+  "immagine": "img/bibioteca/classi/seeker.png",
+  "citazione": "Il mondo che vediamo è solo una piccola parte di ciò che è la nostra realtà. I ricordi di chi ci ha preceduto e di chi sembra non aver lasciato tracce di sé sono solo nascosti meglio, spesso così in piena vista da essere impossibili da notare.",
+  "descrizione": "Un Seeker è un girovago che fa del mondo stesso la sua dimora, alla ricerca di conoscenza dimenticata e verità nascoste. Il compito di un Seeker è di viaggiare e scoprire la verità sul passato di Brit'an, esplorando rovine e recuperando manufatti.",
+  "temi_da_esplorare": ["Usare la testa, non la spada", "Trovare i colpevoli", "Dovrebbe stare in un museo"],
+  "nemesi": ["Tombarolo professionista", "Criminale recidivo", "Sistema giudiziario"],
+  "tratti_consigliati": ["Indagare", "Risolvere enigmi", "Scoprire la verità"],
+  "tecniche": [
+    {
+      "tipo": "TECNICA BASE",
+      "nome": "Graal",
+      "effetto": "Solo chi dubita di sé può trovare la Verità: quando ottieni un Successo con conseguenze (e non un Fallimento) durante una Prova avrai una breve visione del prossimo futuro. La visione ti darà 1d12 extra alla prossima Prova, durante la stessa Scena."
+    },
+    {
+      "tipo": "TECNICA KNIGHT",
+      "nome": "Reliquia",
+      "effetto": "Il tuo Knight non è stato costruito nel Round, è una reliquia del passato costruita dagli Avaloniani o da qualcuno di ancora più antico. Quando affronti Minacce che vengono dal passato di Brit'an il tuo Knight entra in risonanza con le antiche energie del pianeta e ne viene potenziato: puoi spendere 5 Punti Limite per trasformare un Successo in un Trionfo."
+    },
+    {
+      "tipo": "TECNICA AVANZATA",
+      "nome": "Il diavolo è nei dettagli",
+      "effetto": "Quando analizzi una scena o cerchi tracce e segni di qualcosa successo in precedenza puoi spendere 2 Punti Limite per ogni indizio utile che vuoi trovare, senza effettuare Prove: chi narra ti dirà che cosa hai notato e perché questa cosa ti sembra un indizio utile."
+    },
+    {
+      "tipo": "TECNICA SOVRACCARICO",
+      "nome": "Oracolo",
+      "effetto": "Quando sei in Sovraccarico la Verità diventa più chiara ai tuoi occhi: vedi attraverso qualsiasi illusione e puoi spendere 3 Punti Limite per permettere ai tuoi compagni di vedere attraverso un'illusione finché sei vicino a loro. Puoi anche spendere 3 Punti Limite per rimuovere qualsiasi controllo mentale da te o un'altra Matricola."
+    }
+	]
+	},
+	{
+  "nome": "Slinger",
+  "immagine": "img/bibioteca/classi/slinger.png",
+  "citazione": "Quello che fa la differenza tra me e te è che io ho già calcolato tutte le sponde che questa palla da biliardo dovrà colpire per entrare in buca e vincere la scommessa, mentre tu stai ancora mettendo il gesso sull'asta.",
+  "descrizione": "Che siano pugnali da lancio, frecce, proiettili o cannoni al plasma, uno Slinger saprà farne sicuramente buon uso. Compito degli Slinger è agire dalle retrovie colpendo da lontano per offrire fuoco di copertura e sparire velocemente subito dopo.",
+  "temi_da_esplorare": ["Lavori sporchi", "Solitudine", "Pistole e disonore"],
+  "nemesi": ["Maestro spadaccino", "Cavaliere errante", "Responsabilità"],
+  "tratti_consigliati": ["Mano lesta", "Vista acuta", "Solitario"],
+  "tecniche": [
+    {
+      "tipo": "TECNICA BASE",
+      "nome": "Trick Shot",
+      "effetto": "Quando chi narra ti dice che un colpo è Impossibile puoi spendere 1 Punto Limite e trasformarlo in un colpo altamente improbabile: puoi effettuare una Prova come se la Difficoltà fosse esattamente il numero di Tratti che potresti mettere in gioco (puoi spingere il Limite ulteriormente per aggiungere eventuali d12 al pool)."
+    },
+    {
+      "tipo": "TECNICA KNIGHT",
+      "nome": "Cannone Orbitale",
+      "effetto": "Il tuo Knight è legato a un cannone orbitale in grado di colpire grandi aree dallo spazio sopra Brit'an. Puoi spendere 5 Punti Limite e infliggere automaticamente 1 Ferita a una Minaccia in Scena. Puoi sparare, nella stessa Scena, un secondo colpo, che costerà però 10 Punti Limite."
+    },
+    {
+      "tipo": "TECNICA AVANZATA",
+      "nome": "Gun Kata",
+      "effetto": "Entrando in uno stato di trance il tuo corpo è in grado di muoversi tra diverse Minacce con riflessi e tempismo perfetti, seguendo un kata che mischia arti marziali e proiettili. Quando sei in inferiorità numerica e agisci senza che le altre Matricole ti aiutino puoi infliggere una Ferita anche con un Successo Pieno, e non solo con un Trionfo."
+    },
+    {
+      "tipo": "TECNICA SOVRACCARICO",
+      "nome": "Akimbo",
+      "effetto": "Quando sei in Sovraccarico e ti getti nella mischia sparando colpi da ogni parte ignori l'aumento di Difficoltà di Minacce multiple o Tratti come \"Sciame\", \"Gruppo\" e così via. Il primo Disastro che ottieni in Sovraccarico non può essere una Ferita, ma indicherà per forza che hai finito i proiettili (o qualsiasi altra cosa tu stessi usando come arma a distanza)."
+    }
+	]
+	},
+	{
+  "nome": "Squire",
+  "immagine": "img/bibioteca/classi/squire.png",
+  "citazione": "Questa è la tua Storia! Io sono qui solo per aiutarti a raccontarla, dandoti sostegno quando la stanchezza avrà la meglio e offrendoti una spalla quando dovrai sfogarti.",
+  "descrizione": "Chi sceglie di diventare Squire decide umilmente di mettersi al servizio dei suoi compagni, evitando di mettersi in bella mostra. Il compito di uno Squire è di difendere i propri compagni, aiutarli nel momento del bisogno e ricordare loro i dettami dell'Accademia.",
+  "temi_da_esplorare": ["Servire e proteggere", "Essere umili", "Codice cavalleresco"],
+  "nemesi": ["Cavaliere decaduto", "Berserker", "Amico d'infanzia"],
+  "tratti_consigliati": ["Difendere", "Codice cavalleresco", "Sopportare"],
+  "tecniche": [
+    {
+      "tipo": "TECNICA BASE",
+      "nome": "Baluardo",
+      "effetto": "Quando una Matricola chiede aiuto in una Prova, tu la puoi aiutare anche se non sei presente in Scena in quel momento, perché le tue parole di incoraggiamento e incitamento risuonano nelle sue orecchie anche quando sei lontano, così come il tuo esempio."
+    },
+    {
+      "tipo": "TECNICA KNIGHT",
+      "nome": "Bastione",
+      "effetto": "Quando le Minacce che vi trovate ad affrontare sono troppo grandi, ti ergi come uno scudo per difendere i tuoi compagni da morte certa. Puoi condividere la spesa di Punti Limite (minimo 1) che altre Matricole stanno facendo, qualsiasi sia il motivo."
+    },
+    {
+      "tipo": "TECNICA AVANZATA",
+      "nome": "Al vostro servizio",
+      "effetto": "Quando in una Scena aiuti qualcuno spingendo il tuo Limite, aggiungi contemporaneamente 1d12 al pool e un bonus di +1 (il massimo che una Matricola può ricevere rimane comunque 6d12 e +6)."
+    },
+    {
+      "tipo": "TECNICA SOVRACCARICO",
+      "nome": "Coraggio!",
+      "effetto": "Quando sei in Sovraccarico e un’altra Matricola subisce una Ferita puoi prendere quella Ferita al suo posto. Puoi prendere su di te anche le Ferite inferte ai Knight, danneggiando te o il tuo Knight come preferisci. Quando prendi una Ferita in questo modo tu e l’altra Matricola potete recuperare anche 1d6 Punti Limite."
+    }
+	]
+	},
+	{
+  "nome": "Summoner",
+  "immagine": "img/bibioteca/classi/summoner.png",
+  "citazione": "Il concetto stesso di vita è bizzarro, se ci pensi: diamo tanta importanza al corpo, al battito di un cuore, al respiro di una creatura, dimenticando che siamo fatti anche di spirito, e che esistono creature che non hanno nemmeno una forma fisica.",
+  "descrizione": "Brit’an è ricca di creature che vivono nel flusso del Respiro e che si manifestano solo quando le Particelle Dragon sono sufficientemente concentrate. Il compito di un Summoner è di studiare queste creature per imbrigliarne il potere.",
+  "temi_da_esplorare": ["Vedere oltre il Velo", "I mostri siamo noi", "Talento pericoloso"],
+  "nemesi": ["Uno spirito antico", "Uno stregone senza scrupoli", "Creature da un altro tempo"],
+  "tratti_consigliati": ["Esoterismo", "Manipolare le radiazioni", "Domatore di mostri"],
+  "tecniche": [
+    {
+      "tipo": "TECNICA BASE",
+      "nome": "Evocazione",
+      "effetto": "Spendendo 1, 3 o 5 Punti Limite: [1] evochi una creatura illusoria che agisce come comandi. Non è una vera creatura, ma può ingannare i meno attenti. [3] evochi la copia fisica di una creatura, che agisce come comandi. Anche se è solo una copia, è fisica in tutto e per tutto. [5] evochi una creatura consenziente. Non puoi evocare creature che non vogliono essere evocate da te."
+    },
+    {
+      "tipo": "TECNICA KNIGHT",
+      "nome": "Trasfigurazione",
+      "effetto": "Pur essendo solo un’arma priva di anima, il tuo Knight è comunque legato a te in maniera indissolubile. Il tuo Knight può essere evocato da te in qualsiasi momento, spendendo 5 Punti Limite come se fosse una creatura consenziente."
+    },
+    {
+      "tipo": "TECNICA AVANZATA",
+      "nome": "Eidolon",
+      "effetto": "Richiamando le tue Memorie puoi mettere in gioco una Minaccia che hai affrontato e battuto in passato: segna una Memoria come se l’avessi consumata per ritirare i dadi e metti in gioco una Minaccia che hai affrontato. Puoi usare i suoi Tratti come se fossero tuoi, durante le Prove."
+    },
+    {
+      "tipo": "TECNICA SOVRACCARICO",
+      "nome": "Shikigami",
+      "effetto": "Quando sei in Sovraccarico la tua essenza inizia a disperdersi nelle Particelle Dragon e diventi non solo più difficile da colpire (+3d12 quando ti difendi da qualcosa): puoi muovere e manipolare la materia facendo unicamente affidamento sulla tua mente, sfruttando le Particelle Dragon."
+    }
+	]
+	},
+	{
+  "nome": "Tactician",
+  "immagine": "img/bibioteca/classi/tactician.png",
+  "citazione": "“Tutto secondo i miei piani.” Si sistema gli occhiali sul naso, riflettendo la luce bianca con le lenti. Il suo avversario deglutisce rumorosamente, capendo di essere finito in trappola...",
+  "descrizione": "In un mondo perennemente in conflitto, saper trovare compromessi tra le parti evitando inutili spargimenti di sangue è vitale. Il compito di un Tactician è di appianare le divergenze sia interne che esterne al regno, risolvendo i conflitti a un tavolo invece che sul campo di battaglia.",
+  "temi_da_esplorare": ["Evitare il conflitto", "Comprendere il diverso", "Ferisce più la penna"],
+  "nemesi": ["Generale dell’esercito", "Terrorista", "Automa privo di emozioni"],
+  "tratti_consigliati": ["Intuito", "Empatia", "Stratega"],
+  "tecniche": [
+    {
+      "tipo": "TECNICA BASE",
+      "nome": "Genio strategico",
+      "effetto": "Quando spendi Punti Limite per aggiungere d12 alla Prova di un’altra Matricola puoi aggiungere lo stesso numero di d12 anche alle Prove di un’altra Matricola (te compreso) senza spendere altri Punti Limite."
+    },
+    {
+      "tipo": "TECNICA KNIGHT",
+      "nome": "Analista",
+      "effetto": "La tua solida preparazione ti permette di capire velocemente i punti deboli delle Minacce che ti trovi ad affrontare: la prima volta che una Minaccia subisce una Ferita puoi usare i sensori del tuo mecha per identificare il Punto Debole della Minaccia, che chi narra ti comunicherà."
+    },
+    {
+      "tipo": "TECNICA AVANZATA",
+      "nome": "Scacco matto",
+      "effetto": "Quando un’altra Matricola infligge una Ferita a una Minaccia puoi spendere (3 + Potenza) Punti Limite per infliggere una seconda Ferita, senza effettuare una Prova. Se vuoi, racconta come questo facesse tutto parte del tuo piano dall’inizio."
+    },
+    {
+      "tipo": "TECNICA SOVRACCARICO",
+      "nome": "Rivelazione",
+      "effetto": "Quando entri in Sovraccarico puoi raccontare un breve flashback come se per qualche istante fossi tu a narrare: racconta come la situazione difficile in cui siete ora facesse parte del tuo piano dall’inizio e spiega come questo ti permetterà di ribaltare la situazione a vostro favore. Questo conta, a tutti gli effetti, come un Successo Pieno."
+    }
+	]
+	},
+	{
+  "nome": "Templar",
+  "immagine": "img/bibioteca/classi/templar.png",
+  "citazione": "Non c'è crescita personale senza sacrificio: solo rinunciando a qualcosa che amiamo possiamo capire quanto valeva veramente per noi.",
+  "descrizione": "Tanto i Paragon sono votati alla luce delle Spada Divina, tanto i Templar sono votati al perfezionamento e all'autosacrificio. Il compito dei Templar è di essere l'ultimo baluardo del regno, pronti a tutto, compreso sacrificare la propria vita, pur di ottenere il risultato.",
+  "temi_da_esplorare": ["Senso di colpa", "Martirio", "Magia proibita"],
+  "nemesi": ["Amicizie sbagliate", "Riflesso oscuro", "Vittima collaterale"],
+  "tratti_consigliati": ["Dolore", "Sacrificio", "Magia nera"],
+  "tecniche": [
+    {
+      "tipo": "TECNICA BASE",
+      "nome": "No pain, no gain",
+      "effetto": "Ogni volta che subisci una Ferita, il primo Successo che otterrai sarà considerato un Trionfo. Nel caso tu ottenga uno o più Trionfi nella tua prossima Prova puoi contare un Successo Pieno extra e spenderlo come spenderesti quelli ottenuti con i dadi."
+    },
+    {
+      "tipo": "TECNICA KNIGHT",
+      "nome": "Sacrificio",
+      "effetto": "Quando affronti Minacce pericolose puoi danneggiare il tuo Knight volontariamente per ridurre per tutta la Scena la Potenza della Minaccia di un numero pari ai Tratti Knight (Nome, Frame, Capacità) che decidi di sacrificare così. Puoi scegliere di danneggiare il Knight in qualsiasi momento, anche durante la Prova di un'altra Matricola."
+    },
+    {
+      "tipo": "TECNICA AVANZATA",
+      "nome": "Visioni di morte",
+      "effetto": "Quando riposi o quando ti trovi in un luogo ad alto contenuto di Particelle Dragon tira 1d12 e chiedi a chi narra di svelarti qualcosa sul prossimo futuro. Chi narra ti comunicherà una visione su eventi che possono essere evitati (6+) o che è troppo tardi per cambiare (5-)."
+    },
+    {
+      "tipo": "TECNICA SOVRACCARICO",
+      "nome": "Limit Break",
+      "effetto": "Un limite è fatto solo per essere superato, e una volta superato, un Templar deve dimostrare di potersi spingere dove una normale persona non potrebbe mai arrivare. Quando sei in Sovraccarico puoi spendere 3 Punti Limite per trasformare un Disastro in un Fallimento normale."
+    }
+	]
+	},
+	{
+  "nome": "Thaumaturge",
+  "immagine": "img/bibioteca/classi/thaumaturge.png",
+  "citazione": "Scienza e Magia sono due facce della stessa medaglia, legate indissolubilmente l'una all'altra eppure incredibilmente diverse. Chi pensa di poterne conoscere a fondo solo una delle due, sta mentendo a se stesso.",
+  "descrizione": "Un Thaumaturge impara presto a destreggiarsi con tutti i tipi di energia, arrivando a capire le radiazioni del Respiro a un livello molto profondo. Il compito di un Thaumaturge è di aiutare i propri compagni grazie alla propria conoscenza e al proprio acume, supportandoli e consigliandoli.",
+  "temi_da_esplorare": ["Magia e Scienza", "Studio accademico", "Conoscenza dimenticata"],
+  "nemesi": ["Consigliere geloso", "Scienziato estremista", "Caos"],
+  "tratti_consigliati": ["Conoscenza accademica", "Linee energetiche", "Stratega"],
+  "tecniche": [
+    {
+      "tipo": "TECNICA BASE",
+      "nome": "Grimorio",
+      "effetto": "Nei tuoi appunti c'è sempre qualcosa di utile per risolvere la situazione: quando effettui una Prova consultando attivamente i tuoi appunti puoi considerare il Grimorio come un Item senza doverlo segnare in uno degli spazi del tuo Curriculum."
+    },
+    {
+      "tipo": "TECNICA KNIGHT",
+      "nome": "Magic Knight",
+      "effetto": "Il tuo Knight non è un semplice apparato meccanico alimentato a Particelle Dragon, ma un vero e proprio essere magico. Sono necessari due Disastri per danneggiare il Nome del Knight, ma solo quando ti trovi a bordo del tuo Knight."
+    },
+    {
+      "tipo": "TECNICA AVANZATA",
+      "nome": "Famiglio",
+      "effetto": "Hai stretto un patto con uno spirito che ha preso la forma di un piccolo animale a te congeniale e che può aiutarti quando ti trovi in difficoltà: quando vuoi ottenere un'informazione su qualsiasi cosa di mistico che incontri puoi spendere fino a 3 Punti Limite. Per ogni Punto speso così puoi fare una domanda a chi narra su un luogo, evento o essere mistico che hai davanti, e ti risponderà tramite il tuo Famiglio."
+    },
+    {
+      "tipo": "TECNICA SOVRACCARICO",
+      "nome": "Respiro Selvaggio",
+      "effetto": "Quando sei in Sovraccarico la natura del Respiro cambia continuamente: puoi invertire la Difficoltà base di una Minaccia con la sua Potenza. Applica questa Tecnica prima di ridurre la Difficoltà in altro modo. La Tecnica funziona una sola volta per Scena (non puoi quindi invertire la Difficoltà a più Minacce in una stessa Scena)."
+    }
+	]
+	},
+	{
+  "nome": "Tinkerer",
+  "immagine": "img/bibioteca/classi/tinkerer.png",
+  "citazione": "Ho avuto un'idea per un nuovo gingillo da costruire! In pratica è un drone alimentato alchemicamente in grado di ritrovare le cose che abbiamo perso, come chiavi, libri e così via, e di tenerle al sicuro in una cassaforte che può essere aperta solo da chi ha una traccia energetica uguale a quella del proprietario!",
+  "descrizione": "Un buon Tinkerer è fondamentale per la costruzione e la manutenzione dei Knight e di tutti gli apparecchi tecnologici di Brit'an. Il compito dei Tinkerer è di riparare le apparecchiature guaste e sviluppare nuove tecnologie che rendano la vita su Brit'an migliore.",
+  "temi_da_esplorare": ["Riparare ciò che è rotto", "Curiosità pericolosa", "Inventare qualcosa"],
+  "nemesi": ["Genio rivale", "Eco-terrorista", "Macchina incontrollabile"],
+  "tratti_consigliati": ["Riparare", "Senso pratico", "Inventore"],
+  "tecniche": [
+    {
+      "tipo": "TECNICA BASE",
+      "nome": "Mezzo di fortuna",
+      "effetto": "Quando tu e le altre Matricole dovete spostarvi velocemente da un posto all'altro puoi spendere 1 Punto Limite per trovare o costruire un mezzo di trasporto di fortuna: non sarà elegante o particolarmente robusto, ma vi porterà dove volete arrivare, prima di cadere definitivamente a pezzi."
+    },
+    {
+      "tipo": "TECNICA KNIGHT",
+      "nome": "Gattai!",
+      "effetto": "Il tuo Knight è stato modificato per potersi unire a qualsiasi altro Knight: quando tu e un'altra Matricola decidete di unirvi, puoi avere accesso ai Tratti Knight e Core dell'altra Matricola come se fossero tuoi e viceversa, ma eventuali Disastri verranno applicati a entrambi."
+    },
+    {
+      "tipo": "TECNICA AVANZATA",
+      "nome": "Colpo di genio",
+      "effetto": "Quando affronti una Minaccia meccanica, puoi consumare una Memoria come se l'avessi usata per ritirare dei dadi per scoprire il suo Punto Debole. Se scopri il Punto Debole in questo modo, tu e le altre Matricole aggiungete 2d12 invece di 1d12 quando lo sfruttate."
+    },
+    {
+      "tipo": "TECNICA SOVRACCARICO",
+      "nome": "Il gadget giusto",
+      "effetto": "Quando sei in sovraccarico e segni un Item nel tuo Curriculum il bonus di quell'Item diventa +3 invece che +1, ma non puoi suddividerlo su più dadi. Se esci dallo stato di Sovraccarico l'Item rimane, ma diventa un Item normale. Item già segnati nel Curriculum non cambiano quando entri in Sovraccarico."
+    }
+	]
+	},
+	{
+  "nome": "Collector",
+  "immagine": "img/biblioteca/classi/collector.png",
+  "citazione": "Non avevo mai visto un esemplare così amichevole di Fungillo Zebrato! Devo appuntarlo nel mio Mon-base!",
+  "descrizione": "Un Collector dedica la propria vita a viaggiare per il mondo alla ricerca delle creature più interessanti, non per renderle schiave, ma per conoscerle e diventare loro compagno.\n\nNOTE SPECIALI: Segna il NOME del tuo Mon (es. Glatisanthia) e il TIPO del tuo Mon (es. Mutaforma) per definire l'Anima della tua Matricola.",
+  "temi_da_esplorare": [
+    "Vedere il mondo",
+    "Completare la collezione",
+    "È giusto catturarli?"
+  ],
+  "nemesi": [
+    "Collezionista senza scrupoli",
+    "Schiavista",
+    "Mon invincibile"
+  ],
+  "tratti_consigliati": [
+    "Addestramento rigoroso",
+    "Senza fissa dimora",
+    "Mon Ball",
+    "Esperto botanista",
+    "Campeggio",
+    "Database di Mon"
+  ],
+  "tecniche": [
+    {
+      "tipo": "TECNICA BASE",
+      "nome": "Sasso, carta e forbice elementale",
+      "effetto": "Scegli un elemento verso cui il tuo Core è più potente: quando un tuo avversario fa uso di quell’elemento puoi aggiungere gratuitamente 1d12 alla Prova. Scegli anche un elemento verso cui il tuo Core è più debole: quando un tuo avversario fa uso di quell’elemento devi trasformare 1d6 in 1d4 durante la Prova."
+    },
+    {
+      "tipo": "TECNICA SPECIALE",
+      "nome": "Scelgo te!",
+      "effetto": "Quando richiami il tuo Mon preferito, urla il suo nome: recuperi 1d6 Punti Limite e, se nell’ultimo scontro era stato Ferito, puoi curare una delle sue Ferite. Puoi richiamarlo una sola volta per Scena."
+    },
+    {
+      "tipo": "TECNICA AVANZATA",
+      "nome": "Evoluzione",
+      "effetto": "Il tuo Mon preferito cambia e cresce insieme a te, deciso ad aiutarti e restarti fedele fino alla fine. Puoi usare una Memoria per curare il tuo Mon: segnala come se l’avessi usata per ri-tirare i dadi di una Prova."
+    },
+    {
+      "tipo": "TECNICA SOVRACCARICO",
+      "nome": "Fatti sotto!",
+      "effetto": "Quando sei in Sovraccarico, una volta per Scena, puoi scegliere una Minaccia in Scena: per te, e solo per te, la Potenza di quella Minaccia è un punto più bassa di quanto dovrebbe (minimo 1)."
+    }
+	]
+	},
+	{
+  "nome": "ESPer",
+  "immagine": "img/biblioteca/classi/esper.png",
+  "citazione": "Spirito, materia... Tu pensi ancora che ci sia una differenza tra le due cose, ma io so che mente e corpo agiscono nello stesso modo. Ecco perché posso sollevarti da terra solo pensandoci.",
+  "descrizione": "Un ESPer è in grado di sfruttare la propria mente al 100% per fare cose che una persona normale non potrebbe fare. I suoi poteri psichici gli permettono di leggere la mente delle persone, muovere oggetti con la forza del pensiero e vedere il passato di un oggetto anche solo sfiorandolo.\n\nNOTE SPECIALI: Segna l'ORIGINE del Potere (es. Il Sangue dei Musashi) e il TIPO di Potere (es. Telecinesi) per definire la natura delle tue capacità.",
+  "temi_da_esplorare": [
+    "Nuovo stadio evolutivo",
+    "La mente è più forte",
+    "È giusto leggere la mente delle persone?"
+  ],
+  "nemesi": [
+    "Scienziato militare",
+    "ESPer omicida",
+    "Colui che striscia nelle tenebre"
+  ],
+  "tratti_consigliati": [
+    "Precognizione",
+    "Tecnopate",
+    "Aura",
+    "Visioni di un altro mondo",
+    "La mente è più forte",
+    "Trasmigrazione"
+  ],
+  "tecniche": [
+    {
+      "tipo": "TECNICA BASE",
+      "nome": "Percezione dell'Aura",
+      "effetto": "Spendendo 1 Punto Limite puoi percepire l'Aura di tutte le creature che conosci, o di quelle che non conosci ma che hanno intenti minacciosi nei tuoi confronti, nelle tue vicinanze. Più una creatura è potente, più lontano potrai percepire la sua Aura."
+    },
+    {
+      "tipo": "TECNICA SPECIALE",
+      "nome": "Barriera psichica",
+      "effetto": "Una volta per Scena, quando manifesti i tuoi poteri ESP, puoi sottrarre dal Dado Positivo più alto quanti punti vuoi, da distribuire sui Dadi Negativi, come vuoi. Potresti per esempio togliere 3 punti da un Dado con un Trionfo e aggiungere lo stesso ammontare di punti a 3 diversi Dadi Negativi, per ottenere un Successo Pieno o per ignorare un Disastro."
+    },
+    {
+      "tipo": "TECNICA AVANZATA",
+      "nome": "Legame telepatico",
+      "effetto": "La tua mente non è legata al tuo corpo e può raggiungere qualsiasi distanza, anche quando il tuo corpo è esausto. Quando non sei in Scena, perché ti trovi in un altro posto o perché qualcosa ti ha mandato Fuori Scena, finché hai Punti Limite da spendere, puoi aiutare le altre Matricole, donando loro parte del tuo potere o spronandole a impegnarsi fino in fondo!"
+    },
+    {
+      "tipo": "TECNICA SOVRACCARICO",
+      "nome": "Spirito combattivo",
+      "effetto": "Quando entri in Sovraccarico, la tua Aura diventa visibile a chiunque sia presente in Scena e il tuo corpo diventa visibilmente ricolmo di potere, mentre l'aria intorno a te si fa pesante: hai 3d12 da distribuire nelle prossime Prove, come preferisci. Ogni volta che torni in Sovraccarico nella stessa scena hai 1d12 in meno da distribuire nelle Prove successive."
+    }
+	]
+	},
+	{
+  "nome": "Henshin",
+  "immagine": "img/biblioteca/classi/henshin.png",
+  "citazione": "Giustizia! Onestà! Trasformazione!",
+  "descrizione": "Quando un Henshin pronuncia il comando di trasformazione, la luce lo avvolge e il suo costume compare quasi dal nulla, per proteggerlo e dargli la forza di proteggere i più deboli. Solo quando indossa il proprio costume e assume la sua seconda identità, un Henshin può dare fondo alla sua vera forza.\n\nNOTE SPECIALI: Segna il tuo COSTUME (es. Soldier Sun) e la tua ARMA (es. Master Force) per definire l'identità e lo strumento della tua forza.",
+  "temi_da_esplorare": [
+    "Lavoro di squadra",
+    "Essere un buon leader",
+    "Sacrificio personale"
+  ],
+  "nemesi": [
+    "Alieni invasori",
+    "Antiche civiltà perdute",
+    "Un amico passato al Lato Oscuro"
+  ],
+  "tratti_consigliati": [
+    "Lotta sincronizzata",
+    "Parkour",
+    "Trasformazione!",
+    "Siamo un team!",
+    "L'abito fa l'eroe",
+    "Difendere i deboli"
+  ],
+  "tecniche": [
+    {
+      "tipo": "TECNICA BASE",
+      "nome": "Non funzionerà di nuovo",
+      "effetto": "Le Tecniche Attive delle Minacce non possono essere usate due volte su di te nella stessa Scena. Se affronti la stessa Minaccia con la stessa Tecnica in un'altra Scena, tira 1d12: se fai 6 o più la sua Tecnica continuerà a non funzionare su di te."
+    },
+    {
+      "tipo": "TECNICA SPECIALE",
+      "nome": "Trasformazione",
+      "effetto": "Indossando il tuo Costume, il tuo corpo e il tuo spirito superano i limiti dei comuni mortali: una volta per Scena, quando ti trasformi, puoi recuperare 1 Ferita senza effettuare Prove, oppure puoi recuperare 1d6 Punti Limite. Niente e nessuno può attaccarti e ferirti mentre ti trasformi."
+    },
+    {
+      "tipo": "TECNICA AVANZATA",
+      "nome": "Mossa finale",
+      "effetto": "Una volta per Sessione mentre stai affrontando una Minaccia, quando qualcosa ti manda Fuori Scena, puoi urlare il nome della tua Mossa finale e tirare 1d8+1d6. Se ottieni un Successo Pieno non Esci di Scena e abbassi la Potenza della Minaccia. Se ottieni un Successo con Conseguenza non Esci di Scena, ma non riesci a ferire la Minaccia. In caso di Fallimento Esci di Scena."
+    },
+    {
+      "tipo": "TECNICA SOVRACCARICO",
+      "nome": "Brucia il tuo Limite!",
+      "effetto": "Una volta per Scena, quando sei in Sovraccarico e infliggi una Ferita a una Minaccia o a un'altra Matricola, puoi decidere di subire 2 Ferite per infliggerne altrettante allo stesso avversario. Non puoi evitare di subire queste Ferite, ma puoi usare eventuali Affinità o Tecniche che forniscono Ferite extra."
+    }
+	]
+	},
+	{
+  "nome": "Idol",
+  "immagine": "img/biblioteca/classi/idol.png",
+  "citazione": "Con la mia canzone riporterò la speranza nei cuori di queste persone!",
+  "descrizione": "Un Idol sa che non c'è niente di più potente che toccare il cuore di una persona tramite l'arte. Cercano la bellezza in ogni cosa, sanno smuovere le folle e sanno come mettersi al centro della scena per dare a chiunque li segua la forza di proseguire anche quando la luce sembra persa per sempre.\n\nNOTE SPECIALI: Segna il tuo NOME D'ARTE (es. The Fool) e la tua ARTE (es. Canto) per definire come lascerai di stucco le folle.",
+  "temi_da_esplorare": [
+    "Il peso della fama",
+    "Affetti o carriera",
+    "Alter ego"
+  ],
+  "nemesi": [
+    "Fan impazzito",
+    "Gruppo rivale",
+    "La fama"
+  ],
+  "tratti_consigliati": [
+    "Voce soave",
+    "Dedizione",
+    "Smuovere le folle",
+    "Bellezza disarmante",
+    "Emozioni profonde",
+    "Forma e contenuto"
+  ],
+  "tecniche": [
+    {
+      "tipo": "TECNICA BASE",
+      "nome": "Fandom",
+      "effetto": "Puoi usare uno slot Affinità per rappresentare il tuo rapporto con i tuoi fan: guadagni 1 Punto Affinità ogni volta che ti esibisci in pubblico, ogni volta che salvi un innocente in modo plateale e ne guadagni 3 se sconfiggi la tua Nemesi. A 10 Punti l’amore dei tuoi fan è in grado di riportarti in vita, ma solo se muori per salvare qualcun altro."
+    },
+    {
+      "tipo": "TECNICA SPECIALE",
+      "nome": "Musa",
+      "effetto": "Quando fai sfoggio della tua Arte, le altre Matricole rimangono completamente estasiate: se durante una Prova recuperi dei Punti Limite con un Trionfo, scegli un’altra Matricola che recupera subito metà dei Punti che hai recuperato tu, arrotondati per difetto (se recuperi 1 Punto Limite, l’altra Matricola non recupera Punti)."
+    },
+    {
+      "tipo": "TECNICA AVANZATA",
+      "nome": "Improvvisazione",
+      "effetto": "Hai fatto tua l’Arte al punto che puoi realizzare qualcosa di così incredibile da cambiare la realtà stessa. Puoi spendere una tua Memoria e farne ottenere i benefici a un’altra Matricola che non ne ha più a disposizione."
+    },
+    {
+      "tipo": "TECNICA SOVRACCARICO",
+      "nome": "Capolavoro",
+      "effetto": "Una volta per Scena, quando entri in Sovraccarico, puoi dare mostra della tua Arte in maniera così plateale che una Matricola a tua scelta, te compresa, recupera subito una Ferita. Descrivi come la tua Arte smuove il cuore della Matricola."
+    }
+	]
+	},
+	{
+  "nome": "Majokko",
+  "immagine": "img/biblioteca/classi/majokko.png",
+  "citazione": "La vera magia è diventare la persona che saresti sempre dovuta essere.",
+  "descrizione": "Forse hai espresso il desiderio sbagliato o forse hai incontrato una strana creatura caduta dal cielo, ma in ogni caso ora puoi trasformarti in qualcun altro e usare la magia per imparare a capire chi sei veramente. Questo nuovo alter-ego ti permette di fare cose altrimenti impossibili e stringere amicizie profonde, ma tutto ha una fine: prima o poi questi poteri scompariranno.\n\nNOTE SPECIALI: Segna il tuo FOCUS (es. Cristallo Magico) e il tipo di MAGIA (es. Illusionismo) per definire l'origine del tuo potere.",
+  "temi_da_esplorare": [
+    "Voglio solo essere normale",
+    "Diventare grandi",
+    "Identità segrete e sentimenti"
+  ],
+  "nemesi": [
+    "Una strega",
+    "La scienza",
+    "Innocente posseduto"
+  ],
+  "tratti_consigliati": [
+    "Idealismo",
+    "Dietro la maschera",
+    "Dritto al cuore",
+    "Cuore puro",
+    "Cristallo magico",
+    "Vestito impeccabile"
+  ],
+  "tecniche": [
+    {
+      "tipo": "TECNICA BASE",
+      "nome": "Mascotte magica",
+      "effetto": "Qualsiasi sia l’origine della tua Magia, c’è una creatura che è legata a te, almeno fino a quando userai questa Magia. Dalle un nome e segnala come Tratto collegato al tuo Job: quando la metti in gioco puoi ri-tirare gratuitamente 1d8, una volta per Scena."
+    },
+    {
+      "tipo": "TECNICA SPECIALE",
+      "nome": "Alter-ego",
+      "effetto": "Quando ti trasformi nel tuo alter-ego per sfruttare la tua Magia puoi usare questa Tecnica come se fosse una Memoria extra, che rappresenta il tuo nome in codice. Non ricevi Punti Limite extra da questo nome, ma puoi usarla come Tratto e per ri-tirare i Dadi che preferisci."
+    },
+    {
+      "tipo": "TECNICA AVANZATA",
+      "nome": "Angelo custode",
+      "effetto": "Qualcuno ti ha sempre tenuto d’occhio, agendo in segreto per proteggerti nei momenti più difficili. Una volta per Campagna, quando sei in Pericolo di Vita, questa persona comparirà in Scena, non importa dove tu sia o quanto plausibile possa sembrare, troverà un modo per raggiungerti e salvarti proprio all’ultimo secondo, portandoti in salvo, lontano dalla Scena."
+    },
+    {
+      "tipo": "TECNICA SOVRACCARICO",
+      "nome": "Il potere dei sentimenti",
+      "effetto": "Quando entri in Sovraccarico, i tuoi sentimenti sono così potenti che riempiono il cuore delle altre Matricole, che possono decidere di recuperare 1d6 Punti Limite. Una Matricola può recuperare Punti in questo modo solo una volta per Scena."
+    }
+	]
+	}
+  ]
+}
