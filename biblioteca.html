@@ -1,358 +1,289 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="KOTRA">
-    
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="theme-color" content="#0a0b10"> <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <link rel="manifest" href="manifest.json">
-    
-    <link rel="apple-touch-icon" href="img/index/icona_app.png">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"> 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KOTRA - Archivio Digitale</title>
-    <link rel="icon" type="image/png" href="img/index/icona_app.png">
+    <title>KOTRA - Database Operativo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --neon-blue: #00f2ff;
-            --neon-pink: #ff007a;
-            --bg-dark: #0a0b10;
-            --glass: rgba(255, 255, 255, 0.08);
+            --neon-pink: #ff00ff;
+            --neon-yellow: #ffff00;
+            --bg-dark: #0a0a0c;
+            --card-bg: #16161a;
+            --glass: rgba(255, 255, 255, 0.03);
         }
 
-        .items-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-    gap: 20px;
-    max-height: 70vh; /* Altezza massima del contenitore */
-    overflow-y: auto; /* Attiva lo scroll */
-    padding: 10px;
-    scrollbar-width: thin;
-    scrollbar-color: var(--neon-blue) transparent;
-}
-
-/* Personalizzazione scrollbar per Chrome/Safari */
-.items-grid::-webkit-scrollbar { width: 6px; }
-.items-grid::-webkit-scrollbar-thumb { 
-    background: var(--neon-blue); 
-    border-radius: 10px; 
-}
-        
         body {
             background-color: var(--bg-dark);
-            background-image: url('img/bibioteca/sfondo.png'); 
-            background-size: cover; 
-            background-position: center; 
-            background-attachment: fixed;
-            color: white; 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0; 
-            height: 100vh;
+            color: #e0e0e0;
+            font-family: 'Rajdhani', sans-serif;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        h1, h2, h3 { font-family: 'Orbitron', sans-serif; text-transform: uppercase; letter-spacing: 2px; margin: 0; }
+
+        /* HEADER & NAVIGATION */
+        header {
+            border-bottom: 2px solid #333;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .nav-buttons { display: flex; gap: 10px; }
+
+        button {
+            background: transparent;
+            border: 1px solid var(--neon-blue);
+            color: var(--neon-blue);
+            padding: 10px 18px;
+            cursor: pointer;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.8rem;
+            transition: 0.3s;
+            text-transform: uppercase;
+        }
+
+        button:hover {
+            background: rgba(0, 242, 255, 0.1);
+            box-shadow: 0 0 15px var(--neon-blue);
+        }
+
+        button.active {
+            background: var(--neon-blue);
+            color: var(--bg-dark);
+        }
+
+        /* GRID SYSTEM */
+        .items-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            max-height: 80vh;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid #333;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.3s ease;
+            position: relative;
             overflow: hidden;
         }
 
-        .hub-container {
-            height: 100vh; 
-            display: flex; 
-            flex-direction: column;
-            justify-content: center; 
-            align-items: center; 
-            gap: 20px;
-            background: rgba(0, 0, 0, 0.6);
+        .card:hover {
+            border-color: var(--neon-pink);
+            box-shadow: 0 0 20px rgba(255, 0, 255, 0.2);
+            transform: translateY(-5px);
         }
 
-        .menu-btn {
-            width: 320px; 
-            padding: 20px; 
-            background: var(--glass);
-            border: 1px solid var(--neon-blue); 
-            border-radius: 12px;
-            color: white; 
-            text-transform: uppercase; 
-            font-weight: bold;
-            cursor: pointer; 
-            backdrop-filter: blur(10px); 
-            transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            letter-spacing: 1px;
+        .card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            filter: grayscale(30%);
+            margin-bottom: 10px;
         }
 
-        .menu-btn:hover { 
-            background: rgba(0, 242, 255, 0.2); 
-            box-shadow: 0 0 25px var(--neon-blue); 
-            transform: scale(1.05);
-        }
+        .card:hover img { filter: grayscale(0%); }
 
-        /* SISTEMA MODALE */
-        .modal {
-            display: none; 
-            position: fixed; 
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(5, 6, 10, 0.95); 
-            backdrop-filter: blur(15px); 
-            z-index: 1000;
-            flex-direction: column; 
-            padding: 40px; 
-            box-sizing: border-box;
-        }
+        /* DETAIL VIEW */
+        #detail-view { display: none; animation: fadeIn 0.4s ease; }
 
-        .modal-header { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            border-bottom: 1px solid rgba(0, 242, 255, 0.3);
-            padding-bottom: 20px;
-            margin-bottom: 25px;
-        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        .search-bar {
-            width: 100%; padding: 15px; background: rgba(255,255,255,0.05);
-            border: 1px solid var(--neon-blue); color: white; border-radius: 8px; 
-            margin-bottom: 25px; font-size: 1rem; outline: none;
-        }
-
-        .items-grid {
-    display: grid; 
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    gap: 15px; 
-    
-    /* AGGIUNGI QUESTE RIGHE */
-    max-height: 60vh; /* Occupa al massimo il 60% dell'altezza schermo */
-    overflow-y: auto; /* Attiva lo scroll verticale se serve */
-    padding-right: 10px; /* Spazio per la scrollbar */
-    padding-bottom: 20px;
-}
-
-/* Rendi la scrollbar più bella e in stile Cyberpunk */
-.items-grid::-webkit-scrollbar {
-    width: 6px;
-    -webkit-overflow-scrolling: touch;
-}
-
-.items-grid::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.05);
-}
-
-.items-grid::-webkit-scrollbar-thumb {
-    background: var(--neon-blue);
-    border-radius: 10px;
-    box-shadow: 0 0 10px var(--neon-blue);
-}
-
-        .item-card {
-            padding: 20px; background: rgba(255,255,255,0.03); 
-            border: 1px solid rgba(0, 242, 255, 0.2);
-            border-radius: 12px; text-align: center; cursor: pointer;
-            transition: 0.3s; font-weight: bold; text-transform: uppercase;
-        }
-
-        .item-card:hover { 
-            border-color: var(--neon-pink); 
-            background: rgba(255, 0, 122, 0.15);
-            box-shadow: 0 0 15px rgba(255, 0, 122, 0.3);
-        }
-
-        /* VISTA DETTAGLIO */
-        #detail-view { display: none; overflow-y: auto; padding-right: 15px; }
+        .detail-container { display: flex; gap: 40px; flex-wrap: wrap; }
         
-        .detail-header { border-left: 5px solid var(--neon-pink); padding-left: 20px; margin-bottom: 30px; }
-        
-        .section-title { 
-            color: var(--neon-blue); 
-            text-transform: uppercase; 
-            margin-top: 35px; 
-            font-size: 0.85rem; 
-            letter-spacing: 3px;
-            border-bottom: 1px solid rgba(0, 242, 255, 0.1);
-            padding-bottom: 5px;
+        .image-side { flex: 1; min-width: 300px; }
+        .content-side { flex: 2; min-width: 400px; }
+
+        .image-side img {
+            width: 100%;
+            border: 1px solid var(--neon-blue);
+            box-shadow: 0 0 30px rgba(0, 242, 255, 0.15);
         }
 
-        .eredita-box { 
-            background: rgba(255,255,255,0.04); 
-            padding: 18px; 
-            border-radius: 10px; 
-            margin-top: 15px; 
-            border: 1px solid rgba(255,255,255,0.05);
-            transition: 0.2s;
-        }
-        
-        .eredita-box:hover { transform: translateX(5px); background: rgba(255,255,255,0.07); }
-
-        .effetto-tag {
-            background: rgba(0, 242, 255, 0.1); 
-            padding: 10px; 
-            border-radius: 6px; 
-            margin-top: 10px; 
-            font-size: 0.95rem; 
+        .citazione {
+            font-style: italic;
+            color: var(--neon-pink);
             border-left: 3px solid var(--neon-pink);
-            line-height: 1.4;
+            padding: 10px 20px;
+            margin: 20px 0;
+            background: rgba(255, 0, 255, 0.05);
+            font-size: 1.1rem;
         }
 
-        .close-btn { background: var(--neon-pink); border: none; color: white; padding: 12px 25px; border-radius: 6px; cursor: pointer; font-weight: bold; transition: 0.3s; }
-        .close-btn:hover { background: #ff3399; box-shadow: 0 0 15px var(--neon-pink); }
+        .section-title {
+            color: var(--neon-blue);
+            border-bottom: 1px solid rgba(0, 242, 255, 0.3);
+            margin: 30px 0 15px 0;
+            font-size: 1rem;
+            display: flex;
+            justify-content: space-between;
+        }
 
-        .back-btn { background: #222; border: 1px solid #444; color: white; padding: 12px 20px; border-radius: 6px; cursor: pointer; display: none; margin-right: 15px; }
+        .box {
+            background: var(--glass);
+            border: 1px solid #333;
+            padding: 15px;
+            margin-bottom: 10px;
+        }
 
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-thumb { background: var(--neon-blue); border-radius: 10px; }
+        .tag-speciale {
+            background: var(--neon-yellow);
+            color: black;
+            padding: 2px 8px;
+            font-weight: bold;
+            font-size: 0.7rem;
+            margin-left: 10px;
+            border-radius: 2px;
+        }
+
+        /* SCROLLBAR */
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-thumb { background: var(--neon-blue); }
     </style>
 </head>
 <body>
 
-    <div class="hub-container">
-        <h1 style="color: var(--neon-blue); letter-spacing: 8px; margin-bottom: 40px; text-shadow: 0 0 15px var(--neon-blue);">ARCHIVIO DIGITALE</h1>
-        
-        <button class="menu-btn" onclick="openModal('stirpi_database.json', '🧬 Database Stirpi')">🧬 Stirpi / Razze</button>
-        <button class="menu-btn" onclick="openModal('classi_database.json', '⚔️ Registro Classi')">⚔️ Ruoli / Classi</button>
-        <button class="menu-btn" onclick="openModal('knight_database.json', '🤖 Hangar Knight')">🤖 Modelli Knight</button>
-        
-        <a href="index.html" style="color: #555; text-decoration: none; margin-top: 40px; font-size: 0.8rem; letter-spacing: 2px;">← DISCONNETTI UTENTE</a>
+    <header>
+        <div>
+            <h2 style="color: var(--neon-blue);">Sistema KOTRA v3.0</h2>
+            <small style="color: #666;">Accesso Biblioteca: Autorizzato</small>
+        </div>
+        <div class="nav-buttons">
+            <button onclick="loadData('stirpi_database.json', this)">Stirpi</button>
+            <button onclick="loadData('classi_database.json', this)">Classi & Job</button>
+            <button id="back-btn" style="display:none; border-color: var(--neon-yellow); color: var(--neon-yellow);" onclick="showList()">← Indietro</button>
+        </div>
+    </header>
+
+    <div id="list-view" class="items-grid">
+        <p style="color: #444; text-align: center; grid-column: 1/-1; margin-top: 50px;">
+            In attesa di selezione categoria...
+        </p>
     </div>
 
-    <div id="main-modal" class="modal">
-        <div class="modal-header">
-            <div style="display: flex; align-items: center;">
-                <button id="back-to-list" class="back-btn" onclick="showList()">← LISTA</button>
-                <h2 id="modal-title" style="margin: 0; color: var(--neon-blue); letter-spacing: 2px;"></h2>
-            </div>
-            <button class="close-btn" onclick="closeModal()">ESCI [X]</button>
-        </div>
-
-        <div id="list-view">
-    <input type="text" class="search-bar" id="search" placeholder="Cerca nel database..." onkeyup="filterItems()">
-    <div class="items-grid" id="items-container">
-        </div>
-</div>
-
-        <div id="detail-view"></div>
-    </div>
+    <div id="detail-view"></div>
 
     <script>
         let currentData = [];
 
-        async function openModal(jsonFile, title) {
-            document.getElementById('modal-title').innerText = title;
-            document.getElementById('main-modal').style.display = 'flex';
-            document.getElementById('items-container').innerHTML = "<p style='color:var(--neon-blue)'>Caricamento dati in corso...</p>";
-            
+        async function loadData(filename, btn) {
+            // UI Feedback
+            document.querySelectorAll('.nav-buttons button').forEach(b => b.classList.remove('active'));
+            if(btn) btn.classList.add('active');
+
             try {
-                const response = await fetch(jsonFile);
-                if (!response.ok) throw new Error();
+                const response = await fetch(filename);
                 const data = await response.json();
                 currentData = data.items;
-                renderList(currentData);
+                renderList();
+                showList();
             } catch (e) {
-                document.getElementById('items-container').innerHTML = "<p style='color:var(--neon-pink)'>ERRORE: Database non trovato. Verifica il file JSON su GitHub.</p>";
+                console.error(e);
+                document.getElementById('list-view').innerHTML = "<p style='color:red;'>Errore caricamento database.</p>";
             }
         }
 
-        function renderList(items) {
-            const container = document.getElementById('items-container');
-            container.innerHTML = "";
-            items.forEach(item => {
-                const card = document.createElement('div');
-                card.className = 'item-card';
-                card.innerText = item.nome;
-                card.onclick = () => showDetail(item);
-                container.appendChild(card);
-            });
-            showList();
+        function renderList() {
+            const container = document.getElementById('list-view');
+            container.innerHTML = currentData.map((item, index) => {
+                // Check se è un Job Speciale (se ha "NOTE SPECIALI" nella descrizione)
+                const isSpeciale = item.descrizione && item.descrizione.includes("NOTE SPECIALI");
+                return `
+                    <div class="card" onclick="showDetail(${index})">
+                        ${isSpeciale ? '<span class="tag-speciale" style="position:absolute; top:10px; right:10px; z-index:2;">SPECIALE</span>' : ''}
+                        <img src="${item.immagine}" onerror="this.src='https://via.placeholder.com/200x180/111/00f2ff?text=${item.nome}'">
+                        <h3>${item.nome}</h3>
+                    </div>
+                `;
+            }).join('');
         }
 
-       function showDetail(item) {
-    document.getElementById('list-view').style.display = 'none';
-    document.getElementById('detail-view').style.display = 'block';
-    document.getElementById('back-to-list').style.display = 'inline-block';
-    
-    const desc = Array.isArray(item.descrizione) ? item.descrizione.join('<br><br>') : item.descrizione;
-    const descFormattata = desc.replace(/\n/g, "<br>");
+        function showDetail(index) {
+            const item = currentData[index];
+            document.getElementById('list-view').style.display = 'none';
+            document.getElementById('detail-view').style.display = 'block';
+            document.getElementById('back-btn').style.display = 'block';
 
-           // Questo trasforma "NOTE SPECIALI:" in un testo giallo e grassetto automaticamente
-           const descFormattata = desc.replace(/\n/g, "<br>")
-           .replace("NOTE SPECIALI:", "<b style='color:var(--neon-yellow);'>NOTE SPECIALI:</b>");
+            // Formattazione Note Speciali
+            const descFormattata = item.descrizione
+                .replace(/\n/g, "<br>")
+                .replace("NOTE SPECIALI:", "<br><b style='color:var(--neon-yellow); border:1px solid var(--neon-yellow); padding: 2px 5px;'>⚠️ NOTE SPECIALI</b><br>");
 
-    // Gestione dinamica: Eredità (per Stirpi) o Tecniche (per Classi)
-    let extraContent = "";
-    
-    if (item.eredita) {
-        extraContent = `<div class="section-title">Eredità di Stirpe</div>` + 
-            item.eredita.map(e => `
-                <div class="eredita-box">
-                    <b style="color:var(--neon-blue);">${e.nome}</b>
-                    <p style="font-size:0.9rem; margin:5px 0;">${e.descrizione}</p>
-                    <div class="effetto-tag"><i style="color:var(--neon-pink)">EFFETTO:</i> ${e.effetto}</div>
+            // Sezione Eredità o Tecniche
+            let skillSection = "";
+            if (item.eredita) {
+                skillSection = `<div class="section-title">Eredità di Stirpe</div>` + 
+                    item.eredita.map(e => `
+                        <div class="box">
+                            <b style="color:var(--neon-blue);">${e.nome}</b>
+                            <p style="margin: 5px 0; font-size: 0.9rem;">${e.descrizione}</p>
+                            <div style="color:var(--neon-yellow); font-size:0.85rem;"><i>EFFETTO:</i> ${e.effetto}</div>
+                        </div>`).join('');
+            } else if (item.tecniche) {
+                skillSection = `<div class="section-title">Protocolli Tecnici (Job)</div>` + 
+                    item.tecniche.map(t => `
+                        <div class="box" style="border-left: 2px solid var(--neon-pink);">
+                            <small style="color:var(--neon-pink); font-weight:bold;">${t.tipo}</small><br>
+                            <b style="font-size:1.1rem;">${t.nome}</b>
+                            <p style="margin: 5px 0; font-size: 0.9rem; opacity: 0.8;">${t.effetto}</p>
+                        </div>`).join('');
+            }
+
+            document.getElementById('detail-view').innerHTML = `
+                <div class="detail-container">
+                    <div class="image-side">
+                        <img src="${item.immagine}">
+                        <div class="box" style="margin-top:20px;">
+                            <div style="color:var(--neon-blue); margin-bottom:10px;">TRATTI CONSIGLIATI</div>
+                            <small>${item.tratti_consigliati.join(' • ')}</small>
+                        </div>
+                    </div>
+                    <div class="content-side">
+                        <h1 style="color:var(--neon-blue); font-size: 2.5rem;">${item.nome}</h1>
+                        ${item.citazione ? `<div class="citazione">"${item.citazione}"</div>` : ''}
+                        
+                        <div class="section-title">Background Operativo</div>
+                        <p>${descFormattata}</p>
+                        
+                        <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                            <div>
+                                <div class="section-title">Temi Chiave</div>
+                                <div style="font-size:0.9rem;">${item.temi_da_esplorare.join(' • ')}</div>
+                            </div>
+                            ${item.nemesi ? `
+                            <div>
+                                <div class="section-title">Nemesi</div>
+                                <div style="font-size:0.9rem; color:var(--neon-pink);">${item.nemesi.join(' • ')}</div>
+                            </div>` : ''}
+                        </div>
+
+                        ${skillSection}
+                    </div>
                 </div>
-            `).join('');
-    } else if (item.tecniche) {
-        extraContent = `<div class="section-title">Tecniche di Job</div>` + 
-            item.tecniche.map(t => `
-                <div class="eredita-box" style="border-left: 3px solid var(--neon-blue);">
-                    <small style="color:var(--neon-pink); font-weight:bold;">${t.tipo}</small><br>
-                    <b style="text-transform:uppercase; letter-spacing:1px;">${t.nome}</b>
-                    <div class="effetto-tag" style="margin-top:10px;">${t.effetto}</div>
-                </div>
-            `).join('');
-    }
+                <div style="height:100px;"></div>
+            `;
+            window.scrollTo(0, 0);
+        }
 
-    const citazioneHtml = item.citazione 
-    ? `<div style="font-style: italic; color: var(--neon-pink); border-left: 2px solid var(--neon-pink); padding-left: 15px; margin: 20px 0; font-size: 1.1rem; line-height: 1.4;">
-        "${item.citazione}"
-       </div>` 
-    : "";
-
-document.getElementById('detail-view').innerHTML = `
-    <div class="detail-header"><h1>${item.nome}</h1></div>
-    
-    <div style="display: flex; gap: 30px; flex-wrap: wrap;">
-        <div style="flex: 1; min-width: 300px;">
-            <img src="${item.immagine}" style="width:100%; border-radius:12px; border:1px solid var(--neon-blue);" onerror="this.style.display='none'">
-        </div>
-        
-        <div style="flex: 2; min-width: 300px;">
-            ${citazioneHtml}
-
-            <div class="section-title">Background</div>
-            <p style="line-height:1.6; color: #ddd;">${descFormattata}</p>
-            
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                <div>
-                    <div class="section-title">Temi</div>
-                    <p>${item.temi_da_esplorare.join(' • ')}</p>
-                </div>
-                <div>
-                    <div class="section-title">Nemesi</div>
-                    <p>${item.nemesi ? item.nemesi.join(' • ') : 'Non specificata'}</p>
-                </div>
-            </div>
-            
-            <div class="section-title">Tratti Consigliati</div>
-            <p>${item.tratti_consigliati.join(', ')}</p>
-
-            ${extraContent}
-        </div>
-    </div>
-    <div style="height:80px"></div>
-`;
         function showList() {
-            document.getElementById('list-view').style.display = 'block';
+            document.getElementById('list-view').style.display = 'grid';
             document.getElementById('detail-view').style.display = 'none';
-            document.getElementById('back-to-list').style.display = 'none';
-        }
-
-        function closeModal() {
-            document.getElementById('main-modal').style.display = 'none';
-            document.getElementById('search').value = "";
-        }
-
-        function filterItems() {
-            const term = document.getElementById('search').value.toLowerCase();
-            const filtered = currentData.filter(i => i.nome.toLowerCase().includes(term));
-            renderList(filtered);
+            document.getElementById('back-btn').style.display = 'none';
         }
     </script>
 </body>
