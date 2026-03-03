@@ -246,57 +246,67 @@
             showList();
         }
 
-        function showDetail(item) {
+       function showDetail(item) {
     document.getElementById('list-view').style.display = 'none';
     document.getElementById('detail-view').style.display = 'block';
     document.getElementById('back-to-list').style.display = 'inline-block';
     
-    // Gestione descrizione (stringa o array)
-    const descrizionePulita = Array.isArray(item.descrizione) 
-        ? item.descrizione.join('<br><br>') 
-        : item.descrizione;
+    const desc = Array.isArray(item.descrizione) ? item.descrizione.join('<br><br>') : item.descrizione;
+    const descFormattata = desc.replace(/\n/g, "<br>");
 
-    // Generazione Eredità
-    const ereditaHtml = item.eredita.map(e => `
-        <div class="eredita-box">
-            <b style="color:var(--neon-blue); text-transform:uppercase;">${e.nome}</b>
-            <p style="margin: 10px 0; font-size: 0.95rem; color: #ddd; line-height:1.5;">${e.descrizione}</p>
-            <div class="effetto-tag">
-                <i style="color:var(--neon-pink); font-style:normal; font-weight:bold;">MECCANICA:</i> ${e.effetto || e.description}
-            </div>
-        </div>
-    `).join('');
+    // Gestione dinamica: Eredità (per Stirpi) o Tecniche (per Classi)
+    let extraContent = "";
+    
+    if (item.eredita) {
+        extraContent = `<div class="section-title">Eredità di Stirpe</div>` + 
+            item.eredita.map(e => `
+                <div class="eredita-box">
+                    <b style="color:var(--neon-blue);">${e.nome}</b>
+                    <p style="font-size:0.9rem; margin:5px 0;">${e.descrizione}</p>
+                    <div class="effetto-tag"><i style="color:var(--neon-pink)">EFFETTO:</i> ${e.effetto}</div>
+                </div>
+            `).join('');
+    } else if (item.tecniche) {
+        extraContent = `<div class="section-title">Tecniche di Job</div>` + 
+            item.tecniche.map(t => `
+                <div class="eredita-box" style="border-left: 3px solid var(--neon-blue);">
+                    <small style="color:var(--neon-pink); font-weight:bold;">${t.tipo}</small><br>
+                    <b style="text-transform:uppercase; letter-spacing:1px;">${t.nome}</b>
+                    <div class="effetto-tag" style="margin-top:10px;">${t.effetto}</div>
+                </div>
+            `).join('');
+    }
 
     document.getElementById('detail-view').innerHTML = `
-        <div class="detail-header">
-            <h1 style="margin:0; font-size: 2.5rem; letter-spacing:4px;">${item.nome}</h1>
-        </div>
-        
+        <div class="detail-header"><h1>${item.nome}</h1></div>
         <div style="display: flex; gap: 30px; flex-wrap: wrap;">
             <div style="flex: 1; min-width: 300px;">
-                <img src="${item.immagine}" style="width:100%; border-radius:12px; border:1px solid var(--neon-blue); box-shadow: 0 0 20px rgba(0,242,255,0.1);" onerror="this.style.display='none'">
+                <img src="${item.immagine}" style="width:100%; border-radius:12px; border:1px solid var(--neon-blue);" onerror="this.style.display='none'">
             </div>
-            
             <div style="flex: 2; min-width: 300px;">
-                <div class="section-title">Inquadramento Narrativo</div>
-                <p style="line-height:1.8; font-size:1.05rem; color: #eee;">${descrizionePulita}</p>
+                <div class="section-title">Background</div>
+                <p style="line-height:1.6;">${descFormattata}</p>
                 
-                <div class="section-title">Temi da esplorare</div>
-                <p style="color: var(--neon-pink); font-weight: bold; letter-spacing: 1px;">${item.temi_da_esplorare.join(' • ')}</p>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div>
+                        <div class="section-title">Temi</div>
+                        <p>${item.temi_da_esplorare.join(' • ')}</p>
+                    </div>
+                    <div>
+                        <div class="section-title">Nemesi</div>
+                        <p>${item.nemesi ? item.nemesi.join(' • ') : 'Non specificata'}</p>
+                    </div>
+                </div>
 
                 <div class="section-title">Tratti Consigliati</div>
                 <p>${item.tratti_consigliati.join(', ')}</p>
 
-                <div class="section-title">Eredità di Stirpe</div>
-                <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 15px; margin-top: 15px;">
-                    ${ereditaHtml}
-                </div>
+                ${extraContent}
             </div>
         </div>
         <div style="height:80px"></div>
     `;
 }
-
         function showList() {
             document.getElementById('list-view').style.display = 'block';
             document.getElementById('detail-view').style.display = 'none';
