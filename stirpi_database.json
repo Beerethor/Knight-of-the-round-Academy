@@ -120,8 +120,7 @@
     {
       "nome": "Sangue di Drago",
       "immagine": "img/bibioteca/razze/sanguedidrago.png",
-      "descrizione": "Gli umani esposti per molto tempo alle Particelle Dragon spesso generano bambini che vengono chiamati Sangue di Drago, o draich in Avaloniano. L’esposizione alle radiazioni causa alcune mutazioni a livello fisico nei bambini, le cui orecchie si allungano fino ad assomigliare a quelle degli Avaloniani, la pelle e i capelli hanno sempre colori caldi che ricordano le fiamme e ogni Sangue di Drago ha un qualche tipo di voglia sul corpo di un colore rosso intenso. \nCaratterialmente i Sangue di Drago tendono a essere irruenti, curiosi e avventati, anche grazie al fatto che sono immuni al calore delle fiamme. \nIl loro legame con il Respiro è evidente e molto simile a quello degli
-Andruid, in particolare con Core del fuoco. La loro temperatura corporea media è di 42°.",
+      "descrizione": "Gli umani esposti per molto tempo alle Particelle Dragon spesso generano bambini che vengono chiamati Sangue di Drago, o draich in Avaloniano. L’esposizione alle radiazioni causa alcune mutazioni a livello fisico nei bambini, le cui orecchie si allungano fino ad assomigliare a quelle degli Avaloniani, la pelle e i capelli hanno sempre colori caldi che ricordano le fiamme e ogni Sangue di Drago ha un qualche tipo di voglia sul corpo di un colore rosso intenso. \nCaratterialmente i Sangue di Drago tendono a essere irruenti, curiosi e avventati, anche grazie al fatto che sono immuni al calore delle fiamme. \nIl loro legame con il Respiro è evidente e molto simile a quello degli Andruid, in particolare con Core del fuoco. La loro temperatura corporea media è di 42°.",
       "temi_da_esplorare": ["Mutazioni impreviste", "Ostracismo", "Radioattività"],
       "tratti_consigliati": ["Sbuffone", "Segno della profezia", "Stazza enorme"],
       "eredita": [
@@ -163,8 +162,7 @@ Andruid, in particolare con Core del fuoco. La loro temperatura corporea media �
     {
       "nome": "Senza Core",
       "descrizione": "Il Core è semplicemente una stampella a cui chi non vuole impegnarsi si appoggia, ma io so cosa significa impegnarsi e sacrificarsi veramente.",
-      "effetto": "Chissà per quale motivo, in te non è presente nemmeno una Particella Dragon: sostituisci il Core con la Scintilla, cioè l’ideale o la motivazione che ti spingono a impegnarti a superare comunque i tuoi limiti, come
-per esempio difendere qualcosa o qualcuno, diventare il migliore in un determinato campo e così via. Questo vuole anche dire che il tuo Knight usa una fonte di energia alternativa."
+      "effetto": "Chissà per quale motivo, in te non è presente nemmeno una Particella Dragon: sostituisci il Core con la Scintilla, cioè l’ideale o la motivazione che ti spingono a impegnarti a superare comunque i tuoi limiti, come per esempio difendere qualcosa o qualcuno, diventare il migliore in un determinato campo e così via. Questo vuole anche dire che il tuo Knight usa una fonte di energia alternativa."
     },
     {
       "nome": "Sopravvivere a ogni costo",
@@ -218,8 +216,7 @@ per esempio difendere qualcosa o qualcuno, diventare il migliore in un determina
     {
       "nome": "Amnesia",
       "descrizione": "Il nonno mi ha detto che i miei genitori erano grandi eroi e che mi volevano bene, e mi hanno lasciato questa sfera magica come ricordo!",
-      "effetto": "Non ricordi nulla della tua infanzia, e chi ti ha cresciuto non entra mai nei dettagli di cosa sia successo alla tua famiglia. Hai però un oggetto che indossavi quando ti hanno trovato o che era con te nella culla e
-che racchiude un grande potere. \nUna volta per Scena puoi metterlo in gioco come se fosse un Item anche dopo che hai effettuato la Prova."
+      "effetto": "Non ricordi nulla della tua infanzia, e chi ti ha cresciuto non entra mai nei dettagli di cosa sia successo alla tua famiglia. Hai però un oggetto che indossavi quando ti hanno trovato o che era con te nella culla e che racchiude un grande potere. \nUna volta per Scena puoi metterlo in gioco come se fosse un Item anche dopo che hai effettuato la Prova."
     },
     {
       "nome": "Segno del Destino",
@@ -258,8 +255,7 @@ che racchiude un grande potere. \nUna volta per Scena puoi metterlo in gioco com
     {
       "nome": "Cedere il controllo",
       "descrizione": "Non posso andare oltre questo punto senza il tuo aiuto: il mio corpo è il tuo corpo, la tua anima è la mia anima, siamo una cosa sola, per questo chiedo il tuo aiuto, ora.",
-      "effetto": "Hai trovato un certo equilibrio con l’Entità che alberga dentro di te e sai di poterle cedere il controllo per un breve periodo senza rischiare nulla: mentre sei in Sovraccarico puoi spendere Punti Limite pari alla
-Potenza della Minaccia (minimo 1) per darti dei Bonus +1 come se stessi usando degli Item, sempre fino a un massimo di +6."
+      "effetto": "Hai trovato un certo equilibrio con l’Entità che alberga dentro di te e sai di poterle cedere il controllo per un breve periodo senza rischiare nulla: mentre sei in Sovraccarico puoi spendere Punti Limite pari alla Potenza della Minaccia (minimo 1) per darti dei Bonus +1 come se stessi usando degli Item, sempre fino a un massimo di +6."
     },
     {
       "nome": "Amicizia inaspettata",
@@ -292,8 +288,7 @@ Potenza della Minaccia (minimo 1) per darti dei Bonus +1 come se stessi usando d
     },
     {
       "nome": "Fissazione",
-      "descrizione": "WOW! Avevo letto nel manga di KotR:A che il Round andava in profondità, ma non immaginavo così in profondità! Se questo è il 98esimo piano sotterraneo, quella porta deve essere quella del laboratorio segreto di
-Merlin!",
+      "descrizione": "WOW! Avevo letto nel manga di KotR:A che il Round andava in profondità, ma non immaginavo così in profondità! Se questo è il 98esimo piano sotterraneo, quella porta deve essere quella del laboratorio segreto di Merlin!",
       "effetto": "Hai studiato questo mondo fino allo sfinimento e conosci tutto quello che c’è da sapere su luoghi, creature e persone famose: ogni volta che viene rivelato un luogo o che incontri una creatura, fai una domanda a chi narra: solo tu sarai a conoscenza di quell’informazione, che sarà sempre accurata."
     }
    ]
