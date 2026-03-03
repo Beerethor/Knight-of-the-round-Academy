@@ -277,36 +277,45 @@
             `).join('');
     }
 
-    document.getElementById('detail-view').innerHTML = `
-        <div class="detail-header"><h1>${item.nome}</h1></div>
-        <div style="display: flex; gap: 30px; flex-wrap: wrap;">
-            <div style="flex: 1; min-width: 300px;">
-                <img src="${item.immagine}" style="width:100%; border-radius:12px; border:1px solid var(--neon-blue);" onerror="this.style.display='none'">
-            </div>
-            <div style="flex: 2; min-width: 300px;">
-                <div class="section-title">Background</div>
-                <p style="line-height:1.6;">${descFormattata}</p>
-                
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                    <div>
-                        <div class="section-title">Temi</div>
-                        <p>${item.temi_da_esplorare.join(' • ')}</p>
-                    </div>
-                    <div>
-                        <div class="section-title">Nemesi</div>
-                        <p>${item.nemesi ? item.nemesi.join(' • ') : 'Non specificata'}</p>
-                    </div>
-                </div>
+    const citazioneHtml = item.citazione 
+    ? `<div style="font-style: italic; color: var(--neon-pink); border-left: 2px solid var(--neon-pink); padding-left: 15px; margin: 20px 0; font-size: 1.1rem; line-height: 1.4;">
+        "${item.citazione}"
+       </div>` 
+    : "";
 
-                <div class="section-title">Tratti Consigliati</div>
-                <p>${item.tratti_consigliati.join(', ')}</p>
-
-                ${extraContent}
-            </div>
+document.getElementById('detail-view').innerHTML = `
+    <div class="detail-header"><h1>${item.nome}</h1></div>
+    
+    <div style="display: flex; gap: 30px; flex-wrap: wrap;">
+        <div style="flex: 1; min-width: 300px;">
+            <img src="${item.immagine}" style="width:100%; border-radius:12px; border:1px solid var(--neon-blue);" onerror="this.style.display='none'">
         </div>
-        <div style="height:80px"></div>
-    `;
-}
+        
+        <div style="flex: 2; min-width: 300px;">
+            ${citazioneHtml}
+
+            <div class="section-title">Background</div>
+            <p style="line-height:1.6; color: #ddd;">${descFormattata}</p>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                <div>
+                    <div class="section-title">Temi</div>
+                    <p>${item.temi_da_esplorare.join(' • ')}</p>
+                </div>
+                <div>
+                    <div class="section-title">Nemesi</div>
+                    <p>${item.nemesi ? item.nemesi.join(' • ') : 'Non specificata'}</p>
+                </div>
+            </div>
+            
+            <div class="section-title">Tratti Consigliati</div>
+            <p>${item.tratti_consigliati.join(', ')}</p>
+
+            ${extraContent}
+        </div>
+    </div>
+    <div style="height:80px"></div>
+`;
         function showList() {
             document.getElementById('list-view').style.display = 'block';
             document.getElementById('detail-view').style.display = 'none';
