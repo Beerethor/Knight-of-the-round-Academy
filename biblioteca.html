@@ -158,15 +158,18 @@
 </head>
 <body>
 
-    <header>
+<header>
         <div>
-            <h2 style="color: var(--neon-blue);">Sistema KOTRA v3.0</h2>
+            <h2 style="color: var(--neon-blue); cursor:pointer;" onclick="window.location.href='index.html'">Sistema KOTRA v3.0</h2>
             <small style="color: #666;">Accesso Biblioteca: Autorizzato</small>
         </div>
         <div class="nav-buttons">
+            <button onclick="window.location.href='index.html'" style="border-color: #fff; color: #fff;">HOME</button>
+            
             <button onclick="loadData('stirpi_database.json', this)">Stirpi</button>
             <button onclick="loadData('classi_database.json', this)">Classi & Job</button>
-            <button id="back-btn" style="display:none; border-color: var(--neon-yellow); color: var(--neon-yellow);" onclick="showList()">← Indietro</button>
+            
+            <button id="back-btn" style="display:none; border-color: var(--neon-yellow); color: var(--neon-yellow);" onclick="showList()">← Torna alla Lista</button>
         </div>
     </header>
 
