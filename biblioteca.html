@@ -254,6 +254,10 @@
     const desc = Array.isArray(item.descrizione) ? item.descrizione.join('<br><br>') : item.descrizione;
     const descFormattata = desc.replace(/\n/g, "<br>");
 
+           // Questo trasforma "NOTE SPECIALI:" in un testo giallo e grassetto automaticamente
+           const descFormattata = desc.replace(/\n/g, "<br>")
+           .replace("NOTE SPECIALI:", "<b style='color:var(--neon-yellow);'>NOTE SPECIALI:</b>");
+
     // Gestione dinamica: Eredità (per Stirpi) o Tecniche (per Classi)
     let extraContent = "";
     
