@@ -1,0 +1,330 @@
+{
+  "items": [
+    {
+      "nome": "Andruid",
+      "immagine": "img/bibioteca/razze/andruid.png",
+      "descrizione": "Esseri bio-meccanici sviluppati dal dr. Merlin, che sperava di sostituire i Knight, gli Andruid sono legati al Respiro del Drago a un livello profondissimo, tanto da essere influenzati sia nell’aspetto che nel carattere dal tipo di radiazioni che consumano. \nRe Pendragon ha riconosciuto la loro indipendenza dopo la battaglia di Lyonesse, 30 anni fa, chiedendo loro di rimanere a vivere a Kamel’oth per aiutare il Round a sviluppare una tecnologia Knight migliore e più sostenibile. \nNessuno sa veramente quali siano le potenzialità degli Andruid, anche se la loro capacità di manipolare le energie del Respiro a mani nude li rende importantissimi nell’economia e nello sviluppo scientifico di Kamel’oth, nonostante il dr. Merlin nutra ormai seri dubbi su di loro.",
+      "temi_da_esplorare": ["Postumanesimo", "Anima", "Intelligenza Artificiale"],
+      "tratti_consigliati": ["Connettore", "Hardware modificabile", "Aggiornamento software"],
+     "eredita": [
+    {
+      "nome": "Bio-Logica",
+      "descrizione": "I miei sensori indicano un chiaro aumento del tuo battito cardiaco e un arrossamento degli zigomi ogni volta che provo ad avvicinarmi a te. Suggerisco un urgente controllo medico, a meno che tu non voglia confessarmi qualcosa.",
+      "effetto": "Quando cerchi di comprendere lo stato d’animo di qualcuno puoi fare affidamento sui tuoi sensori bio-logici e leggere i dati fisiologici più basilari: temperatura, battito cardiaco, dilatazione delle pupille… Se lo fai, puoi tirare 1d8 anche se non hai abbastanza Tratti per superare la Difficoltà della Prova."
+    },
+    {
+      "nome": "Doppio Core",
+      "descrizione": "Il dr. Merlin mi ha dotato dell’abilità di manipolare sia il Tempo che lo Spazio. Non hai nessuna possibilità di vittoria.",
+      "effetto": "Scegli un secondo elemento a cui sei affine e segnalo nello spazio Stirpe della tua scheda. Puoi usare quell’elemento come se fosse il tuo Core base e puoi anche creare combo creative con i due core. Quando qualcosa Ferisce il tuo Core, devi considerare la Stirpe come se fosse un Core, ma scegli tu quale Core viene Ferito. Se qualcosa Ferisce la tua Stirpe non avrai più accesso al Core secondario."
+    },
+    {
+      "nome": "Interfaccia bio-meccanica",
+      "descrizione": "Richiedo un accesso diretto al tuo database... Come sarebbe a dire che non ci conosciamo abbastanza da concedermi l’accesso? Prometto di eseguire un backup prima di metterci mano, ora lasciami leggere cosa pensano i professori di Mor Dread...",
+      "effetto": "Puoi letteralmente parlare con le macchine, come se fossero creature viventi. Le macchine ti capiranno, ma potrebbero non essere collaborative, se sono state progettate così."
+    },
+    {
+      "nome": "Memorie nel GR.A.A.L.",
+      "descrizione": "Conosco il Knight-fu.",
+      "effetto": "Riserva un Tratto della tua scheda come Unità di Backup. Durante ogni Sessione puoi sostituirlo con un Tratto che preferisci, perché scarichi le conoscenze necessarie dal cloud del GR.A.A.L. Non puoi sostituirlo più di una volta per Sessione."
+    }
+   ]
+  },
+    {
+      "nome": "Avalon",
+      "immagine": "img/bibioteca/razze/avalon.png",
+      "descrizione": "Il popolo di Avalon è uno dei più antichi di Brit’an, erano qui prima dell’arrivo degli umani e saranno probabilmente qui quando l’ultimo re umano avrà occupato il proprio trono. Con lunghe orecchie a punta e la pelle completamente bianca, gli Avaloniani si riconoscono facilmente, ma raramente escono dai confini della propria isola. \nLa loro società matriarcale premia il merito più che la discendenza, ma molte delle loro leggende e delle loro profezie parlano dell’importanza dei legami di sangue, rendendo gli Avaloniani un popolo segnato da un profondo dualismo, continuamente divisi tra futuro e tradizione, tra famiglia e dovere verso la comunità. \nI primi Knight, sono stati costruiti da loro per difendere Avalon, e il dr. Merlin, un Avaloniano in esilio, ha sviluppato i suoi Knight a partire da essi.",
+      "temi_da_esplorare": ["Tecnologia perduta", "Dovere e lealtà", "Isolazionismo e razzismo"],
+      "tratti_consigliati": ["Tradizionalista", "Sete di conoscenza", "Profeta"],
+      "eredita": [
+    {
+      "nome": "Legame atavico",
+      "descrizione": "Le leggende dicono che quando un Avaloniano muore, il suo spirito non abbandona Brit’an, ma rimane nel Respiro del Drago, che ci circonda e lega tutti quanti.",
+      "effetto": "Il tuo legame con Avalon è così forte che concentrandoti puoi accedere alle memorie collettive degli Avaloniani venuti prima di te. In questo stato di trance, i tuoi avi guidano le tue azioni e puoi accedere a poteri a te altrimenti preclusi. Puoi usare una Tecnica Base di un Job che non possiedi come se fosse tua, spendendo 2 Punti Limite (oltre a eventuali Punti da spendere per la Tecnica che vuoi copiare)."
+    },
+    {
+      "nome": "Onore al merito",
+      "descrizione": "Un colpo magistrale! Il coach Vortex sarà orgoglioso di te almeno quanto lo sono io! Continua così!",
+      "effetto": "Ogni volta che un’altra Matricola ottiene un Successo Pieno, le tue parole di incoraggiamento possono farle recuperare 1d6 Punti Limite, come se avesse ottenuto un Trionfo. Devi però essere presente per incoraggiarlo veramente. \nNon puoi usare questa Eredità più di una volta per Scena per Matricola, ma puoi usarla più volte su Matricole diverse."
+    },
+    {
+      "nome": "Sangue antico",
+      "descrizione": "Il mio sangue è più oscuro del crepuscolo, più antico del tempo stesso. Sopito dal passare degli eoni, riposa in attesa del momento in cui avrò bisogno del suo potere per oltrepassare i miei limiti.",
+      "effetto": "Il tuo sangue è intriso di Respiro del Drago più di quello di un Sangue di Drago: non esci di Scena quando raggiungi la tua Capacità di Sovraccarico, ma sei ritenuto in Pericolo di Vita."
+    },
+    {
+      "nome": "Turista",
+      "descrizione": "Conosco questo posto, ci ho passato molto tempo con la mia famiglia, quando abbiamo lasciato Avalon. Sembra un posto inospitale, ma le persone del luogo sono sempre disponibili a parlare con qualcuno che offre loro un dolce appena sfornato.",
+      "effetto": "Hai abbandonato Avalon da tempo - non importa perché - e da allora hai viaggiato in diversi luoghi, accumulando conoscenze molto variegate. Quando fai una prova per conoscere usi e costumi di un popolo o caratteristiche regionali di un luogo, hai un bonus di +1."
+    }
+   ]
+  },
+    {
+      "nome": "Bret'on",
+      "immagine": "img/bibioteca/razze/breton.png",
+      "descrizione": "I Bret’on si ritengono gli abitanti originari di Brit’an e per questo motivo ritengono di essere gli unici veramente in grado di manovrare correttamente i Knight. \nNulla, in realtà, li differenzia dai Sax’on tranne la loro cultura: se i Sax’on rappresentano la parte più “selvaggia” dell’umanità, i Bret’on hanno invece costruito castelli, biblioteche e il Round, il grande centro di ricerca dove vengono sviluppati i Knight e dove viene studiato il Respiro del Drago, le cui radiazioni permettono non solo ai Knight di muoversi, ma alle città di Kamel’oth di avere lampioni, ascensori, comunicazioni a distanza. \nKamel’oth ha una schiacciante superiorità tecnologica, ma le scarse dimensioni del regno bilanciano questa loro superiorità, permettendo ai Sax’on di combattere quasi alla pari con i Knight Bret’on.",
+      "temi_da_esplorare": ["Nobiltà", "Famiglia e legami di sangue", "Sfruttamento tecnologico"],
+      "tratti_consigliati": ["Eredità importante", "Cimelio di famiglia", "Istruzione superiore"],
+      "eredita": [
+    {
+      "nome": "Affinità elettiva",
+      "descrizione": "Datemi una M! Datemi una O! Datemi una R! \nMor Dread! Mor Dread! \nSei bellissimo! Fagli vedere che sei il migliore!",
+      "effetto": "Quando aiuti o ricevi aiuto da un tuo Spirito Affine puoi raddoppiare l’aiuto che ricevi o dai (massimo +6d12 o +6 ai dadi), ma solo se rendi espliciti i sentimenti positivi di amore o amicizia che vi legano."
+    },
+    {
+      "nome": "Popolano",
+      "descrizione": "Il mio sangue potrà anche essere rosso come quello di chiunque altro e non blu come quello dei lord, ma Kamel’oth è casa mia e anche io posso essere utile!",
+      "effetto": "Appartieni al popolo di Kamel’oth e questo ti riempie di orgoglio. Una volta per Sessione puoi fare appello a questo tuo senso di appartenenza per dimostrare che non hai nulla da invidiare a un nobile qualunque e puoi ritirare i tuoi Dadi Positivi (ma solo quelli Positivi) in una Prova."
+    },
+    {
+      "nome": "Sangue nobile",
+      "descrizione": "La mia famiglia ha creato questo regno versando il suo sangue nei campi di battaglia del Re, non permetterò che venga distrutto mentre voi rimanete fermi a guardare dagli spalti.",
+      "effetto": "Appartieni a una casata nobiliare, che tu lo sappia o meno. Una volta per Sessione puoi fare leva sul tuo lignaggio per ottenere piccoli favori da un Personaggio Secondario, che vedrà in te qualcosa di nobile e antico, a cui portare il dovuto rispetto. \nFai la Prova senza Difficoltà."
+    },
+    {
+      "nome": "Talento naturale",
+      "descrizione": "Mi sono addestrata tutta la vita per essere la migliore spadaccina di tutta Kamel’oth, sono la Champion di Lyonesse!",
+      "effetto": "Scegli un Job aggiuntivo e segnalo nello spazio Stirpe del tuo Curriculum. Funziona come un normale Job in tutto e per tutto: puoi usarlo come Tratto e ti dà accesso a tutte le Tecniche collegate (puoi comunque avere solo 8 Tecniche in tutto). \nQuando qualcosa Ferisce la tua Stirpe, non puoi più usare il Job come Tratto, ma hai comunque accesso alle Tecniche."
+    }
+   ]
+  },
+
+    {
+      "nome": "Colonie",
+      "immagine": "img/bibioteca/razze/colonie.png",
+      "descrizione": "Bret’on e Sax’on hanno dimenticato che gli umani non sono nati su Brit’an, ma gli abitanti delle 12 Colonie spaziali non hanno dimenticato che Brit’an è solo uno dei tanti pianeti che gli umani hanno colonizzato nel corso dei millenni. \nQuasi completamente disabituati alla gravità a causa dei secoli passati in orbita, i Coloni si recano molto raramente su Brit’an. L’unica cosa che veramente distingue un abitante delle Colonie da un Bret’on o un Sax’on è il colore della pelle, quasi cinereo, un adattamento dovuto alla vita nelle Colonie spaziali. \nDa molti abitanti della superficie vengono visti come ciarlatani complottisti ogni volta che parlano delle Colonie e di come Brit’an non sia la patria umana, ma solo una Colonia un po’ più grossa.",
+      "temi_da_esplorare": ["Colonialismo", "Separatismo", "Reclamare il dovuto"],
+      "tratti_consigliati": ["Archeologia", "Tecnologia terrestre", "Adattamento spaziale"],
+      "eredita": [
+    {
+      "nome": "Memorie della Terra",
+      "descrizione": "Ricordo che negli archivi si parlava di un animale chiamato “cavallo” che assomiglia molto a questa creatura...",
+      "effetto": "Le Colonie hanno mantenuto intatti i database delle navi con cui i primi terrestri sono arrivati a Brit’an e questo dà loro accesso a numerose conoscenze dimenticate dai planetari e gelosamente custodite dai Coloni, che mantengono così un notevole vantaggio. Quando un’altra Matricola non ottiene Trionfi in una prova di conoscenza, tu ottieni un Successo automatico e ricordi qualcosa che hai visto negli archivi coloniali."
+    },
+    {
+      "nome": "Newkind",
+      "descrizione": "Essere un Newkind è una benedizione e una maledizione allo stesso tempo: il nostro cuore può raggiungere chiunque, ma significa essere sempre coscienti di quello che gli altri provano per te.",
+      "effetto": "C’è chi dice che i Newkind siano il prossimo stadio evolutivo degli esseri umani, che siano in grado di espandere la propria consapevolezza oltre i limiti imposti dal proprio corpo: una volta per Scena puoi fare a chi narra una domanda sullo stato d’animo di qualcuno che vedi e chi narra ti dovrà rispondere onestamente, a meno che non si tratti di un altro Newkind."
+    },
+    {
+      "nome": "Una prospettiva diversa",
+      "descrizione": "Quando sei nello spazio, da solo, a bordo di un mecha, non puoi permetterti il lusso di allungare la strada, perchè significherebbe finire alla deriva nel Mare di Stelle.",
+      "effetto": "Riesci sempre a orientarti verso il tuo obiettivo anche senza apparenti punti di riferimento: sott’acqua sai istintivamente da che parte è il sopra e il sotto, di notte ti basta vedere anche solo una o due stelle per sapere in che direzione devi andare e così via. Lo spazio è troppo vasto, non puoi permetterti di perderti."
+    },
+    {
+      "nome": "Volo spaziale",
+      "descrizione": "Lascia pilotare me, voi abitanti di superficie esagerate sempre con l’accelerazione, finendo per surriscaldare inutilmente i sistemi per rallentare o curvare.",
+      "effetto": "Il tuo corpo è abituato alla scarsa gravità dello spazio in cui sei cresciuto e non hai nessun problema a usare un Knight o una nave nello spazio: quando piloti qualcosa nello spazio abbassi la Difficoltà delle tue Prove di 1 (può arrivare a 0)."
+    }
+   ]
+  },
+    {
+      "nome": "Sangue di Drago",
+      "immagine": "img/bibioteca/razze/sanguedidrago.png",
+      "descrizione": "Gli umani esposti per molto tempo alle Particelle Dragon spesso generano bambini che vengono chiamati Sangue di Drago, o draich in Avaloniano. L’esposizione alle radiazioni causa alcune mutazioni a livello fisico nei bambini, le cui orecchie si allungano fino ad assomigliare a quelle degli Avaloniani, la pelle e i capelli hanno sempre colori caldi che ricordano le fiamme e ogni Sangue di Drago ha un qualche tipo di voglia sul corpo di un colore rosso intenso. \nCaratterialmente i Sangue di Drago tendono a essere irruenti, curiosi e avventati, anche grazie al fatto che sono immuni al calore delle fiamme. \nIl loro legame con il Respiro è evidente e molto simile a quello degli
+Andruid, in particolare con Core del fuoco. La loro temperatura corporea media è di 42°.",
+      "temi_da_esplorare": ["Mutazioni impreviste", "Ostracismo", "Radioattività"],
+      "tratti_consigliati": ["Sbuffone", "Segno della profezia", "Stazza enorme"],
+      "eredita": [
+    {
+      "nome": "Forza straordinaria",
+      "descrizione": "Come sarebbe a dire che Arthia ha duellato contro il Knight di Mor Dread a mani nude? Non si rende conto che avrebbe potuto danneggiarlo irrimediabilmente se non sta attenta a quanta forza ci mette?",
+      "effetto": "Il Respiro ti dona una forza e una resistenza eccezionali e sei in grado di combattere ad armi pari con un mecha e molti mostri: ignori Tratti che si riferiscono alla forza o alla stazza degli avversari che affronti."
+    },
+    {
+      "nome": "Mutante",
+      "descrizione": "Una coda prensile è ottima per portare un vassoio in più quando sei in mensa e hai appena finito gli allenamenti di Chess-wrestling e stai morendo di fame!",
+      "effetto": "Le Particelle Dragon che scorrono nel tuo sangue hanno modificato in maniera più evidente il tuo corpo, cambiando la tua fisiologia: una o più braccia aggiuntive, una coda, delle ali, corna… \nSegna la tua mutazione nello spazio Stirpe."
+    },
+    {
+      "nome": "Percepire il respiro",
+      "descrizione": "Sento una forte concentrazione di Particelle Dragon a 50 metri da noi, dietro quel muro di pietra. Potrebbe essere la traccia di un Knight, state attenti...",
+      "effetto": "Puoi percepire il Respiro che scorre nelle creature e capire quanto sono potenti e a che elemento sono legate. Puoi anche percepire alte concentrazioni di Particelle Dragon in natura e usare questi sensi per localizzare macchinari alimentati dal Respiro nelle vicinanze."
+    },
+    {
+      "nome": "Testa calda",
+      "descrizione": "Le chiami fiamme queste? Sono appena sufficienti a farmi percepire la tua presenza, figuriamoci farmi male.",
+      "effetto": "La tua temperatura corporea è elevatissima e le Particelle Dragon bruciano come in una fornace all’interno del tuo corpo. \nSei immune alle fiamme, al calore e il tuo metabolismo accelerato ti rende anche resistente a malattie, veleni e sostanze di varia natura:la Difficoltà per ignorare gli effetti di queste cose per te è sempre dimezzata (minimo 1)."
+    }
+   ]
+  },
+
+    {
+      "nome": "Sax'on",
+      "immagine": "img/bibioteca/razze/saxon.png",
+      "descrizione": "L’Impero Sax’on occupa la maggior parte di Brit’an, ma i suoi territori sono selvaggi e aspri, motivo per cui i Sax’on si sono dovuti abituare a vivere ingegnandosi con le poche risorse naturali che hanno. \nLe città Sax’on vengono in genere costruite sotto terra o nei fianchi delle rocciose montagne che riempiono l’orizzonte, per cercare di estrarre quel poco di Respiro del Drago che riescono a racimolare. \nI Signori della Guerra Sax’on incolpano Kamel’oth e i Bret’on per questa scarsità di energia, accusandoli di aver prosciugato le risorse naturali del pianeta. \nLa titanica Spada Divina si trova vicino a Kamml’ann, una delle più grandi città Sax’on.",
+      "temi_da_esplorare": ["Scarsità di risorse", "Vita di frontiera", "Guerra incombente"],
+      "tratti_consigliati": ["Arrangiarsi", "Riparazioni d'emergenza", "La legge del più forte"],
+      "eredita": [
+    {
+      "nome": "Hybrid Frame",
+      "descrizione": "Change! Briar King, switch mode! Assaggia l’ascia del mio Briar King Lancer mentre io resto al sicuro nel Briar King Tanker!",
+      "effetto": "Scegli un secondo Frame per il tuo Knight e segnalo nello spazio Stirpe della tua scheda. Puoi passare da una modalità all’altra quando vuoi e anche usarli contemporaneamente. \nQuando qualcosa Ferisce il tuo Frame, devi considerare la Stirpe come se fosse un Frame, ma scegli tu quale Frame viene Ferito. \nSe qualcosa Ferisce la tua Stirpe non avrai più accesso al Frame secondario."
+    },
+    {
+      "nome": "Senza Core",
+      "descrizione": "Il Core è semplicemente una stampella a cui chi non vuole impegnarsi si appoggia, ma io so cosa significa impegnarsi e sacrificarsi veramente.",
+      "effetto": "Chissà per quale motivo, in te non è presente nemmeno una Particella Dragon: sostituisci il Core con la Scintilla, cioè l’ideale o la motivazione che ti spingono a impegnarti a superare comunque i tuoi limiti, come
+per esempio difendere qualcosa o qualcuno, diventare il migliore in un determinato campo e così via. Questo vuole anche dire che il tuo Knight usa una fonte di energia alternativa."
+    },
+    {
+      "nome": "Sopravvivere a ogni costo",
+      "descrizione": "Non posso permetterti di andartene da qui, non dopo tutto quello che hai fatto. E se questo significa buttare anche il mio nome tra i rovi, lo farò volentieri per dare giustizia a tutti quelli che hai ferito in questi anni.",
+      "effetto": "Ogni Sax’on è pronto a tutto pur di sopravvivere, persino infangare il proprio nome: puoi usare il tuo Nome come Ferita aggiuntiva, ma solo se stai affrontando la tua Nemesi."
+    },
+    {
+      "nome": "Vita nell’Impero",
+      "descrizione": "O la va o la spacca!",
+      "effetto": "La vita nell’Impero è dura e ogni giorno è una scommessa contro il mondo: quando una prova secondo te è troppo difficile, tira SOLO 1d12. Il risultato del dado sarà il tuo Successo o il tuo Fallimento. Niente Conseguenze sicure, niente Fallimenti o Successi a metà: un Sax’on è pronto a dare tutto o niente."
+    }
+   ]
+  },
+
+    {
+      "nome": "Sidhe",
+      "immagine": "img/bibioteca/razze/sidhe.png",
+      "descrizione": "I Sidhe sono, tra le popolazioni autoctone di Brit’an, quelli che meglio si sono adattati all’arrivo degli esseri umani diversi secoli fa. Bret’on e Sax’on li chiamano Piccolo Popolo a causa della loro capacità di mutare forma in piccoli animali, come volpi o gatti, capacità che li rende anche ottimi come spie e infiltratori. \nNonostante questa loro capacità, un Sidhe difficilmente viene convinto a portare a termine un compito che non lo diverte in qualche modo e, pur essendo notoriamente mercenari, non è con i soldi che comprerete i loro servigi. \nNon esistono vere e proprie città Sidhe, ma è probabile che troviate piccoli gruppi di Sidhe in ogni città umana, Bret’on o Sax’on che sia.",
+      "temi_da_esplorare": ["Vita nomade", "Tribalismo", "Animismo"],
+      "tratti_consigliati": ["Lupo solitario", "Andare in bestia", "Il mio branco"],
+       "eredita": [
+    {
+      "nome": "Girovagare",
+      "descrizione": "Potremmo chiedere una mano a Bertilak, ma l’ultima volta che l’ho visto ha cercato di rifilarmi un cristallo per purificare l’aria dalle Particelle Dragon e sicuramente ci chiederà di aiutarlo a piazzarne qualcuno in città per conto suo, dato che non può più andarci.",
+      "effetto": "Hai passato la tua vita a vagare senza fissa dimora, cosa che ti ha portato a conoscere un po’ di tutto, un po’ dappertutto: quando tu o le altre Matricole avete bisogno di un contatto con una conoscenza particolare, sai sempre dove trovarlo, ma allo stesso tempo sai che sicuramente chiederà un sostanzioso favore in cambio."
+    },
+    {
+      "nome": "La forma del Respiro",
+      "descrizione": "Briar King, ascolta la mia richiesta: lascia che il Respiro ti plasmi, dandoti le ali per raggiungere il cielo.",
+      "effetto": "Puoi modificare l’aspetto del tuo Knight, ma non la sua massa, facendo crescere nuovi arti, ali e così via. Quando muta, il tuo Knight diventa quasi di carne ed è possibile sentirlo respirare seguendo il flusso delle Particelle Dragon."
+    },
+    {
+      "nome": "Mutaforma",
+      "descrizione": "Woof! Woof!",
+      "effetto": "Puoi mutare aspetto in qualsiasi creatura vivente tu abbia visto o che sia in grado di immaginare. Chi narra potrebbe chiederti di spendere Punti Limite per rendere più realistica o duratura la trasformazione. Quando perdi conoscenza torni normale."
+    },
+    {
+      "nome": "Taboo",
+      "descrizione": "Queste voci nella mia testa mi ricordano di tutte le persone che hanno dato la vita per permettermi di arrivare fino qui. Il loro sacrificio non sarà vano, userò i loro ricordi per darmi la forza necessaria ad andare avanti.",
+      "effetto": "Quando una creatura muore in tua presenza, puoi assorbire parte del suo Respiro e da quel momento puoi trasformarti in maniera perfetta in quella creatura, facendoti passare per l’originale anche da chi lo conosce intimamente, perché ne assorbi anche i ricordi, per lo meno quelli superficiali."
+    }
+   ]
+  },
+    {
+      "nome": "Senza Famiglia",
+      "immagine": "img/bibioteca/razze/senzafamiglia.png",
+      "descrizione": "Forse ti hanno abbandonata quando eri in fasce, forse hai visto morire i tuoi genitori anni fa o forse sei stata nascosta da chi ti ha cresciuta perché eri in pericolo: qualsiasi sia il motivo, sei cresciuta lontana dalla tua famiglia. \nHai imparato ad arrangiarti, vivendo per strada, o sei stata addestrata per essere pronta quando il pericolo ti raggiungerà. Potresti avere poteri che per chiunque altro sarebbero straordinari e che non ti rendi nemmeno conto di avere. \nOra però è arrivato il momento di scoprire da dove arrivi, per decidere chi sarai in futuro.",
+      "temi_da_esplorare": ["Famiglia", "Appartenenza", "Eredità"],
+      "tratti_consigliati": ["Poteri nascosti", "Contare solo su di me", "Vita di strada"],
+       "eredita": [
+    {
+      "nome": "Amnesia",
+      "descrizione": "Il nonno mi ha detto che i miei genitori erano grandi eroi e che mi volevano bene, e mi hanno lasciato questa sfera magica come ricordo!",
+      "effetto": "Non ricordi nulla della tua infanzia, e chi ti ha cresciuto non entra mai nei dettagli di cosa sia successo alla tua famiglia. Hai però un oggetto che indossavi quando ti hanno trovato o che era con te nella culla e
+che racchiude un grande potere. \nUna volta per Scena puoi metterlo in gioco come se fosse un Item anche dopo che hai effettuato la Prova."
+    },
+    {
+      "nome": "Segno del Destino",
+      "descrizione": "Questa cicatrice a forma di costellazione che porto sul petto è il segno che la speranza di questo mondo è stata affidata a me.",
+      "effetto": "Una voglia dalla forma particolare o un marchio artificiale sul tuo corpo indicano che qualcuno (le stelle, la tua famiglia o chi ti ha creato in laboratorio) ha deciso di affidarti la salvezza del mondo. \nQuando mostri il tuo marchio a qualcuno che stai affrontando puoi considerare il tuo avversario come se fosse una Nemesi per tutta la Scena, anche dopo aver già affrontato una Prova."
+    },
+    {
+      "nome": "Anomalia",
+      "descrizione": "Cosa vuol dire che non è normale per una persona avere una coda prensile? Io ce l’ho, pensavo ce l’avessero tutti!",
+      "effetto": "Il tuo corpo ha qualcosa di diverso da quello di tutti gli altri: potrebbe essere una coda da scimmia, un piccolo corno dorato che spunta dalla fronte o mani e piedi palmati. Qualsiasi cosa sia, quando entri in Sovraccarico diventa molto evidente, ma ti concede anche molto potere: una volta per Scena, mentre sei in Sovraccarico, puoi curare gratuitamente la tua Stirpe, se è stata Ferita."
+    },
+    {
+      "nome": "Appetito bizzarro",
+      "descrizione": "Vorrei 10 porzioni di ramen, 6 di takoyaki, 8 di okonomiyaki, 13 mochi, e tutto il riso al vapore che avete. Ah, e se potete vorrei anche qualche bistecca, 3 ciotole di zuppa e una porzione di patatine fritte. Una sola, per non esagerare.",
+      "effetto": "Che tu mangi per dieci, o ti nutra solo di cibo che chiunque altro riterrebbe immangiabile, il tuo appetito si fa sempre notare. \nOgni volta che hai la possibilità di soddisfare il tuo appetito bizzarro facendone mostra a qualcuno che possa ancora rimanerne stupito recuperi 1d6 Punti Limite."
+    }
+   ]
+  },
+     {
+      "nome": "Ricettacolo",
+      "immagine": "img/bibioteca/razze/ricettacolo.png",
+      "descrizione": "La tua anima e il tuo corpo sono legati a un’Entità, che ora vive in simbiosi con te. \nIl tuo rapporto con questa Entità può essere più o meno pacifico, e l’Entità stessa potrebbe essere più o meno potente, ma una cosa sicuramente ha attraversato i tuoi pensieri almeno una volta: come sarebbe la tua vita senza questa Entità? \nChe Entità si è legata a te? Perché? Quali conoscenze segrete può offrirti? E quanto dipendi dal suo potere?",
+      "temi_da_esplorare": ["Sono solo un involucro?", "Angelo o demone", "Posso controllare il mio potere?"],
+      "tratti_consigliati": ["Ossimoro vivente", "Voglio essere più forte", "Posso farcela senza di te"],
+       "eredita": [
+    {
+      "nome": "Perdere il controllo",
+      "descrizione": "Misero mortale, se continui così ci farai ammazzare entrambi! Sarà meglio che me ne occupi io da qui in poi!",
+      "effetto": "Quando la tua Stirpe viene Ferita puoi scegliere di perdere il controllo sull’Entità che vive dentro di te. Se lo fai recuperi subito 1d6 Punti Limite, ma non potrai mai scendere sotto la soglia del Sovraccarico fino alla fine della Scena. \nAgisci usando solo i Tratti che condividi con l’Entità che occupa il tuo corpo."
+    },
+    {
+      "nome": "Manifestare il Potere",
+      "descrizione": "Brucia, mio Core, brucia fino al limite di tutto ciò che è conosciuto, illumina ciò che ancora non conosciamo e dammi la forza di sconfiggere il mio nemico!",
+      "effetto": "L’Entità che alberga nel tuo corpo risponde a ogni tuo comando ed è pronta a cederti il suo potere quando ne hai bisogno: puoi ferire la tua Stirpe per recuperare 3d4 Punti Limite, ma non puoi curarla fino al termine della Scena."
+    },
+    {
+      "nome": "Cedere il controllo",
+      "descrizione": "Non posso andare oltre questo punto senza il tuo aiuto: il mio corpo è il tuo corpo, la tua anima è la mia anima, siamo una cosa sola, per questo chiedo il tuo aiuto, ora.",
+      "effetto": "Hai trovato un certo equilibrio con l’Entità che alberga dentro di te e sai di poterle cedere il controllo per un breve periodo senza rischiare nulla: mentre sei in Sovraccarico puoi spendere Punti Limite pari alla
+Potenza della Minaccia (minimo 1) per darti dei Bonus +1 come se stessi usando degli Item, sempre fino a un massimo di +6."
+    },
+    {
+      "nome": "Amicizia inaspettata",
+      "descrizione": "Hey! Ascoltami! Mi sembra che oggi possiamo saltare scuola e diverterci al parco solo io e te, come una volta. Che ne dici?",
+      "effetto": "Occupa uno dei tuoi slot Affinità con il nome dell’Entità che vive dentro di te e assegna 4 punti a quella Affinità. \nL’Entità è una parte costante della tua vita e il vostro rapporto non è quello di padrone e servitore, siete semplicemente due anime nello stesso corpo. Il vostro rapporto potrebbe crescere o deteriorarsi in base alle tue azioni, ma sicuramente non può essere ignorato. Non puoi cancellare quello slot Affinità."
+    }
+   ]
+  },
+   {
+      "nome": "Anima errante",
+      "immagine": "img/bibioteca/razze/animaerrante.png",
+      "descrizione": "La tua anima abita ora un nuovo corpo: forse sei morta in un altro mondo e ora ti trovi qui, forse sei chiusa in un ciclo di reincarnazioni infinito da cui non sai come uscire, forse sei solo destinata a reincontrare la persona che ami. \nSe però non appartieni a questo mondo o a questa epoca, puoi davvero influenzare ciò che ti circonda? Sarai in grado di tornare al mondo che hai lasciato, o per lo meno troverai pace in questo?",
+      "temi_da_esplorare": ["Io sono davvero io?", "Colpe non mie", "Non conosco nulla di questo mondo"],
+      "tratti_consigliati": ["Immortale", "Memorie di un’altra vita", "Seconda chance"],
+       "eredita": [
+    {
+      "nome": "Pesce fuor d’acqua",
+      "descrizione": "Stavo camminando per strada, poi ho sentito il rumore di una frenata e ora sono una Matricola in una scuola per maghi, in un altro mondo? Ma è terribile!",
+      "effetto": "La tua reincarnazione in questo mondo è avvenuta per sbaglio e non conosci nulla degli usi e costumi delle persone intorno a te: puoi usare la tua Stirpe come Difetto aggiuntivo e, se lo fai, recuperi 2d4 Punti Limite invece del normale 1d6 del Difetto."
+    },
+    {
+      "nome": "Filo rosso del Destino",
+      "descrizione": "Ovunque tu sia ti troverò e staremo insieme per sempre anche in questo mondo...",
+      "effetto": "Anche in questa tua nuova reincarnazione il tuo Destino è legato a qualcuno che ti è stato vicino in passato, per esempio qualcuno che amavi, o con cui hai stretto un’amicizia che vada oltre il tempo e lo spazio. Questa persona si è reincarnata insieme a te: segna il suo nome in uno slot Affinità e assegna 4 punti a quella Affinità. \nIl vostro rapporto può crescere o deteriorarsi in base alle tue azioni, ma sicuramente vi troverete, prima o poi."
+    },
+    {
+      "nome": "Immortale",
+      "descrizione": "Non importa quante volte mi abbatterai, io mi rialzerò sempre, perchè la morte è la sconfitta finale, e io non posso accettare nessuna sconfitta!",
+      "effetto": "Quando tutti e tre i tuoi Tratti Centrali vengono Feriti, muori, senza possibilità di salvezza, a volte anche in modi poco comprensibili. Appena finisce la Scena torni in vita, con tutte le Ferite curate. \nSe qualcosa cambia la tua Stirpe perdi immediatamente questa Eredità e non potrai più sceglierla in futuro."
+    },
+    {
+      "nome": "Fissazione",
+      "descrizione": "WOW! Avevo letto nel manga di KotR:A che il Round andava in profondità, ma non immaginavo così in profondità! Se questo è il 98esimo piano sotterraneo, quella porta deve essere quella del laboratorio segreto di
+Merlin!",
+      "effetto": "Hai studiato questo mondo fino allo sfinimento e conosci tutto quello che c’è da sapere su luoghi, creature e persone famose: ogni volta che viene rivelato un luogo o che incontri una creatura, fai una domanda a chi narra: solo tu sarai a conoscenza di quell’informazione, che sarà sempre accurata."
+    }
+   ]
+  },
+   "nome": "Ineluttabile",
+      "immagine": "img/bibioteca/razze/ineluttabile.png",
+      "descrizione": "Il tuo Destino è stato deciso da qualcun altro, che sia lo scienziato che ti ha creato in laboratorio per essere un’arma vivente o che siano le stelle che brillano in cielo. Forse sei tu stessa ad aver deciso quale debba essere il tuo Destino. \nLa tua vita è comunque dedicata ad affrontare questo Destino, in un modo o nell’altro. Sta solo a te decidere se vuoi arrenderti al Destino scelto da qualcun altro o se vuoi plasmarlo con le tue stesse mani.",
+      "temi_da_esplorare": ["Senso di colpa", "C’è qualcun altro come me", "Sono qui per distruggere"],
+      "tratti_consigliati": ["Eroe per sbaglio", "Mai arrendersi", "Un’anima, due mondi"],
+       "eredita": [
+    {
+      "nome": "Arma Vivente",
+      "descrizione": "Scappa! Non voglio farti male, ma non so quanto ancora potrò trattenere tutta questa energia!",
+      "effetto": "La tua esistenza è dedicata a una cosa soltanto, che tu lo voglia o meno: estinguere la vita. \nUna volta per Scena, quando entri in Sovraccarico puoi infliggere una Ferita a ogni Minaccia in Scena, ma tutte le altre Matricole subiscono una Ferita. Se una Matricola era già Ferita viene anche considerata in Pericolo di Vita."
+    },
+    {
+      "nome": "Determinazione",
+      "descrizione": "Tsk! Questa è solo una ferita superficiale, sono ancora in condizioni di combattere...",
+      "effetto": "Niente ti può abbattere e troverai sempre un modo per prevalere, alla fine: quando tutti i tuoi Tratti sono Feriti non Esci di Scena, ma sei in Pericolo di Vita. Tecniche che dovrebbero Ferirti ti costringono sempre a spendere 5 Punti Limite. Un Disastro invece ti potrebbe essere fatale."
+    },
+    {
+      "nome": "In via d’estinzione",
+      "descrizione": "Essere l’ultimo della propria specie è una sensazione strana: da un lato mi sento incredibilmente solo, ma dall’altro so di essere incredibilmente unico e importante.",
+      "effetto": "La tua Stirpe finisce con te: sei l’ultimo esemplare vivente della tua linea di sangue. Per quanto questa rivelazione sia triste, questo ti dà una incredibile forza di volontà: quando sei in Sovraccarico puoi curare le tue Ferite (ma solo le tue) spendendo 3 Punti Limite invece che 5 Punti Limite."
+    },
+    {
+      "nome": "Rivale",
+      "descrizione": "Ho deciso: continuerò a sfidarti fino a quando non riuscirò a farti vedere il mondo attraverso i miei occhi!",
+      "effetto": "Hai un Rivale che hai giurato di battere per dimostrare una volta per tutte di essere il migliore: segna il suo nome in uno slot Affinità. Ogni volta che vi sfidate a duello, a prescindere da chi vinca o perda, puoi aggiungere 1 Punto Affinità. \nA 10 Punti Affinità ottieni anche una nuova opzione: invece di riportare in vita il tuo Rivale puoi convincerlo a passare dalla tua parte. Da quel momento sarà un fedele alleato."
+    }
+   ]
+  }
+  ]
+}
