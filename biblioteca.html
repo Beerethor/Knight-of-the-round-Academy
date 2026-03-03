@@ -99,12 +99,32 @@
         }
 
         .items-grid {
-            display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 20px; 
-            overflow-y: auto;
-            padding-bottom: 40px;
-        }
+    display: grid; 
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 15px; 
+    
+    /* AGGIUNGI QUESTE RIGHE */
+    max-height: 60vh; /* Occupa al massimo il 60% dell'altezza schermo */
+    overflow-y: auto; /* Attiva lo scroll verticale se serve */
+    padding-right: 10px; /* Spazio per la scrollbar */
+    padding-bottom: 20px;
+}
+
+/* Rendi la scrollbar più bella e in stile Cyberpunk */
+.items-grid::-webkit-scrollbar {
+    width: 6px;
+    -webkit-overflow-scrolling: touch;
+}
+
+.items-grid::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.items-grid::-webkit-scrollbar-thumb {
+    background: var(--neon-blue);
+    border-radius: 10px;
+    box-shadow: 0 0 10px var(--neon-blue);
+}
 
         .item-card {
             padding: 20px; background: rgba(255,255,255,0.03); 
@@ -186,9 +206,10 @@
         </div>
 
         <div id="list-view">
-            <input type="text" class="search-bar" id="search" placeholder="Inserisci termine di ricerca..." onkeyup="filterItems()">
-            <div class="items-grid" id="items-container"></div>
+    <input type="text" class="search-bar" id="search" placeholder="Cerca nel database..." onkeyup="filterItems()">
+    <div class="items-grid" id="items-container">
         </div>
+</div>
 
         <div id="detail-view"></div>
     </div>
