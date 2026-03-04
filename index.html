@@ -1,163 +1,218 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>KOTRA // COMMAND HUB</title>
+    
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="KOTRA">
-    
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="theme-color" content="#0a0b10"> <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <link rel="manifest" href="manifest.json">
-    
-    <link rel="apple-touch-icon" href="img/index/icona_app.png">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"> 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KOTR:Academy - HUB</title>
-    
+    <meta name="theme-color" content="#0a0b10">
     <link rel="icon" type="image/png" href="img/index/icona_app.png">
     <link rel="apple-touch-icon" href="img/index/icona_app.png">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="theme-color" content="#0a0b10">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
 
     <style>
-        .mobile-tip {
-    margin-top: 30px;
-    padding: 15px;
-    background: rgba(0, 242, 255, 0.05);
-    border: 1px dashed var(--neon-blue);
-    border-radius: 8px;
-    font-size: 0.85rem;
-    color: #ccc;
-    max-width: 400px;
-    text-align: center;
-    line-height: 1.4;
-    animation: pulse 2s infinite;
-}
-        .btn-creatore {
-    border: 2px solid var(--neon-pink);
-    box-shadow: 0 0 10px rgba(255, 0, 255, 0.2);
-    animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-    0% { box-shadow: 0 0 5px var(--neon-pink); }
-    50% { box-shadow: 0 0 20px var(--neon-pink); }
-    100% { box-shadow: 0 0 5px var(--neon-pink); }
-}
-        
-    
-        @media (min-width: 768px) {
-    .mobile-tip {
-        display: none;
-    }
-}
         :root {
             --neon-blue: #00f2ff;
             --neon-pink: #ff007a;
-            --bg-dark: #0a0b10;
-            --glass: rgba(255, 255, 255, 0.08);
-            --glass-border: rgba(255, 255, 255, 0.15);
+            --neon-purple: #bc13fe;
+            --bg-dark: #06070a;
+            --terminal-green: rgba(51, 255, 51, 0.8);
+            --glass: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(0, 242, 255, 0.2);
         }
-        
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
         body {
             background-color: var(--bg-dark);
-            background-image: url('img/index/sfondo.png');
+            background-image: 
+                radial-gradient(circle at 50% 50%, rgba(20, 30, 48, 0.5) 0%, rgba(6, 7, 10, 1) 100%),
+                url('img/index/sfondo.png');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
-            color: white;
-            font-family: 'Segoe UI', sans-serif;
+            color: #e0e0e0;
+            font-family: 'Rajdhani', sans-serif;
             margin: 0;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
-            min-height: 100vh;
+            overflow-x: hidden;
         }
-        
+
+        /* Overlay Effetto Scanline */
+        body::after {
+            content: " ";
+            position: fixed;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), 
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+            z-index: 999;
+            background-size: 100% 3px, 3px 100%;
+            pointer-events: none;
+            opacity: 0.4;
+        }
+
+        /* Navigazione */
         nav {
             display: flex;
             justify-content: space-between;
-            padding: 15px 20px;
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--neon-blue);
-        }
-
-        .hub-menu {
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
             align-items: center;
-            gap: 20px;
-            padding: 20px;
+            padding: 15px 25px;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid var(--neon-blue);
+            box-shadow: 0 0 15px rgba(0, 242, 255, 0.3);
+            z-index: 1000;
         }
 
+        #auth-status button {
+            background: none;
+            border: 1px solid var(--neon-pink);
+            color: var(--neon-pink);
+            padding: 5px 12px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            border-radius: 4px;
+            transition: 0.3s;
+        }
+
+        #auth-status button:hover {
+            background: var(--neon-pink);
+            color: white;
+            box-shadow: 0 0 10px var(--neon-pink);
+        }
+
+        /* Schermate Generali */
+        .page { display: none; padding: 20px; width: 100%; max-width: 600px; margin: auto; z-index: 10; flex-direction: column; }
+        .active { display: flex; animation: fadeIn 0.5s ease-out; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Design Sezioni */
+        .section {
+            background: rgba(10, 11, 16, 0.9);
+            padding: 30px;
+            border-radius: 2px;
+            border: 1px solid var(--glass-border);
+            position: relative;
+            box-shadow: inset 0 0 20px rgba(0, 242, 255, 0.05);
+        }
+
+        .section::before { /* Angolino futuristico */
+            content: ""; position: absolute; top: -1px; left: -1px; width: 20px; height: 20px;
+            border-top: 3px solid var(--neon-blue); border-left: 3px solid var(--neon-blue);
+        }
+
+        h2 {
+            font-family: 'Orbitron', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-size: 1.2rem;
+            margin-bottom: 25px;
+            color: var(--neon-blue);
+            text-shadow: 0 0 8px rgba(0, 242, 255, 0.5);
+        }
+
+        /* Input & Form */
+        input, select, textarea {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid #333;
+            color: var(--neon-blue);
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 4px;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1rem;
+            transition: 0.3s;
+        }
+
+        input:focus { border-color: var(--neon-blue); outline: none; box-shadow: 0 0 10px rgba(0, 242, 255, 0.2); }
+
+        /* Hub Buttons */
+        .hub-menu { gap: 20px; width: 100%; }
+        
         .hub-btn {
             width: 100%;
-            max-width: 400px;
-            padding: 18px;
-            background: var(--glass);
+            padding: 20px;
+            background: rgba(0, 242, 255, 0.03);
             border: 1px solid var(--glass-border);
-            border-radius: 12px;
-            backdrop-filter: blur(15px);
             color: white;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
             text-transform: uppercase;
-            font-weight: bold;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: 0.4s;
+            position: relative;
+            overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1rem;
         }
+
+        .hub-btn::after {
+            content: ''; position: absolute; width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 242, 255, 0.1), transparent);
+            top: 0; left: -100%; transition: 0.5s;
+        }
+
+        .hub-btn:hover::after { left: 100%; }
 
         .hub-btn:hover {
-            background: rgba(0, 242, 255, 0.15);
+            background: rgba(0, 242, 255, 0.1);
             border-color: var(--neon-blue);
-            transform: translateY(-2px);
+            box-shadow: 0 0 20px rgba(0, 242, 255, 0.2);
+            transform: scale(1.02);
         }
 
-        .google-btn {
-            background: white;
-            color: #444;
-            margin-top: 15px;
-            font-size: 0.9rem;
-            text-transform: none;
+        .btn-primary { border-color: var(--neon-pink); color: var(--neon-pink); }
+        .btn-primary:hover { background: rgba(255, 0, 122, 0.1); border-color: var(--neon-pink); box-shadow: 0 0 20px rgba(255, 0, 122, 0.2); color: white; }
+
+        /* Login Logo */
+        .login-logo {
+            width: 120px;
+            filter: drop-shadow(0 0 10px var(--neon-blue));
+            margin-bottom: 20px;
         }
 
-        .page { display: none; padding: 20px; max-width: 800px; margin: auto; width: 90%; }
-        .active { display: flex; flex-direction: column; }
-        
-        .section {
-            background: rgba(10, 11, 16, 0.88);
-            padding: 25px;
-            border-radius: 12px;
-            border: 1px solid var(--neon-blue);
-            backdrop-filter: blur(10px);
+        /* Mobile Tip */
+        .mobile-tip {
+            margin: 20px auto;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid var(--neon-purple);
+            border-radius: 4px;
+            font-size: 0.8rem;
+            color: #bbb;
+            max-width: 90%;
+            text-align: center;
+            line-height: 1.4;
         }
-
-        input, select, textarea {
-            width: 100%; background: rgba(0,0,0,0.6); border: 1px solid var(--glass-border);
-            color: white; padding: 12px; margin: 10px 0; border-radius: 8px; box-sizing: border-box;
-        }
-
-        .back-btn {
-            background: none; border: 1px solid var(--neon-pink); color: var(--neon-pink);
-            padding: 8px 15px; margin-bottom: 20px; cursor: pointer; align-self: flex-start; border-radius: 5px;
-        }
-
-        .login-logo { width: 100px; margin-bottom: 15px; }
 
         .pg-card {
-            background: rgba(255,255,255,0.05); border-left: 4px solid var(--neon-blue);
-            padding: 15px; margin-bottom: 10px; border-radius: 4px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(0, 242, 255, 0.1);
+            border-left: 4px solid var(--neon-blue);
+            padding: 15px;
+            margin-bottom: 12px;
+            transition: 0.3s;
         }
         
-        #resend-container { margin-top: 15px; display: none; }
+        .pg-card:hover { background: rgba(0, 242, 255, 0.05); }
+
+        .google-btn {
+            background: white; color: black; font-weight: bold; border-radius: 4px; margin-top: 15px;
+        }
+
     </style>
 </head>
 <body>
@@ -167,67 +222,45 @@
     <div id="role-tag"></div>
 </nav>
 
-<div id="login-page" class="page active" style="justify-content: center; align-items: center; min-height: 85vh;">
-    <div class="section" style="width: 100%; max-width: 380px; text-align: center;">
+<div id="login-page" class="page active" style="justify-content: center; min-height: 80vh;">
+    <div class="section" style="text-align: center;">
         <img src="img/index/icona_app.png" class="login-logo">
-        <h2 style="color:var(--neon-blue); margin-bottom: 20px;">Sincronizzazione</h2>
+        <h2>System_Login</h2>
         
-        <input type="email" id="email" placeholder="Email">
-        <input type="password" id="password" placeholder="Password">
+        <input type="email" id="email" placeholder="Credenziale_Email">
+        <input type="password" id="password" placeholder="Access_Code">
         
-        <button class="hub-btn" style="padding: 15px; margin-top: 10px;" onclick="handleAuth('login')">Accedi</button>
-        <button class="hub-btn" style="padding: 15px; margin-top: 10px; background: #30363d;" onclick="handleAuth('signup')">Registrati</button>
+        <button class="hub-btn" style="margin-top: 10px; border-color: var(--neon-blue);" onclick="handleAuth('login')">Inizializza Sessione</button>
+        <button class="hub-btn btn-primary" style="margin-top: 10px;" onclick="handleAuth('signup')">Nuovo Operatore</button>
         
-        <div id="resend-container">
-            <button class="back-btn" style="width:100%" onclick="resendVerification()">Reinvia Email di Verifica</button>
+        <div id="resend-container" style="margin-top: 15px; display: none;">
+            <p style="font-size: 0.8rem; color: var(--neon-pink);">Verifica richiesta. Controlla la tua inbox.</p>
+            <button class="hub-btn" style="font-size: 0.7rem; padding: 10px;" onclick="resendVerification()">Reinvia Token</button>
         </div>
 
-        <div style="margin: 20px 0; color: #555;">——— OPPURE ———</div>
+        <div style="margin: 20px 0; color: #444; font-size: 0.8rem; letter-spacing: 2px;">OR_AUTHENTICATE_VIA</div>
         
         <button class="hub-btn google-btn" onclick="handleGoogleLogin()">
-            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" style="width:18px; margin-right:10px;">
-            Accedi con Google
+            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" style="width:16px; margin-right:10px;">
+            Google_Sync
         </button>
     </div>
 </div>
 
 <div id="hub-page" class="page">
+    <div style="text-align: center; margin-bottom: 30px;">
+        <h1 style="font-family: 'Orbitron'; font-size: 1.5rem; color: white; letter-spacing: 5px;">KOTRA_COMMAND</h1>
+        <div style="width: 50px; height: 2px; background: var(--neon-blue); margin: 10px auto;"></div>
+    </div>
     <div class="hub-menu">
-         <button class="hub-btn" onclick="window.location.href='archivio.html'">📂 I Miei Personaggi</button>
-         <button class="hub-btn" onclick="window.location.href='creatore.html'"> INIZIALIZZA MATRICOLA </button>
-        <button class="hub-btn" onclick="window.location.href='biblioteca.html'">📚 Biblioteca</button>
+         <button class="hub-btn" onclick="window.location.href='archivio.html'">📂 Archivio_Personaggi</button>
+         <button class="hub-btn btn-primary" onclick="window.location.href='creatore.html'">🧬 Inizializza_Matricola</button>
+         <button class="hub-btn" onclick="window.location.href='biblioteca.html'">📚 Biblioteca_Dati</button>
     </div>
-</div>
 
-<div id="home-page" class="page">
-    <button class="back-btn" onclick="showPage('hub-page')">← HUB</button>
-    <div class="section">
-        <h2>Archivio Studenti</h2>
-        <div id="pg-list"></div>
-    </div>
-</div>
-
-<div id="create-page" class="page">
-    <button class="back-btn" onclick="showPage('hub-page')">← ANNULLA</button>
-    <div class="section">
-        <h2>Nuovo Personaggio</h2>
-        <input type="text" id="new-char-name" placeholder="Nome Personaggio">
-        <select id="new-char-race">
-            <option value="Umano">Umano</option>
-            <option value="Nephilim">Nephilim</option>
-            <option value="Esper">Esper</option>
-            <option value="Bionico">Bionico</option>
-        </select>
-        <textarea id="new-char-notes" rows="4" placeholder="Note..."></textarea>
-        <button class="hub-btn" style="border-color: var(--neon-pink);" onclick="createCharacter()">Salva nel Database</button>
-    </div>
-</div>
-
-<div id="library-page" class="page">
-    <button class="back-btn" onclick="showPage('hub-page')">← ESCI</button>
-    <div class="section">
-        <h2>Biblioteca Brit-Annia</h2>
-        <p>In attesa di dati dal manuale...</p>
+    <div class="mobile-tip">
+        <span style="color: var(--neon-blue);">TERMINAL_TIP:</span><br>
+        Per un'esperienza HUD completa, aggiungi questa pagina alla tua <b>Home Screen</b>.
     </div>
 </div>
 
@@ -256,34 +289,31 @@
     window.showPage = (pageId) => {
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
         document.getElementById(pageId).classList.add('active');
-        if(pageId === 'home-page' && currentUser) loadCharacters();
     }
 
-    // Login e Registrazione
     window.handleAuth = async (type) => {
         const email = document.getElementById('email').value;
         const pass = document.getElementById('password').value;
-        if(!email || !pass) return alert("Inserisci credenziali");
+        if(!email || !pass) return alert("Inserire credenziali di accesso.");
         try {
             if(type === 'login') {
                 const userCred = await signInWithEmailAndPassword(auth, email, pass);
                 if(!userCred.user.emailVerified) {
                     document.getElementById('resend-container').style.display = 'block';
-                    alert("Verifica la tua email prima di entrare!");
+                    alert("Account non verificato. Controlla la tua email.");
                     auth.signOut();
                 }
             } else {
                 const userCred = await createUserWithEmailAndPassword(auth, email, pass);
                 await sendEmailVerification(userCred.user);
-                alert("Registrazione effettuata! Controlla l'email per confermare.");
+                alert("Protocollo di registrazione inviato alla tua email.");
                 auth.signOut();
             }
-        } catch (e) { alert("Errore: " + e.message); }
+        } catch (e) { alert("ERROR_LOG: " + e.message); }
     }
 
     window.handleGoogleLogin = async () => {
-        try { await signInWithPopup(auth, provider); } 
-        catch (e) { alert(e.message); }
+        try { await signInWithPopup(auth, provider); } catch (e) { alert(e.message); }
     }
 
     window.resendVerification = async () => {
@@ -292,7 +322,7 @@
         try {
             const userCred = await signInWithEmailAndPassword(auth, email, pass);
             await sendEmailVerification(userCred.user);
-            alert("Email di verifica reinviata!");
+            alert("Nuovo token inviato.");
             auth.signOut();
         } catch (e) { alert(e.message); }
     }
@@ -303,45 +333,21 @@
         const roleDiv = document.getElementById('role-tag');
         
         if(user && (user.emailVerified || user.providerData[0].providerId === 'google.com')) {
-            statusDiv.innerHTML = `<button onclick="auth.signOut()" style="background:none; border:none; color:var(--neon-blue); cursor:pointer; font-size:0.7rem;">LOGOUT (${user.email})</button>`;
-            if(user.email === MASTER_EMAIL) roleDiv.innerHTML = `<span style="background:var(--neon-blue); color:black; padding:2px 5px; font-size:0.6rem; font-weight:bold; border-radius:3px;">MASTER</span>`;
+            statusDiv.innerHTML = `<button onclick="auth.signOut()">Disconnetti Sessione</button>`;
+            if(user.email === MASTER_EMAIL) {
+                roleDiv.innerHTML = `<span style="background:var(--neon-pink); color:white; padding:3px 8px; font-size:0.7rem; font-family:'Orbitron'; font-weight:bold; border-radius:2px; box-shadow: 0 0 10px var(--neon-pink);">ACCESS: MASTER</span>`;
+            } else {
+                roleDiv.innerHTML = `<span style="border:1px solid var(--neon-blue); color:var(--neon-blue); padding:3px 8px; font-size:0.7rem; font-family:'Orbitron'; border-radius:2px;">OP_LEVEL: 01</span>`;
+            }
             showPage('hub-page');
         } else {
             showPage('login-page');
+            statusDiv.innerHTML = "";
+            roleDiv.innerHTML = "";
         }
     });
 
-    // Funzioni Database
-    window.createCharacter = async () => {
-        const name = document.getElementById('new-char-name').value;
-        const race = document.getElementById('new-char-race').value;
-        const notes = document.getElementById('new-char-notes').value;
-        if(!name) return alert("Nome obbligatorio");
-        try {
-            await setDoc(doc(db, "characters", name), {
-                name, race, notes, ownerId: currentUser.uid, ownerEmail: currentUser.email
-            });
-            alert("PG Creato!");
-            showPage('home-page');
-        } catch (e) { alert(e.message); }
-    }
-
-    window.loadCharacters = async () => {
-        const list = document.getElementById('pg-list');
-        list.innerHTML = "Caricamento...";
-        let q = (currentUser.email === MASTER_EMAIL) ? query(collection(db, "characters")) : query(collection(db, "characters"), where("ownerId", "==", currentUser.uid));
-        const snap = await getDocs(q);
-        list.innerHTML = snap.empty ? "Nessun dato." : "";
-        snap.forEach(d => {
-            const p = d.data();
-            list.innerHTML += `<div class="pg-card"><b style="color:var(--neon-blue)">${p.name}</b> [${p.race}]<br><small style="color:#777">${p.notes || ''}</small></div>`;
-        });
-    }
 </script>
 
-    <div class="mobile-tip">
-    <span style="color: var(--neon-blue);">📱 TIPS:</span> 
-    Per usare l'archivio come un'App, tocca i tre puntini (Android) o l'icona Condividi (iOS) e seleziona <b>"Aggiungi a Home"</b>.
-</div>
 </body>
 </html>
