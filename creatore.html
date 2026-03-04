@@ -6,16 +6,17 @@
     <title>KOTRA - Protocollo Inizializzazione</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
-        :root { --neon-blue: #00f2ff; --neon-pink: #ff00ff; --neon-yellow: #ffff00; --neon-orange: #ff8c00; --bg-dark: #0a0a0c; }
+        :root { --neon-blue: #00f2ff; --neon-pink: #ff00ff; --neon-yellow: #ffff00; --bg-dark: #0a0a0c; }
         body { background: var(--bg-dark); color: white; font-family: 'Rajdhani', sans-serif; padding: 20px; line-height: 1.4; }
         
         .nav-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid #333; padding-bottom: 10px; }
-        .btn-nav { text-decoration: none; color: var(--neon-blue); font-family: 'Orbitron'; font-size: 0.8rem; border: 1px solid var(--neon-blue); padding: 5px 15px; transition: 0.3s; }
-        .btn-nav:hover { background: var(--neon-blue); color: black; box-shadow: 0 0 10px var(--neon-blue); }
+        .btn-nav { text-decoration: none; color: var(--neon-blue); font-family: 'Orbitron'; font-size: 0.8rem; border: 1px solid var(--neon-blue); padding: 5px 15px; }
+        .btn-logout { background: transparent; border: 1px solid var(--neon-pink); color: var(--neon-pink); padding: 5px 15px; font-family: 'Orbitron'; font-size: 0.7rem; cursor: pointer; margin-left: 10px; }
 
-        h1 { font-family: 'Orbitron'; color: var(--neon-blue); text-transform: uppercase; margin: 0; letter-spacing: 2px; font-size: 1.5rem; }
-        h2 { font-family: 'Orbitron'; color: var(--neon-pink); font-size: 1rem; margin-top: 0; }
-        
+        .role-badge { font-family: 'Orbitron'; font-size: 0.65rem; padding: 2px 8px; border-radius: 10px; border: 1px solid; margin-left: 10px; }
+        .master { border-color: var(--neon-pink); color: var(--neon-pink); }
+        .player { border-color: var(--neon-blue); color: var(--neon-blue); }
+
         .form-section { background: rgba(255,255,255,0.05); padding: 20px; border: 1px solid #333; margin-bottom: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
         .full-width { grid-column: 1 / -1; }
         
@@ -25,58 +26,47 @@
         .img-preview { width: 100%; height: 250px; border: 2px dashed #444; margin-top: 10px; display: flex; align-items: center; justify-content: center; overflow: hidden; background: #000; }
         .img-preview img { width: 100%; height: 100%; object-fit: cover; object-position: center 20%; }
 
-        .mezzosangue-panel { grid-column: 1 / -1; background: rgba(255, 255, 0, 0.1); padding: 15px; border: 2px solid var(--neon-yellow); display: flex; align-items: center; justify-content: space-between; cursor: pointer; }
-        .switch { position: relative; display: inline-block; width: 60px; height: 30px; }
-        .switch input { opacity: 0; width: 0; height: 0; }
-        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #333; transition: .4s; border-radius: 34px; }
-        .slider:before { position: absolute; content: ""; height: 22px; width: 22px; left: 4px; bottom: 4px; background-color: white; transition: .4s; border-radius: 50%; }
-        input:checked + .slider { background-color: var(--neon-yellow); }
-        input:checked + .slider:before { transform: translateX(30px); }
-
-        .pl-visualizer { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+        .pl-visualizer { display: flex; gap: 8px; margin-top: 10px; }
         .dot { width: 16px; height: 16px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.4); }
         .dot.limite { background: var(--neon-blue); box-shadow: 0 0 10px var(--neon-blue); }
         .dot.sovraccarico { background: #fff; box-shadow: 0 0 10px #fff; }
 
-        .action-bar { display: grid; grid-template-columns: 1fr 2fr; gap: 20px; margin-top: 20px; }
-        button { background: transparent; padding: 15px; font-family: 'Orbitron'; font-weight: bold; cursor: pointer; text-transform: uppercase; transition: 0.3s; }
-        .btn-save { border: 2px solid var(--neon-blue); color: var(--neon-blue); }
-        .btn-save:hover { background: var(--neon-blue); color: black; box-shadow: 0 0 20px var(--neon-blue); }
-        .btn-reset { border: 2px solid var(--neon-orange); color: var(--neon-orange); }
-        
-        .role-badge { font-family: 'Orbitron'; font-size: 0.6rem; padding: 2px 8px; border: 1px solid; border-radius: 10px; }
-        .master { border-color: var(--neon-pink); color: var(--neon-pink); }
-        .player { border-color: var(--neon-blue); color: var(--neon-blue); }
+        .action-bar { display: grid; grid-template-columns: 1fr 2fr; gap: 20px; }
+        .btn-save { background: transparent; border: 2px solid var(--neon-blue); color: var(--neon-blue); padding: 15px; font-family: 'Orbitron'; font-weight: bold; cursor: pointer; }
+        .btn-save:hover { background: var(--neon-blue); color: black; }
     </style>
 </head>
 <body>
 
     <header class="nav-header">
         <div>
-            <h1>Sincronia Matricola</h1>
-            <span id="role-display" class="role-badge"></span>
+            <h1 style="display:inline-block; font-size: 1.2rem;">INIZIALIZZAZIONE MATRICOLA</h1>
+            <span id="role-display" class="role-badge">VERIFICA...</span>
         </div>
-        <a href="archivio.html" class="btn-nav">VAI ALL'ARCHIVIO</a>
+        <div style="display: flex; align-items: center;">
+            <a href="archivio.html" class="btn-nav">ARCHIVIO</a>
+            <button class="btn-logout" id="btn-logout">LOGOUT</button>
+        </div>
     </header>
 
     <div id="pg-form">
         <div class="form-section">
-            <div class="full-width"><h2>1. Profilo Operativo</h2></div>
+            <div class="full-width"><h2 style="font-family:'Orbitron'; color:var(--neon-pink);">1. DATI CORE</h2></div>
             <div>
                 <label>NOME MATRICOLA (Memoria I)</label>
                 <input type="text" id="nome" placeholder="Arthur">
-                <label style="margin-top:15px;">ANIMA</label>
-                <input type="text" id="anima" placeholder="Parole chiave">
+                <label style="margin-top:15px;">ANIMA (Parole di Potere)</label>
+                <input type="text" id="anima" placeholder="Es: Fiamme, Silenzio">
             </div>
             <div>
-                <label>RITRATTO (Focus Viso)</label>
+                <label>RITRATTO OPERATIVO</label>
                 <input type="file" id="img-file" accept="image/*" onchange="handleImage(event)">
-                <div class="img-preview" id="preview-box">VISUALE OFFLINE</div>
+                <div class="img-preview" id="preview-box">OFFLINE</div>
             </div>
         </div>
 
         <div class="form-section">
-            <div class="full-width"><h2>2. Parametri Identitari</h2></div>
+            <div class="full-width"><h2 style="font-family:'Orbitron'; color:var(--neon-pink);">2. FILTRO IDENTITÀ</h2></div>
             <div>
                 <label>CORE</label><input type="text" id="core">
                 <label style="margin-top:15px;">DIFETTO</label><input type="text" id="difetto">
@@ -86,7 +76,7 @@
                 <label style="margin-top:15px;">NEMESI</label><input type="text" id="nemesi">
             </div>
             <div class="full-width">
-                <label>TRATTI d8 (Inserisci i 4 iniziali)</label>
+                <label>I 4 TRATTI d8 INIZIALI</label>
                 <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
                     <input type="text" class="tratto-input" placeholder="Tratto 1">
                     <input type="text" class="tratto-input" placeholder="Tratto 2">
@@ -97,38 +87,37 @@
         </div>
 
         <div class="form-section">
-            <div class="full-width"><h2>3. Archeotipo e Unità Knight</h2></div>
+            <div class="full-width"><h2 style="font-family:'Orbitron'; color:var(--neon-pink);">3. PROTOCOLLO KNIGHT</h2></div>
             <div><label>STIRPE</label><select id="select-stirpe" onchange="aggiornaEredita()"></select></div>
             <div><label>JOB</label><select id="select-job"></select></div>
             
-            <div class="mezzosangue-panel" onclick="document.getElementById('mezzosangue').click()">
-                <span style="color:var(--neon-yellow); font-family:'Orbitron';">⚠ PROTOCOLLO MEZZOSANGUE</span>
-                <label class="switch"><input type="checkbox" id="mezzosangue" onchange="aggiornaEredita()"><span class="slider"></span></label>
+            <div class="full-width" style="background:rgba(255,255,0,0.1); padding:10px; border:1px solid var(--neon-yellow);">
+                <label style="color:var(--neon-yellow);"><input type="checkbox" id="mezzosangue" onchange="aggiornaEredita()" style="width:auto;"> ATTIVA MEZZOSANGUE (Accedi a tutte le Eredità)</label>
             </div>
 
             <div class="full-width"><label>EREDITÀ SELEZIONATA</label><select id="select-eredita"></select></div>
-            <div><label>NOME KNIGHT</label><input type="text" id="nome-knight"></div>
-            <div><label>MODELLO FRAME</label><input type="text" id="frame-knight"></div>
         </div>
 
         <div class="form-section">
-            <div class="full-width"><h2>4. Riserve Energetiche</h2></div>
+            <div class="full-width"><h2 style="font-family:'Orbitron'; color:var(--neon-pink);">4. RISORSE</h2></div>
             <div class="full-width">
-                <label>Limite (8) & Sovraccarico (3 per Memoria I)</label>
+                <label>LIMITE (8) & SOVRACCARICO (3)</label>
                 <div id="pl-display" class="pl-visualizer"></div>
             </div>
         </div>
     </div>
 
     <div class="action-bar">
-        <button class="btn-reset" onclick="location.reload()">RESET SISTEMI</button>
-        <button class="btn-save" id="btn-save">INVIA ALL'ARCHIVIO CLOUD</button>
+        <button onclick="location.reload()" style="border:1px solid #444; color:#888; cursor:pointer; font-family:'Orbitron';">RESET</button>
+        <button class="btn-save" id="btn-save">SINCRONIZZA CON IL CLOUD</button>
     </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
+        // CONFIGURAZIONE FIREBASE
         const firebaseConfig = {
             apiKey: "AIzaSyCAMvHn28SY3k9TiLvz2afjn0zpj73Lw5Y",
             authDomain: "kotra-8da26.firebaseapp.com",
@@ -140,25 +129,34 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
+        const auth = getAuth(app);
 
+        const MASTER_EMAIL = "tua-email@esempio.com"; // <--- INSERISCI LA TUA MAIL QUI
+        let currentUser = null;
+        let isMaster = false;
         let currentImgData = "";
         let dbStirpi = [];
 
-        // Gestione Identità e Ruoli
-        const isMaster = localStorage.getItem('is_master') === 'true';
-        let userId = localStorage.getItem('kotra_uid');
-        if(!userId) {
-            userId = 'USR-' + Math.random().toString(36).substr(2, 9).toUpperCase();
-            localStorage.setItem('kotra_uid', userId);
-        }
-        
-        const rDisplay = document.getElementById('role-display');
-        rDisplay.innerText = isMaster ? "AUTORIZZAZIONE MASTER" : `UTENTE: ${userId}`;
-        rDisplay.className = `role-badge ${isMaster ? 'master' : 'player'}`;
+        // 1. GESTIONE AUTENTICAZIONE
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                currentUser = user;
+                isMaster = (user.email === MASTER_EMAIL);
+                const badge = document.getElementById('role-display');
+                badge.innerText = isMaster ? "MASTER" : "GIOCATORE";
+                badge.className = `role-badge ${isMaster ? 'master' : 'player'}`;
+                init();
+            } else {
+                window.location.href = "index.html";
+            }
+        });
 
+        document.getElementById('btn-logout').addEventListener('click', () => signOut(auth));
+
+        // 2. LOGICA IMMAGINI
         window.handleImage = (e) => {
             const file = e.target.files[0];
-            if(file.size > 800000) return alert("Immagine troppo pesante! Max 800KB.");
+            if(file.size > 800000) return alert("File troppo grande!");
             const reader = new FileReader();
             reader.onload = () => {
                 currentImgData = reader.result;
@@ -167,11 +165,13 @@
             reader.readAsDataURL(file);
         };
 
+        // 3. CARICAMENTO DATABASE JSON
         async function init() {
             try {
                 const [resS, resJ] = await Promise.all([fetch('stirpi_database.json'), fetch('classi_database.json')]);
                 dbStirpi = (await resS.json()).items;
                 const jobs = (await resJ.json()).items;
+                
                 const sStirpe = document.getElementById('select-stirpe');
                 const sJob = document.getElementById('select-job');
                 
@@ -180,7 +180,7 @@
                 
                 aggiornaEredita();
                 renderPL();
-            } catch (e) { console.error("Database offline."); }
+            } catch (e) { console.error("Errore database JSON"); }
         }
 
         window.aggiornaEredita = () => {
@@ -202,9 +202,10 @@
             for(let i=0; i<3; i++) display.innerHTML += '<div class="dot sovraccarico"></div>';
         }
 
+        // 4. SALVATAGGIO FINALE
         document.getElementById('btn-save').addEventListener('click', async () => {
             const nome = document.getElementById('nome').value;
-            if(!nome) return alert("Inserisci un nome per la Matricola!");
+            if(!nome) return alert("Nome obbligatorio!");
 
             const pg = {
                 nome,
@@ -217,35 +218,36 @@
                 stirpe: document.getElementById('select-stirpe').value,
                 job: document.getElementById('select-job').value,
                 eredita: document.getElementById('select-eredita').value,
-                knight: document.getElementById('nome-knight').value,
-                frame: document.getElementById('frame-knight').value,
                 immagine: currentImgData,
-                creatoDa: isMaster ? "MASTER" : userId,
+                
+                // DATI DI PROPRIETÀ
+                creatoDa: isMaster ? "MASTER" : currentUser.uid,
+                ownerEmail: currentUser.email,
                 timestamp: serverTimestamp(),
-                memorie: [], // Inizialmente vuote, sbloccabili nell'archivio
+                
+                // SLOT EVOLUTIVI VUOTI
+                job2: "",
+                memorie: [],
                 capacita: [],
                 oggetti: []
             };
 
             try {
                 const btn = document.getElementById('btn-save');
-                btn.innerText = "TRASMISSIONE DATI...";
+                btn.innerText = "SINCRONIZZAZIONE...";
                 btn.disabled = true;
+
+                const docId = `${currentUser.uid}-${nome.toLowerCase().replace(/\s+/g, '-')}`;
+                await setDoc(doc(db, "personaggi", docId), pg);
                 
-                // Salvataggio con ID univoco basato sul tempo
-                await setDoc(doc(db, "personaggi", `${nome.toLowerCase()}-${Date.now()}`), pg);
-                
-                alert("Matricola Archiviata con successo!");
+                alert("Matricola Archiviata!");
                 window.location.href = "archivio.html";
             } catch (e) {
+                alert("Errore salvataggio!");
                 console.error(e);
-                alert("Errore nel salvataggio. Assicurati che le regole di scrittura su Firebase siano attive (if true).");
-                document.getElementById('btn-save').innerText = "RIPROVA";
                 document.getElementById('btn-save').disabled = false;
             }
         });
-
-        window.onload = init;
     </script>
 </body>
 </html>
