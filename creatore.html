@@ -14,16 +14,16 @@
         .btn-logout { background: transparent; border: 1px solid var(--neon-pink); color: var(--neon-pink); padding: 5px 15px; font-family: 'Orbitron'; font-size: 0.7rem; cursor: pointer; margin-left: 10px; }
 
         .role-badge { font-family: 'Orbitron'; font-size: 0.65rem; padding: 2px 8px; border-radius: 10px; border: 1px solid; margin-left: 10px; }
-        .master { border-color: var(--neon-pink); color: var(--neon-pink); }
+        .master { border-color: var(--neon-pink); color: var(--neon-pink); box-shadow: 0 0 5px var(--neon-pink); }
         .player { border-color: var(--neon-blue); color: var(--neon-blue); }
 
-        .form-section { background: rgba(255,255,255,0.05); padding: 20px; border: 1px solid #333; margin-bottom: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .form-section { background: rgba(255,255,255,0.05); padding: 20px; border: 1px solid #333; margin-bottom: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; border-left: 3px solid var(--neon-blue); }
         .full-width { grid-column: 1 / -1; }
         
         label { display: block; color: var(--neon-blue); font-family: 'Orbitron'; font-size: 0.75rem; margin-bottom: 5px; text-transform: uppercase; }
-        input, select { width: 100%; background: #000; border: 1px solid #444; color: white; padding: 12px; font-family: 'Rajdhani'; font-size: 1.1rem; box-sizing: border-box; }
+        input, select, textarea { width: 100%; background: #000; border: 1px solid #444; color: white; padding: 12px; font-family: 'Rajdhani'; font-size: 1.1rem; box-sizing: border-box; }
         
-        .img-preview { width: 100%; height: 250px; border: 2px dashed #444; margin-top: 10px; display: flex; align-items: center; justify-content: center; overflow: hidden; background: #000; }
+        .img-preview { width: 100%; height: 250px; border: 2px dashed #444; margin-top: 10px; display: flex; align-items: center; justify-content: center; overflow: hidden; background: #000; position: relative; }
         .img-preview img { width: 100%; height: 100%; object-fit: cover; object-position: center 20%; }
 
         .pl-visualizer { display: flex; gap: 8px; margin-top: 10px; }
@@ -31,17 +31,17 @@
         .dot.limite { background: var(--neon-blue); box-shadow: 0 0 10px var(--neon-blue); }
         .dot.sovraccarico { background: #fff; box-shadow: 0 0 10px #fff; }
 
-        .action-bar { display: grid; grid-template-columns: 1fr 2fr; gap: 20px; }
-        .btn-save { background: transparent; border: 2px solid var(--neon-blue); color: var(--neon-blue); padding: 15px; font-family: 'Orbitron'; font-weight: bold; cursor: pointer; }
-        .btn-save:hover { background: var(--neon-blue); color: black; }
+        .btn-save { width: 100%; background: transparent; border: 2px solid var(--neon-blue); color: var(--neon-blue); padding: 20px; font-family: 'Orbitron'; font-weight: bold; cursor: pointer; transition: 0.3s; margin-top: 20px; }
+        .btn-save:hover { background: var(--neon-blue); color: black; box-shadow: 0 0 20px var(--neon-blue); }
+        .btn-save:disabled { border-color: #444; color: #444; cursor: wait; }
     </style>
 </head>
 <body>
 
     <header class="nav-header">
         <div>
-            <h1 style="display:inline-block; font-size: 1.2rem;">INIZIALIZZAZIONE MATRICOLA</h1>
-            <span id="role-display" class="role-badge">VERIFICA...</span>
+            <h1 style="display:inline-block; font-size: 1.2rem; margin:0;">GENERATORE MATRICOLE</h1>
+            <span id="role-display" class="role-badge">SINCRONIZZAZIONE...</span>
         </div>
         <div style="display: flex; align-items: center;">
             <a href="archivio.html" class="btn-nav">ARCHIVIO</a>
@@ -51,22 +51,22 @@
 
     <div id="pg-form">
         <div class="form-section">
-            <div class="full-width"><h2 style="font-family:'Orbitron'; color:var(--neon-pink);">1. DATI CORE</h2></div>
+            <div class="full-width"><h2 style="font-family:'Orbitron'; color:var(--neon-pink); margin:0;">1. BIOMETRIA</h2></div>
             <div>
-                <label>NOME MATRICOLA (Memoria I)</label>
-                <input type="text" id="nome" placeholder="Arthur">
-                <label style="margin-top:15px;">ANIMA (Parole di Potere)</label>
-                <input type="text" id="anima" placeholder="Es: Fiamme, Silenzio">
+                <label>NOME (Memoria I)</label>
+                <input type="text" id="nome" placeholder="Es: Kael">
+                <label style="margin-top:15px;">ANIMA (Tag)</label>
+                <input type="text" id="anima" placeholder="Es: Vetro, Tempesta">
             </div>
             <div>
-                <label>RITRATTO OPERATIVO</label>
+                <label>RITRATTO (Max 800kb)</label>
                 <input type="file" id="img-file" accept="image/*" onchange="handleImage(event)">
-                <div class="img-preview" id="preview-box">OFFLINE</div>
+                <div class="img-preview" id="preview-box">SISTEMA OTTICO OFFLINE</div>
             </div>
         </div>
 
         <div class="form-section">
-            <div class="full-width"><h2 style="font-family:'Orbitron'; color:var(--neon-pink);">2. FILTRO IDENTITÀ</h2></div>
+            <div class="full-width"><h2 style="font-family:'Orbitron'; color:var(--neon-pink); margin:0;">2. PARAMETRI PSICHICI</h2></div>
             <div>
                 <label>CORE</label><input type="text" id="core">
                 <label style="margin-top:15px;">DIFETTO</label><input type="text" id="difetto">
@@ -87,37 +87,28 @@
         </div>
 
         <div class="form-section">
-            <div class="full-width"><h2 style="font-family:'Orbitron'; color:var(--neon-pink);">3. PROTOCOLLO KNIGHT</h2></div>
+            <div class="full-width"><h2 style="font-family:'Orbitron'; color:var(--neon-pink); margin:0;">3. CONFIGURAZIONE KNIGHT</h2></div>
             <div><label>STIRPE</label><select id="select-stirpe" onchange="aggiornaEredita()"></select></div>
             <div><label>JOB</label><select id="select-job"></select></div>
             
-            <div class="full-width" style="background:rgba(255,255,0,0.1); padding:10px; border:1px solid var(--neon-yellow);">
-                <label style="color:var(--neon-yellow);"><input type="checkbox" id="mezzosangue" onchange="aggiornaEredita()" style="width:auto;"> ATTIVA MEZZOSANGUE (Accedi a tutte le Eredità)</label>
+            <div class="full-width" style="background:rgba(255,255,0,0.05); padding:10px; border:1px solid rgba(255,255,0,0.3);">
+                <label style="color:var(--neon-yellow); cursor:pointer;">
+                    <input type="checkbox" id="mezzosangue" onchange="aggiornaEredita()" style="width:auto;"> 
+                    ATTIVA PROTOCOLLO MEZZOSANGUE (Accesso a tutte le Eredità)
+                </label>
             </div>
 
-            <div class="full-width"><label>EREDITÀ SELEZIONATA</label><select id="select-eredita"></select></div>
-        </div>
-
-        <div class="form-section">
-            <div class="full-width"><h2 style="font-family:'Orbitron'; color:var(--neon-pink);">4. RISORSE</h2></div>
-            <div class="full-width">
-                <label>LIMITE (8) & SOVRACCARICO (3)</label>
-                <div id="pl-display" class="pl-visualizer"></div>
-            </div>
+            <div class="full-width"><label>EREDITÀ DISPONIBILI</label><select id="select-eredita"></select></div>
         </div>
     </div>
 
-    <div class="action-bar">
-        <button onclick="location.reload()" style="border:1px solid #444; color:#888; cursor:pointer; font-family:'Orbitron';">RESET</button>
-        <button class="btn-save" id="btn-save">SINCRONIZZA CON IL CLOUD</button>
-    </div>
+    <button class="btn-save" id="btn-save">INVIA DATI AL TERMINALE ARCHIVIO</button>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, doc, getDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-        // CONFIGURAZIONE FIREBASE
         const firebaseConfig = {
             apiKey: "AIzaSyCAMvHn28SY3k9TiLvz2afjn0zpj73Lw5Y",
             authDomain: "kotra-8da26.firebaseapp.com",
@@ -131,21 +122,33 @@
         const db = getFirestore(app);
         const auth = getAuth(app);
 
-        const MASTER_EMAIL = "tua-email@esempio.com"; // <--- INSERISCI LA TUA MAIL QUI
         let currentUser = null;
         let isMaster = false;
         let currentImgData = "";
         let dbStirpi = [];
 
-        // 1. GESTIONE AUTENTICAZIONE
-        onAuthStateChanged(auth, (user) => {
+        // 1. RECUPERO RUOLO MASTER DA FIREBASE
+        async function checkMasterRole(email) {
+            try {
+                const docSnap = await getDoc(doc(db, "config", "permissions"));
+                if (docSnap.exists()) {
+                    return email === docSnap.data().masterEmail;
+                }
+            } catch (e) { console.error("Errore permessi:", e); }
+            return false;
+        }
+
+        // 2. GESTIONE SESSIONE
+        onAuthStateChanged(auth, async (user) => {
             if (user) {
                 currentUser = user;
-                isMaster = (user.email === MASTER_EMAIL);
+                isMaster = await checkMasterRole(user.email);
+                
                 const badge = document.getElementById('role-display');
-                badge.innerText = isMaster ? "MASTER" : "GIOCATORE";
+                badge.innerText = isMaster ? "AUTORITÀ MASTER" : `UTENTE: ${user.email}`;
                 badge.className = `role-badge ${isMaster ? 'master' : 'player'}`;
-                init();
+                
+                initForm();
             } else {
                 window.location.href = "index.html";
             }
@@ -153,10 +156,10 @@
 
         document.getElementById('btn-logout').addEventListener('click', () => signOut(auth));
 
-        // 2. LOGICA IMMAGINI
+        // 3. LOGICA IMMAGINI
         window.handleImage = (e) => {
             const file = e.target.files[0];
-            if(file.size > 800000) return alert("File troppo grande!");
+            if(file && file.size > 850000) return alert("File troppo pesante (Max 800KB)!");
             const reader = new FileReader();
             reader.onload = () => {
                 currentImgData = reader.result;
@@ -165,50 +168,49 @@
             reader.readAsDataURL(file);
         };
 
-        // 3. CARICAMENTO DATABASE JSON
-        async function init() {
+        // 4. CARICAMENTO DATI JSON
+        async function initForm() {
             try {
-                const [resS, resJ] = await Promise.all([fetch('stirpi_database.json'), fetch('classi_database.json')]);
+                const [resS, resJ] = await Promise.all([
+                    fetch('stirpi_database.json'), 
+                    fetch('classi_database.json')
+                ]);
                 dbStirpi = (await resS.json()).items;
                 const jobs = (await resJ.json()).items;
                 
                 const sStirpe = document.getElementById('select-stirpe');
                 const sJob = document.getElementById('select-job');
                 
-                dbStirpi.forEach(s => sStirpe.innerHTML += `<option value="${s.nome}">${s.nome}</option>`);
-                jobs.forEach(j => sJob.innerHTML += `<option value="${j.nome}">${j.nome}</option>`);
+                sStirpe.innerHTML = dbStirpi.map(s => `<option value="${s.nome}">${s.nome}</option>`).join('');
+                sJob.innerHTML = jobs.map(j => `<option value="${j.nome}">${j.nome}</option>`).join('');
                 
                 aggiornaEredita();
-                renderPL();
-            } catch (e) { console.error("Errore database JSON"); }
+            } catch (e) { console.error("Database JSON mancanti."); }
         }
 
         window.aggiornaEredita = () => {
             const isMez = document.getElementById('mezzosangue').checked;
             const stirpeSel = document.getElementById('select-stirpe').value;
             const sEredita = document.getElementById('select-eredita');
-            sEredita.innerHTML = "";
+            
+            let options = "";
             dbStirpi.forEach(s => {
                 if (isMez || s.nome === stirpeSel) {
-                    s.eredita.forEach(e => sEredita.innerHTML += `<option value="${e.nome}">[${s.nome}] ${e.nome}</option>`);
+                    s.eredita.forEach(e => {
+                        options += `<option value="${e.nome}">${isMez ? '['+s.nome+'] ' : ''}${e.nome}</option>`;
+                    });
                 }
             });
+            sEredita.innerHTML = options;
         };
 
-        function renderPL() {
-            const display = document.getElementById('pl-display');
-            display.innerHTML = "";
-            for(let i=0; i<8; i++) display.innerHTML += '<div class="dot limite"></div>';
-            for(let i=0; i<3; i++) display.innerHTML += '<div class="dot sovraccarico"></div>';
-        }
-
-        // 4. SALVATAGGIO FINALE
+        // 5. SALVATAGGIO
         document.getElementById('btn-save').addEventListener('click', async () => {
-            const nome = document.getElementById('nome').value;
-            if(!nome) return alert("Nome obbligatorio!");
+            const nome = document.getElementById('nome').value.trim();
+            if(!nome) return alert("Identificativo Matricola mancante!");
 
             const pg = {
-                nome,
+                nome: nome,
                 anima: document.getElementById('anima').value,
                 core: document.getElementById('core').value,
                 motto: document.getElementById('motto').value,
@@ -220,13 +222,12 @@
                 eredita: document.getElementById('select-eredita').value,
                 immagine: currentImgData,
                 
-                // DATI DI PROPRIETÀ
+                // METADATI DI PROPRIETÀ
                 creatoDa: isMaster ? "MASTER" : currentUser.uid,
                 ownerEmail: currentUser.email,
                 timestamp: serverTimestamp(),
                 
-                // SLOT EVOLUTIVI VUOTI
-                job2: "",
+                // STATO INIZIALE
                 memorie: [],
                 capacita: [],
                 oggetti: []
@@ -234,18 +235,20 @@
 
             try {
                 const btn = document.getElementById('btn-save');
-                btn.innerText = "SINCRONIZZAZIONE...";
                 btn.disabled = true;
+                btn.innerText = "TRASMISSIONE IN CORSO...";
 
-                const docId = `${currentUser.uid}-${nome.toLowerCase().replace(/\s+/g, '-')}`;
+                // ID univoco per evitare sovrascritture accidentali
+                const docId = `${currentUser.uid}-${Date.now()}`;
                 await setDoc(doc(db, "personaggi", docId), pg);
                 
-                alert("Matricola Archiviata!");
+                alert("Sincronizzazione completata. Benvenuta, Matricola.");
                 window.location.href = "archivio.html";
             } catch (e) {
-                alert("Errore salvataggio!");
+                alert("Errore di trasmissione! Controlla la connessione.");
                 console.error(e);
                 document.getElementById('btn-save').disabled = false;
+                document.getElementById('btn-save').innerText = "RIPROVA INVIO";
             }
         });
     </script>
