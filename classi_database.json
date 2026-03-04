@@ -386,7 +386,7 @@
 	},
 	{
   "nome": "Collector",
-  "immagine": "img/biblioteca/classi/collector.png",
+  "immagine": "img/bibioteca/classi/collector.png",
   "citazione": "Non avevo mai visto un esemplare così amichevole di Fungillo Zebrato! Devo appuntarlo nel mio Mon-base!",
   "descrizione": "Un Collector dedica la propria vita a viaggiare per il mondo alla ricerca delle creature più interessanti, non per renderle schiave, ma per conoscerle e diventare loro compagno.\n\nNOTE SPECIALI: Segna il NOME del tuo Mon (es. Glatisanthia) e il TIPO del tuo Mon (es. Mutaforma) per definire l'Anima della tua Matricola.",
   "temi_da_esplorare": [
@@ -432,7 +432,7 @@
 	},
 	{
   "nome": "ESPer",
-  "immagine": "img/biblioteca/classi/esper.png",
+  "immagine": "img/bibioteca/classi/esper.png",
   "citazione": "Spirito, materia... Tu pensi ancora che ci sia una differenza tra le due cose, ma io so che mente e corpo agiscono nello stesso modo. Ecco perché posso sollevarti da terra solo pensandoci.",
   "descrizione": "Un ESPer è in grado di sfruttare la propria mente al 100% per fare cose che una persona normale non potrebbe fare. I suoi poteri psichici gli permettono di leggere la mente delle persone, muovere oggetti con la forza del pensiero e vedere il passato di un oggetto anche solo sfiorandolo.\n\nNOTE SPECIALI: Segna l'ORIGINE del Potere (es. Il Sangue dei Musashi) e il TIPO di Potere (es. Telecinesi) per definire la natura delle tue capacità.",
   "temi_da_esplorare": [
@@ -478,7 +478,7 @@
 	},
 	{
   "nome": "Henshin",
-  "immagine": "img/biblioteca/classi/henshin.png",
+  "immagine": "img/bibioteca/classi/henshin.png",
   "citazione": "Giustizia! Onestà! Trasformazione!",
   "descrizione": "Quando un Henshin pronuncia il comando di trasformazione, la luce lo avvolge e il suo costume compare quasi dal nulla, per proteggerlo e dargli la forza di proteggere i più deboli. Solo quando indossa il proprio costume e assume la sua seconda identità, un Henshin può dare fondo alla sua vera forza.\n\nNOTE SPECIALI: Segna il tuo COSTUME (es. Soldier Sun) e la tua ARMA (es. Master Force) per definire l'identità e lo strumento della tua forza.",
   "temi_da_esplorare": [
@@ -524,7 +524,7 @@
 	},
 	{
   "nome": "Idol",
-  "immagine": "img/biblioteca/classi/idol.png",
+  "immagine": "img/bibioteca/classi/idol.png",
   "citazione": "Con la mia canzone riporterò la speranza nei cuori di queste persone!",
   "descrizione": "Un Idol sa che non c'è niente di più potente che toccare il cuore di una persona tramite l'arte. Cercano la bellezza in ogni cosa, sanno smuovere le folle e sanno come mettersi al centro della scena per dare a chiunque li segua la forza di proseguire anche quando la luce sembra persa per sempre.\n\nNOTE SPECIALI: Segna il tuo NOME D'ARTE (es. The Fool) e la tua ARTE (es. Canto) per definire come lascerai di stucco le folle.",
   "temi_da_esplorare": [
@@ -570,7 +570,7 @@
 	},
 	{
   "nome": "Majokko",
-  "immagine": "img/biblioteca/classi/majokko.png",
+  "immagine": "img/bibioteca/classi/majokko.png",
   "citazione": "La vera magia è diventare la persona che saresti sempre dovuta essere.",
   "descrizione": "Forse hai espresso il desiderio sbagliato o forse hai incontrato una strana creatura caduta dal cielo, ma in ogni caso ora puoi trasformarti in qualcun altro e usare la magia per imparare a capire chi sei veramente. Questo nuovo alter-ego ti permette di fare cose altrimenti impossibili e stringere amicizie profonde, ma tutto ha una fine: prima o poi questi poteri scompariranno.\n\nNOTE SPECIALI: Segna il tuo FOCUS (es. Cristallo Magico) e il tipo di MAGIA (es. Illusionismo) per definire l'origine del tuo potere.",
   "temi_da_esplorare": [
@@ -615,4 +615,5 @@
 	]
 	}
   ]
+
 }
