@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KOTRA - Terminale Orientamento</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --neon-blue: #00f2ff; --neon-pink: #ff00ff; --neon-yellow: #ffff00; --bg-dark: #0a0a0c; --glass: rgba(0, 242, 255, 0.05); }
+        body { background: var(--bg-dark); color: #e0e0e0; font-family: 'Rajdhani', sans-serif; margin: 0; padding: 20px; }
+        
+        .tactic-header { border-bottom: 2px solid var(--neon-blue); padding-bottom: 10px; margin-bottom: 30px; display: flex; justify-content: space-between; align-items: flex-end; }
+        .tactic-header h1 { font-family: 'Orbitron'; margin: 0; color: var(--neon-blue); font-size: 1.5rem; text-shadow: 0 0 10px rgba(0,242,255,0.5); }
+
+        .grid-container { display: grid; grid-template-columns: 1fr 350px; gap: 30px; max-width: 1200px; margin: 0 auto; }
+
+        /* Lista Step */
+        .steps-list { display: flex; flex-direction: column; gap: 15px; }
+        .step-card { 
+            background: var(--glass); border: 1px solid #333; padding: 15px; 
+            cursor: pointer; transition: 0.3s; position: relative; overflow: hidden;
+        }
+        .step-card:hover { border-color: var(--neon-blue); background: rgba(0, 242, 255, 0.1); }
+        .step-card.active { border-left: 5px solid var(--neon-pink); background: rgba(255, 0, 255, 0.05); }
+        .step-number { font-family: 'Orbitron'; color: var(--neon-pink); font-size: 0.8rem; margin-bottom: 5px; }
+        .step-title { font-family: 'Orbitron'; font-size: 1.1rem; color: #fff; }
+
+        /* Pannello Dettagli */
+        .detail-panel { 
+            background: #111; border: 1px solid var(--neon-blue); padding: 25px; 
+            position: sticky; top: 20px; height: fit-content; min-height: 500px;
+            box-shadow: inset 0 0 20px rgba(0, 242, 255, 0.1);
+        }
+        .detail-content h2 { font-family: 'Orbitron'; color: var(--neon-blue); margin-top: 0; font-size: 1.2rem; }
+        .info-box { background: rgba(0,0,0,0.4); padding: 15px; border: 1px solid #444; margin-top: 15px; font-size: 0.95rem; line-height: 1.5; }
+        .btn-link { 
+            display: inline-block; margin-top: 20px; padding: 10px 20px; 
+            background: var(--neon-pink); color: #000; font-family: 'Orbitron'; 
+            text-decoration: none; font-weight: bold; font-size: 0.8rem; clip-path: polygon(10% 0, 100% 0, 90% 100%, 0 100%);
+        }
+        
+        /* Liste suggerimenti nel dettaglio */
+        .tag-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 15px; }
+        .tag { background: #222; border: 1px solid #444; padding: 4px 8px; font-size: 0.8rem; color: var(--neon-yellow); }
+
+        @media (max-width: 900px) { .grid-container { grid-template-columns: 1fr; } .detail-panel { position: relative; } }
+    </style>
+</head>
+<body>
+
+    <div class="tactic-header">
+        <div>
+            <h1>PROTOCOLLO ORIENTAMENTO v3.0</h1>
+            <small style="color:var(--neon-pink)">SISTEMA DI ANALISI CURRICULUM // ACCADEMIA DEL ROUND</small>
+        </div>
+        <button onclick="window.location.href='biblioteca.html'" style="background:none; border:1px solid #555; color:#888; cursor:pointer; font-family:'Orbitron'; padding:5px 10px;">ESCI</button>
+    </div>
+
+    <div class="grid-container">
+        <div class="steps-list" id="steps-container">
+            </div>
+
+        <div class="detail-panel" id="detail-panel">
+            <div id="detail-welcome" style="text-align:center; margin-top:100px; color:#555;">
+                <p>SELEZIONARE UN MODULO<br>PER L'ANALISI DATI</p>
+            </div>
+            <div id="detail-content" style="display:none;">
+                <h2 id="d-title">TITOLO STEP</h2>
+                <div id="d-desc" class="info-box">Descrizione...</div>
+                <div id="d-extra"></div>
+                <div id="d-link-container"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let curriculumData = null;
+
+        async function init() {
+            try {
+                const response = await fetch('curriculum.json');
+                curriculumData = await response.json();
+                renderSteps();
+            } catch (e) {
+                console.error("Errore caricamento curriculum.json", e);
+            }
+        }
+
+        function renderSteps() {
+            const container = document.getElementById('steps-container');
+            curriculumData.orientamento_step_by_step.forEach(step => {
+                const div = document.createElement('div');
+                div.className = 'step-card';
+                div.innerHTML = `
+                    <div class="step-number">MODULO_${step.id.toString().padStart(2, '0')}</div>
+                    <div class="step-title">${step.fase}</div>
+                `;
+                div.onclick = () => showDetail(step);
+                container.appendChild(div);
+            });
+        }
+
+        function showDetail(step) {
+            // UI Update
+            document.querySelectorAll('.step-card').forEach(c => c.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+            document.getElementById('detail-welcome').style.display = 'none';
+            const content = document.getElementById('detail-content');
+            content.style.display = 'block';
+
+            // Dati base
+            document.getElementById('d-title').innerText = step.fase;
+            document.getElementById('d-desc').innerText = step.descrizione || step.meccanica || "Analisi modulo in corso...";
+            
+            const extra = document.getElementById('d-extra');
+            const links = document.getElementById('d-link-container');
+            extra.innerHTML = "";
+            links.innerHTML = "";
+
+            // Logica link dinamici (Biblioteca esistente)
+            if (step.fase.includes("STIRPE")) {
+                links.innerHTML = `<a href="biblioteca.html?cat=stirpi" class="btn-link">APRI DATABASE STIRPI ➔</a>`;
+            } else if (step.fase.includes("JOB")) {
+                links.innerHTML = `<a href="biblioteca.html?cat=classi" class="btn-link">APRI DATABASE JOB ➔</a>`;
+            } else if (step.fase.includes("KNIGHT") || step.fase.includes("FRAME")) {
+                links.innerHTML = `<a href="biblioteca.html?action=guide" class="btn-link">APRI GUIDA KNIGHT ➔</a>`;
+            }
+
+            // Logica suggerimenti dal JSON (Core, Anima, ecc.)
+            if (step.elementi) {
+                extra.innerHTML = `<h3>ELEMENTI DISPONIBILI:</h3><div class="tag-list">` + 
+                    step.elementi.map(e => `<span class="tag">${e}</span>`).join('') + `</div>`;
+            }
+
+            if (step.categorie) {
+                let html = `<h3>SUGGERIMENTI ANIMA:</h3>`;
+                for (let cat in step.categorie) {
+                    html += `<div style="margin-top:10px;"><strong style="color:var(--neon-pink); font-size:0.7rem;">${cat.toUpperCase()}</strong></div>`;
+                    html += `<div class="tag-list">` + step.categorie[cat].map(a => `<span class="tag">${a}</span>`).join('') + `</div>`;
+                }
+                extra.innerHTML = html;
+            }
+
+            if (step.modelli) {
+                extra.innerHTML = `<h3>CONFIGURAZIONI FRAME:</h3>` + 
+                    step.modelli.map(m => `
+                        <div class="info-box" style="border-color:var(--neon-pink); margin-bottom:5px;">
+                            <b style="color:var(--neon-pink)">${m.codice}</b>: ${m.ruolo}
+                        </div>
+                    `).join('');
+            }
+        }
+
+        init();
+    </script>
+</body>
+</html>
