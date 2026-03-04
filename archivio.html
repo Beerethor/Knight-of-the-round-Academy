@@ -181,49 +181,58 @@
             window.location.href = 'creatore.html';
         };
 
-      function openViewer(p) {
-    // 1. Cerca i dati dell'Eredità (per la descrizione narrativa)
+     function openViewer(p) {
+    // 1. Recupero dati dai Database JSON
     let ereditaDati = null;
     dbStirpi.forEach(s => { 
         const found = s.eredita.find(e => e.nome === p.eredita); 
         if(found) ereditaDati = found; 
     });
-
-    // 2. Cerca i dati del JOB (per la descrizione e le TECNICHE)
     const jobDati = dbClassi.find(j => j.nome === p.job);
 
-    // 3. Popolamento Campi Base
+    // 2. Immagine e Intestazione
     document.getElementById('v-img').src = p.immagine || '';
     document.getElementById('v-nome').innerText = p.nome;
     document.getElementById('v-motto').innerText = p.motto ? `"${p.motto}"` : "";
-    document.getElementById('v-stirpe').innerText = `${p.stirpe} (${p.eredita})`;
-    document.getElementById('v-eredita-desc').innerText = ereditaDati ? ereditaDati.descrizione : "";
+
+    // 3. Sezione EREDITÀ (Descrizione + Effetti Biologici)
+    document.getElementById('v-stirpe').innerText = `${p.stirpe} > ${p.eredita}`;
+    let htmlEredita = `<p style="color:#ccc; font-size:0.9rem; margin-bottom:10px;">${ereditaDati ? ereditaDati.descrizione : "Nessun dato narrativo."}</p>`;
+    if(ereditaDati?.effetti) {
+        htmlEredita += `<div style="border-top:1px solid #333; pt-10px; margin-top:10px;">
+            <strong style="color:var(--neon-pink); font-size:0.7rem; text-transform:uppercase;">Effetti Genetici/Sociali:</strong>
+            <div style="color:var(--neon-yellow); font-size:0.85rem; margin-top:5px;">${ereditaDati.effetti}</div>
+        </div>`;
+    }
+    document.getElementById('v-eredita-desc').innerHTML = htmlEredita;
+
+    // 4. Sezione JOB (Citazione + Descrizione Operativa + Tecniche)
     document.getElementById('v-job').innerText = p.job;
-    document.getElementById('v-job-desc').innerText = jobDati ? jobDati.descrizione : "";
-    
+    let htmlJob = "";
+    if(jobDati?.citazione) htmlJob += `<i style="color:var(--neon-blue); font-size:0.85rem; display:block; margin-bottom:8px;">"${jobDati.citazione}"</i>`;
+    htmlJob += `<p style="color:#ccc; font-size:0.9rem;">${jobDati ? jobDati.descrizione : "Nessun dato operativo."}</p>`;
+    document.getElementById('v-job-desc').innerHTML = htmlJob;
+
+    // 5. Parametri e Tecniche (dal Job)
     document.getElementById('v-params').innerHTML = `
         <strong>ANIMA:</strong> ${p.anima || '--'}<br>
         <strong>CORE:</strong> ${p.core || '--'}<br>
         <strong>DIFETTO:</strong> ${p.difetto || '--'}<br>
         <strong>NEMESI:</strong> ${p.nemesi || '--'}`;
 
-    // 4. RENDERING TECNICHE (Legate al JOB)
     const tBox = document.getElementById('v-tecniche'); 
     tBox.innerHTML = ""; 
-
-    if (jobDati && jobDati.tecniche && jobDati.tecniche.length > 0) {
+    if (jobDati?.tecniche) {
         jobDati.tecniche.forEach(t => {
             tBox.innerHTML += `
                 <div class="tech-tag">
                     <strong style="color:var(--neon-blue); text-transform:uppercase;">${t.nome}:</strong> 
-                    <span style="color:#ccc;">${t.effetto}</span>
+                    <span style="color:#ddd;">${t.effetto}</span>
                 </div>`;
         });
-    } else {
-        tBox.innerHTML = `<div style="color:#555; font-style:italic;">Nessuna tecnica operativa trovata per il Job ${p.job}.</div>`;
     }
-    
-    // 5. Tratti e Pulsante Modifica
+
+    // 6. Tratti e Pulsante
     document.getElementById('v-tratti').innerHTML = p.tratti ? p.tratti.map(t => `<span class="trait-pill">${t}</span>`).join('') : '';
     
     const btnEdit = document.getElementById('v-btn-edit');
