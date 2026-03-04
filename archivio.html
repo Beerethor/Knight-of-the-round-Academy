@@ -201,9 +201,10 @@
         window.filterArchive = () => renderArchive(auth.currentUser.uid, document.getElementById('search-bar').value);
 
         window.editCharacter = (id) => {
-            sessionStorage.setItem('editModeId', id);
-            window.location.href = 'creatore.html';
-        };
+    // Salviamo l'ID del personaggio da caricare
+    sessionStorage.setItem('updateModeId', id);
+    window.location.href = 'aggiorna.html';
+};
 
         window.deleteCharacter = async (id, nome) => {
             if (confirm(`ATTENZIONE: Procedere con l'eliminazione definitiva di [ ${nome.toUpperCase()} ]?`)) {
