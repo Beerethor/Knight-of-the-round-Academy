@@ -6,9 +6,14 @@
     <title>KOTRA - Inizializzazione Matricola</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
-        :root { --neon-blue: #00f2ff; --neon-pink: #ff00ff; --neon-yellow: #ffff00; --bg-dark: #0a0a0c; }
+        :root { --neon-blue: #00f2ff; --neon-pink: #ff00ff; --neon-yellow: #ffff00; --neon-orange: #ff8c00; --bg-dark: #0a0a0c; }
         body { background: var(--bg-dark); color: white; font-family: 'Rajdhani', sans-serif; padding: 20px; line-height: 1.4; }
-        h1 { font-family: 'Orbitron'; color: var(--neon-blue); text-transform: uppercase; border-bottom: 2px solid #333; margin-bottom: 30px; letter-spacing: 2px; }
+        
+        .nav-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid #333; padding-bottom: 10px; }
+        .btn-nav { text-decoration: none; color: var(--neon-blue); font-family: 'Orbitron'; font-size: 0.8rem; border: 1px solid var(--neon-blue); padding: 5px 15px; transition: 0.3s; }
+        .btn-nav:hover { background: var(--neon-blue); color: black; box-shadow: 0 0 10px var(--neon-blue); }
+
+        h1 { font-family: 'Orbitron'; color: var(--neon-blue); text-transform: uppercase; margin: 0; letter-spacing: 2px; font-size: 1.5rem; }
         h2 { font-family: 'Orbitron'; color: var(--neon-pink); font-size: 1rem; margin-top: 0; }
         
         .form-section { background: rgba(255,255,255,0.05); padding: 20px; border: 1px solid #333; margin-bottom: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
@@ -17,8 +22,7 @@
         label { display: block; color: var(--neon-blue); font-family: 'Orbitron'; font-size: 0.75rem; margin-bottom: 5px; text-transform: uppercase; }
         input, select { width: 100%; background: #000; border: 1px solid #444; color: white; padding: 12px; font-family: 'Rajdhani'; font-size: 1.1rem; box-sizing: border-box; }
         
-        /* Immagine */
-        .img-preview { width: 100%; max-height: 300px; border: 2px dashed #444; margin-top: 10px; display: flex; align-items: center; justify-content: center; overflow: hidden; background: #000; }
+        .img-preview { width: 100%; max-height: 250px; border: 2px dashed #444; margin-top: 10px; display: flex; align-items: center; justify-content: center; overflow: hidden; background: #000; }
         .img-preview img { max-width: 100%; max-height: 100%; object-fit: contain; }
 
         .mezzosangue-panel { grid-column: 1 / -1; background: rgba(255, 255, 0, 0.1); padding: 15px; border: 2px solid var(--neon-yellow); display: flex; align-items: center; justify-content: space-between; cursor: pointer; }
@@ -30,84 +34,92 @@
         input:checked + .slider:before { transform: translateX(30px); }
 
         .traits-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .pl-visualizer { display: flex; gap: 5px; margin-top: 10px; flex-wrap: wrap; }
         .dot { width: 14px; height: 14px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.3); }
         .dot.limite { background: var(--neon-blue); box-shadow: 0 0 8px var(--neon-blue); }
         .dot.sovraccarico { background: var(--neon-pink); box-shadow: 0 0 8px var(--neon-pink); }
 
-        button { background: transparent; border: 2px solid var(--neon-blue); color: var(--neon-blue); padding: 15px; font-family: 'Orbitron'; font-weight: bold; cursor: pointer; width: 100%; text-transform: uppercase; margin-top: 10px; }
-        button:hover { background: var(--neon-blue); color: black; box-shadow: 0 0 20px var(--neon-blue); }
+        .action-bar { display: grid; grid-template-columns: 1fr 2fr; gap: 20px; margin-top: 20px; }
+        button { background: transparent; padding: 15px; font-family: 'Orbitron'; font-weight: bold; cursor: pointer; text-transform: uppercase; transition: 0.3s; }
+        
+        .btn-save { border: 2px solid var(--neon-blue); color: var(--neon-blue); }
+        .btn-save:hover { background: var(--neon-blue); color: black; box-shadow: 0 0 20px var(--neon-blue); }
+        
+        .btn-reset { border: 2px solid var(--neon-orange); color: var(--neon-orange); }
+        .btn-reset:hover { background: var(--neon-orange); color: black; box-shadow: 0 0 20px var(--neon-orange); }
+
         #output-scheda { display: none; margin-top: 30px; border: 2px solid var(--neon-pink); padding: 30px; background: #000; }
     </style>
 </head>
 <body>
 
-    <h1>Protocollo Inizializzazione Matricola</h1>
+    <header class="nav-header">
+        <h1>Inizializzazione Matricola</h1>
+        <a href="index.html" class="btn-nav">HOME DASHBOARD</a>
+    </header>
 
-    <div class="form-section">
-        <div class="full-width"><h2>1. Profilo e Visuale</h2></div>
-        <div>
-            <label>NOME MATRICOLA</label>
-            <input type="text" id="nome">
-            <label style="margin-top:15px;">ANIMA</label>
-            <input type="text" id="anima">
-        </div>
-        <div>
-            <label>IMMAGINE (Upload o Link)</label>
-            <input type="file" id="img-file" accept="image/*" onchange="handleImage(event)" style="font-size: 0.8rem; padding: 5px;">
-            <input type="text" id="img-url" placeholder="Oppure incolla URL immagine" oninput="handleURL(this.value)" style="margin-top:5px;">
-            <div class="img-preview" id="preview-box">
-                <span style="color:#444;">NESSUN DATO VISIVO</span>
+    <form id="pg-form">
+        <div class="form-section">
+            <div class="full-width"><h2>1. Profilo e Visuale</h2></div>
+            <div>
+                <label>NOME MATRICOLA</label>
+                <input type="text" id="nome">
+                <label style="margin-top:15px;">ANIMA</label>
+                <input type="text" id="anima">
+            </div>
+            <div>
+                <label>IMMAGINE (Upload o Link)</label>
+                <input type="file" id="img-file" accept="image/*" onchange="handleImage(event)" style="font-size: 0.8rem; padding: 5px;">
+                <input type="text" id="img-url" placeholder="Incolla URL immagine" oninput="handleURL(this.value)" style="margin-top:5px;">
+                <div class="img-preview" id="preview-box">
+                    <span style="color:#444;">NESSUN DATO VISIVO</span>
+                </div>
             </div>
         </div>
-    </div>
 
-    <div class="form-section">
-        <div class="full-width"><h2>2. Tratti e Identità</h2></div>
-        <div>
-            <label>CORE</label>
-            <input type="text" id="core">
-            <label style="margin-top:15px;">DIFETTO</label>
-            <input type="text" id="difetto">
-        </div>
-        <div>
-            <label>MOTTO</label>
-            <input type="text" id="motto">
-            <label style="margin-top:15px;">NEMESI</label>
-            <input type="text" id="nemesi">
-        </div>
-        <div class="full-width">
-            <label>I 4 TRATTI (d8)</label>
-            <div class="traits-grid">
-                <input type="text" class="tratto-input" placeholder="Tratto 1">
-                <input type="text" class="tratto-input" placeholder="Tratto 2">
-                <input type="text" class="tratto-input" placeholder="Tratto 3">
-                <input type="text" class="tratto-input" placeholder="Tratto 4">
+        <div class="form-section">
+            <div class="full-width"><h2>2. Tratti e Identità</h2></div>
+            <div>
+                <label>CORE</label>
+                <input type="text" id="core">
+                <label style="margin-top:15px;">DIFETTO</label>
+                <input type="text" id="difetto">
+            </div>
+            <div>
+                <label>MOTTO</label>
+                <input type="text" id="motto">
+                <label style="margin-top:15px;">NEMESI</label>
+                <input type="text" id="nemesi">
+            </div>
+            <div class="full-width">
+                <label>I 4 TRATTI (d8)</label>
+                <div class="traits-grid">
+                    <input type="text" class="tratto-input" placeholder="Tratto 1">
+                    <input type="text" class="tratto-input" placeholder="Tratto 2">
+                    <input type="text" class="tratto-input" placeholder="Tratto 3">
+                    <input type="text" class="tratto-input" placeholder="Tratto 4">
+                </div>
             </div>
         </div>
-    </div>
 
-    <div class="form-section">
-        <div class="full-width"><h2>3. Stirpe e Knight</h2></div>
-        <div><label>STIRPE</label><select id="select-stirpe" onchange="aggiornaEredita()"></select></div>
-        <div><label>JOB</label><select id="select-job"></select></div>
-        <div class="mezzosangue-panel" onclick="document.getElementById('mezzosangue').click()">
-            <span style="color:var(--neon-yellow); font-family:'Orbitron';">⚠ PROTOCOLLO MEZZOSANGUE</span>
-            <label class="switch"><input type="checkbox" id="mezzosangue" onchange="aggiornaEredita()"><span class="slider"></span></label>
+        <div class="form-section">
+            <div class="full-width"><h2>3. Stirpe e Knight</h2></div>
+            <div><label>STIRPE</label><select id="select-stirpe" onchange="aggiornaEredita()"></select></div>
+            <div><label>JOB</label><select id="select-job"></select></div>
+            <div class="mezzosangue-panel" onclick="document.getElementById('mezzosangue').click()">
+                <span style="color:var(--neon-yellow); font-family:'Orbitron';">⚠ PROTOCOLLO MEZZOSANGUE</span>
+                <label class="switch"><input type="checkbox" id="mezzosangue" onchange="aggiornaEredita()"><span class="slider"></span></label>
+            </div>
+            <div class="full-width"><label>EREDITÀ</label><select id="select-eredita"></select></div>
+            <div><label>NOME KNIGHT</label><input type="text" id="nome-knight"></div>
+            <div><label>FRAME</label><input type="text" id="frame-knight"></div>
         </div>
-        <div class="full-width"><label>EREDITÀ</label><select id="select-eredita"></select></div>
-        <div><label>NOME KNIGHT</label><input type="text" id="nome-knight"></div>
-        <div><label>FRAME</label><input type="text" id="frame-knight"></div>
+    </form>
+
+    <div class="action-bar">
+        <button class="btn-reset" onclick="clearFields()">PULISCI CAMPI</button>
+        <button class="btn-save" onclick="generaScheda()">ARCHIVIA NEL CLOUD</button>
     </div>
 
-    <div class="form-section">
-        <div class="full-width"><h2>4. Risorse</h2></div>
-        <div class="full-width">
-            <div id="pl-display" class="pl-visualizer"></div>
-        </div>
-    </div>
-
-    <button id="btn-save" onclick="generaScheda()">Salva nel Cloud</button>
     <div id="output-scheda"></div>
 
     <script type="module">
@@ -129,18 +141,29 @@
         let dbStirpi = [];
 
         // Gestione Immagini
-        window.handleImage = function(e) {
+        window.handleImage = (e) => {
             const reader = new FileReader();
-            reader.onload = function(){
+            reader.onload = () => {
                 currentImgData = reader.result;
                 document.getElementById('preview-box').innerHTML = `<img src="${currentImgData}">`;
-            }
+            };
             reader.readAsDataURL(e.target.files[0]);
-        }
-        window.handleURL = function(url) {
+        };
+        window.handleURL = (url) => {
             currentImgData = url;
             document.getElementById('preview-box').innerHTML = `<img src="${url}" onerror="this.parentElement.innerHTML='URL Errato'">`;
-        }
+        };
+
+        // Pulizia Campi
+        window.clearFields = () => {
+            if(confirm("Sei sicuro di voler resettare tutti i dati inseriti?")) {
+                document.getElementById('pg-form').reset();
+                currentImgData = "";
+                document.getElementById('preview-box').innerHTML = `<span style="color:#444;">NESSUN DATO VISIVO</span>`;
+                document.getElementById('output-scheda').style.display = 'none';
+                aggiornaEredita();
+            }
+        };
 
         async function init() {
             try {
@@ -152,11 +175,10 @@
                 dbStirpi.forEach(s => sStirpe.innerHTML += `<option value="${s.nome}">${s.nome}</option>`);
                 jobs.forEach(j => sJob.innerHTML += `<option value="${j.nome}">${j.nome}</option>`);
                 aggiornaEredita();
-                renderPL();
             } catch (e) { console.error(e); }
         }
 
-        window.aggiornaEredita = function() {
+        window.aggiornaEredita = () => {
             const isMez = document.getElementById('mezzosangue').checked;
             const stirpe = document.getElementById('select-stirpe').value;
             const sEredita = document.getElementById('select-eredita');
@@ -166,16 +188,9 @@
                     s.eredita.forEach(e => sEredita.innerHTML += `<option value="${e.nome}">[${s.nome}] ${e.nome}</option>`);
                 }
             });
-        }
+        };
 
-        function renderPL() {
-            const display = document.getElementById('pl-display');
-            display.innerHTML = "";
-            for(let i=0; i<8; i++) display.innerHTML += '<div class="dot limite"></div>';
-            for(let i=0; i<3; i++) display.innerHTML += '<div class="dot sovraccarico"></div>';
-        }
-
-        window.generaScheda = async function() {
+        window.generaScheda = async () => {
             const nome = document.getElementById('nome').value;
             if(!nome) return alert("Inserisci il nome!");
 
@@ -195,9 +210,9 @@
             try {
                 await setDoc(doc(db, "personaggi", id), pg);
                 document.getElementById('output-scheda').style.display = 'block';
-                document.getElementById('output-scheda').innerHTML = `<h2>ARCHIVIATO: ${id}</h2><button onclick="window.print()">STAMPA</button>`;
-            } catch (e) { alert("Errore!"); }
-        }
+                document.getElementById('output-scheda').innerHTML = `<h2 style="color:var(--neon-blue);">ARCHIVIATO CON SUCCESSO</h2><p>ID: ${id}</p><button onclick="window.print()" style="border-color:white; color:white;">STAMPA SCHEDA</button>`;
+            } catch (e) { alert("Errore di connessione al database!"); }
+        };
         window.onload = init;
     </script>
 </body>
