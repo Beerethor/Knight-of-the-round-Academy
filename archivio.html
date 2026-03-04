@@ -11,15 +11,15 @@
         
         /* Navigazione */
         .nav-header { padding: 20px; border-bottom: 1px solid #222; display: flex; justify-content: space-between; align-items: center; background: #000; flex-wrap: wrap; gap: 15px; }
-        .btn-action { background: transparent; border: 1px solid var(--neon-blue); color: var(--neon-blue); padding: 8px 15px; font-family: 'Orbitron'; cursor: pointer; text-decoration: none; font-size: 0.8rem; transition: 0.3s; }
-        .btn-action:hover { background: var(--neon-blue); color: black; }
+        .btn-action { background: transparent; border: 1px solid var(--neon-blue); color: var(--neon-blue); padding: 8px 15px; font-family: 'Orbitron'; cursor: pointer; text-decoration: none; font-size: 0.8rem; transition: 0.3s; border-radius: 2px; }
+        .btn-action:hover { background: var(--neon-blue); color: black; box-shadow: 0 0 10px var(--neon-blue); }
 
         /* Ricerca */
         .search-container { padding: 10px 40px; background: #0c0c0f; border-bottom: 1px solid #222; }
         .search-input { width: 100%; max-width: 500px; background: #000; border: 1px solid var(--neon-blue); color: white; padding: 10px 15px; font-family: 'Rajdhani'; font-size: 1.1rem; border-radius: 4px; outline: none; }
 
         /* Griglia Card */
-        .section-label { font-family: 'Orbitron'; color: var(--neon-pink); padding: 20px 40px 0; font-size: 0.9rem; letter-spacing: 2px; }
+        .section-label { font-family: 'Orbitron'; color: var(--neon-pink); padding: 20px 40px 0; font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase; }
         .archive-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; padding: 20px 40px 40px; }
         
         .pg-card { background: var(--panel-bg); border: 1px solid #222; cursor: pointer; transition: 0.3s; position: relative; overflow: hidden; border-radius: 4px; }
@@ -27,22 +27,22 @@
         .pg-card img { width: 100%; height: 180px; object-fit: cover; object-position: center 20%; filter: grayscale(30%); transition: 0.3s; }
         .pg-card:hover img { filter: grayscale(0%); }
         .pg-card-info { padding: 15px; border-top: 1px solid #222; position: relative; min-height: 80px; }
-        .pg-card-name { font-family: 'Orbitron'; color: var(--neon-blue); font-size: 1.1rem; }
+        .pg-card-name { font-family: 'Orbitron'; color: var(--neon-blue); font-size: 1.1rem; margin-bottom: 4px; }
         
         .btn-edit-small { position: absolute; bottom: 12px; right: 12px; background: none; border: 1px solid var(--neon-yellow); color: var(--neon-yellow); font-family: 'Orbitron'; font-size: 0.6rem; padding: 3px 6px; cursor: pointer; }
         .btn-delete-small { position: absolute; bottom: 12px; right: 85px; background: none; border: 1px solid var(--neon-pink); color: var(--neon-pink); font-family: 'Orbitron'; font-size: 0.6rem; padding: 3px 6px; cursor: pointer; }
 
         /* Viewer Overlay */
         #viewer-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.98); z-index: 1000; overflow-y: auto; }
-        .sheet-container { max-width: 1100px; margin: 40px auto; background: #0c0c0f; border: 1px solid #333; display: grid; grid-template-columns: 350px 1fr; position: relative; }
+        .sheet-container { max-width: 1150px; margin: 40px auto; background: #0c0c0f; border: 1px solid #333; display: grid; grid-template-columns: 350px 1fr; position: relative; }
         .side-img { width: 100%; height: 100%; object-fit: cover; object-position: center 15%; border-right: 1px solid var(--neon-blue); }
         .main-sheet { padding: 40px; }
-        .close-overlay { position: absolute; top: 20px; right: 20px; color: white; cursor: pointer; font-family: 'Orbitron'; font-size: 1.2rem; }
+        .close-overlay { position: absolute; top: 20px; right: 20px; color: white; cursor: pointer; font-family: 'Orbitron'; font-size: 1.2rem; z-index: 100; }
         
         .data-box { background: rgba(255,255,255,0.02); border-left: 3px solid var(--neon-blue); padding: 15px; margin-bottom: 20px; }
-        .data-box h3 { font-family: 'Orbitron'; font-size: 0.7rem; color: var(--neon-pink); margin: 0 0 10px; text-transform: uppercase; }
+        .data-box h3 { font-family: 'Orbitron'; font-size: 0.7rem; color: var(--neon-pink); margin: 0 0 10px; text-transform: uppercase; letter-spacing: 1px; }
         .tech-tag { display: block; background: rgba(255,255,255,0.03); border-left: 2px solid var(--neon-blue); padding: 8px; margin-bottom: 6px; font-size: 0.85rem; }
-        .trait-pill { display: inline-block; padding: 4px 10px; border: 1px solid #333; margin: 3px; font-size: 0.75rem; color: var(--neon-yellow); background: rgba(0,0,0,0.5); }
+        .trait-pill { display: inline-block; padding: 4px 10px; border: 1px solid #333; margin: 3px; font-size: 0.75rem; color: var(--neon-yellow); background: rgba(0,0,0,0.5); border-radius: 2px; }
         
         /* Punti Limite Visual */
         .limite-container { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; padding: 10px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,0,255,0.2); border-radius: 4px; }
@@ -51,7 +51,7 @@
         .dot-empty { background: transparent; border-color: #333; }
         .limite-label { font-family: 'Orbitron'; font-size: 0.65rem; color: var(--neon-pink); letter-spacing: 1px; }
 
-        @media (max-width: 850px) { .sheet-container { grid-template-columns: 1fr; } .side-img { height: 300px; } }
+        @media (max-width: 950px) { .sheet-container { grid-template-columns: 1fr; } .side-img { height: 350px; border-right: none; border-bottom: 1px solid var(--neon-blue); } }
     </style>
 </head>
 <body>
@@ -69,7 +69,7 @@
     </header>
 
     <div class="search-container">
-        <input type="text" id="search-bar" class="search-input" placeholder="Cerca matricola, stirpe o job..." oninput="filterArchive()">
+        <input type="text" id="search-bar" class="search-input" placeholder="Filtra per nome, stirpe o job..." oninput="filterArchive()">
     </div>
 
     <div id="master-view" style="display: none;">
@@ -87,30 +87,30 @@
             <div class="main-sheet">
                 <div style="border-bottom: 1px solid var(--neon-blue); padding-bottom: 20px; margin-bottom: 20px;">
                     <div style="display: flex; justify-content: space-between; align-items: flex-start;">
-                        <h2 id="v-nome" style="font-family:'Orbitron'; font-size: 2.5rem; margin:0; color:var(--neon-blue);">---</h2>
+                        <h2 id="v-nome" style="font-family:'Orbitron'; font-size: 2.8rem; margin:0; color:var(--neon-blue);">---</h2>
                         <button id="v-btn-edit" class="btn-action" style="border-color: var(--neon-yellow); color: var(--neon-yellow);">EVOLUZIONE</button>
                     </div>
-                    <p id="v-motto" style="font-style:italic; color:var(--neon-yellow); margin-top: 10px;">"---"</p>
+                    <p id="v-motto" style="font-style:italic; color:var(--neon-yellow); margin-top: 10px; font-size: 1.1rem;">"---"</p>
                 </div>
                 
-                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:25px;">
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:30px;">
                     <div>
                         <div class="data-box" style="border-color: var(--neon-yellow);">
                             <h3>IDENTITY & SOCIAL</h3>
                             <div style="font-size:0.9rem; margin-bottom:5px;"><strong>CLUB:</strong> <span id="v-club" style="color:var(--neon-blue)">--</span></div>
                             <div style="font-size:0.9rem; margin-bottom:5px;"><strong>DISTINTIVO:</strong> <span id="v-distintivo" style="color:var(--neon-blue)">--</span></div>
-                            <div id="v-uniforme" style="font-size:0.8rem; color:#888; font-style:italic; margin-top:8px;">--</div>
+                            <div id="v-uniforme" style="font-size:0.85rem; color:#888; font-style:italic; margin-top:10px; line-height:1.4;">--</div>
                         </div>
 
                         <div class="data-box">
                             <h3>STIRPE & EREDITÀ</h3>
-                            <div id="v-stirpe" style="font-weight:bold; color:var(--neon-blue); margin-bottom:5px; font-family:'Orbitron';">--</div>
+                            <div id="v-stirpe" style="font-weight:bold; color:var(--neon-blue); margin-bottom:8px; font-family:'Orbitron'; font-size:0.85rem;">--</div>
                             <div id="v-eredita-desc"></div>
                         </div>
 
                         <div class="data-box">
                             <h3>JOB OPERATIVO</h3>
-                            <div id="v-job" style="font-weight:bold; color:var(--neon-blue); margin-bottom:5px; font-family:'Orbitron';">--</div>
+                            <div id="v-job" style="font-weight:bold; color:var(--neon-blue); margin-bottom:8px; font-family:'Orbitron'; font-size:0.85rem;">--</div>
                             <div id="v-job-desc"></div>
                         </div>
                     </div>
@@ -118,7 +118,7 @@
                     <div>
                         <div class="data-box" style="border-color: var(--neon-pink);">
                             <h3>SINCRONIZZAZIONE CORE</h3>
-                            <div id="v-params" style="font-size:0.9rem; line-height: 1.6; display:grid; grid-template-columns: 1fr 1fr;"></div>
+                            <div id="v-params" style="font-size:0.95rem; line-height: 1.8; display:grid; grid-template-columns: 1fr 1fr;"></div>
                             <div id="v-limite-visual" style="margin-top:15px;"></div>
                         </div>
 
@@ -129,13 +129,13 @@
 
                         <div class="data-box">
                             <h3>MEMORIE & AFFINITÀ</h3>
-                            <div id="v-memorie-box" style="font-size:0.85rem; line-height:1.4;"></div>
+                            <div id="v-memorie-box" style="font-size:0.85rem; line-height:1.5;"></div>
                         </div>
                     </div>
                 </div>
 
                 <div class="data-box">
-                    <h3>TRATTI MEMETICI (MAX 10)</h3>
+                    <h3>TRATTI MEMETICI (ESTENSIONE MAX 10)</h3>
                     <div id="v-tratti"></div>
                 </div>
             </div>
@@ -164,6 +164,7 @@
 
         onAuthStateChanged(auth, async (user) => {
             if (user) {
+                // Check Master Status
                 const configSnap = await getDoc(doc(db, "config", "permissions"));
                 const masterEmail = configSnap.exists() ? configSnap.data().masterEmail : "";
                 isMasterGlobal = user.email.toLowerCase().trim() === masterEmail.toLowerCase().trim();
@@ -188,6 +189,7 @@
             const gridPersonali = document.getElementById('grid-personali');
             const gridUtenti = document.getElementById('grid-utenti');
             const masterView = document.getElementById('master-view');
+            
             gridPersonali.innerHTML = ""; gridUtenti.innerHTML = "";
             if(masterView) masterView.style.display = isMasterGlobal ? 'block' : 'none';
 
@@ -200,7 +202,14 @@
             filtered.forEach(p => {
                 const card = document.createElement('div');
                 card.className = 'pg-card';
+                
+                // Autorizzazione a gestire (Modifica/Elimina)
                 const canManage = isMasterGlobal || p.creatoDa === uid;
+                
+                // LOGICA DI SMISTAMENTO CORRETTA
+                // È "Mio" se l'ho creato io, o se è segnato come MASTER e io sono il Master
+                const isMio = (p.creatoDa === uid) || (isMasterGlobal && (p.creatoDa === "MASTER" || p.ownerEmail === auth.currentUser.email));
+
                 card.innerHTML = `
                     <img src="${p.immagine || ''}">
                     <div class="pg-card-info">
@@ -211,10 +220,14 @@
                             <button class="btn-edit-small" onclick="event.stopPropagation(); editChar('${p.id}')">EVOLVI</button>
                         ` : ''}
                     </div>`;
+                
                 card.onclick = () => openViewer(p);
-                if (p.creatoDa === uid || isMasterGlobal) {
-                    if (p.creatoDa === uid) gridPersonali.appendChild(card);
-                    else gridUtenti.appendChild(card);
+
+                if (isMio) {
+                    gridPersonali.appendChild(card);
+                } else if (isMasterGlobal) {
+                    // Se sono master e non è mio, lo vedo tra le unità sottoposte
+                    gridUtenti.appendChild(card);
                 }
             });
         }
@@ -230,49 +243,57 @@
 
         function openViewer(p) {
             let ereditaDati = null;
-            dbStirpi.forEach(s => { const found = s.eredita.find(e => e.nome === p.eredita); if(found) ereditaDati = found; });
+            dbStirpi.forEach(s => { 
+                const found = s.eredita.find(e => e.nome === p.eredita); 
+                if(found) ereditaDati = found; 
+            });
             const jobDati = dbClassi.find(j => j.nome === p.job);
 
+            // Popola Identity
             document.getElementById('v-img').src = p.immagine || '';
             document.getElementById('v-nome').innerText = p.nome;
             document.getElementById('v-motto').innerText = p.motto ? `"${p.motto}"` : "";
             document.getElementById('v-club').innerText = p.club || "--";
             document.getElementById('v-distintivo').innerText = p.trattoDistintivo || "--";
-            document.getElementById('v-uniforme').innerText = p.uniforme ? `Uniforme: ${p.uniforme}` : "Uniforme Standard Kotra";
+            document.getElementById('v-uniforme').innerText = p.uniforme ? `Uniforme: ${p.uniforme}` : "Uniforme Standard Operativa";
 
-            // Eredità & Job
+            // Stirpe & Job
             document.getElementById('v-stirpe').innerText = `${p.stirpe.toUpperCase()} > ${p.eredita.toUpperCase()}`;
             const effetto = ereditaDati?.effetto || ereditaDati?.effetti || "";
-            document.getElementById('v-eredita-desc').innerHTML = `<p style="color:#ccc; font-size:0.85rem;">${ereditaDati?.descrizione || ""}</p>` + 
-                (effetto ? `<div class="tech-tag" style="border-color:var(--neon-pink); color:var(--neon-yellow);">${effetto}</div>` : "");
+            document.getElementById('v-eredita-desc').innerHTML = `<p style="color:#ccc; font-size:0.85rem; line-height:1.4;">${ereditaDati?.descrizione || ""}</p>` + 
+                (effetto ? `<div class="tech-tag" style="border-color:var(--neon-pink); color:var(--neon-yellow); font-weight:500;">${effetto}</div>` : "");
 
             document.getElementById('v-job').innerText = p.job.toUpperCase();
-            document.getElementById('v-job-desc').innerHTML = `<i style="color:var(--neon-blue); font-size:0.8rem;">"${jobDati?.citazione || ''}"</i><p style="color:#ccc; font-size:0.85rem;">${jobDati?.descrizione || ""}</p>`;
+            document.getElementById('v-job-desc').innerHTML = `<i style="color:var(--neon-blue); font-size:0.8rem; border-left:2px solid var(--neon-blue); padding-left:10px; display:block; margin:5px 0 10px;">"${jobDati?.citazione || ''}"</i><p style="color:#ccc; font-size:0.85rem; line-height:1.4;">${jobDati?.descrizione || ""}</p>`;
 
-            // Parametri & Punti Limite (Base 8 + Nome 3 + Memorie 3x)
+            // Parametri & Punti Limite (8 base + 3 nome + 3x memorie)
             const numMemorie = p.memorie?.length || 0;
             const totaleLimite = 8 + 3 + (numMemorie * 3);
             document.getElementById('v-params').innerHTML = `
-                <div><strong>ANIMA:</strong> ${p.anima || '--'}</div><div><strong>CORE:</strong> ${p.core || '--'}</div>
-                <div><strong>DIFETTO:</strong> ${p.difetto || '--'}</div><div><strong>NEMESI:</strong> ${p.nemesi || '--'}</div>`;
+                <div><strong style="color:var(--neon-pink)">ANIMA:</strong> ${p.anima || '--'}</div>
+                <div><strong style="color:var(--neon-pink)">CORE:</strong> ${p.core || '--'}</div>
+                <div><strong style="color:var(--neon-pink)">DIFETTO:</strong> ${p.difetto || '--'}</div>
+                <div><strong style="color:var(--neon-pink)">NEMESI:</strong> ${p.nemesi || '--'}</div>`;
             
             let dotsHTML = `<span class="limite-label">SYNC LIMITE: ${totaleLimite} / 20</span><div class="limite-container">`;
             for(let i=0; i<20; i++) { dotsHTML += `<div class="limite-dot ${i < totaleLimite ? 'dot-filled' : 'dot-empty'}"></div>`; }
-            document.getElementById('v-limite-visual').innerHTML = dotsHTML + `</div>`;
+            document.getElementById('v-limite-visual').innerHTML = dotsHTML + `</div><p style="font-size:0.55rem; color:#444; margin-top:4px; font-family:'Orbitron'">[BASE_8 + NAME_3 + MEM_LINK_${numMemorie*3}]</p>`;
 
             // Tecniche & Evoluzione
             const tBox = document.getElementById('v-tecniche'); tBox.innerHTML = "";
-            if (jobDati?.tecniche) jobDati.tecniche.forEach(t => tBox.innerHTML += `<div class="tech-tag"><strong>${t.nome}:</strong> ${t.effetto}</div>`);
-            if (p.capacita) p.capacita.forEach(c => tBox.innerHTML += `<div class="tech-tag" style="border-color:var(--neon-pink);"><strong>CAPACITÀ:</strong> ${c}</div>`);
-            if (p.oggetti) p.oggetti.forEach(o => tBox.innerHTML += `<div class="tech-tag" style="border-color:var(--neon-yellow);"><strong>OGGETTO:</strong> ${o}</div>`);
+            if (jobDati?.tecniche) jobDati.tecniche.forEach(t => tBox.innerHTML += `<div class="tech-tag"><strong>${t.nome.toUpperCase()}:</strong> ${t.effetto}</div>`);
+            if (p.capacita) p.capacita.forEach(c => tBox.innerHTML += `<div class="tech-tag" style="border-color:var(--neon-pink);"><strong style="color:var(--neon-pink)">CAPACITÀ:</strong> ${c}</div>`);
+            if (p.oggetti) p.oggetti.forEach(o => tBox.innerHTML += `<div class="tech-tag" style="border-color:var(--neon-yellow);"><strong style="color:var(--neon-yellow)">OGGETTO:</strong> ${o}</div>`);
 
             // Memorie & Affinità
             document.getElementById('v-memorie-box').innerHTML = `
-                <div style="color:var(--neon-pink); margin-bottom:5px;"><strong>MEMORIE:</strong> ${p.memorie?.join(' // ') || '--'}</div>
+                <div style="color:var(--neon-pink); margin-bottom:8px;"><strong>MEMORIE:</strong> ${p.memorie?.join(' // ') || '--'}</div>
                 <div style="color:var(--neon-blue);"><strong>AFFINITÀ:</strong> ${p.affinita?.join(' // ') || '--'}</div>`;
 
+            // Tratti
             document.getElementById('v-tratti').innerHTML = p.tratti ? p.tratti.map(t => `<span class="trait-pill">${t}</span>`).join('') : '';
             
+            // Bottone Evoluzione
             const btnEdit = document.getElementById('v-btn-edit');
             btnEdit.style.display = (isMasterGlobal || p.creatoDa === auth.currentUser.uid) ? 'block' : 'none';
             btnEdit.onclick = () => editChar(p.id);
