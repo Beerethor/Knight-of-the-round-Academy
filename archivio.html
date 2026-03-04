@@ -3,80 +3,139 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KOTRA - Archivio Matricole</title>
+    <title>KOTRA - Terminale Archivio</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
-        :root { --neon-blue: #00f2ff; --neon-pink: #ff00ff; --neon-yellow: #ffff00; --bg-dark: #0a0a0c; }
-        body { background: var(--bg-dark); color: white; font-family: 'Rajdhani', sans-serif; padding: 20px; }
+        :root { 
+            --neon-blue: #00f2ff; --neon-pink: #ff00ff; --neon-yellow: #ffff00; 
+            --bg-dark: #060608; --panel-bg: #111116; --glass: rgba(255, 255, 255, 0.03);
+        }
+        body { background: var(--bg-dark); color: white; font-family: 'Rajdhani', sans-serif; margin: 0; overflow-x: hidden; }
         
-        .nav-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 1px solid #333; padding-bottom: 10px; }
-        .btn-nav { text-decoration: none; color: var(--neon-blue); font-family: 'Orbitron'; font-size: 0.8rem; border: 1px solid var(--neon-blue); padding: 8px 15px; transition: 0.3s; }
-        .btn-nav:hover { background: var(--neon-blue); color: black; }
-
-        h1 { font-family: 'Orbitron'; color: var(--neon-blue); text-transform: uppercase; margin: 0; letter-spacing: 2px; }
-
-        /* Griglia Card */
-        .archive-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+        /* Layout Archivio */
+        .nav-header { padding: 20px; border-bottom: 1px solid #222; display: flex; justify-content: space-between; align-items: center; background: #000; }
+        .archive-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 25px; padding: 30px; }
         
         .pg-card { 
-            background: rgba(255,255,255,0.05); 
-            border: 1px solid #333; 
-            border-radius: 4px; 
-            overflow: hidden; 
-            transition: 0.3s;
-            position: relative;
+            background: var(--panel-bg); border: 1px solid #222; position: relative; cursor: pointer; 
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); overflow: hidden;
         }
-        .pg-card:hover { border-color: var(--neon-pink); transform: translateY(-5px); }
+        .pg-card:hover { border-color: var(--neon-blue); transform: translateY(-10px); }
+        .pg-card img { width: 100%; height: 220px; object-fit: cover; filter: grayscale(30%); transition: 0.5s; }
+        .pg-card:hover img { filter: grayscale(0%); transform: scale(1.1); }
+
+        /* Overlay Scheda Tattica */
+        #viewer-overlay { 
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: #000; z-index: 1000; overflow-y: auto;
+        }
         
-        .pg-thumb { 
-            width: 100%; 
-            height: 200px; 
-            background: #000; 
-            object-fit: cover; 
-            object-position: center 20%; 
-            border-bottom: 1px solid #333;
+        .tactical-sheet { 
+            max-width: 1200px; margin: 20px auto; background: var(--panel-bg); 
+            border: 1px solid #333; display: grid; grid-template-columns: 400px 1fr;
+            box-shadow: 0 0 50px rgba(0,0,0,1); position: relative;
         }
 
-        .pg-info { padding: 15px; }
-        .pg-name { font-family: 'Orbitron'; color: var(--neon-blue); font-size: 1.2rem; margin-bottom: 5px; }
-        .pg-details { font-size: 0.9rem; color: #aaa; margin-bottom: 15px; }
+        /* Sidebar sinistra (Visuale) */
+        .side-visual { background: #000; border-right: 1px solid var(--neon-blue); position: relative; }
+        .side-visual img { width: 100%; height: 600px; object-fit: cover; object-position: center 15%; }
+        .stats-block { padding: 20px; background: linear-gradient(to bottom, transparent, #000); position: absolute; bottom: 0; width: 100%; box-sizing: border-box; }
+
+        /* Contenuto Destra */
+        .main-content { padding: 40px; }
+        .header-info { border-bottom: 2px solid var(--neon-pink); padding-bottom: 20px; margin-bottom: 30px; }
+        .name-title { font-family: 'Orbitron'; font-size: 3rem; color: var(--neon-blue); text-transform: uppercase; margin: 0; }
         
-        .card-actions { display: flex; gap: 10px; }
+        .data-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+        .data-box { background: var(--glass); border-left: 3px solid var(--neon-blue); padding: 15px; margin-bottom: 20px; }
+        .data-box h3 { font-family: 'Orbitron'; font-size: 0.8rem; color: var(--neon-pink); margin-top: 0; text-transform: uppercase; }
+        .desc-text { font-size: 0.95rem; color: #ccc; line-height: 1.4; margin-top: 5px; }
+
+        .tech-card { background: rgba(0, 242, 255, 0.05); border: 1px solid rgba(0, 242, 255, 0.2); padding: 10px; margin-top: 10px; }
+        .tech-name { font-family: 'Orbitron'; font-size: 0.75rem; color: var(--neon-blue); }
+
+        /* Floating Controls */
+        .sheet-controls { position: fixed; top: 20px; right: 40px; display: flex; gap: 15px; z-index: 1100; }
         .btn-action { 
-            flex: 1; 
-            padding: 8px; 
-            font-family: 'Orbitron'; 
-            font-size: 0.7rem; 
-            cursor: pointer; 
-            background: transparent; 
-            text-transform: uppercase;
-            transition: 0.3s;
+            background: #000; border: 1px solid var(--neon-blue); color: var(--neon-blue); 
+            padding: 10px 20px; font-family: 'Orbitron'; cursor: pointer; transition: 0.3s;
         }
-        .btn-edit { border: 1px solid var(--neon-yellow); color: var(--neon-yellow); }
-        .btn-edit:hover { background: var(--neon-yellow); color: black; }
-        .btn-delete { border: 1px solid #ff4444; color: #ff4444; }
-        .btn-delete:hover { background: #ff4444; color: white; }
+        .btn-action:hover { background: var(--neon-blue); color: #000; }
 
-        /* Stato Vuoto */
-        #loading-status { text-align: center; font-family: 'Orbitron'; color: var(--neon-pink); margin-top: 50px; }
+        .tag { font-family: 'Orbitron'; font-size: 0.6rem; padding: 2px 8px; border: 1px solid; border-radius: 3px; margin-right: 5px; }
+        .tag-mezzosangue { color: var(--neon-yellow); border-color: var(--neon-yellow); }
     </style>
 </head>
 <body>
 
     <header class="nav-header">
-        <h1>Archivio Operativo</h1>
-        <div style="display: flex; gap: 10px;">
-            <a href="creatore.html" class="btn-nav">+ NUOVA MATRICOLA</a>
-            <a href="index.html" class="btn-nav">HOME</a>
-        </div>
+        <h1 style="font-family:'Orbitron'; color:var(--neon-blue); letter-spacing: 3px;">KOTRA // ARCHIVIO</h1>
+        <a href="creatore.html" class="btn-action" style="text-decoration:none;">+ NUOVA MATRICOLA</a>
     </header>
 
-    <div id="loading-status">SINCRONIZZAZIONE CON IL CLOUD...</div>
     <div class="archive-grid" id="archive-grid"></div>
+
+    <div id="viewer-overlay">
+        <div class="sheet-controls">
+            <button class="btn-action" onclick="toggleEdit()">MODIFICA</button>
+            <button class="btn-action" onclick="closeViewer()" style="border-color:var(--neon-pink); color:var(--neon-pink);">CHIUDI X</button>
+        </div>
+
+        <div class="tactical-sheet" id="sheet-content">
+            <div class="side-visual">
+                <img id="v-img" src="">
+                <div class="stats-block">
+                    <div id="v-tags"></div>
+                    <h2 id="v-nome" class="name-title" style="font-size: 1.8rem;">---</h2>
+                    <p id="v-motto" style="color:var(--neon-yellow); font-style: italic;">"---"</p>
+                </div>
+            </div>
+
+            <div class="main-content">
+                <div class="header-info">
+                    <span id="v-stirpe-job" style="font-family:'Orbitron'; color:#888;">STIRPE | JOB</span>
+                    <p id="v-anima" style="font-size: 1.5rem; margin: 5px 0;">Anima: ---</p>
+                </div>
+
+                <div class="data-grid">
+                    <div>
+                        <div class="data-box">
+                            <h3>Descrizione Stirpe</h3>
+                            <div id="v-stirpe-desc" class="desc-text">---</div>
+                        </div>
+                        <div class="data-box">
+                            <h3>Eredità & Tecniche</h3>
+                            <div id="v-eredita-nome" style="font-weight: bold; color:var(--neon-blue);">---</div>
+                            <div id="v-eredita-desc" class="desc-text">---</div>
+                            <div id="v-tecniche"></div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="data-box">
+                            <h3>Job & Capacità</h3>
+                            <div id="v-job-desc" class="desc-text">---</div>
+                        </div>
+                        <div class="data-box">
+                            <h3>Identità</h3>
+                            <p><strong>Core:</strong> <span id="v-core"></span></p>
+                            <p><strong>Difetto:</strong> <span id="v-difetto"></span></p>
+                            <p><strong>Nemesi:</strong> <span id="v-nemesi"></span></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="data-box full" style="grid-column: 1/-1;">
+                    <h3>Tratti & Memorie</h3>
+                    <div id="v-tratti" style="display:flex; flex-wrap:wrap; gap:10px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, collection, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, collection, getDocs, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyCAMvHn28SY3k9TiLvz2afjn0zpj73Lw5Y",
@@ -89,65 +148,89 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
+        
+        let dbStirpi = [], dbClassi = [];
+
+        async function init() {
+            const [resS, resC] = await Promise.all([fetch('stirpi_database.json'), fetch('classi_database.json')]);
+            dbStirpi = (await resS.json()).items;
+            dbClassi = (await resC.json()).items;
+            loadArchive();
+        }
 
         async function loadArchive() {
             const grid = document.getElementById('archive-grid');
-            const status = document.getElementById('loading-status');
-            
-            try {
-                const querySnapshot = await getDocs(collection(db, "personaggi"));
-                status.style.display = 'none';
-                grid.innerHTML = "";
-
-                if (querySnapshot.empty) {
-                    status.style.display = 'block';
-                    status.innerText = "NESSUNA MATRICOLA TROVATA NELL'ARCHIVIO.";
-                    return;
-                }
-
-                querySnapshot.forEach((documento) => {
-                    const data = documento.data();
-                    const id = documento.id;
-                    const img = data.immagine || 'https://via.placeholder.com/300x200?text=NO+VISUAL';
-
-                    grid.innerHTML += `
-                        <div class="pg-card" id="card-${id}">
-                            <img src="${img}" class="pg-thumb" alt="${data.nome}">
-                            <div class="pg-info">
-                                <div class="pg-name">${data.nome}</div>
-                                <div class="pg-details">
-                                    ${data.stirpe} | ${data.job}<br>
-                                    <em>"${data.motto || 'Nessun motto'}"</em>
-                                </div>
-                                <div class="card-actions">
-                                    <button class="btn-action btn-edit" onclick="editPG('${id}')">Modifica</button>
-                                    <button class="btn-action btn-delete" onclick="deletePG('${id}')">Elimina</button>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                });
-            } catch (e) {
-                status.innerText = "ERRORE DI CONNESSIONE.";
-                console.error(e);
-            }
+            grid.innerHTML = "";
+            const snap = await getDocs(collection(db, "personaggi"));
+            snap.forEach(d => {
+                const p = d.data();
+                const card = document.createElement('div');
+                card.className = 'pg-card';
+                card.innerHTML = `<img src="${p.immagine}"> <div style="padding:15px;"><div class="pg-card-name">${p.nome}</div><div style="font-size:0.8rem; color:#666;">${p.job}</div></div>`;
+                card.onclick = () => openViewer(p);
+                grid.appendChild(card);
+            });
         }
 
-        window.deletePG = async (id) => {
-            if(confirm("Sei sicuro di voler eliminare questa Matricola definitivamente?")) {
-                try {
-                    await deleteDoc(doc(db, "personaggi", id));
-                    document.getElementById(`card-${id}`).remove();
-                } catch (e) { alert("Errore durante l'eliminazione."); }
+        function openViewer(p) {
+            // Ricerca dati nei JSON
+            const stirpeDati = dbStirpi.find(s => s.nome === p.stirpe);
+            const jobDati = dbClassi.find(j => j.nome === p.job);
+            
+            // Logica Mezzosangue: cerca l'eredità in TUTTE le stirpi
+            let ereditaDati = null;
+            dbStirpi.forEach(s => {
+                const found = s.eredita.find(e => e.nome === p.eredita);
+                if(found) ereditaDati = { ...found, stirpeOrigine: s.nome };
+            });
+
+            // Popolamento Grafico
+            document.getElementById('v-img').src = p.immagine;
+            document.getElementById('v-nome').innerText = p.nome;
+            document.getElementById('v-motto').innerText = `"${p.motto}"`;
+            document.getElementById('v-stirpe-job').innerText = `${p.stirpe} | ${p.job}`;
+            document.getElementById('v-anima').innerText = `Anima: ${p.anima}`;
+            document.getElementById('v-core').innerText = p.core;
+            document.getElementById('v-difetto').innerText = p.difetto;
+            document.getElementById('v-nemesi').innerText = p.nemesi;
+
+            // Descrizioni
+            document.getElementById('v-stirpe-desc').innerText = stirpeDati ? stirpeDati.descrizione : "Dati non trovati.";
+            document.getElementById('v-job-desc').innerText = jobDati ? jobDati.descrizione : "Dati non trovati.";
+            
+            // Eredità e Tecniche
+            const ev = document.getElementById('v-eredita-nome');
+            ev.innerText = p.eredita;
+            document.getElementById('v-eredita-desc').innerText = ereditaDati ? ereditaDati.descrizione : "";
+            
+            const techBox = document.getElementById('v-tecniche');
+            techBox.innerHTML = "";
+            if(ereditaDati && ereditaDati.tecniche) {
+                ereditaDati.tecniche.forEach(t => {
+                    techBox.innerHTML += `<div class="tech-card"><div class="tech-name">${t.nome}</div><div style="font-size:0.8rem; color:#aaa;">${t.effetto}</div></div>`;
+                });
             }
-        };
 
-        window.editPG = (id) => {
-            // Reindirizziamo al creatore passando l'ID come parametro nell'URL
-            window.location.href = `creatore.html?edit=${id}`;
-        };
+            // Tags
+            const tags = document.getElementById('v-tags');
+            tags.innerHTML = "";
+            if(ereditaDati && ereditaDati.stirpeOrigine !== p.stirpe) {
+                tags.innerHTML += `<span class="tag tag-mezzosangue">ANOMALIA MEZZOSANGUE</span>`;
+            }
 
-        window.onload = loadArchive;
+            // Tratti
+            const trattiBox = document.getElementById('v-tratti');
+            trattiBox.innerHTML = "";
+            [...(p.tratti || []), ...(p.memorie || [])].forEach(t => {
+                trattiBox.innerHTML += `<span style="border:1px solid var(--neon-blue); padding:5px 10px; font-size:0.8rem;">${t}</span>`;
+            });
+
+            document.getElementById('viewer-overlay').style.display = 'block';
+        }
+
+        window.closeViewer = () => document.getElementById('viewer-overlay').style.display = 'none';
+        
+        window.onload = init;
     </script>
 </body>
 </html>
