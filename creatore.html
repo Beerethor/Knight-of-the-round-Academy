@@ -10,17 +10,45 @@
         body { background: var(--bg-dark); color: white; font-family: 'Rajdhani', sans-serif; padding: 20px; line-height: 1.4; }
         h1 { font-family: 'Orbitron'; color: var(--neon-blue); text-transform: uppercase; border-bottom: 2px solid #333; margin-bottom: 30px; letter-spacing: 2px; }
         h2 { font-family: 'Orbitron'; color: var(--neon-pink); font-size: 1rem; margin-top: 0; }
+        
         .form-section { background: rgba(255,255,255,0.05); padding: 20px; border: 1px solid #333; margin-bottom: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
         .full-width { grid-column: 1 / -1; }
+        
         label { display: block; color: var(--neon-blue); font-family: 'Orbitron'; font-size: 0.75rem; margin-bottom: 5px; text-transform: uppercase; }
         input, select { width: 100%; background: #000; border: 1px solid #444; color: white; padding: 12px; font-family: 'Rajdhani'; font-size: 1.1rem; box-sizing: border-box; }
         input:focus { border-color: var(--neon-blue); outline: none; }
-        .checkbox-container { display: flex; align-items: center; gap: 10px; background: rgba(255, 255, 0, 0.05); padding: 10px; border: 1px dashed var(--neon-yellow); grid-column: 1 / -1; }
+
+        /* STILE MEZZOSANGUE MIGLIORATO */
+        .mezzosangue-panel { 
+            grid-column: 1 / -1;
+            background: rgba(255, 255, 0, 0.1); 
+            padding: 15px; 
+            border: 2px solid var(--neon-yellow); 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between;
+            border-radius: 4px;
+            box-shadow: 0 0 15px rgba(255, 255, 0, 0.1);
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .mezzosangue-panel:hover { background: rgba(255, 255, 0, 0.2); }
+        .mezzosangue-label { color: var(--neon-yellow); font-family: 'Orbitron'; font-weight: bold; letter-spacing: 1px; }
+        
+        /* Toggle Switch */
+        .switch { position: relative; display: inline-block; width: 60px; height: 30px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #333; transition: .4s; border-radius: 34px; }
+        .slider:before { position: absolute; content: ""; height: 22px; width: 22px; left: 4px; bottom: 4px; background-color: white; transition: .4s; border-radius: 50%; }
+        input:checked + .slider { background-color: var(--neon-yellow); }
+        input:checked + .slider:before { transform: translateX(30px); }
+
         .traits-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         .pl-visualizer { display: flex; gap: 5px; margin-top: 10px; flex-wrap: wrap; }
         .dot { width: 14px; height: 14px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.3); }
         .dot.limite { background: var(--neon-blue); box-shadow: 0 0 8px var(--neon-blue); }
         .dot.sovraccarico { background: var(--neon-pink); box-shadow: 0 0 8px var(--neon-pink); }
+
         button { background: transparent; border: 2px solid var(--neon-blue); color: var(--neon-blue); padding: 15px; font-family: 'Orbitron'; font-weight: bold; cursor: pointer; width: 100%; text-transform: uppercase; margin-top: 10px; }
         button:hover { background: var(--neon-blue); color: black; box-shadow: 0 0 20px var(--neon-blue); }
         #output-scheda { display: none; margin-top: 30px; border: 2px solid var(--neon-pink); padding: 30px; background: #000; }
@@ -41,7 +69,7 @@
             <input type="text" id="core" placeholder="Es: Coraggio Ardente">
         </div>
         <div>
-            <label>ANIMA (Parole/Descrizione)</label>
+            <label>ANIMA</label>
             <input type="text" id="anima" placeholder="Es: Scintilla di Speranza">
         </div>
         <div>
@@ -77,10 +105,15 @@
             <label>JOB</label>
             <select id="select-job"></select>
         </div>
-        <div class="checkbox-container">
-            <input type="checkbox" id="mezzosangue" onchange="aggiornaEredita()">
-            <label style="margin:0; color:var(--neon-yellow);">PROTOCOLLO MEZZOSANGUE</label>
+        
+        <div class="mezzosangue-panel" onclick="document.getElementById('mezzosangue').click()">
+            <span class="mezzosangue-label">⚠ ATTIVA PROTOCOLLO MEZZOSANGUE</span>
+            <label class="switch">
+                <input type="checkbox" id="mezzosangue" onchange="aggiornaEredita()">
+                <span class="slider"></span>
+            </label>
         </div>
+
         <div class="full-width">
             <label>EREDITÀ SELEZIONATA</label>
             <select id="select-eredita"></select>
@@ -97,13 +130,10 @@
             <label>FRAME</label>
             <input type="text" id="frame-knight">
         </div>
-        <div class="full-width" style="color:#666; font-size:0.8rem;">
-            * Nota: Capacità e Oggetti inizieranno vuoti.
-        </div>
     </div>
 
     <div class="form-section">
-        <div class="full-width"><h2>4. Risorse</h2></div>
+        <div class="full-width"><h2>4. Risorse Operative</h2></div>
         <div class="full-width">
             <label>PUNTI LIMITE (8) & SOVRACCARICO (3)</label>
             <div id="pl-display" class="pl-visualizer"></div>
@@ -132,10 +162,7 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
         const auth = getAuth(app);
-        let currentUser = null;
         let dbStirpi = [];
-
-        onAuthStateChanged(auth, user => { currentUser = user; });
 
         async function init() {
             try {
@@ -177,22 +204,13 @@
             if(!nome) return alert("Inserisci il nome!");
 
             const pg = {
-                nome: nome,
-                core: document.getElementById('core').value,
-                anima: document.getElementById('anima').value,
-                motto: document.getElementById('motto').value,
-                difetto: document.getElementById('difetto').value,
-                nemesi: document.getElementById('nemesi').value,
+                nome: nome, core: document.getElementById('core').value,
+                anima: document.getElementById('anima').value, motto: document.getElementById('motto').value,
+                difetto: document.getElementById('difetto').value, nemesi: document.getElementById('nemesi').value,
                 tratti: Array.from(document.querySelectorAll('.tratto-input')).map(i => i.value).filter(v => v !== ""),
-                stirpe: document.getElementById('select-stirpe').value,
-                job: document.getElementById('select-job').value,
+                stirpe: document.getElementById('select-stirpe').value, job: document.getElementById('select-job').value,
                 eredita: document.getElementById('select-eredita').value,
-                knight: document.getElementById('nome-knight').value,
-                frame: document.getElementById('frame-knight').value,
-                puntiLimite: 8,
-                puntiSovraccarico: 3,
-                capacita: [], // Vuote
-                oggetti: [],   // Vuote
+                knight: document.getElementById('nome-knight').value, frame: document.getElementById('frame-knight').value,
                 timestamp: serverTimestamp()
             };
 
@@ -201,13 +219,10 @@
             try {
                 document.getElementById('btn-save').innerText = "ARCHIVIAZIONE...";
                 await setDoc(doc(db, "personaggi", id), pg);
-                const out = document.getElementById('output-scheda');
-                out.style.display = 'block';
-                out.innerHTML = `<h2 style="color:var(--neon-blue);">SINCRONIZZAZIONE COMPLETATA</h2><p>La Matricola è stata registrata nel cloud KOTRA.</p><button onclick="window.print()">STAMPA SCHEDA</button>`;
+                document.getElementById('output-scheda').style.display = 'block';
+                document.getElementById('output-scheda').innerHTML = `<h2>REGISTRATO: ${id}</h2><button onclick="window.print()">STAMPA SCHEDA</button>`;
                 document.getElementById('btn-save').innerText = "SALVATO";
-            } catch (e) {
-                alert("Errore salvataggio!");
-            }
+            } catch (e) { alert("Errore salvataggio!"); }
         }
         window.onload = init;
     </script>
