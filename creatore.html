@@ -2,42 +2,49 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
-    <title>KOTRA - Inizializzazione Matricola</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KOTRA - Inizializzazione Matricola Cloud</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
         :root { --neon-blue: #00f2ff; --neon-pink: #ff00ff; --neon-yellow: #ffff00; --bg-dark: #0a0a0c; }
-        body { background: var(--bg-dark); color: white; font-family: 'Rajdhani', sans-serif; padding: 20px; }
-        h1 { font-family: 'Orbitron'; color: var(--neon-blue); text-transform: uppercase; border-bottom: 2px solid #333; margin-bottom: 30px; }
-        h2 { font-family: 'Orbitron'; color: var(--neon-pink); font-size: 1rem; margin-top: 0; }
+        body { background: var(--bg-dark); color: white; font-family: 'Rajdhani', sans-serif; padding: 20px; line-height: 1.4; }
+        h1 { font-family: 'Orbitron'; color: var(--neon-blue); text-transform: uppercase; border-bottom: 2px solid #333; margin-bottom: 30px; letter-spacing: 2px; }
+        h2 { font-family: 'Orbitron'; color: var(--neon-pink); font-size: 1rem; margin-top: 0; letter-spacing: 1px; }
         
         .form-section { background: rgba(255,255,255,0.05); padding: 20px; border: 1px solid #333; margin-bottom: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
         .full-width { grid-column: 1 / -1; }
         
-        label { display: block; color: var(--neon-blue); font-family: 'Orbitron'; font-size: 0.75rem; margin-bottom: 5px; letter-spacing: 1px; }
-        input, select, textarea { width: 100%; background: #000; border: 1px solid #444; color: white; padding: 10px; font-family: 'Rajdhani'; font-size: 1.1rem; box-sizing: border-box; transition: 0.3s; }
+        label { display: block; color: var(--neon-blue); font-family: 'Orbitron'; font-size: 0.75rem; margin-bottom: 5px; text-transform: uppercase; }
+        input, select, textarea { width: 100%; background: #000; border: 1px solid #444; color: white; padding: 12px; font-family: 'Rajdhani'; font-size: 1.1rem; box-sizing: border-box; transition: 0.3s; }
         input:focus, select:focus { border-color: var(--neon-blue); outline: none; box-shadow: 0 0 10px rgba(0, 242, 255, 0.2); }
         
         .checkbox-container { display: flex; align-items: center; gap: 10px; background: rgba(255, 255, 0, 0.05); padding: 10px; border: 1px dashed var(--neon-yellow); grid-column: 1 / -1; }
-        
-        .pl-visualizer { display: flex; gap: 5px; margin-top: 10px; flex-wrap: wrap; }
-        .dot { width: 15px; height: 15px; border-radius: 50%; border: 1px solid white; }
-        .dot.limite { background: var(--neon-blue); box-shadow: 0 0 5px var(--neon-blue); }
-        .dot.sovraccarico { background: var(--neon-pink); box-shadow: 0 0 5px var(--neon-pink); }
+        .checkbox-container input { width: auto; cursor: pointer; }
 
         .traits-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        
+        .pl-visualizer { display: flex; gap: 5px; margin-top: 10px; flex-wrap: wrap; }
+        .dot { width: 14px; height: 14px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.3); }
+        .dot.limite { background: var(--neon-blue); box-shadow: 0 0 8px var(--neon-blue); }
+        .dot.sovraccarico { background: var(--neon-pink); box-shadow: 0 0 8px var(--neon-pink); }
 
-        button { background: transparent; border: 2px solid var(--neon-blue); color: var(--neon-blue); padding: 15px; font-family: 'Orbitron'; font-weight: bold; cursor: pointer; transition: 0.3s; width: 100%; text-transform: uppercase; margin-top: 10px; }
+        button { background: transparent; border: 2px solid var(--neon-blue); color: var(--neon-blue); padding: 15px; font-family: 'Orbitron'; font-weight: bold; cursor: pointer; transition: 0.3s; width: 100%; text-transform: uppercase; margin-top: 10px; letter-spacing: 1px; }
         button:hover { background: var(--neon-blue); color: black; box-shadow: 0 0 20px var(--neon-blue); }
 
-        #output-scheda { display: none; margin-top: 30px; border: 2px solid var(--neon-pink); padding: 30px; background: #000; }
+        #output-scheda { display: none; margin-top: 30px; border: 2px solid var(--neon-pink); padding: 30px; background: #000; position: relative; animation: fadeIn 0.5s; }
+        @keyframes fadeIn { from {opacity:0;} to {opacity:1;} }
+
+        .nav-back { margin-bottom: 20px; text-decoration: none; color: #888; display: inline-block; font-family: 'Orbitron'; font-size: 0.8rem; }
+        .nav-back:hover { color: var(--neon-blue); }
     </style>
 </head>
 <body>
 
-    <h1>Protocollo Creazione Matricola</h1>
+    <a href="index.html" class="nav-back">← ANNULLA OPERAZIONE</a>
+    <h1>Protocollo Inizializzazione Matricola</h1>
 
     <div class="form-section">
-        <div class="full-width"><h2>Dati Identificativi</h2></div>
+        <div class="full-width"><h2>1. Dati del Profilo</h2></div>
         <div>
             <label>NOME DELLA MATRICOLA</label>
             <input type="text" id="nome" placeholder="Es: Arthur Pendragon">
@@ -47,11 +54,11 @@
             <input type="text" id="motto" placeholder="Es: Oltre ogni limite">
         </div>
         <div>
-            <label>CORE</label>
+            <label>CORE (L'essenza del tuo potere)</label>
             <input type="text" id="core" placeholder="Es: Coraggio Ardente">
         </div>
         <div>
-            <label>ANIMA</label>
+            <label>ANIMA (Dado Risorsa)</label>
             <select id="anima">
                 <option value="d6">d6</option>
                 <option value="d8">d8</option>
@@ -62,18 +69,18 @@
     </div>
 
     <div class="form-section">
-        <div class="full-width"><h2>Stirpe e Percorso</h2></div>
+        <div class="full-width"><h2>2. Stirpe e Job</h2></div>
         <div>
             <label>STIRPE</label>
             <select id="select-stirpe" onchange="aggiornaEredita()"></select>
         </div>
         <div>
-            <label>JOB</label>
+            <label>JOB / CLASSE SPECIALE</label>
             <select id="select-job"></select>
         </div>
         <div class="checkbox-container">
             <input type="checkbox" id="mezzosangue" onchange="aggiornaEredita()">
-            <label style="margin:0; color:var(--neon-yellow);">PROTOCOLLO MEZZOSANGUE (Accedi a tutte le Eredità)</label>
+            <label style="margin:0; color:var(--neon-yellow); cursor:pointer;">ATTIVA PROTOCOLLO MEZZOSANGUE (Accesso a tutte le Eredità)</label>
         </div>
         <div class="full-width">
             <label>EREDITÀ SELEZIONATA</label>
@@ -82,68 +89,99 @@
     </div>
 
     <div class="form-section">
-        <div class="full-width"><h2>Unità Knight & Tratti</h2></div>
+        <div class="full-width"><h2>3. Unità Knight & Configurazione</h2></div>
         <div>
             <label>NOME DEL KNIGHT</label>
-            <input type="text" id="nome-knight">
+            <input type="text" id="nome-knight" placeholder="Es: Excalibur Unit-01">
         </div>
         <div>
-            <label>FRAME</label>
-            <input type="text" id="frame-knight">
+            <label>FRAME (Modello Tattico)</label>
+            <input type="text" id="frame-knight" placeholder="Es: Lancer / Chevalier">
         </div>
         <div class="full-width">
-            <label>I 4 TRATTI DEL KNIGHT</label>
+            <label>I 4 TRATTI DEL KNIGHT (Equipaggiamento)</label>
             <div class="traits-grid">
-                <input type="text" class="tratto-input" placeholder="Tratto 1 (es. Ali Jet)">
-                <input type="text" class="tratto-input" placeholder="Tratto 2 (es. Spada Dragon)">
-                <input type="text" class="tratto-input" placeholder="Tratto 3 (es. Scudo Cinetico)">
+                <input type="text" class="tratto-input" placeholder="Tratto 1 (es. Spada Dragon)">
+                <input type="text" class="tratto-input" placeholder="Tratto 2 (es. Scudo Cinetico)">
+                <input type="text" class="tratto-input" placeholder="Tratto 3 (es. Propulsori Jet)">
                 <input type="text" class="tratto-input" placeholder="Tratto 4 (es. Sensori Advanced)">
             </div>
         </div>
     </div>
 
     <div class="form-section">
-        <div class="full-width"><h2>Stato Risorse Operative</h2></div>
+        <div class="full-width"><h2>4. Stato Risorse</h2></div>
         <div class="full-width">
-            <label>PUNTI LIMITE (PL) E SOVRACCARICO</label>
+            <label>SISTEMA PUNTI LIMITE (8) & SOVRACCARICO (3 - Base Nome)</label>
             <div id="pl-display" class="pl-visualizer"></div>
-            <small id="pl-info" style="color: #888; margin-top: 5px; display: block;">Limite: 8 | Sovraccarico: 3 (Base)</small>
+            <small style="color: #666; margin-top: 10px; display: block;">Il Sovraccarico aumenterà con l'aggiunta di nuove Memorie durante la campagna.</small>
         </div>
     </div>
 
-    <button onclick="generaScheda()">Genera Scheda Matricola</button>
+    <button id="btn-genera" onclick="generaScheda()">Inizializza e Salva nel Cloud</button>
+
     <div id="output-scheda"></div>
 
-    <script>
-        let database = { stirpi: [], job: [] };
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-        async function inizializza() {
+        // Configurazione Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyA7Xb8BbyL9s7buH_BW0hx2exD5Tb5G-pk",
+            authDomain: "pokerole-app.firebaseapp.com",
+            projectId: "pokerole-app",
+            storageBucket: "pokerole-app.firebasestorage.app",
+            messagingSenderId: "385416519668",
+            appId: "1:385416519668:web:908e12b9833f1cdc04a3a1",
+            measurementId: "G-5M1ST6CSV0"
+        };
+
+        // Inizializzazione
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+        
+        let currentUser = null;
+        let dbStirpi = [];
+        let dbJob = [];
+
+        // Verifica utente
+        onAuthStateChanged(auth, (user) => {
+            currentUser = user;
+            console.log(user ? "Utente Loggato: " + user.email : "Accesso Anonimo attivo");
+        });
+
+        // Caricamento database locali
+        async function loadData() {
             try {
                 const [resS, resJ] = await Promise.all([
                     fetch('stirpi_database.json'),
                     fetch('classi_database.json')
                 ]);
-                database.stirpi = (await resS.json()).items;
-                database.job = (await resJ.json()).items;
+                dbStirpi = (await resS.json()).items;
+                dbJob = (await resJ.json()).items;
                 popolaMenu();
-                renderPL();
-            } catch (e) { console.error(e); }
+            } catch (e) { console.error("Errore database locali:", e); }
         }
 
         function popolaMenu() {
             const sStirpe = document.getElementById('select-stirpe');
             const sJob = document.getElementById('select-job');
-            database.stirpi.sort((a,b) => a.nome.localeCompare(b.nome)).forEach(s => sStirpe.innerHTML += `<option value="${s.nome}">${s.nome}</option>`);
-            database.job.sort((a,b) => a.nome.localeCompare(b.nome)).forEach(j => sJob.innerHTML += `<option value="${j.nome}">${j.nome}</option>`);
+            dbStirpi.sort((a,b) => a.nome.localeCompare(b.nome)).forEach(s => sStirpe.innerHTML += `<option value="${s.nome}">${s.nome}</option>`);
+            dbJob.sort((a,b) => a.nome.localeCompare(b.nome)).forEach(j => sJob.innerHTML += `<option value="${j.nome}">${j.nome}</option>`);
             aggiornaEredita();
+            renderPL();
         }
 
-        function aggiornaEredita() {
+        // Logica Mezzosangue esposta globalmente
+        window.aggiornaEredita = function() {
             const isMez = document.getElementById('mezzosangue').checked;
             const stirpe = document.getElementById('select-stirpe').value;
             const sEredita = document.getElementById('select-eredita');
             sEredita.innerHTML = "";
-            database.stirpi.forEach(s => {
+            dbStirpi.forEach(s => {
                 if (isMez || s.nome === stirpe) {
                     s.eredita.forEach(e => {
                         sEredita.innerHTML += `<option value="${e.nome}">[${s.nome}] ${e.nome}</option>`;
@@ -154,47 +192,72 @@
 
         function renderPL() {
             const display = document.getElementById('pl-display');
-            const pLimite = 8;
-            const pSovraccarico = 3; // Solo Nome inizialmente
             display.innerHTML = "";
-            for(let i=0; i<pLimite; i++) display.innerHTML += '<div class="dot limite"></div>';
-            for(let i=0; i<pSovraccarico; i++) display.innerHTML += '<div class="dot sovraccarico"></div>';
+            for(let i=0; i<8; i++) display.innerHTML += '<div class="dot limite"></div>';
+            for(let i=0; i<3; i++) display.innerHTML += '<div class="dot sovraccarico"></div>';
         }
 
-        function generaScheda() {
-            const out = document.getElementById('output-scheda');
-            const trattiInputs = document.querySelectorAll('.tratto-input');
-            let trattiLista = [];
-            trattiInputs.forEach(input => { if(input.value) trattiLista.push(input.value); });
+        // Funzione Salvataggio e Generazione
+        window.generaScheda = async function() {
+            const nomePG = document.getElementById('nome').value;
+            if(!nomePG) return alert("Identificativo Matricola mancante!");
 
-            out.style.display = 'block';
-            out.innerHTML = `
-                <div style="text-align:center; border-bottom: 1px solid var(--neon-pink); padding-bottom: 10px; margin-bottom: 20px;">
-                    <h2 style="color:var(--neon-blue); font-size: 2rem; margin:0;">${document.getElementById('nome').value.toUpperCase() || 'MATRICOLA IGNOTA'}</h2>
-                    <i style="color:var(--neon-yellow);">"${document.getElementById('motto').value}"</i>
-                </div>
-                <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                    <div>
-                        <p><b style="color:var(--neon-pink);">STIRPE:</b> ${document.getElementById('select-stirpe').value}</p>
-                        <p><b style="color:var(--neon-pink);">JOB:</b> ${document.getElementById('select-job').value}</p>
-                        <p><b style="color:var(--neon-pink);">EREDITÀ:</b> ${document.getElementById('select-eredita').value}</p>
+            const tratti = Array.from(document.querySelectorAll('.tratto-input')).map(i => i.value).filter(v => v !== "");
+
+            const datiPG = {
+                nome: nomePG,
+                motto: document.getElementById('motto').value,
+                core: document.getElementById('core').value,
+                anima: document.getElementById('anima').value,
+                stirpe: document.getElementById('select-stirpe').value,
+                job: document.getElementById('select-job').value,
+                eredita: document.getElementById('select-eredita').value,
+                knight: document.getElementById('nome-knight').value,
+                frame: document.getElementById('frame-knight').value,
+                tratti: tratti,
+                puntiLimite: 8,
+                puntiSovraccarico: 3,
+                creatoreId: currentUser ? currentUser.uid : "public_user",
+                creatoreEmail: currentUser ? currentUser.email : "anonimo",
+                timestamp: serverTimestamp()
+            };
+
+            const idDoc = `${nomePG.replace(/\s+/g, '-').toLowerCase()}-${Date.now()}`;
+
+            try {
+                document.getElementById('btn-genera').innerText = "SINCRONIZZAZIONE IN CORSO...";
+                await setDoc(doc(db, "personaggi", idDoc), datiPG);
+                
+                const out = document.getElementById('output-scheda');
+                out.style.display = 'block';
+                out.innerHTML = `
+                    <div style="text-align:center; border-bottom: 2px solid var(--neon-blue); padding-bottom:15px; margin-bottom:20px;">
+                        <h2 style="font-size: 2rem; margin:0;">${datiPG.nome.toUpperCase()}</h2>
+                        <span style="color:var(--neon-yellow);">ID CLOUD: ${idDoc}</span>
                     </div>
-                    <div>
-                        <p><b style="color:var(--neon-blue);">KNIGHT:</b> ${document.getElementById('nome-knight').value}</p>
-                        <p><b style="color:var(--neon-blue);">FRAME:</b> ${document.getElementById('frame-knight').value}</p>
-                        <p><b style="color:var(--neon-blue);">ANIMA:</b> ${document.getElementById('anima').value}</p>
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px;">
+                        <div>
+                            <p><b style="color:var(--neon-pink);">STIRPE:</b> ${datiPG.stirpe}</p>
+                            <p><b style="color:var(--neon-pink);">JOB:</b> ${datiPG.job}</p>
+                        </div>
+                        <div>
+                            <p><b style="color:var(--neon-blue);">KNIGHT:</b> ${datiPG.knight}</p>
+                            <p><b style="color:var(--neon-blue);">ANIMA:</b> ${datiPG.anima}</p>
+                        </div>
                     </div>
-                </div>
-                <div style="margin-top:20px; border-top:1px solid #333; padding-top:10px;">
-                    <b style="color:var(--neon-yellow);">TRATTI ATTIVI:</b>
-                    <p>${trattiLista.join(' • ') || 'Nessun tratto inserito'}</p>
-                </div>
-                <button onclick="window.print()" style="border-color:white; color:white;">Stampa Scheda Ufficiale</button>
-            `;
-            out.scrollIntoView({behavior: "smooth"});
+                    <p><b>TRATTI:</b> ${tratti.join(' • ')}</p>
+                    <button onclick="window.print()" style="border-color:#fff; color:#fff;">STAMPA PROTOCOLLO</button>
+                `;
+                document.getElementById('btn-genera').innerText = "GENERAZIONE COMPLETATA";
+                out.scrollIntoView({behavior: "smooth"});
+            } catch (e) {
+                console.error(e);
+                alert("Errore nel salvataggio cloud. Controlla la connessione.");
+                document.getElementById('btn-genera').innerText = "RIPROVA INIZIALIZZAZIONE";
+            }
         }
 
-        window.onload = inizializza;
+        window.onload = loadData;
     </script>
 </body>
 </html>
