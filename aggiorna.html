@@ -27,7 +27,6 @@
             background-size: 100% 100%, 30px 30px, 30px 30px;
         }
 
-        /* Scanline effect */
         body::after {
             content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: repeating-linear-gradient(0deg, rgba(0,0,0,0.1), rgba(0,0,0,0.1) 1px, transparent 1px, transparent 2px);
@@ -53,11 +52,9 @@
             border: 1px solid var(--border-color); 
             margin-bottom: 25px; 
             display: grid; grid-template-columns: 1fr 1fr; gap: 25px; 
-            position: relative;
-            overflow: hidden;
+            position: relative; overflow: hidden;
         }
 
-        /* Decoration corners */
         .form-section::before {
             content: ""; position: absolute; top: 0; left: 0; width: 10px; height: 10px;
             border-top: 2px solid var(--neon-blue); border-left: 2px solid var(--neon-blue);
@@ -76,7 +73,7 @@
         input, select, textarea { 
             width: 100%; background: rgba(0, 0, 0, 0.6); border: 1px solid var(--border-color); 
             color: #fff; padding: 12px; margin-bottom: 5px; border-radius: 0; 
-            font-family: 'Rajdhani'; font-size: 1rem; transition: 0.3s;
+            font-family: 'Rajdhani'; font-size: 1rem; transition: 0.3s; box-sizing: border-box;
         }
         
         input:focus, select:focus, textarea:focus { 
@@ -106,11 +103,11 @@
             align-items: center; justify-content: center; backdrop-filter: blur(5px);
         }
 
-        .job-highlight { 
-            border: 1px solid var(--neon-pink); color: var(--neon-pink); font-weight: bold;
-        }
+        .highlight-input { border: 1px solid var(--neon-pink) !important; color: var(--neon-pink) !important; }
 
         h3 { font-family: 'Orbitron'; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 15px; }
+
+        @keyframes spin { 100% { transform: rotate(360deg); } }
 
         @media (max-width: 768px) {
             .form-section { grid-template-columns: 1fr; }
@@ -147,10 +144,22 @@
     </div>
 
     <div class="form-section evolution">
+        <div class="full-width"><h3 style="font-size: 0.75rem;">[ NEURAL & HARDWARE UPGRADE ]</h3></div>
+        <div>
+            <label>SINAPSI_KNIGHT (OVERRIDE)</label>
+            <input type="text" id="knight" class="highlight-input" placeholder="Es: Lancelot, The Fool...">
+        </div>
+        <div>
+            <label>FRAME_MODIFICATION (TYPE)</label>
+            <input type="text" id="frame" class="highlight-input" placeholder="Es: Lancer, Heavy-Shell...">
+        </div>
+    </div>
+
+    <div class="form-section evolution">
         <div class="full-width"><h3 style="font-size: 0.75rem;">[ MULTICLASS_NEURAL_LINK ]</h3></div>
         <div class="full-width">
-            <label>SECONDO JOB (OVERRIDE_SELECT)</label>
-            <select id="secondo-job" class="job-highlight">
+            <label>SECONDO JOB (DATABASE_LINK)</label>
+            <select id="secondo-job" class="highlight-input">
                 <option value="">-- NESSUNA SINAPSI RILEVATA --</option>
             </select>
         </div>
@@ -178,20 +187,8 @@
                 <input type="text" class="mem-input" placeholder="Fragment_01">
                 <input type="text" class="mem-input" placeholder="Fragment_02">
                 <input type="text" class="mem-input" placeholder="Fragment_03">
-                 </div>
+            </div>
         </div>
-        <div class="form-section evolution">       
-        <div class="full-width"><h3 style="font-size: 0.75rem;">[ NEURAL & HARDWARE UPGRADE ]</h3></div>
-        <div>
-            <label>SINAPSI_KNIGHT (OVERRIDE_SELECT)</label>
-            <input type="text" id="Knight" class="Knight-input" placeholder="Es: Lancelot, The Fool">
-            </select>
-        </div>
-        <div>
-            <label>FRAME_MODIFICATION (HARDWARE_TYPE)</label>
-            <input type="text" id="frame" class="frame-input" placeholder="Es: Lancer...">
-        </div>
-    </div>
     </div>
 
     <div class="form-section evolution">
@@ -215,8 +212,6 @@
 
     <button class="btn-update" id="btn-save-evolution">COMMIT_CHANGES</button>
 
-    <style>@keyframes spin { 100% { transform: rotate(360deg); } }</style>
-
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
@@ -238,17 +233,14 @@
         const updateId = sessionStorage.getItem('updateModeId');
         if(!updateId) window.location.href = "archivio.html";
 
-        let classiDatabase = [];
-
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 try {
+                    // Carica Database Classi
                     const resJ = await fetch('classi_database.json');
                     const dataJ = await resJ.json();
-                    classiDatabase = dataJ.items;
-                    
                     const selectJob = document.getElementById('secondo-job');
-                    classiDatabase.forEach(job => {
+                    dataJ.items.forEach(job => {
                         const opt = document.createElement('option');
                         opt.value = job.nome;
                         opt.textContent = job.nome.toUpperCase();
@@ -256,17 +248,24 @@
                         selectJob.appendChild(opt);
                     });
 
+                    // Carica Dati Personaggio
                     const docSnap = await getDoc(doc(db, "personaggi", updateId));
                     if(docSnap.exists()) {
                         const p = docSnap.data();
                         
-                        document.getElementById('nome').value = p.nome;
-                        document.getElementById('stirpe').value = p.stirpe;
-                        document.getElementById('job-primario').value = p.job;
-                        document.getElementById('core').value = p.core;
-                        document.getElementById('anima').value = p.anima;
+                        document.getElementById('nome').value = p.nome || "";
+                        document.getElementById('stirpe').value = p.stirpe || "";
+                        document.getElementById('job-primario').value = p.job || "";
+                        document.getElementById('core').value = p.core || "";
+                        document.getElementById('anima').value = p.anima || "";
+                        
+                        // Knight e Frame (campi diretti)
+                        document.getElementById('knight').value = p.knight || "";
+                        document.getElementById('frame').value = p.frame || "";
+                        
                         if(p.secondoJob) document.getElementById('secondo-job').value = p.secondoJob;
 
+                        // Genera input Tratti
                         const container = document.getElementById('tratti-container');
                         for(let i=0; i<10; i++) {
                             const val = (p.tratti && p.tratti[i]) ? p.tratti[i] : "";
@@ -279,39 +278,43 @@
                             container.appendChild(input);
                         }
 
-                        const fillInputs = (className, dataArray) => {
-                            const inputs = document.querySelectorAll(`.${className}`);
-                            if(dataArray) dataArray.forEach((d, i) => { if(inputs[i]) inputs[i].value = d; });
+                        // Helper per riempire array
+                        const fillArr = (cls, arr) => {
+                            const ins = document.querySelectorAll(`.${cls}`);
+                            if(arr) arr.forEach((v, i) => { if(ins[i]) ins[i].value = v; });
                         };
 
-                        fillInputs('cap-input', p.capacita);
-                        fillInputs('item-input', p.oggetti);
-                        fillInputs('mem-input', p.memorie);
-                        fillInputs('aff-input', p.affinita);
+                        fillArr('cap-input', p.capacita);
+                        fillArr('item-input', p.oggetti);
+                        fillArr('mem-input', p.memorie);
+                        fillArr('aff-input', p.affinita);
                         
                         document.getElementById('uniforme').value = p.uniforme || "";
                         document.getElementById('club').value = p.club || "";
                         document.getElementById('tratto-distintivo').value = p.trattoDistintivo || "";
                     }
-                } catch (e) { console.error(e); }
+                } catch (e) { console.error("LOAD_ERROR:", e); }
             } else { window.location.href = "index.html"; }
         });
 
         document.getElementById('btn-save-evolution').onclick = async () => {
             document.getElementById('loading-overlay').style.display = 'flex';
-            const memorie = Array.from(document.querySelectorAll('.mem-input')).map(i => i.value).filter(v => v !== "");
             
+            const getVals = (cls) => Array.from(document.querySelectorAll(`.${cls}`)).map(i => i.value).filter(v => v !== "");
+
             const updatedData = {
+                knight: document.getElementById('knight').value,
+                frame: document.getElementById('frame').value,
                 secondoJob: document.getElementById('secondo-job').value,
-                tratti: Array.from(document.querySelectorAll('.tratto-input')).map(i => i.value).filter(v => v !== ""),
-                capacita: Array.from(document.querySelectorAll('.cap-input')).map(i => i.value).filter(v => v !== ""),
-                oggetti: Array.from(document.querySelectorAll('.item-input')).map(i => i.value).filter(v => v !== ""),
-                memorie: memorie,
-                bonusPuntiLimite: memorie.length * 3,
+                tratti: getVals('tratto-input'),
+                capacita: getVals('cap-input'),
+                oggetti: getVals('item-input'),
+                memorie: getVals('mem-input'),
+                affinita: getVals('aff-input'),
                 uniforme: document.getElementById('uniforme').value,
                 club: document.getElementById('club').value,
                 trattoDistintivo: document.getElementById('tratto-distintivo').value,
-                affinita: Array.from(document.querySelectorAll('.aff-input')).map(i => i.value).filter(v => v !== "")
+                bonusPuntiLimite: getVals('mem-input').length * 3
             };
 
             try {
@@ -319,7 +322,8 @@
                 sessionStorage.removeItem('updateModeId');
                 window.location.href = "archivio.html";
             } catch (e) {
-                alert("SYNC_ERROR: UNABLE TO COMMIT CHANGES.");
+                console.error("SAVE_ERROR:", e);
+                alert("CRITICAL_FAILURE: Impossibile aggiornare il database.");
                 document.getElementById('loading-overlay').style.display = 'none';
             }
         };
