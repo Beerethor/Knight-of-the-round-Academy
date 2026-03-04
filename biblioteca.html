@@ -180,8 +180,8 @@
         <div class="nav-buttons">
             <button onclick="window.location.href='index.html'" style="border-color: #fff; color: #fff;">HOME</button>
             
-            <button onclick="loadData('stirpi_database.json', this)">Stirpi</button>
-            <button onclick="loadData('classi_database.json', this)">Classi & Job</button>
+            <button onclick="('stirpi_database.json', this)">Stirpi</button>
+            <button onclick="('classi_database.json', this)">Classi & Job</button>
             
             <button id="back-btn" style="display:none; border-color: var(--neon-yellow); color: var(--neon-yellow);" onclick="showList()">← Torna alla Lista</button>
         </div>
@@ -199,21 +199,28 @@
         let currentData = [];
 
         async function loadData(filename, btn) {
-            // UI Feedback
-            document.querySelectorAll('.nav-buttons button').forEach(b => b.classList.remove('active'));
-            if(btn) btn.classList.add('active');
+    // UI Feedback
+    document.querySelectorAll('.nav-buttons button').forEach(b => b.classList.remove('active'));
+    if(btn) btn.classList.add('active');
 
-            try {
-                const response = await fetch(filename);
-                const data = await response.json();
-                currentData = data.items;
-                renderList();
-                showList();
-            } catch (e) {
-                console.error(e);
-                document.getElementById('list-view').innerHTML = "<p style='color:red;'>Errore caricamento database.</p>";
-            }
-        }
+    try {
+        const response = await fetch(filename);
+        const data = await response.json();
+        
+        // --- LOGICA DI ORDINAMENTO ALFABETICO ---
+        currentData = data.items.sort((a, b) => {
+            if (a.nome < b.nome) return -1;
+            if (a.nome > b.nome) return 1;
+            return 0;
+        });
+        
+        renderList();
+        showList();
+    } catch (e) {
+        console.error(e);
+        document.getElementById('list-view').innerHTML = "<p style='color:red;'>Errore caricamento database.</p>";
+    }
+}
 
         function renderList() {
             const container = document.getElementById('list-view');
