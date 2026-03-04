@@ -9,15 +9,6 @@
     "max_spiriti_affini": 2,
     "max_punti_affinita_totali": 10
   },
-  "definizioni_tecniche": {
-    "Anima": "Rappresenta l'essenza più profonda e intima del personaggio. Mentre il Nome ti identifica e la Stirpe dice da dove vieni, l'Anima definisce chi sei veramente nel profondo.",
-    "Core": "Il Core rappresenta il legame elementale tra la Matricola, il suo Knight e il Respiro del Drago (la forza vitale di Brit’an). Solo chi possiede un legame forte con un elemento può diventare una Matricola.",
-    "Memoria": "le Memorie rappresentano i momenti chiave del passato della tua Matricola che ne hanno segnato l'identità.",
-    "Difetto": "Rappresenta un punto debole, una paura o un limite caratteriale che può mettere la Matricola in pericolo (es. Timidezza, Furia cieca, Arroganza). A differenza dei Tratti, non aggiunge dadi alla Prova.",
-    "Sovraccarico": "i Punti Limite sono la barra dell'energia della tua Matricola, simile a quella che vedresti in un videogioco o in un anime quando un personaggio sta per scatenare il suo colpo migliore.",
-    "Tratti": "Sono parole o brevi frasi che definiscono le capacità, le risorse o i legami del personaggio. Possono rappresentare: \nCompetenze: Cosa sai fare o hai studiato (es. Sparare, Magia Sidhe). \nTalenti naturali: Ciò per cui sei portato (es. Convincere). \nOggetti iconici: Strumenti unici (es. Excalibur, L'orologio di mio padre). \nRelazioni e Alleati: Rapporti significativi (es. Ginevra, Il mio famiglio).",
-    "Nemesi": "Rappresenta un trauma, un nemico giurato o una condizione avversa che ha segnato profondamente il personaggio. Non deve essere per forza una persona: \nIndividui: L'assassino di un genitore, un rivale accademico. \nConcetti Astratti: La fame patita in strada, la paura del fallimento. \nEventi: La perdita di una persona cara, un segreto inconfessabile."
-  },
   "orientamento_step_by_step": [
     {
       "id": 1,
@@ -38,6 +29,7 @@
     {
       "id": 4,
       "fase": "ANALISI DELL'ANIMA",
+      "descrizione": "Rappresenta l'essenza più profonda e intima del personaggio. Mentre il Nome ti identifica e la Stirpe dice da dove vieni, l'Anima definisce chi sei veramente nel profondo.",
       "categorie": {
         "Passato": ["Soldato bambino", "Primogenito", "Enfant prodige", "Ladruncolo", "Ex-gladiatrice", "Nata in battaglia", "Pecora nera", "Tormentato", "Contadina"],
         "Presente": ["Studentessa modello", "Agente Intelligence", "Principe", "Reietto", "Cercatrice", "Appassionato di Mecha", "Genio incompreso", "Pura di cuore", "Senza talento"],
@@ -48,16 +40,19 @@
     {
       "id": 5,
       "fase": "ESTENSIONE MEMETICA (TRATTI)",
+      "descrizione": "Sono parole o brevi frasi che definiscono le capacità, le risorse o i legami del personaggio. Possono rappresentare: \nCompetenze: Cosa sai fare o hai studiato (es. Sparare, Magia Sidhe). \nTalenti naturali: Ciò per cui sei portato (es. Convincere). \nOggetti iconici: Strumenti unici (es. Excalibur, L'orologio di mio padre). \nRelazioni e Alleati: Rapporti significativi (es. Ginevra, Il mio famiglio).",
       "regola": "Definisci i primi 4 Tratti."
     },
     {
       "id": 6,
       "fase": "CONFIGURAZIONE DIFETTO",
+      "descrizione": "Rappresenta un punto debole, una paura o un limite caratteriale che può mettere la Matricola in pericolo (es. Timidezza, Furia cieca, Arroganza). A differenza dei Tratti, non aggiunge dadi alla Prova.",
       "tipi": ["Fisico (es. Instabilità Core)", "Caratteriale (es. Impulsività)", "Sociale (es. Identità perduta)"]
     },
     {
       "id": 7,
       "fase": "IMPRONTA DELLA NEMESI",
+      "Nemesi": "Rappresenta un trauma, un nemico giurato o una condizione avversa che ha segnato profondamente il personaggio. Non deve essere per forza una persona: \nIndividui: L'assassino di un genitore, un rivale accademico. \nConcetti Astratti: La fame patita in strada, la paura del fallimento. \nEventi: La perdita di una persona cara, un segreto inconfessabile.",
       "esempi": ["Rivali (Persone)", "Traumi (Cose)", "Conflitti Morali (Ideali)"]
     },
     {
@@ -68,7 +63,8 @@
     },
     {
       "id": 9,
-      "fase": "CALCOLO SINCRONIZZAZIONE",
+      "fase": "LIMITE E SOVRACCARICO",
+      "descrizione": "i Punti Limite sono la barra dell'energia della tua Matricola, simile a quella che vedresti in un videogioco o in un anime quando un personaggio sta per scatenare il suo colpo migliore.",
       "formula_limite": "8 (Base) + 3 (Nome) + (3 * Memorie Extra)",
       "massimo_teorico": 20
     },
