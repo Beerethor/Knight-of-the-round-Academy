@@ -89,29 +89,18 @@
             transform: translateY(-5px);
         }
 
-        /* --- NUOVA REGOLA PER LE ANTEPRIME --- */
         .card img {
             width: 100%;
-            height: 180px; /* Altezza fissa per l'anteprima */
-            
-            /* object-fit: cover assicura che l'immagine copra l'area senza deformarsi */
-            object-fit: cover; 
-            
-            /* --- QUESTA È LA RIGA MAGICA --- */
-            /* Allinea l'immagine in alto al centro. Mostrerà i volti nella maggior parte dei casi. */
+            height: 180px;
+            object-fit: cover;
+            /* Focalizza l'anteprima sulla parte alta (volti) */
             object-position: center top; 
-            
-            filter: grayscale(30%); /* Effetto cyberpunk di base */
+            filter: grayscale(30%);
             margin-bottom: 10px;
-            transition: 0.3s ease; /* Transizione fluida per l'hover */
+            transition: 0.3s;
         }
 
-        /* Effetto al passaggio del mouse */
-        .card:hover img { 
-            filter: grayscale(0%); 
-            /* Opzionale: un leggero zoom per dare vita all'anteprima */
-            transform: scale(1.05); 
-        }
+        .card:hover img { filter: grayscale(0%); transform: scale(1.05); }
 
         /* DETAIL VIEW */
         #detail-view { display: none; animation: fadeIn 0.4s ease; }
@@ -144,8 +133,6 @@
             border-bottom: 1px solid rgba(0, 242, 255, 0.3);
             margin: 30px 0 15px 0;
             font-size: 1rem;
-            display: flex;
-            justify-content: space-between;
         }
 
         .box {
@@ -161,36 +148,30 @@
             padding: 2px 8px;
             font-weight: bold;
             font-size: 0.7rem;
-            margin-left: 10px;
             border-radius: 2px;
         }
 
-        /* SCROLLBAR */
         ::-webkit-scrollbar { width: 5px; }
         ::-webkit-scrollbar-thumb { background: var(--neon-blue); }
     </style>
 </head>
 <body>
 
-<header>
-        <div>
-            <h2 style="color: var(--neon-blue); cursor:pointer;" onclick="window.location.href='index.html'">Sistema KOTRA v3.0</h2>
+    <header>
+        <div onclick="window.location.href='index.html'" style="cursor:pointer;">
+            <h2 style="color: var(--neon-blue);">Sistema KOTRA v3.0</h2>
             <small style="color: #666;">Accesso Biblioteca: Autorizzato</small>
         </div>
         <div class="nav-buttons">
             <button onclick="window.location.href='index.html'" style="border-color: #fff; color: #fff;">HOME</button>
-            
-            <button onclick="('stirpi_database.json', this)">Stirpi</button>
-            <button onclick="('classi_database.json', this)">Classi & Job</button>
-            
+            <button onclick="loadData('stirpi_database.json', this)">Stirpi</button>
+            <button onclick="loadData('classi_database.json', this)">Classi & Job</button>
             <button id="back-btn" style="display:none; border-color: var(--neon-yellow); color: var(--neon-yellow);" onclick="showList()">← Torna alla Lista</button>
         </div>
     </header>
 
     <div id="list-view" class="items-grid">
-        <p style="color: #444; text-align: center; grid-column: 1/-1; margin-top: 50px;">
-            In attesa di selezione categoria...
-        </p>
+        <p style="color: #444; text-align: center; grid-column: 1/-1; margin-top: 50px;">In attesa di selezione categoria...</p>
     </div>
 
     <div id="detail-view"></div>
@@ -199,33 +180,28 @@
         let currentData = [];
 
         async function loadData(filename, btn) {
-    // UI Feedback
-    document.querySelectorAll('.nav-buttons button').forEach(b => b.classList.remove('active'));
-    if(btn) btn.classList.add('active');
+            document.querySelectorAll('.nav-buttons button').forEach(b => b.classList.remove('active'));
+            if(btn) btn.classList.add('active');
 
-    try {
-        const response = await fetch(filename);
-        const data = await response.json();
-        
-        // --- LOGICA DI ORDINAMENTO ALFABETICO ---
-        currentData = data.items.sort((a, b) => {
-            if (a.nome < b.nome) return -1;
-            if (a.nome > b.nome) return 1;
-            return 0;
-        });
-        
-        renderList();
-        showList();
-    } catch (e) {
-        console.error(e);
-        document.getElementById('list-view').innerHTML = "<p style='color:red;'>Errore caricamento database.</p>";
-    }
-}
+            try {
+                const response = await fetch(filename);
+                if (!response.ok) throw new Error("File non trovato");
+                const data = await response.json();
+                
+                // Ordinamento Alfabetico
+                currentData = data.items.sort((a, b) => a.nome.localeCompare(b.nome));
+                
+                renderList();
+                showList();
+            } catch (e) {
+                console.error(e);
+                document.getElementById('list-view').innerHTML = "<p style='color:red; text-align:center; grid-column:1/-1;'>Errore nel caricamento del database.</p>";
+            }
+        }
 
         function renderList() {
             const container = document.getElementById('list-view');
             container.innerHTML = currentData.map((item, index) => {
-                // Check se è un Job Speciale (se ha "NOTE SPECIALI" nella descrizione)
                 const isSpeciale = item.descrizione && item.descrizione.includes("NOTE SPECIALI");
                 return `
                     <div class="card" onclick="showDetail(${index})">
@@ -243,12 +219,10 @@
             document.getElementById('detail-view').style.display = 'block';
             document.getElementById('back-btn').style.display = 'block';
 
-            // Formattazione Note Speciali
             const descFormattata = item.descrizione
                 .replace(/\n/g, "<br>")
                 .replace("NOTE SPECIALI:", "<br><b style='color:var(--neon-yellow); border:1px solid var(--neon-yellow); padding: 2px 5px;'>⚠️ NOTE SPECIALI</b><br>");
 
-            // Sezione Eredità o Tecniche
             let skillSection = "";
             if (item.eredita) {
                 skillSection = `<div class="section-title">Eredità di Stirpe</div>` + 
@@ -280,10 +254,8 @@
                     <div class="content-side">
                         <h1 style="color:var(--neon-blue); font-size: 2.5rem;">${item.nome}</h1>
                         ${item.citazione ? `<div class="citazione">"${item.citazione}"</div>` : ''}
-                        
                         <div class="section-title">Background Operativo</div>
                         <p>${descFormattata}</p>
-                        
                         <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 20px;">
                             <div>
                                 <div class="section-title">Temi Chiave</div>
@@ -295,7 +267,6 @@
                                 <div style="font-size:0.9rem; color:var(--neon-pink);">${item.nemesi.join(' • ')}</div>
                             </div>` : ''}
                         </div>
-
                         ${skillSection}
                     </div>
                 </div>
