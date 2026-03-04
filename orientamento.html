@@ -6,6 +6,8 @@
     <title>KOTRA - Terminale Orientamento v3.0</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
+
+        
         :root {
             --neon-blue: #00f2ff;
             --neon-pink: #ff00ff;
@@ -15,14 +17,32 @@
         }
 
         body {
-            background: var(--bg-dark);
-            color: #e0e0e0;
-            font-family: 'Rajdhani', sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-image: radial-gradient(circle at 50% 50%, #1a1a20 0%, #0a0a0c 100%);
-            min-height: 100vh;
-        }
+    background-color: #0a0a0c; /* Colore di sicurezza se l'immagine non carica */
+    background-image: url('image_0.png'); /* Inserisci il nome dell'immagine salvata */
+    background-size: cover; /* L'immagine copre l'intera finestra */
+    background-position: center; /* L'immagine è centrata */
+    background-attachment: fixed; /* Lo sfondo non scorre con il testo */
+    background-repeat: no-repeat; /* L'immagine non si ripete */
+    
+    /* Manteniamo le altre proprietà già presenti */
+    color: #e0e0e0;
+    font-family: 'Rajdhani', sans-serif;
+    margin: 0;
+    padding: 20px;
+    min-height: 100vh;
+}
+
+/* OTTIMIZZAZIONE TATTICA DELLO SFONDO */
+body::after {
+    content: " ";
+    position: fixed;
+    top: 0; left: 0; bottom: 0; right: 0;
+    
+    /* Un overlay fucsia/teal molto leggero per uniformare i colori */
+    background: linear-gradient(rgba(0, 242, 255, 0.03), rgba(255, 0, 255, 0.02));
+    pointer-events: none; /* L'overlay non blocca i clic */
+    z-index: -1; /* Sta dietro al contenuto ma sopra lo sfondo */
+}
 
         /* HEADER */
         .tactic-header {
