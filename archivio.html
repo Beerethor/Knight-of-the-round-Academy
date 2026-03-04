@@ -291,19 +291,24 @@
             });
         }
 
-        window.openViewer = async (p) => {
+       window.openViewer = async (p) => {
             const overlay = document.getElementById('viewer-overlay');
             const loader = document.getElementById('v-loader');
             overlay.style.display = 'block';
             loader.style.display = 'flex';
             document.getElementById('v-hack-fill').style.width = "100%";
 
+            // Shortcut per accedere ai dati speciali
+            const spec = p.specialData || {};
+
             // Eredità e Dati Database
             let ereditaDati = null;
             dbStirpi.forEach(s => { const found = s.eredita.find(e => e.nome === p.eredita); if(found) ereditaDati = found; });
             const jobDati = dbClassi.find(j => j.nome === p.job);
             const secondoJobDati = p.secondoJob ? dbClassi.find(j => j.nome === p.secondoJob) : null;
-            const job2Dati = p.job2 ? dbClassi.find(j => j.nome === p.job2) : null;
+            
+            // Job Eredità cercato in specialData
+            const job2Dati = spec.job2 ? dbClassi.find(j => j.nome === spec.job2) : null;
 
             // Info Base
             document.getElementById('v-img').src = p.immagine || '';
@@ -312,26 +317,27 @@
             document.getElementById('v-club').innerText = p.club || "--";
             document.getElementById('v-distintivo').innerText = p.trattoDistintivo || "--";
 
-            // Sezione Sociale (Frame e Mutazione)
+            // Sezione Sociale (Check in specialData)
             const extraSocial = document.getElementById('v-extra-social');
             extraSocial.innerHTML = "";
-            if(p.frame2) extraSocial.innerHTML += `<div class="special-label">FRAME EREDITÀ: ${p.frame2}</div>`;
-            if(p.mutazione) extraSocial.innerHTML += `<div class="special-label">MUTAZIONE: ${p.mutazione}</div>`;
+            if(spec.frame2) extraSocial.innerHTML += `<div class="special-label">FRAME EREDITÀ: ${spec.frame2}</div>`;
+            if(spec.mutazione) extraSocial.innerHTML += `<div class="special-label">MUTAZIONE: ${spec.mutazione}</div>`;
 
-            // Sezione Core (Core2 e Scintilla)
+            // Sezione Core (Check in specialData)
             const extraCore = document.getElementById('v-extra-core');
             extraCore.innerHTML = "";
-            if(p.core2) extraCore.innerHTML += `<div class="special-label" style="color:var(--neon-pink)">CORE EREDITÀ: ${p.core2}</div>`;
-            if(p.scintilla) extraCore.innerHTML += `<div class="special-label" style="color:var(--neon-pink)">SCINTILLA: ${p.scintilla}</div>`;
+            if(spec.core2) extraCore.innerHTML += `<div class="special-label" style="color:var(--neon-pink)">CORE EREDITÀ: ${spec.core2}</div>`;
+            if(spec.scintilla) extraCore.innerHTML += `<div class="special-label" style="color:var(--neon-pink)">SCINTILLA: ${spec.scintilla}</div>`;
 
-            // Stirpe Header
+            // Stirpe Header (Includendo Job2 da specialData)
             let jobHeader = p.job;
             if(p.secondoJob) jobHeader += ` + ${p.secondoJob}`;
-            if(p.job2) jobHeader += ` [Job Eredità: ${p.job2}]`;
+            if(spec.job2) jobHeader += ` [Job Eredità: ${spec.job2}]`;
             
             document.getElementById('v-stirpe').innerHTML = `
                 <div style="color:var(--neon-pink)">${p.stirpe} > ${p.eredita}</div>
                 <div style="font-size:0.65rem; color:var(--neon-yellow); margin-top:4px;">CONFIG: ${jobHeader}</div>`;
+            
             document.getElementById('v-eredita-desc').innerHTML = `<p>${ereditaDati?.descrizione || ""}</p>` + (ereditaDati?.effetto ? `<div class="tech-tag" style="border-color:var(--neon-pink); color:var(--neon-yellow);">${ereditaDati.effetto}</div>` : "");
 
             // Stats e Sync
@@ -350,10 +356,11 @@
             jobDati?.tecniche?.forEach(t => tBox.innerHTML += `<div class="tech-tag"><strong>[${p.job}]</strong> ${t.nome}: ${t.effetto}</div>`);
             secondoJobDati?.tecniche?.forEach(t => tBox.innerHTML += `<div class="tech-tag" style="border-color:var(--neon-yellow)"><strong>[${p.secondoJob}]</strong> ${t.nome}: ${t.effetto}</div>`);
             
-            // Logica Job Eredità (Job2)
+            // Tecniche da Job Eredità (Job2 in specialData)
             if(job2Dati) {
-                job2Dati.tecniche?.forEach(t => tBox.innerHTML += `<div class="tech-tag" style="border-color:var(--neon-pink)"><strong>[JOB EREDITÀ]</strong> ${t.nome}: ${t.effetto}</div>`);
+                job2Dati.tecniche?.forEach(t => tBox.innerHTML += `<div class="tech-tag" style="border-color:var(--neon-pink)"><strong>[JOB EREDITÀ: ${spec.job2}]</strong> ${t.nome}: ${t.effetto}</div>`);
             }
+            
             p.capacita?.forEach(c => tBox.innerHTML += `<div class="tech-tag" style="border-color:var(--neon-pink)">${c}</div>`);
 
             document.getElementById('v-tratti').innerHTML = p.tratti?.map(t => `<span class="trait-pill">${t}</span>`).join('') || '--';
