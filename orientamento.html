@@ -25,7 +25,7 @@
             background-image: radial-gradient(circle at 50% 50%, #1a1a20 0%, #0a0a0c 100%);
         }
 
-        /* HEADER TATTICO */
+        /* HEADER */
         .tactic-header {
             border-bottom: 2px solid var(--neon-blue);
             padding-bottom: 15px;
@@ -44,7 +44,7 @@
             letter-spacing: 2px;
         }
 
-        /* LAYOUT A COLONNE */
+        /* LAYOUT */
         .grid-container {
             display: grid;
             grid-template-columns: 1fr 450px;
@@ -53,7 +53,7 @@
             margin: 0 auto;
         }
 
-        /* LISTA DEGLI STEP (SINISTRA) */
+        /* LISTA STEP (SINISTRA) */
         .steps-list {
             display: flex;
             flex-direction: column;
@@ -98,9 +98,9 @@
             text-transform: uppercase;
         }
 
-        /* PANNELLO MONITOR (DESTRA) */
+        /* MONITOR DETTAGLI (DESTRA) */
         .detail-panel {
-            background: rgba(10, 10, 12, 0.9);
+            background: rgba(10, 10, 12, 0.95);
             border: 1px solid var(--neon-blue);
             padding: 30px;
             position: sticky;
@@ -120,24 +120,30 @@
             border-left: 3px solid var(--neon-blue);
         }
 
-        /* COMPONENTI EXTRA (TAGS & LINKS) */
-        .extra-section { margin-top: 25px; }
-        .extra-section h3 {
-            font-family: 'Orbitron';
-            font-size: 0.8rem;
+        .highlight {
             color: var(--neon-yellow);
-            margin-bottom: 10px;
-            border-bottom: 1px solid #333;
+            border-bottom: 1px dashed var(--neon-yellow);
+            font-weight: bold;
         }
 
-        .tag-list { display: flex; flex-wrap: wrap; gap: 10px; }
+        .glossary-box {
+            margin-top: 15px;
+            padding: 12px;
+            background: rgba(255, 255, 0, 0.05);
+            border: 1px solid rgba(255, 255, 0, 0.2);
+            font-size: 0.9rem;
+            animation: fadeIn 0.5s ease;
+        }
+
+        /* TAGS E EXTRA */
+        .extra-section { margin-top: 25px; }
+        .tag-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
         .tag {
             background: #1a1a1a;
             border: 1px solid #444;
-            padding: 5px 12px;
-            font-size: 0.85rem;
+            padding: 4px 10px;
             color: var(--neon-yellow);
-            border-radius: 2px;
+            font-size: 0.8rem;
         }
 
         .btn-link {
@@ -148,9 +154,8 @@
             color: #000;
             font-family: 'Orbitron';
             text-decoration: none;
-            font-weight: bold;
             text-align: center;
-            font-size: 0.9rem;
+            font-weight: bold;
             clip-path: polygon(5% 0, 100% 0, 95% 100%, 0 100%);
             transition: 0.3s;
         }
@@ -160,15 +165,7 @@
             box-shadow: 0 0 20px var(--neon-yellow);
         }
 
-        /* ANIMAZIONE SCANLINE */
-        .detail-panel::after {
-            content: " ";
-            position: absolute;
-            top: 0; left: 0; bottom: 0; right: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02));
-            background-size: 100% 4px, 3px 100%;
-            pointer-events: none;
-        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
         @media (max-width: 950px) {
             .grid-container { grid-template-columns: 1fr; }
@@ -181,25 +178,23 @@
     <div class="tactic-header">
         <div>
             <h1>TERMINALE ORIENTAMENTO</h1>
-            <small style="color:var(--neon-pink); font-family:'Orbitron'">ANALISI CURRICULUM MATRICOLA // ACCADEMIA DEL ROUND</small>
+            <small style="color:var(--neon-pink); font-family:'Orbitron'">ANALISI CURRICULUM v3.0 // SINCRO BIBLIOTECA</small>
         </div>
-        <button onclick="window.location.href='biblioteca.html'" style="background:none; border:1px solid #555; color:#888; cursor:pointer; font-family:'Orbitron'; padding:8px 15px; transition:0.3s;">
-            INTERROMPI
-        </button>
+        <button onclick="window.location.href='biblioteca.html'" style="background:none; border:1px solid #555; color:#888; cursor:pointer; font-family:'Orbitron'; padding:8px 15px;">ESCI</button>
     </div>
 
     <div class="grid-container">
         <div class="steps-list" id="steps-container"></div>
 
         <div class="detail-panel" id="detail-panel">
-            <div id="detail-welcome" style="text-align:center; padding-top:150px; opacity:0.5;">
-                <p style="font-family:'Orbitron'; letter-spacing:3px;">IN ATTESA DI DATI...</p>
-                <small>SELEZIONARE UN MODULO DI ORIENTAMENTO</small>
+            <div id="detail-welcome" style="text-align:center; padding-top:150px; opacity:0.4;">
+                <p style="font-family:'Orbitron'; letter-spacing:2px;">IN ATTESA DI SELEZIONE MODULO...</p>
             </div>
 
             <div id="detail-content" style="display:none;">
                 <h2 id="d-title" style="margin:0; font-family:'Orbitron'; color:var(--neon-blue); font-size:1.4rem;"></h2>
                 <div id="d-desc" class="info-box"></div>
+                <div id="d-glossary"></div>
                 <div id="d-extra" class="extra-section"></div>
                 <div id="d-link-container"></div>
             </div>
@@ -209,89 +204,104 @@
     <script>
         let curriculumData = null;
 
-        // Inizializzazione e caricamento dati
         async function init() {
             try {
                 const response = await fetch('curriculum.json');
                 curriculumData = await response.json();
                 renderSteps();
             } catch (e) {
-                console.error("Errore nel caricamento del file curriculum.json:", e);
-                document.getElementById('steps-container').innerHTML = "<p style='color:red'>ERRORE CRITICO: File curriculum.json non trovato.</p>";
+                console.error("Errore caricamento curriculum.json:", e);
             }
         }
 
         function renderSteps() {
             const container = document.getElementById('steps-container');
-            const steps = curriculumData.orientamento_step_by_step || curriculumData.procedura_orientamento;
+            const steps = curriculumData.orientamento_step_by_step;
             
             steps.forEach(step => {
                 const div = document.createElement('div');
                 div.className = 'step-card';
                 div.innerHTML = `
-                    <div class="step-id">${String(step.id || step.step).padStart(2, '0')}</div>
-                    <div class="step-title">${step.fase || step.azione}</div>
+                    <div class="step-id">${String(step.id).padStart(2, '0')}</div>
+                    <div class="step-title">${step.fase}</div>
                 `;
-                div.onclick = (e) => showDetail(step, div);
+                div.onclick = () => showDetail(step, div);
                 container.appendChild(div);
             });
         }
 
         function showDetail(step, element) {
-            // Gestione stato attivo
+            // Stato Attivo
             document.querySelectorAll('.step-card').forEach(c => c.classList.remove('active'));
             element.classList.add('active');
 
-            // Visualizzazione pannello
+            // Visibilità
             document.getElementById('detail-welcome').style.display = 'none';
-            const content = document.getElementById('detail-content');
-            content.style.display = 'block';
+            document.getElementById('detail-content').style.display = 'block';
 
-            // Titolo e Descrizione (gestione campi multipli per sicurezza)
-            document.getElementById('d-title').innerText = step.fase || step.azione;
-            const desc = step.descrizione || step.meccanica || step.info || step.regola || "Modulo senza descrizione testuale.";
-            document.getElementById('d-desc').innerHTML = desc.replace(/\n/g, "<br>");
+            // Titolo
+            document.getElementById('d-title').innerText = step.fase;
 
+            // --- MOTORE DI SCANSIONE DEFINIZIONI E GLOSSARIO ---
+            let descText = step.descrizione || "Modulo caricato.";
+            let glossaryHtml = "";
+
+            if (curriculumData.definizioni_tecniche) {
+                Object.keys(curriculumData.definizioni_tecniche).forEach(key => {
+                    const regex = new RegExp(`\\b${key}\\b`, 'gi');
+                    if (descText.match(regex)) {
+                        // Evidenzia la parola nel testo
+                        descText = descText.replace(regex, `<span class="highlight">$&</span>`);
+                        // Aggiunge box glossario
+                        glossaryHtml += `
+                            <div class="glossary-box">
+                                <b style="color:var(--neon-yellow); text-transform:uppercase;">🔍 ${key}:</b> 
+                                ${curriculumData.definizioni_tecniche[key]}
+                            </div>`;
+                    }
+                });
+            }
+
+            document.getElementById('d-desc').innerHTML = descText.replace(/\n/g, "<br>");
+            document.getElementById('d-glossary').innerHTML = glossaryHtml;
+
+            // --- EXTRA (TAGS) E LINKS ---
             const extra = document.getElementById('d-extra');
             const links = document.getElementById('d-link-container');
-            extra.innerHTML = "";
-            links.innerHTML = "";
+            extra.innerHTML = ""; links.innerHTML = "";
 
-            // LOGICA REINDIRIZZAMENTO DINAMICO
-            const stepTitle = (step.fase || step.azione).toUpperCase();
-            if (stepTitle.includes("STIRPE")) {
+            // Link alla Biblioteca
+            const titleUpper = step.fase.toUpperCase();
+            if (titleUpper.includes("STIRPE")) {
                 links.innerHTML = `<a href="biblioteca.html?cat=stirpi" class="btn-link">APRI ARCHIVIO STIRPI ➔</a>`;
-            } else if (stepTitle.includes("JOB") || stepTitle.includes("SPECIALIZZAZIONE")) {
+            } else if (titleUpper.includes("JOB")) {
                 links.innerHTML = `<a href="biblioteca.html?cat=classi" class="btn-link">ANALIZZA PROTOCOLLI JOB ➔</a>`;
-            } else if (stepTitle.includes("KNIGHT") || stepTitle.includes("FRAME")) {
+            } else if (titleUpper.includes("KNIGHT") || titleUpper.includes("FRAME")) {
                 links.innerHTML = `<a href="biblioteca.html?cat=knight" class="btn-link">CONFIGURAZIONE KNIGHT ➔</a>`;
             }
 
-            // Visualizzazione Elementi Core
-            if (step.elementi || step.core_esempi) {
-                const list = step.elementi || step.core_esempi;
-                extra.innerHTML += `<h3>NUCLEI CORE RILEVATI:</h3><div class="tag-list">` + 
-                    list.map(e => `<span class="tag">${e}</span>`).join('') + `</div>`;
+            // Core
+            if (step.elementi) {
+                extra.innerHTML += `<div style="margin-top:15px;"><b>CORE RILEVATI:</b></div><div class="tag-list">` + 
+                    step.elementi.map(e => `<span class="tag">${e}</span>`).join('') + `</div>`;
             }
 
-            // Visualizzazione Categorie Anima
-            const anime = step.categorie || step.anima_categorie;
-            if (anime) {
-                let html = `<h3>PROFILI ANIMA COMPATIBILI:</h3>`;
-                for (let cat in anime) {
-                    html += `<div style="margin-top:10px; font-size:0.7rem; color:var(--neon-pink); font-family:'Orbitron'">${cat.toUpperCase()}</div>`;
-                    html += `<div class="tag-list">` + anime[cat].map(a => `<span class="tag">${a}</span>`).join('') + `</div>`;
+            // Anime
+            if (step.categorie) {
+                let html = `<div style="margin-top:15px;"><b>PROFILI ANIMA:</b></div>`;
+                for (let cat in step.categorie) {
+                    html += `<div style="margin-top:8px; font-size:0.7rem; color:var(--neon-pink); font-family:'Orbitron'">${cat.toUpperCase()}</div>`;
+                    html += `<div class="tag-list">` + step.categorie[cat].map(a => `<span class="tag">${a}</span>`).join('') + `</div>`;
                 }
                 extra.innerHTML += html;
             }
 
-            // Visualizzazione Modelli Frame
-            if (step.modelli || step.modelli_base) {
-                const frameList = step.modelli || step.modelli_base;
-                extra.innerHTML += `<h3>CONFIGURAZIONI FRAME:</h3>` + 
-                    frameList.map(m => `
-                        <div style="background:rgba(0,0,0,0.3); padding:10px; border:1px solid #333; margin-top:5px; font-size:0.9rem;">
-                            <b style="color:var(--neon-blue)">${m.codice || m.tipo}</b>: ${m.ruolo || m.specialità}
+            // Frame
+            if (step.modelli) {
+                extra.innerHTML += `<div style="margin-top:15px;"><b>MODELLI FRAME:</b></div>` + 
+                    step.modelli.map(m => `
+                        <div class="tag" style="display:block; margin-top:5px; border-color:var(--neon-blue)">
+                            <b style="color:var(--neon-blue)">${m.codice}</b>: ${m.ruolo}
                         </div>
                     `).join('');
             }
