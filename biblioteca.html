@@ -26,7 +26,6 @@
 
         h1, h2, h3 { font-family: 'Orbitron', sans-serif; text-transform: uppercase; letter-spacing: 2px; margin: 0; }
 
-        /* HEADER & NAVIGATION */
         header {
             border-bottom: 2px solid #333;
             padding-bottom: 20px;
@@ -38,7 +37,7 @@
             gap: 20px;
         }
 
-        .nav-buttons { display: flex; gap: 10px; }
+        .nav-buttons { display: flex; gap: 10px; flex-wrap: wrap; }
 
         button {
             background: transparent;
@@ -47,7 +46,7 @@
             padding: 10px 18px;
             cursor: pointer;
             font-family: 'Orbitron', sans-serif;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             transition: 0.3s;
             text-transform: uppercase;
         }
@@ -57,10 +56,14 @@
             box-shadow: 0 0 15px var(--neon-blue);
         }
 
-        button.active {
-            background: var(--neon-blue);
-            color: var(--bg-dark);
-        }
+        button.active { background: var(--neon-blue); color: var(--bg-dark); }
+        
+        /* Tasti Speciali */
+        .btn-orientamento { border-color: var(--neon-yellow) !important; color: var(--neon-yellow) !important; }
+        .btn-orientamento:hover { background: rgba(255, 255, 0, 0.1) !important; box-shadow: 0 0 15px var(--neon-yellow) !important; }
+        
+        .btn-knight { border-color: var(--neon-pink) !important; color: var(--neon-pink) !important; }
+        .btn-knight:hover { background: rgba(255, 0, 255, 0.1) !important; box-shadow: 0 0 15px var(--neon-pink) !important; }
 
         /* GRID SYSTEM */
         .items-grid {
@@ -93,7 +96,6 @@
             width: 100%;
             height: 180px;
             object-fit: cover;
-            /* Focalizza l'anteprima sulla parte alta (volti) */
             object-position: center top; 
             filter: grayscale(30%);
             margin-bottom: 10px;
@@ -104,19 +106,12 @@
 
         /* DETAIL VIEW */
         #detail-view { display: none; animation: fadeIn 0.4s ease; }
-
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         .detail-container { display: flex; gap: 40px; flex-wrap: wrap; }
-        
         .image-side { flex: 1; min-width: 300px; }
         .content-side { flex: 2; min-width: 400px; }
-
-        .image-side img {
-            width: 100%;
-            border: 1px solid var(--neon-blue);
-            box-shadow: 0 0 30px rgba(0, 242, 255, 0.15);
-        }
+        .image-side img { width: 100%; border: 1px solid var(--neon-blue); box-shadow: 0 0 30px rgba(0, 242, 255, 0.15); }
 
         .citazione {
             font-style: italic;
@@ -135,21 +130,7 @@
             font-size: 1rem;
         }
 
-        .box {
-            background: var(--glass);
-            border: 1px solid #333;
-            padding: 15px;
-            margin-bottom: 10px;
-        }
-
-        .tag-speciale {
-            background: var(--neon-yellow);
-            color: black;
-            padding: 2px 8px;
-            font-weight: bold;
-            font-size: 0.7rem;
-            border-radius: 2px;
-        }
+        .box { background: var(--glass); border: 1px solid #333; padding: 15px; margin-bottom: 10px; }
 
         ::-webkit-scrollbar { width: 5px; }
         ::-webkit-scrollbar-thumb { background: var(--neon-blue); }
@@ -163,16 +144,20 @@
             <small style="color: #666;">Accesso Biblioteca: Autorizzato</small>
         </div>
         <div class="nav-buttons">
-            <button onclick="window.location.href='index.html'" style="border-color: #fff; color: #fff;">HOME</button>
+            <button onclick="window.location.href='index.html'">HUB</button>
+            <button onclick="window.location.href='orientamento.html'" class="btn-orientamento">ORIENTAMENTO STEP-BY-STEP</button>
+            
             <button onclick="loadData('stirpi_database.json', this)">Stirpi</button>
             <button onclick="loadData('classi_database.json', this)">Classi & Job</button>
-            <button onclick="showKnightGuide(this)" style="border-color: var(--neon-pink); color: var(--neon-pink);">GUIDA KNIGHT</button>
+            
+            <button onclick="showKnightGuide(this)" class="btn-knight">GUIDA KNIGHT & FRAME</button>
+            
             <button id="back-btn" style="display:none; border-color: var(--neon-yellow); color: var(--neon-yellow);" onclick="showList()">← Torna alla Lista</button>
         </div>
     </header>
 
     <div id="list-view" class="items-grid">
-        <p style="color: #444; text-align: center; grid-column: 1/-1; margin-top: 50px;">In attesa di selezione categoria...</p>
+        <p style="color: #444; text-align: center; grid-column: 1/-1; margin-top: 50px;">Benvenuto nell'Archivio. Seleziona una categoria per iniziare la consultazione.</p>
     </div>
 
     <div id="detail-view"></div>
@@ -188,10 +173,7 @@
                 const response = await fetch(filename);
                 if (!response.ok) throw new Error("File non trovato");
                 const data = await response.json();
-                
-                // Ordinamento Alfabetico
                 currentData = data.items.sort((a, b) => a.nome.localeCompare(b.nome));
-                
                 renderList();
                 showList();
             } catch (e) {
@@ -202,16 +184,12 @@
 
         function renderList() {
             const container = document.getElementById('list-view');
-            container.innerHTML = currentData.map((item, index) => {
-                const isSpeciale = item.descrizione && item.descrizione.includes("NOTE SPECIALI");
-                return `
-                    <div class="card" onclick="showDetail(${index})">
-                        ${isSpeciale ? '<span class="tag-speciale" style="position:absolute; top:10px; right:10px; z-index:2;">SPECIALE</span>' : ''}
-                        <img src="${item.immagine}" onerror="this.src='https://via.placeholder.com/200x180/111/00f2ff?text=${item.nome}'">
-                        <h3>${item.nome}</h3>
-                    </div>
-                `;
-            }).join('');
+            container.innerHTML = currentData.map((item, index) => `
+                <div class="card" onclick="showDetail(${index})">
+                    <img src="${item.immagine}" onerror="this.src='https://via.placeholder.com/200x180/111/00f2ff?text=${item.nome}'">
+                    <h3>${item.nome}</h3>
+                </div>
+            `).join('');
         }
 
         function showDetail(index) {
@@ -220,9 +198,7 @@
             document.getElementById('detail-view').style.display = 'block';
             document.getElementById('back-btn').style.display = 'block';
 
-            const descFormattata = item.descrizione
-                .replace(/\n/g, "<br>")
-                .replace("NOTE SPECIALI:", "<br><b style='color:var(--neon-yellow); border:1px solid var(--neon-yellow); padding: 2px 5px;'>⚠️ NOTE SPECIALI</b><br>");
+            const descFormattata = item.descrizione ? item.descrizione.replace(/\n/g, "<br>") : "";
 
             let skillSection = "";
             if (item.eredita) {
@@ -245,29 +221,12 @@
 
             document.getElementById('detail-view').innerHTML = `
                 <div class="detail-container">
-                    <div class="image-side">
-                        <img src="${item.immagine}">
-                        <div class="box" style="margin-top:20px;">
-                            <div style="color:var(--neon-blue); margin-bottom:10px;">TRATTI CONSIGLIATI</div>
-                            <small>${item.tratti_consigliati.join(' • ')}</small>
-                        </div>
-                    </div>
+                    <div class="image-side"><img src="${item.immagine}"></div>
                     <div class="content-side">
                         <h1 style="color:var(--neon-blue); font-size: 2.5rem;">${item.nome}</h1>
                         ${item.citazione ? `<div class="citazione">"${item.citazione}"</div>` : ''}
                         <div class="section-title">Background Operativo</div>
                         <p>${descFormattata}</p>
-                        <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                            <div>
-                                <div class="section-title">Temi Chiave</div>
-                                <div style="font-size:0.9rem;">${item.temi_da_esplorare.join(' • ')}</div>
-                            </div>
-                            ${item.nemesi ? `
-                            <div>
-                                <div class="section-title">Nemesi</div>
-                                <div style="font-size:0.9rem; color:var(--neon-pink);">${item.nemesi.join(' • ')}</div>
-                            </div>` : ''}
-                        </div>
                         ${skillSection}
                     </div>
                 </div>
@@ -276,77 +235,47 @@
             window.scrollTo(0, 0);
         }
 
+        async function showKnightGuide(btn) {
+            document.querySelectorAll('.nav-buttons button').forEach(b => b.classList.remove('active'));
+            if(btn) btn.classList.add('active');
+
+            document.getElementById('list-view').style.display = 'none';
+            document.getElementById('detail-view').style.display = 'block';
+            document.getElementById('back-btn').style.display = 'block';
+
+            // Carichiamo la guida Knight (puoi usare il JSON creato prima o iniettarlo direttamente)
+            document.getElementById('detail-view').innerHTML = `
+                <div style="max-width: 900px; margin: 0 auto; animation: fadeIn 0.5s;">
+                    <h1 style="color: var(--neon-blue); text-align: center; font-size: 2.5rem; margin-bottom: 10px;">ANATOMIA DEI KNIGHT</h1>
+                    <p style="text-align: center; color: var(--neon-pink); font-family: 'Orbitron';">Protocollo Merlin v.4.2</p>
+                    
+                    <div class="section-title">CLASSI E SCALE</div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px;">
+                        <div class="box"><b style="color:var(--neon-yellow)">KNAVE</b><br><small>Mezzi agili/urbani</small></div>
+                        <div class="box"><b style="color:var(--neon-blue)">CHEVALIER</b><br><small>Scala Standard Matricole</small></div>
+                        <div class="box"><b style="color:var(--neon-pink)">PALADIN</b><br><small>Colossali/Fortezze</small></div>
+                    </div>
+
+                    <div class="section-title">FRAME OPERATIVI</div>
+                    <div class="box" style="border-left: 3px solid var(--neon-blue);"><b>LANCER</b>: Assalto corpo a corpo e velocità d'impatto.</div>
+                    <div class="box" style="border-left: 3px solid var(--neon-blue);"><b>ARCHER</b>: Supporto balistico e combattimento a lungo raggio.</div>
+                    <div class="box" style="border-left: 3px solid var(--neon-blue);"><b>TANKER</b>: Difesa pesante e protezione della squadra.</div>
+                    <div class="box" style="border-left: 3px solid var(--neon-blue);"><b>SCOUTER</b>: Ricognizione, agilità estrema e stealth.</div>
+                    <div class="box" style="border-left: 3px solid var(--neon-blue);"><b>CASTER</b>: Manipolazione energetica Particelle Dragon.</div>
+
+                    <div class="citazione" style="margin-top:40px;">
+                        "Un pilota senza il suo Frame è solo un passeggero. Un Knight senza il suo Frame è solo ferraglia." — Dr. Merlin
+                    </div>
+                </div>
+            `;
+            window.scrollTo(0,0);
+        }
+
         function showList() {
             document.getElementById('list-view').style.display = 'grid';
             document.getElementById('detail-view').style.display = 'none';
             document.getElementById('back-btn').style.display = 'none';
         }
-        function showKnightGuide(btn) {
-    // UI Feedback
-    document.querySelectorAll('.nav-buttons button').forEach(b => b.classList.remove('active'));
-    if(btn) btn.classList.add('active');
-
-    document.getElementById('list-view').style.display = 'none';
-    document.getElementById('detail-view').style.display = 'block';
-    document.getElementById('back-btn').style.display = 'block';
-
-    document.getElementById('detail-view').innerHTML = `
-        <div style="max-width: 900px; margin: 0 auto; animation: fadeIn 0.5s;">
-            <h1 style="color: var(--neon-blue); text-align: center; font-size: 2.5rem; margin-bottom: 10px;">ANATOMIA DEI KNIGHT</h1>
-            <p style="text-align: center; color: var(--neon-pink); font-family: 'Orbitron';">Protocollo di Classificazione Merlin v.4.2</p>
-            
-            <div class="section-title">1. LE CLASSI (Dimensioni e Scala)</div>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px;">
-                <div class="box">
-                    <b style="color: var(--neon-yellow);">KNAVE</b>
-                    <p style="font-size: 0.9rem;">Scala ridotta. Mezzi agili e discreti, usati per infiltrazione o lavori pesanti. Possono passare inosservati in aree urbane fitte.</p>
-                </div>
-                <div class="box">
-                    <b style="color: var(--neon-blue);">CHEVALIER</b>
-                    <p style="font-size: 0.9rem;">La scala standard. Knight imponenti legati a un elemento. È il modello principale utilizzato dalle Matricole in battaglia.</p>
-                </div>
-                <div class="box" style="border-color: var(--neon-pink);">
-                    <b style="color: var(--neon-pink);">PALADIN</b>
-                    <p style="font-size: 0.9rem;">Scala colossale. Fortezze semoventi per assedi o battaglie spaziali. Richiedono un equipaggio minimo di 3 piloti.</p>
-                </div>
-            </div>
-
-            <div class="section-title">2. I FRAME (Funzioni Tattiche)</div>
-            <p>Il Frame definisce il ruolo del Knight sul campo. Non esistono Knight "generici".</p>
-            <table style="width: 100%; border-collapse: collapse; background: var(--glass); border: 1px solid #333;">
-                <tr style="border-bottom: 1px solid var(--neon-blue); color: var(--neon-blue); text-align: left;">
-                    <th style="padding: 10px;">FRAME</th>
-                    <th style="padding: 10px;">SPECIALIZZAZIONE</th>
-                </tr>
-                <tr>
-                    <td style="padding: 10px; border-bottom: 1px solid #222;"><b>LANCER</b></td>
-                    <td style="padding: 10px; border-bottom: 1px solid #222;">Assalto corpo a corpo e velocità d'impatto.</td>
-                </tr>
-                <tr>
-                    <td style="padding: 10px; border-bottom: 1px solid #222;"><b>ARCHER</b></td>
-                    <td style="padding: 10px; border-bottom: 1px solid #222;">Supporto balistico e combattimento a lungo raggio.</td>
-                </tr>
-                <tr>
-                    <td style="padding: 10px; border-bottom: 1px solid #222;"><b>TANKER</b></td>
-                    <td style="padding: 10px; border-bottom: 1px solid #222;">Difesa pesante e protezione della squadra.</td>
-                </tr>
-                <tr>
-                    <td style="padding: 10px; border-bottom: 1px solid #222;"><b>SCOUTER</b></td>
-                    <td style="padding: 10px; border-bottom: 1px solid #222;">Ricognizione, agilità estrema e stealth.</td>
-                </tr>
-                <tr>
-                    <td style="padding: 10px;"><b>CASTER</b></td>
-                    <td style="padding: 10px;">Manipolazione energetica e uso delle Particelle Dragon.</td>
-                </tr>
-            </table>
-
-            <div class="citazione" style="margin-top: 30px; font-size: 0.9rem;">
-                "Un pilota senza il suo Frame è solo un passeggero. Un Knight senza il suo Frame è solo ferraglia." — Dr. Merlin
-            </div>
-        </div>
-    `;
-    window.scrollTo(0,0);
-}
     </script>
 </body>
 </html>
