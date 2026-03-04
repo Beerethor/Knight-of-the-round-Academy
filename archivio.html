@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KOTRA - Terminale Archivio v3.5</title>
+    <title>KOTRA - Terminale Archivio v3.6</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
         :root { 
@@ -13,6 +13,8 @@
             --bg-dark: #060608; 
             --panel-bg: rgba(17, 17, 22, 0.95);
         }
+
+        * { box-sizing: border-box; }
 
         body { 
             background: var(--bg-dark); 
@@ -40,7 +42,7 @@
 
         /* Navigazione */
         .nav-header { 
-            padding: 20px 40px; 
+            padding: 15px 20px; 
             border-bottom: 2px solid var(--neon-blue); 
             display: flex; 
             justify-content: space-between; 
@@ -48,17 +50,25 @@
             background: rgba(0,0,0,0.9); 
             backdrop-filter: blur(10px);
             position: sticky; top: 0; z-index: 100;
+            flex-wrap: wrap; gap: 10px;
         }
 
         .btn-action { 
             background: transparent; border: 1px solid var(--neon-blue); color: var(--neon-blue); 
-            padding: 10px 20px; font-family: 'Orbitron'; cursor: pointer; text-decoration: none; 
-            font-size: 0.75rem; transition: 0.3s; clip-path: polygon(10% 0, 100% 0, 90% 100%, 0 100%);
+            padding: 8px 15px; font-family: 'Orbitron'; cursor: pointer; text-decoration: none; 
+            font-size: 0.7rem; transition: 0.3s; clip-path: polygon(10% 0, 100% 0, 90% 100%, 0 100%);
         }
-        .btn-action:hover { background: var(--neon-blue); color: black; box-shadow: 0 0 20px var(--neon-blue); }
+        .btn-action:hover { background: var(--neon-blue); color: black; box-shadow: 0 0 15px var(--neon-blue); }
+
+        .btn-support {
+            background: rgba(255, 255, 0, 0.05); border: 1px solid var(--neon-yellow); color: var(--neon-yellow);
+            padding: 8px 15px; font-family: 'Orbitron'; cursor: pointer; text-decoration: none;
+            font-size: 0.7rem; transition: 0.3s; clip-path: polygon(0 0, 90% 0, 100% 100%, 10% 100%);
+        }
+        .btn-support:hover { background: var(--neon-yellow); color: black; box-shadow: 0 0 15px var(--neon-yellow); }
 
         /* Ricerca */
-        .search-container { padding: 20px 40px; background: rgba(12, 12, 15, 0.6); }
+        .search-container { padding: 20px; background: rgba(12, 12, 15, 0.6); display: flex; justify-content: center; }
         .search-input { 
             width: 100%; max-width: 500px; background: rgba(0,0,0,0.7); 
             border: 1px solid var(--neon-blue); color: white; padding: 12px; 
@@ -66,75 +76,88 @@
         }
 
         /* Griglia Card */
-        .section-label { font-family: 'Orbitron'; color: var(--neon-pink); padding: 40px 40px 10px; font-size: 0.9rem; letter-spacing: 3px; text-transform: uppercase;}
-        .archive-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; padding: 20px 40px; }
+        .section-label { font-family: 'Orbitron'; color: var(--neon-pink); padding: 30px 20px 10px; font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase;}
+        .archive-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; padding: 10px 20px; }
         
         .pg-card { 
             background: var(--panel-bg); border: 1px solid rgba(255,255,255,0.1); 
             cursor: pointer; transition: 0.4s; position: relative; overflow: hidden;
         }
-        .pg-card:hover { border-color: var(--neon-blue); transform: translateY(-5px); box-shadow: 0 5px 20px rgba(0, 242, 255, 0.2); }
+        .pg-card:hover { border-color: var(--neon-blue); transform: translateY(-5px); }
         
-        /* Focus sul Viso */
         .pg-card img { 
-            width: 100%; height: 220px; object-fit: cover; 
-            object-position: center 25%; /* Focalizza sulla parte alta dell'immagine */
-            filter: grayscale(50%) brightness(0.8); 
-            transition: 0.6s cubic-bezier(0.25, 1, 0.5, 1); 
+            width: 100%; height: 200px; 
+            object-fit: contain; /* Visualizza tutta l'immagine */
+            background: #000; /* Sfondo nero per riempire i vuoti */
+            filter: brightness(0.8); 
+            transition: 0.6s; 
         }
-        .pg-card:hover img { filter: grayscale(0%) brightness(1.1); transform: scale(1.1); object-position: center 30%; }
+        .pg-card:hover img { filter: brightness(1.1); }
         
-        .pg-card-info { padding: 20px; background: linear-gradient(to top, #000 70%, transparent); position: relative; margin-top: -60px; z-index: 2;}
-        .pg-card-name { font-family: 'Orbitron'; color: var(--neon-blue); font-size: 1.2rem; margin-bottom: 5px; text-shadow: 0 0 5px #000; }
+        .pg-card-info { padding: 15px; background: linear-gradient(to top, #000 80%, transparent); position: relative; margin-top: -40px; z-index: 2;}
+        .pg-card-name { font-family: 'Orbitron'; color: var(--neon-blue); font-size: 1.1rem; margin-bottom: 5px; }
 
         .btn-edit-small, .btn-delete-small {
-            background: none; border: 1px solid; font-family: 'Orbitron'; font-size: 0.6rem; 
-            padding: 3px 8px; cursor: pointer; margin-top: 10px; transition: 0.3s;
+            background: none; border: 1px solid; font-family: 'Orbitron'; font-size: 0.55rem; 
+            padding: 4px 8px; cursor: pointer; transition: 0.3s; margin-top: 10px;
         }
         .btn-edit-small { border-color: var(--neon-yellow); color: var(--neon-yellow); }
-        .btn-delete-small { border-color: var(--neon-pink); color: var(--neon-pink); margin-right: 5px; }
+        .btn-delete-small { border-color: var(--neon-pink); color: var(--neon-pink); }
         .btn-edit-small:hover { background: var(--neon-yellow); color: black; }
         .btn-delete-small:hover { background: var(--neon-pink); color: white; }
 
-        /* Loader Hacking */
+        /* Viewer Overlay */
+        #viewer-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.98); z-index: 1000; overflow-y: auto; backdrop-filter: blur(10px); }
+        .sheet-container { max-width: 1100px; margin: 20px auto; background: var(--panel-bg); border: 1px solid var(--neon-blue); display: grid; grid-template-columns: 350px 1fr; position: relative; }
+        
+        .side-img { 
+            width: 100%; height: 100%; 
+            object-fit: contain; /* Tutta l'immagine nel viewer */
+            background: #000;
+            border-right: 1px solid var(--neon-blue); 
+        }
+
+        .main-sheet { padding: 25px; }
+        .close-overlay { position: fixed; top: 15px; right: 15px; color: var(--neon-pink); cursor: pointer; font-family: 'Orbitron'; border: 1px solid var(--neon-pink); padding: 5px 10px; z-index: 1100; background: black; font-size: 0.8rem;}
+
+        .data-box { background: rgba(255,255,255,0.03); border-left: 3px solid var(--neon-blue); padding: 15px; margin-bottom: 15px; }
+        .data-box h3 { font-family: 'Orbitron'; font-size: 0.65rem; color: var(--neon-pink); margin: 0 0 8px; letter-spacing: 1px; }
+        .tech-tag { background: rgba(0, 242, 255, 0.05); border-left: 2px solid var(--neon-blue); padding: 6px; margin-bottom: 5px; font-size: 0.85rem; }
+        .trait-pill { display: inline-block; padding: 3px 8px; border: 1px solid var(--neon-yellow); margin: 2px; font-size: 0.65rem; color: var(--neon-yellow); font-family: 'Orbitron'; }
+
+        /* Punti Limite */
+        .limite-container { display: grid; grid-template-columns: repeat(10, 1fr); gap: 4px; margin-top: 10px; }
+        .limite-dot { height: 8px; background: #111; border: 1px solid #333; }
+        .dot-filled { background: var(--neon-pink); box-shadow: 0 0 8px var(--neon-pink); border-color: white;}
+
+        /* Mobile Responsive */
+        @media (max-width: 900px) {
+            .sheet-container { grid-template-columns: 1fr; margin: 10px; }
+            .side-img { height: 300px; border-right: none; border-bottom: 1px solid var(--neon-blue); }
+            .nav-header { justify-content: center; text-align: center; }
+            .nav-controls { width: 100%; display: flex; flex-wrap: wrap; justify-content: center; gap: 5px; }
+            .btn-action, .btn-support { font-size: 0.6rem; padding: 6px 10px; }
+            #v-nome { font-size: 2rem !important; }
+        }
+
+        /* Loader */
         #v-loader {
             display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background: var(--bg-dark); z-index: 1001; flex-direction: column; justify-content: center; align-items: center;
         }
-        .hack-bar-container { width: 300px; height: 4px; background: rgba(0,242,255,0.1); border: 1px solid var(--neon-blue); margin-top: 20px; }
-        .hack-bar-fill { width: 0%; height: 100%; background: var(--neon-blue); box-shadow: 0 0 15px var(--neon-blue); transition: width 0.1s; }
-        .hack-text { color: var(--neon-blue); font-family: 'Orbitron'; font-size: 0.8rem; animation: glitch 1s infinite; letter-spacing: 2px;}
-
-        /* Viewer Overlay */
-        #viewer-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.98); z-index: 1000; overflow-y: auto; backdrop-filter: blur(10px); }
-        .sheet-container { max-width: 1200px; margin: 40px auto; background: var(--panel-bg); border: 1px solid var(--neon-blue); display: grid; grid-template-columns: 380px 1fr; position: relative; box-shadow: 0 0 30px rgba(0,0,0,1); }
-        .side-img { width: 100%; height: 100%; object-fit: cover; object-position: center 20%; border-right: 1px solid var(--neon-blue); }
-        .main-sheet { padding: 40px; }
-        .close-overlay { position: fixed; top: 20px; right: 20px; color: var(--neon-pink); cursor: pointer; font-family: 'Orbitron'; border: 1px solid var(--neon-pink); padding: 8px 15px; z-index: 1100; background: black; transition: 0.3s;}
-        .close-overlay:hover { background: var(--neon-pink); color: white; box-shadow: 0 0 15px var(--neon-pink); }
-
-        .data-box { background: rgba(255,255,255,0.03); border-left: 4px solid var(--neon-blue); padding: 20px; margin-bottom: 20px; }
-        .data-box h3 { font-family: 'Orbitron'; font-size: 0.7rem; color: var(--neon-pink); margin: 0 0 10px; letter-spacing: 2px; text-transform: uppercase; }
-        .tech-tag { background: rgba(0, 242, 255, 0.05); border-left: 2px solid var(--neon-blue); padding: 8px; margin-bottom: 5px; font-size: 0.9rem; line-height: 1.4;}
-        .trait-pill { display: inline-block; padding: 4px 10px; border: 1px solid var(--neon-yellow); margin: 3px; font-size: 0.7rem; color: var(--neon-yellow); font-family: 'Orbitron'; text-transform: uppercase;}
-
-        /* Punti Limite */
-        .limite-container { display: grid; grid-template-columns: repeat(10, 1fr); gap: 5px; margin-top: 10px; }
-        .limite-dot { height: 10px; background: #111; border: 1px solid #333; }
-        .dot-filled { background: var(--neon-pink); box-shadow: 0 0 10px var(--neon-pink); border-color: white;}
-
-        @keyframes glitch { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
-        @media (max-width: 900px) { .sheet-container { grid-template-columns: 1fr; } .side-img { height: 350px; border-right: none; border-bottom: 1px solid var(--neon-blue); } }
+        .hack-bar-container { width: 200px; height: 3px; background: rgba(0,242,255,0.1); border: 1px solid var(--neon-blue); margin-top: 15px; }
+        .hack-bar-fill { width: 0%; height: 100%; background: var(--neon-blue); transition: width 0.1s; }
     </style>
 </head>
 <body>
 
     <header class="nav-header">
         <div>
-            <h1 style="font-family:'Orbitron'; color:var(--neon-blue); display:inline-block; margin:0; font-size:1.3rem; letter-spacing: 2px;">KOTRA // ARCHIVIO</h1>
+            <h1 style="color:var(--neon-blue); margin:0; font-size:1.1rem; letter-spacing: 1px;">KOTRA // ARCHIVIO</h1>
             <span id="role-display"></span>
         </div>
         <div class="nav-controls">
+            <a id="support-link" href="#" class="btn-support" style="display:none;">AIUTO MODIFICA</a>
             <a href="index.html" class="btn-action">HUB</a>
             <a href="creatore.html" class="btn-action">+ REGISTRAZIONE</a>
             <button class="btn-action" id="btn-logout" style="border-color:var(--neon-pink); color:var(--neon-pink);">LOGOUT</button>
@@ -146,7 +169,7 @@
     </div>
 
     <div id="master-view" style="display: none;">
-        <div class="section-label">UNITÀ SOTTOPOSTE</div>
+        <div class="section-label">UNITÀ SOTTOPOSTE [ADMIN]</div>
         <div class="archive-grid" id="grid-utenti"></div>
     </div>
 
@@ -155,53 +178,42 @@
 
     <div id="viewer-overlay">
         <div id="v-loader">
-            <div class="hack-text">DECRYPTING NEURAL LINK...</div>
+            <div style="color:var(--neon-blue); font-family:'Orbitron'; font-size:0.7rem;">DECRYPTING...</div>
             <div class="hack-bar-container"><div id="v-hack-fill" class="hack-bar-fill"></div></div>
-            <div id="v-hack-status" style="font-size: 0.6rem; color: var(--neon-pink); margin-top: 10px; font-family:'Orbitron';">[ ACCESSING... ]</div>
         </div>
 
-        <span class="close-overlay" onclick="closeViewer()">CHIUDI CONNESSIONE [X]</span>
+        <span class="close-overlay" onclick="closeViewer()">CHIUDI [X]</span>
         <div class="sheet-container">
             <img id="v-img" class="side-img" src="">
             <div class="main-sheet">
-                <div style="border-bottom: 2px solid var(--neon-blue); padding-bottom: 20px; margin-bottom: 20px; position: relative;">
-                    <h2 id="v-nome" style="font-family:'Orbitron'; font-size: 3rem; margin:0; color:var(--neon-blue);">---</h2>
-                    <p id="v-motto" style="font-style:italic; color:var(--neon-yellow); margin-top: 5px; font-size: 1.2rem; font-family:'Rajdhani';">"---"</p>
-                    <button id="v-btn-edit" class="btn-action" style="position:absolute; top:0; right:0; border-color: var(--neon-yellow); color: var(--neon-yellow);">EVOLVI</button>
+                <div style="border-bottom: 1px solid var(--neon-blue); padding-bottom: 15px; margin-bottom: 15px; position: relative;">
+                    <h2 id="v-nome" style="font-family:'Orbitron'; font-size: 2.5rem; margin:0; color:var(--neon-blue);">---</h2>
+                    <p id="v-motto" style="font-style:italic; color:var(--neon-yellow); margin: 5px 0 0; font-size: 1rem;">"---"</p>
                 </div>
                 
-                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:30px;">
+                <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:20px;">
                     <div>
                         <div class="data-box" style="border-color: var(--neon-yellow);">
                             <h3>PROFILO SOCIALE</h3>
-                            <div style="font-size:0.95rem; margin-bottom:5px;"><strong>CLUB:</strong> <span id="v-club" style="color:var(--neon-blue)">--</span></div>
-                            <div style="font-size:0.95rem; margin-bottom:5px;"><strong>DISTINTIVO:</strong> <span id="v-distintivo" style="color:var(--neon-blue)">--</span></div>
-                            <div id="v-uniforme" style="font-size:0.85rem; color:#888; margin-top:10px; line-height:1.4;">--</div>
+                            <div style="font-size:0.9rem;"><strong>CLUB:</strong> <span id="v-club" style="color:var(--neon-blue)">--</span></div>
+                            <div style="font-size:0.9rem;"><strong>DISTINTIVO:</strong> <span id="v-distintivo" style="color:var(--neon-blue)">--</span></div>
+                            <div id="v-uniforme" style="font-size:0.8rem; color:#888; margin-top:8px;">--</div>
                         </div>
                         <div class="data-box">
                             <h3>STIRPE & EREDITÀ</h3>
-                            <div id="v-stirpe" style="font-weight:bold; color:var(--neon-blue); font-family:'Orbitron'; margin-bottom:8px; font-size:0.9rem;">--</div>
-                            <div id="v-eredita-desc" style="font-size:0.9rem; line-height:1.4; color:#ccc;"></div>
-                        </div>
-                        <div class="data-box">
-                            <h3>OPERATIVITÀ JOB</h3>
-                            <div id="v-job" style="font-weight:bold; color:var(--neon-blue); font-family:'Orbitron'; margin-bottom:8px; font-size:0.9rem;">--</div>
-                            <div id="v-job-desc" style="font-size:0.9rem; line-height:1.4; color:#ccc;"></div>
+                            <div id="v-stirpe" style="font-weight:bold; color:var(--neon-blue); font-family:'Orbitron'; margin-bottom:5px; font-size:0.8rem;">--</div>
+                            <div id="v-eredita-desc" style="font-size:0.85rem; line-height:1.4; color:#ccc;"></div>
                         </div>
                     </div>
                     <div>
                         <div class="data-box" style="border-color: var(--neon-pink);">
                             <h3>CORE SYNC</h3>
-                            <div id="v-params" style="display:grid; grid-template-columns: 1fr 1fr; font-size:1rem; gap:10px; font-family:'Orbitron';"></div>
-                            <div id="v-limite-visual" style="margin-top:15px;"></div>
+                            <div id="v-params" style="display:grid; grid-template-columns: 1fr 1fr; font-size:0.9rem; gap:8px; font-family:'Orbitron';"></div>
+                            <div id="v-limite-visual" style="margin-top:10px;"></div>
                         </div>
                         <div class="data-box">
-                            <h3>CAPACITÀ ATTIVE</h3>
+                            <h3>CAPACITÀ & EQUIP</h3>
                             <div id="v-tecniche"></div>
-                        </div>
-                        <div class="data-box">
-                            <h3>COLLEGAMENTI NEURALI</h3>
-                            <div id="v-memorie-box" style="font-size:0.9rem; line-height:1.5;"></div>
                         </div>
                     </div>
                 </div>
@@ -236,10 +248,23 @@
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 const configSnap = await getDoc(doc(db, "config", "permissions"));
-                const masterEmail = configSnap.exists() ? configSnap.data().masterEmail : "";
+                let masterEmail = "";
+                let supportEmail = "";
+
+                if(configSnap.exists()){
+                    masterEmail = configSnap.data().masterEmail || "";
+                    supportEmail = configSnap.data().supportEmail || "";
+                }
+
+                // Configura Supporto
+                if(supportEmail){
+                    const sLink = document.getElementById('support-link');
+                    sLink.href = `mailto:${supportEmail}?subject=Richiesta Supporto KOTRA&body=Utente: ${user.email}%0D%0AUnità: [Nome]%0D%0ADettagli:`;
+                    sLink.style.display = 'inline-block';
+                }
+
                 isMasterGlobal = user.email.toLowerCase().trim() === masterEmail.toLowerCase().trim();
-                
-                document.getElementById('role-display').innerHTML = `<span style="font-family:'Orbitron'; font-size:0.6rem; padding:2px 8px; border:1px solid ${isMasterGlobal?'var(--neon-pink)':'var(--neon-blue)'}; color:${isMasterGlobal?'var(--neon-pink)':'var(--neon-blue)'}; margin-left:10px; border-radius:2px;">${isMasterGlobal?'MASTER ACCESS':'FIELD OPERATOR'}</span>`;
+                document.getElementById('role-display').innerHTML = `<span style="font-family:'Orbitron'; font-size:0.55rem; padding:2px 6px; border:1px solid ${isMasterGlobal?'var(--neon-pink)':'var(--neon-blue)'}; color:${isMasterGlobal?'var(--neon-pink)':'var(--neon-blue)'}; margin-left:10px;">${isMasterGlobal?'MASTER':'OPERATOR'}</span>`;
 
                 try {
                     const [resS, resJ] = await Promise.all([fetch('stirpi_database.json'), fetch('classi_database.json')]);
@@ -255,25 +280,24 @@
         function renderArchive(uid, filter = "") {
             const gPers = document.getElementById('grid-personali');
             const gUtenti = document.getElementById('grid-utenti');
-            const masterView = document.getElementById('master-view');
+            document.getElementById('master-view').style.display = isMasterGlobal ? 'block' : 'none';
             gPers.innerHTML = ""; gUtenti.innerHTML = "";
-            masterView.style.display = isMasterGlobal ? 'block' : 'none';
 
-            allChars.filter(c => c.nome.toLowerCase().includes(filter.toLowerCase()) || c.stirpe.toLowerCase().includes(filter.toLowerCase()) || c.job.toLowerCase().includes(filter.toLowerCase()))
+            allChars.filter(c => c.nome.toLowerCase().includes(filter.toLowerCase()) || c.stirpe.toLowerCase().includes(filter.toLowerCase()))
             .forEach(p => {
                 const card = document.createElement('div');
                 card.className = 'pg-card';
-                const canManage = isMasterGlobal || p.creatoDa === uid;
-                const isMio = (p.creatoDa === uid) || (isMasterGlobal && (p.creatoDa === "MASTER" || p.ownerEmail === auth.currentUser.email));
-
+                const isMio = p.creatoDa === uid;
+                
                 card.innerHTML = `
                     <img src="${p.immagine || ''}">
                     <div class="pg-card-info">
                         <div class="pg-card-name">${p.nome}</div>
-                        <div style="font-size:0.75rem; color:#888; font-family:'Orbitron'; text-transform:uppercase;">${p.stirpe} // ${p.job}</div>
-                        ${canManage ? `
-                            <button class="btn-delete-small" onclick="event.stopPropagation(); window.deleteChar('${p.id}', '${p.nome}')">EPURARE</button>
-                            <button class="btn-edit-small" onclick="event.stopPropagation(); window.editChar('${p.id}')">EVOLVERE</button>` : ''}
+                        <div style="font-size:0.7rem; color:#888; font-family:'Orbitron';">${p.stirpe} // ${p.job}</div>
+                        <div style="display:flex; gap:5px;">
+                            ${isMasterGlobal ? `<button class="btn-delete-small" onclick="event.stopPropagation(); window.deleteChar('${p.id}', '${p.nome}')">EPURARE</button>` : ''}
+                            ${(isMasterGlobal || isMio) ? `<button class="btn-edit-small" onclick="event.stopPropagation(); window.editChar('${p.id}')">EVOLVERE</button>` : ''}
+                        </div>
                     </div>`;
                 card.onclick = () => openViewer(p);
                 (isMio ? gPers : gUtenti).appendChild(card);
@@ -284,24 +308,13 @@
             const overlay = document.getElementById('viewer-overlay');
             const loader = document.getElementById('v-loader');
             const bar = document.getElementById('v-hack-fill');
-            const status = document.getElementById('v-hack-status');
-            
             overlay.style.display = 'block';
             loader.style.display = 'flex';
             bar.style.width = '0%';
             
-            const steps = [
-                {p:30, t:"BYPASSING SECURITY LAYER..."}, 
-                {p:65, t:"SYNCING NEURAL CORE..."}, 
-                {p:100, t:"CONNECTION STABLE. ACCESS GRANTED."}
-            ];
-            for(let s of steps){
-                await new Promise(r => setTimeout(r, 200));
-                bar.style.width = s.p+"%";
-                status.innerText = s.t;
-            }
+            await new Promise(r => setTimeout(r, 300));
+            bar.style.width = "100%";
 
-            // Popolamento Dati
             let ereditaDati = null;
             dbStirpi.forEach(s => { const found = s.eredita.find(e => e.nome === p.eredita); if(found) ereditaDati = found; });
             const jobDati = dbClassi.find(j => j.nome === p.job);
@@ -311,11 +324,9 @@
             document.getElementById('v-motto').innerText = p.motto ? `"${p.motto}"` : "";
             document.getElementById('v-club').innerText = p.club || "--";
             document.getElementById('v-distintivo').innerText = p.trattoDistintivo || "--";
-            document.getElementById('v-uniforme').innerText = p.uniforme || "Uniforme Standard Operativa";
-            document.getElementById('v-stirpe').innerText = `${p.stirpe.toUpperCase()} > ${p.eredita.toUpperCase()}`;
+            document.getElementById('v-uniforme').innerText = p.uniforme || "Standard Uniform";
+            document.getElementById('v-stirpe').innerText = `${p.stirpe} > ${p.eredita}`;
             document.getElementById('v-eredita-desc').innerHTML = `<p>${ereditaDati?.descrizione || ""}</p>` + (ereditaDati?.effetto ? `<div class="tech-tag" style="border-color:var(--neon-pink); color:var(--neon-yellow);">${ereditaDati.effetto}</div>` : "");
-            document.getElementById('v-job').innerText = p.job.toUpperCase();
-            document.getElementById('v-job-desc').innerHTML = `<i style="color:var(--neon-blue); display:block; margin-bottom:5px;">"${jobDati?.citazione || ''}"</i><p>${jobDati?.descrizione || ""}</p>`;
             
             const numMem = p.memorie?.length || 0;
             const totLim = 11 + (numMem * 3);
@@ -325,30 +336,23 @@
                 <div><span style="color:var(--neon-pink)">DIFETTO:</span> ${p.difetto}</div>
                 <div><span style="color:var(--neon-pink)">NEMESI:</span> ${p.nemesi}</div>`;
             
-            let dots = `<div style="font-size:0.6rem; color:var(--neon-pink); margin-bottom:5px; font-family:'Orbitron'">SYNC LIMITE: ${totLim}/20</div><div class="limite-container">`;
+            let dots = `<div style="font-size:0.5rem; color:var(--neon-pink); margin-bottom:3px;">SYNC: ${totLim}/20</div><div class="limite-container">`;
             for(let i=0; i<20; i++) dots += `<div class="limite-dot ${i<totLim?'dot-filled':''}"></div>`;
             document.getElementById('v-limite-visual').innerHTML = dots + `</div>`;
 
             const tBox = document.getElementById('v-tecniche'); tBox.innerHTML = "";
-            jobDati?.tecniche?.forEach(t => tBox.innerHTML += `<div class="tech-tag"><strong>${t.nome.toUpperCase()}:</strong> ${t.effetto}</div>`);
-            p.capacita?.forEach(c => tBox.innerHTML += `<div class="tech-tag" style="border-color:var(--neon-pink)"><strong>CAPACITÀ:</strong> ${c}</div>`);
-            p.oggetti?.forEach(o => tBox.innerHTML += `<div class="tech-tag" style="border-color:var(--neon-yellow)"><strong>EQUIP:</strong> ${o}</div>`);
+            jobDati?.tecniche?.forEach(t => tBox.innerHTML += `<div class="tech-tag"><strong>${t.nome}:</strong> ${t.effetto}</div>`);
+            p.capacita?.forEach(c => tBox.innerHTML += `<div class="tech-tag" style="border-color:var(--neon-pink)">${c}</div>`);
             
-            document.getElementById('v-memorie-box').innerHTML = `
-                <div style="margin-bottom:10px;"><strong style="color:var(--neon-pink)">MEMORIE:</strong><br>${p.memorie?.join(' // ') || '--'}</div>
-                <div><strong style="color:var(--neon-blue)">AFFINITÀ:</strong><br>${p.affinita?.join(' // ') || '--'}</div>`;
-            
-            document.getElementById('v-tratti').innerHTML = p.tratti?.map(t => `<span class="trait-pill">${t}</span>`).join('') || '';
-            document.getElementById('v-btn-edit').style.display = (isMasterGlobal || p.creatoDa === auth.currentUser.uid) ? 'block' : 'none';
-            document.getElementById('v-btn-edit').onclick = () => window.editChar(p.id);
+            document.getElementById('v-tratti').innerHTML = p.tratti?.map(t => `<span class="trait-pill">${t}</span>`).join('') || '--';
 
-            setTimeout(() => { loader.style.display = 'none'; }, 400);
+            setTimeout(() => { loader.style.display = 'none'; }, 200);
         };
 
         window.closeViewer = () => document.getElementById('viewer-overlay').style.display = 'none';
         window.filterArchive = () => renderArchive(auth.currentUser.uid, document.getElementById('search-bar').value);
         window.editChar = (id) => { sessionStorage.setItem('updateModeId', id); window.location.href = 'aggiorna.html'; };
-        window.deleteChar = async (id, nome) => { if(confirm(`DEURARE DEFINITIVAMENTE ${nome.toUpperCase()} DALL'ARCHIVIO?`)) { await deleteDoc(doc(db, "personaggi", id)); location.reload(); } };
+        window.deleteChar = async (id, nome) => { if(confirm(`ELIMINARE DEFINITIVAMENTE ${nome}?`)) { await deleteDoc(doc(db, "personaggi", id)); location.reload(); } };
         document.getElementById('btn-logout').onclick = () => signOut(auth);
     </script>
 </body>
