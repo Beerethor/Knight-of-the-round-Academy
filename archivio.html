@@ -306,6 +306,7 @@
             const spec = p.specialData || {};
             document.getElementById('viewer-overlay').style.display = 'block';
             
+            // Info Base
             document.getElementById('v-img').src = p.immagine || '';
             document.getElementById('v-nome').innerText = p.nome;
             document.getElementById('v-motto').innerText = p.motto ? `"${p.motto}"` : "";
@@ -334,6 +335,8 @@
             // 3. POPOLA TECNICHE E EQUIP
             const techBox = document.getElementById('v-tech-list');
             techBox.innerHTML = "";
+            
+            // Cerca i dati nei database caricati (dbClassi)
             const mainJob = dbClassi.find(j => j.nome === p.job);
             mainJob?.tecniche?.forEach(t => techBox.innerHTML += `<div class="tech-item"><strong>[${p.job}]</strong> ${t.nome}: ${t.effetto}</div>`);
             
@@ -343,11 +346,12 @@
             const specJob = dbClassi.find(j => j.nome === spec.job2);
             specJob?.tecniche?.forEach(t => techBox.innerHTML += `<div class="tech-item" style="border-color:var(--neon-pink)"><strong>[${spec.job2}]</strong> ${t.nome}: ${t.effetto}</div>`);
 
+            // Capacità manuali
             p.capacita?.forEach(c => techBox.innerHTML += `<div class="tech-item" style="border-color:var(--neon-yellow)"><strong>[EQUIP/SKILL]</strong> ${c}</div>`);
 
             // 4. POPOLA MEMORIE E TRATTI
             const memBox = document.getElementById('v-memories');
-            memBox.innerHTML = p.memorie?.length > 0 ? "<h3>FRAGMENT_DATA:</h3>" : "";
+            memBox.innerHTML = (p.memorie && p.memorie.length > 0) ? "<h3>FRAGMENT_DATA:</h3>" : "";
             p.memorie?.forEach(m => memBox.innerHTML += `<div class="memory-item">"${m}"</div>`);
 
             const traitsBox = document.getElementById('v-traits-list');
@@ -361,7 +365,6 @@
             for(let i=0; i<20; i++) dots += `<div style="height:8px; border:1px solid #333; background:${i<totLim?'var(--neon-pink)':'#111'}"></div>`;
             document.getElementById('v-limite-visual').innerHTML = dots + `</div><div style="font-size:0.6rem; margin-top:5px; text-align:center; font-family:Orbitron;">STABILITY: ${totLim}/20</div>`;
         };
-
             // Stats e Sync
             const numMem = p.memorie?.length || 0;
             const totLim = Math.min(11 + (numMem * 3), 20);
