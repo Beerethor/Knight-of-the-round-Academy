@@ -278,31 +278,57 @@
         });
 
         function renderArchive(uid, filter = "") {
-            const gPers = document.getElementById('grid-personali');
-            const gUtenti = document.getElementById('grid-utenti');
-            document.getElementById('master-view').style.display = isMasterGlobal ? 'block' : 'none';
-            gPers.innerHTML = ""; gUtenti.innerHTML = "";
+    const gPers = document.getElementById('grid-personali');
+    const gUtenti = document.getElementById('grid-utenti');
+    const masterView = document.getElementById('master-view');
+    
+    // Reset griglie
+    gPers.innerHTML = ""; 
+    gUtenti.innerHTML = "";
+    masterView.style.display = isMasterGlobal ? 'block' : 'none';
 
-            allChars.filter(c => c.nome.toLowerCase().includes(filter.toLowerCase()) || c.stirpe.toLowerCase().includes(filter.toLowerCase()))
-            .forEach(p => {
-                const card = document.createElement('div');
-                card.className = 'pg-card';
-                const isMio = p.creatoDa === uid;
-                
-                card.innerHTML = `
-                    <img src="${p.immagine || ''}">
-                    <div class="pg-card-info">
-                        <div class="pg-card-name">${p.nome}</div>
-                        <div style="font-size:0.7rem; color:#888; font-family:'Orbitron';">${p.stirpe} // ${p.job}</div>
-                        <div style="display:flex; gap:5px;">
-                            ${isMasterGlobal ? `<button class="btn-delete-small" onclick="event.stopPropagation(); window.deleteChar('${p.id}', '${p.nome}')">EPURARE</button>` : ''}
-                            ${(isMasterGlobal || isMio) ? `<button class="btn-edit-small" onclick="event.stopPropagation(); window.editChar('${p.id}')">EVOLVERE</button>` : ''}
-                        </div>
-                    </div>`;
-                card.onclick = () => openViewer(p);
-                (isMio ? gPers : gUtenti).appendChild(card);
-            });
+    allChars.filter(c => 
+        c.nome.toLowerCase().includes(filter.toLowerCase()) || 
+        c.stirpe.toLowerCase().includes(filter.toLowerCase())
+    )
+    .forEach(p => {
+        const card = document.createElement('div');
+        card.className = 'pg-card';
+        
+        // LOGICA DI APPARTENENZA
+        // Un PG è "Mio" se:
+        // 1. L'uid corrisponde a creatoDa
+        // 2. Oppure se io sono il Master e il PG è segnato come creato da "MASTER"
+        const isMio = (p.creatoDa === uid) || (isMasterGlobal && p.creatoDa === "MASTER");
+        
+        // PERMESSI AZIONI
+        const canDelete = isMasterGlobal; // Solo il Master elimina
+        const canEdit = isMasterGlobal || isMio; // Master o proprietario modificano
+
+        card.innerHTML = `
+            <img src="${p.immagine || ''}">
+            <div class="pg-card-info">
+                <div class="pg-card-name">${p.nome}</div>
+                <div style="font-size:0.7rem; color:#888; font-family:'Orbitron'; text-transform:uppercase;">
+                    ${p.stirpe} // ${p.job}
+                </div>
+                <div style="display:flex; gap:5px; margin-top:10px;">
+                    ${canDelete ? `<button class="btn-delete-small" onclick="event.stopPropagation(); window.deleteChar('${p.id}', '${p.nome}')">EPURARE</button>` : ''}
+                    ${canEdit ? `<button class="btn-edit-small" onclick="event.stopPropagation(); window.editChar('${p.id}')">EVOLVERE</button>` : ''}
+                </div>
+                ${isMasterGlobal ? `<div style="font-size:0.5rem; color:var(--neon-yellow); margin-top:5px; opacity:0.6;">ID ORIGIN: ${p.creatoDa}</div>` : ''}
+            </div>`;
+            
+        card.onclick = () => openViewer(p);
+
+        // Smistamento nelle colonne
+        if (isMio) {
+            gPers.appendChild(card);
+        } else {
+            gUtenti.appendChild(card);
         }
+    });
+}
 
         window.openViewer = async (p) => {
             const overlay = document.getElementById('viewer-overlay');
