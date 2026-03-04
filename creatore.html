@@ -16,26 +16,12 @@
         
         label { display: block; color: var(--neon-blue); font-family: 'Orbitron'; font-size: 0.75rem; margin-bottom: 5px; text-transform: uppercase; }
         input, select { width: 100%; background: #000; border: 1px solid #444; color: white; padding: 12px; font-family: 'Rajdhani'; font-size: 1.1rem; box-sizing: border-box; }
-        input:focus { border-color: var(--neon-blue); outline: none; }
-
-        /* STILE MEZZOSANGUE MIGLIORATO */
-        .mezzosangue-panel { 
-            grid-column: 1 / -1;
-            background: rgba(255, 255, 0, 0.1); 
-            padding: 15px; 
-            border: 2px solid var(--neon-yellow); 
-            display: flex; 
-            align-items: center; 
-            justify-content: space-between;
-            border-radius: 4px;
-            box-shadow: 0 0 15px rgba(255, 255, 0, 0.1);
-            cursor: pointer;
-            transition: 0.3s;
-        }
-        .mezzosangue-panel:hover { background: rgba(255, 255, 0, 0.2); }
-        .mezzosangue-label { color: var(--neon-yellow); font-family: 'Orbitron'; font-weight: bold; letter-spacing: 1px; }
         
-        /* Toggle Switch */
+        /* Immagine */
+        .img-preview { width: 100%; max-height: 300px; border: 2px dashed #444; margin-top: 10px; display: flex; align-items: center; justify-content: center; overflow: hidden; background: #000; }
+        .img-preview img { max-width: 100%; max-height: 100%; object-fit: contain; }
+
+        .mezzosangue-panel { grid-column: 1 / -1; background: rgba(255, 255, 0, 0.1); padding: 15px; border: 2px solid var(--neon-yellow); display: flex; align-items: center; justify-content: space-between; cursor: pointer; }
         .switch { position: relative; display: inline-block; width: 60px; height: 30px; }
         .switch input { opacity: 0; width: 0; height: 0; }
         .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #333; transition: .4s; border-radius: 34px; }
@@ -59,33 +45,39 @@
     <h1>Protocollo Inizializzazione Matricola</h1>
 
     <div class="form-section">
-        <div class="full-width"><h2>1. Profilo della Matricola</h2></div>
+        <div class="full-width"><h2>1. Profilo e Visuale</h2></div>
         <div>
             <label>NOME MATRICOLA</label>
-            <input type="text" id="nome" placeholder="Es: Arthur Pendragon">
+            <input type="text" id="nome">
+            <label style="margin-top:15px;">ANIMA</label>
+            <input type="text" id="anima">
         </div>
+        <div>
+            <label>IMMAGINE (Upload o Link)</label>
+            <input type="file" id="img-file" accept="image/*" onchange="handleImage(event)" style="font-size: 0.8rem; padding: 5px;">
+            <input type="text" id="img-url" placeholder="Oppure incolla URL immagine" oninput="handleURL(this.value)" style="margin-top:5px;">
+            <div class="img-preview" id="preview-box">
+                <span style="color:#444;">NESSUN DATO VISIVO</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-section">
+        <div class="full-width"><h2>2. Tratti e Identità</h2></div>
         <div>
             <label>CORE</label>
-            <input type="text" id="core" placeholder="Es: Coraggio Ardente">
+            <input type="text" id="core">
+            <label style="margin-top:15px;">DIFETTO</label>
+            <input type="text" id="difetto">
         </div>
         <div>
-            <label>ANIMA</label>
-            <input type="text" id="anima" placeholder="Es: Scintilla di Speranza">
-        </div>
-        <div>
-            <label>IL MIO MOTTO PERSONALE</label>
-            <input type="text" id="motto" placeholder="Es: Oltre ogni limite">
-        </div>
-        <div>
-            <label>DIFETTO</label>
-            <input type="text" id="difetto" placeholder="Es: Arroganza">
-        </div>
-        <div>
-            <label>NEMESI</label>
-            <input type="text" id="nemesi" placeholder="Es: L'Ombra del Passato">
+            <label>MOTTO</label>
+            <input type="text" id="motto">
+            <label style="margin-top:15px;">NEMESI</label>
+            <input type="text" id="nemesi">
         </div>
         <div class="full-width">
-            <label>I 4 TRATTI DELLA MATRICOLA (d8)</label>
+            <label>I 4 TRATTI (d8)</label>
             <div class="traits-grid">
                 <input type="text" class="tratto-input" placeholder="Tratto 1">
                 <input type="text" class="tratto-input" placeholder="Tratto 2">
@@ -96,58 +88,31 @@
     </div>
 
     <div class="form-section">
-        <div class="full-width"><h2>2. Stirpe e Percorso</h2></div>
-        <div>
-            <label>STIRPE</label>
-            <select id="select-stirpe" onchange="aggiornaEredita()"></select>
-        </div>
-        <div>
-            <label>JOB</label>
-            <select id="select-job"></select>
-        </div>
-        
+        <div class="full-width"><h2>3. Stirpe e Knight</h2></div>
+        <div><label>STIRPE</label><select id="select-stirpe" onchange="aggiornaEredita()"></select></div>
+        <div><label>JOB</label><select id="select-job"></select></div>
         <div class="mezzosangue-panel" onclick="document.getElementById('mezzosangue').click()">
-            <span class="mezzosangue-label">⚠ ATTIVA PROTOCOLLO MEZZOSANGUE</span>
-            <label class="switch">
-                <input type="checkbox" id="mezzosangue" onchange="aggiornaEredita()">
-                <span class="slider"></span>
-            </label>
+            <span style="color:var(--neon-yellow); font-family:'Orbitron';">⚠ PROTOCOLLO MEZZOSANGUE</span>
+            <label class="switch"><input type="checkbox" id="mezzosangue" onchange="aggiornaEredita()"><span class="slider"></span></label>
         </div>
-
-        <div class="full-width">
-            <label>EREDITÀ SELEZIONATA</label>
-            <select id="select-eredita"></select>
-        </div>
+        <div class="full-width"><label>EREDITÀ</label><select id="select-eredita"></select></div>
+        <div><label>NOME KNIGHT</label><input type="text" id="nome-knight"></div>
+        <div><label>FRAME</label><input type="text" id="frame-knight"></div>
     </div>
 
     <div class="form-section">
-        <div class="full-width"><h2>3. Unità Knight</h2></div>
-        <div>
-            <label>NOME DEL KNIGHT</label>
-            <input type="text" id="nome-knight">
-        </div>
-        <div>
-            <label>FRAME</label>
-            <input type="text" id="frame-knight">
-        </div>
-    </div>
-
-    <div class="form-section">
-        <div class="full-width"><h2>4. Risorse Operative</h2></div>
+        <div class="full-width"><h2>4. Risorse</h2></div>
         <div class="full-width">
-            <label>PUNTI LIMITE (8) & SOVRACCARICO (3)</label>
             <div id="pl-display" class="pl-visualizer"></div>
         </div>
     </div>
 
-    <button id="btn-save" onclick="generaScheda()">Inizializza e Salva nel Cloud</button>
-
+    <button id="btn-save" onclick="generaScheda()">Salva nel Cloud</button>
     <div id="output-scheda"></div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyCAMvHn28SY3k9TiLvz2afjn0zpj73Lw5Y",
@@ -155,14 +120,27 @@
             projectId: "kotra-8da26",
             storageBucket: "kotra-8da26.firebasestorage.app",
             messagingSenderId: "932848394064",
-            appId: "1:932848394064:web:d368c9ae301b54bab01655",
-            measurementId: "G-4ZYKLJGF1Y"
+            appId: "1:932848394064:web:d368c9ae301b54bab01655"
         };
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
-        const auth = getAuth(app);
+        let currentImgData = "";
         let dbStirpi = [];
+
+        // Gestione Immagini
+        window.handleImage = function(e) {
+            const reader = new FileReader();
+            reader.onload = function(){
+                currentImgData = reader.result;
+                document.getElementById('preview-box').innerHTML = `<img src="${currentImgData}">`;
+            }
+            reader.readAsDataURL(e.target.files[0]);
+        }
+        window.handleURL = function(url) {
+            currentImgData = url;
+            document.getElementById('preview-box').innerHTML = `<img src="${url}" onerror="this.parentElement.innerHTML='URL Errato'">`;
+        }
 
         async function init() {
             try {
@@ -185,9 +163,7 @@
             sEredita.innerHTML = "";
             dbStirpi.forEach(s => {
                 if (isMez || s.nome === stirpe) {
-                    s.eredita.forEach(e => {
-                        sEredita.innerHTML += `<option value="${e.nome}">[${s.nome}] ${e.nome}</option>`;
-                    });
+                    s.eredita.forEach(e => sEredita.innerHTML += `<option value="${e.nome}">[${s.nome}] ${e.nome}</option>`);
                 }
             });
         }
@@ -204,25 +180,23 @@
             if(!nome) return alert("Inserisci il nome!");
 
             const pg = {
-                nome: nome, core: document.getElementById('core').value,
-                anima: document.getElementById('anima').value, motto: document.getElementById('motto').value,
+                nome, anima: document.getElementById('anima').value,
+                core: document.getElementById('core').value, motto: document.getElementById('motto').value,
                 difetto: document.getElementById('difetto').value, nemesi: document.getElementById('nemesi').value,
                 tratti: Array.from(document.querySelectorAll('.tratto-input')).map(i => i.value).filter(v => v !== ""),
                 stirpe: document.getElementById('select-stirpe').value, job: document.getElementById('select-job').value,
                 eredita: document.getElementById('select-eredita').value,
                 knight: document.getElementById('nome-knight').value, frame: document.getElementById('frame-knight').value,
+                immagine: currentImgData,
                 timestamp: serverTimestamp()
             };
 
             const id = `${nome.toLowerCase().replace(/\s+/g, '-')}-${Date.now()}`;
-
             try {
-                document.getElementById('btn-save').innerText = "ARCHIVIAZIONE...";
                 await setDoc(doc(db, "personaggi", id), pg);
                 document.getElementById('output-scheda').style.display = 'block';
-                document.getElementById('output-scheda').innerHTML = `<h2>REGISTRATO: ${id}</h2><button onclick="window.print()">STAMPA SCHEDA</button>`;
-                document.getElementById('btn-save').innerText = "SALVATO";
-            } catch (e) { alert("Errore salvataggio!"); }
+                document.getElementById('output-scheda').innerHTML = `<h2>ARCHIVIATO: ${id}</h2><button onclick="window.print()">STAMPA</button>`;
+            } catch (e) { alert("Errore!"); }
         }
         window.onload = init;
     </script>
