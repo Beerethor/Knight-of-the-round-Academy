@@ -6,40 +6,86 @@
     <title>KOTRA - Protocollo Inizializzazione</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
-        :root { --neon-blue: #00f2ff; --neon-pink: #ff00ff; --neon-yellow: #ffff00; --bg-dark: #0a0a0c; }
-        body { background: var(--bg-dark); color: white; font-family: 'Rajdhani', sans-serif; padding: 20px; line-height: 1.4; }
-        
-        /* Navigazione */
-        .nav-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid #333; padding-bottom: 10px; }
-        .btn-nav { text-decoration: none; color: var(--neon-blue); font-family: 'Orbitron'; font-size: 0.8rem; border: 1px solid var(--neon-blue); padding: 5px 15px; margin-left: 5px; transition: 0.3s; }
-        .btn-nav:hover { background: var(--neon-blue); color: black; }
-        .btn-logout { background: transparent; border: 1px solid var(--neon-pink); color: var(--neon-pink); padding: 5px 15px; font-family: 'Orbitron'; font-size: 0.7rem; cursor: pointer; margin-left: 10px; }
+        :root { 
+            --neon-blue: #00f2ff; 
+            --neon-pink: #ff00ff; 
+            --neon-yellow: #ffff00; 
+            --bg-dark: #060608; 
+            --panel-bg: rgba(15, 15, 20, 0.9);
+            --border-color: rgba(0, 242, 255, 0.2);
+        }
 
-        .role-badge { font-family: 'Orbitron'; font-size: 0.65rem; padding: 2px 8px; border-radius: 10px; border: 1px solid; margin-left: 10px; }
+        body { 
+            background: var(--bg-dark); 
+            color: #eee; 
+            font-family: 'Rajdhani', sans-serif; 
+            padding: 20px;
+            background-image: radial-gradient(circle at 50% 50%, rgba(0, 242, 255, 0.03) 0%, transparent 80%);
+        }
+
+        /* Navigazione */
+        .nav-header { 
+            display: flex; justify-content: space-between; align-items: center; 
+            margin-bottom: 30px; border-bottom: 2px solid var(--neon-blue); 
+            padding-bottom: 10px; box-shadow: 0 5px 15px rgba(0, 242, 255, 0.1);
+        }
+
+        .btn-nav { 
+            text-decoration: none; color: var(--neon-blue); font-family: 'Orbitron'; 
+            font-size: 0.7rem; border: 1px solid var(--neon-blue); padding: 8px 15px; 
+            margin-left: 5px; transition: 0.3s; clip-path: polygon(10% 0, 100% 0, 90% 100%, 0 100%);
+        }
+        .btn-nav:hover { background: var(--neon-blue); color: black; }
+
+        .role-badge { font-family: 'Orbitron'; font-size: 0.6rem; padding: 3px 10px; border: 1px solid; margin-left: 10px; letter-spacing: 1px; }
         .master { border-color: var(--neon-pink); color: var(--neon-pink); }
         .player { border-color: var(--neon-blue); color: var(--neon-blue); }
 
         /* Form Layout */
-        .form-section { background: rgba(255,255,255,0.05); padding: 20px; border: 1px solid #333; margin-bottom: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; border-left: 3px solid var(--neon-blue); }
+        .form-section { 
+            background: var(--panel-bg); padding: 25px; border: 1px solid var(--border-color); 
+            margin-bottom: 25px; display: grid; grid-template-columns: 1fr 1fr; gap: 25px; 
+            border-left: 4px solid var(--neon-blue); position: relative;
+        }
+        .evolution { border-left-color: var(--neon-pink); }
+        .special-section { border-left-color: var(--neon-yellow); background: rgba(255, 255, 0, 0.02); }
         .full-width { grid-column: 1 / -1; }
         
-        label { display: block; color: var(--neon-blue); font-family: 'Orbitron'; font-size: 0.75rem; margin-bottom: 5px; text-transform: uppercase; }
-        input, select { width: 100%; background: #000; border: 1px solid #444; color: white; padding: 12px; margin: 10px 0; border-radius: 8px; box-sizing: border-box; }
-        input:invalid { border-color: var(--neon-pink); }
+        label { display: block; color: var(--neon-blue); font-family: 'Orbitron'; font-size: 0.65rem; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; }
+        input, select, textarea { 
+            width: 100%; background: #000; border: 1px solid #333; color: white; 
+            padding: 12px; border-radius: 0; font-family: 'Rajdhani'; font-size: 1rem; outline: none; transition: 0.3s;
+        }
+        input:focus, select:focus { border-color: var(--neon-pink); box-shadow: 0 0 10px rgba(255, 0, 255, 0.1); }
 
-        /* Anteprima Immagine Potenziata */
-        .img-preview { width: 100%; height: 250px; border: 2px dashed #444; margin-top: 10px; display: flex; align-items: center; justify-content: center; overflow: hidden; background: #000; border-radius: 8px; }
-        .img-preview img { width: 100%; height: 100%; object-fit: cover; object-position: center 20%; filter: grayscale(0%); transition: 0.3s; }
+        /* Special Boxes */
+        .special-box { padding: 15px; background: rgba(255, 255, 0, 0.05); border: 1px dashed var(--neon-yellow); margin-top: 5px; }
+
+        /* Anteprima Immagine */
+        .img-preview { 
+            width: 100%; height: 200px; border: 1px solid #333; margin-top: 10px; 
+            display: flex; align-items: center; justify-content: center; 
+            background: #000; overflow: hidden; position: relative;
+        }
+        .img-preview img { width: 100%; height: 100%; object-fit: cover; }
 
         /* Azioni */
-        .btn-save { width: 100%; background: transparent; border: 2px solid var(--neon-blue); color: var(--neon-blue); padding: 15px; font-family: 'Orbitron'; font-weight: bold; cursor: pointer; transition: 0.3s; }
-        .btn-save:hover:not(:disabled) { background: var(--neon-blue); color: black; box-shadow: 0 0 15px var(--neon-blue); }
-        .btn-save:disabled { border-color: #444; color: #444; cursor: not-allowed; opacity: 0.5; }
+        .btn-save { 
+            width: 100%; background: transparent; border: 2px solid var(--neon-blue); 
+            color: var(--neon-blue); padding: 18px; font-family: 'Orbitron'; 
+            font-weight: bold; cursor: pointer; transition: 0.3s; letter-spacing: 2px;
+        }
+        .btn-save:hover:not(:disabled) { background: var(--neon-blue); color: black; box-shadow: 0 0 20px var(--neon-blue); }
+        .btn-save:disabled { border-color: #333; color: #444; cursor: not-allowed; }
         .btn-reset { border-color: var(--neon-pink); color: var(--neon-pink); }
-        
-        /* Spinner */
-        #loading-overlay { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.8); z-index: 1000; flex-direction: column; align-items: center; justify-content: center; }
-        .spinner { width: 50px; height: 50px; border: 5px solid var(--neon-blue); border-top-color: transparent; border-radius: 50%; animation: spin 1s linear infinite; }
+        .btn-reset:hover { background: var(--neon-pink); color: black; }
+
+        /* Loading */
+        #loading-overlay { 
+            display: none; position: fixed; top:0; left:0; width:100%; height:100%; 
+            background: rgba(0,0,0,0.9); z-index: 1000; flex-direction: column; align-items: center; justify-content: center; 
+        }
+        .spinner { width: 40px; height: 40px; border: 3px solid var(--neon-blue); border-top-color: transparent; border-radius: 50%; animation: spin 1s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
     </style>
 </head>
@@ -47,72 +93,102 @@
 
     <div id="loading-overlay">
         <div class="spinner"></div>
-        <p style="font-family:'Orbitron'; margin-top:15px; color:var(--neon-blue);">SINCRONIZZAZIONE DATI...</p>
+        <p style="font-family:'Orbitron'; margin-top:15px; color:var(--neon-blue); letter-spacing: 2px;">SINCRONIZZAZIONE...</p>
     </div>
 
     <header class="nav-header">
         <div>
-            <h1 style="display:inline-block; font-size: 1.2rem; margin:0;">INIZIALIZZAZIONE MATRICOLA</h1>
-            <span id="role-display" class="role-badge">VERIFICA...</span>
+            <h1 style="display:inline-block; font-family:'Orbitron'; font-size: 1.1rem; margin:0; color:var(--neon-blue);">INITIALIZATION_PROTOCOL</h1>
+            <span id="role-display" class="role-badge">VERIFYING...</span>
         </div>
-        <div style="display: flex; align-items: center;">
-            <a href="index.html" class="btn-nav" style="border-color: var(--neon-yellow); color: var(--neon-yellow);">HUB</a>
+        <div style="display: flex; gap: 10px;">
             <a href="archivio.html" class="btn-nav">ARCHIVIO</a>
-            <button class="btn-logout" id="btn-logout">LOGOUT</button>
+            <button class="btn-nav" id="btn-logout" style="border-color:var(--neon-pink); color:var(--neon-pink);">LOGOUT</button>
         </div>
     </header>
 
     <div id="pg-form">
         <div class="form-section">
-            <div class="full-width"><h2 style="font-family:'Orbitron'; color:var(--neon-pink); margin:0;">1. DATI CORE</h2></div>
+            <div class="full-width"><h2 style="font-family:'Orbitron'; font-size: 0.9rem; color:var(--neon-pink); margin:0;">[01] DATI_CORE</h2></div>
             <div>
-                <label>NOME MATRICOLA *</label>
-                <input type="text" id="nome" placeholder="Obbligatorio" required oninput="validateForm()">
-                <label style="margin-top:15px;">ANIMA (Tag)</label>
-                <input type="text" id="anima" placeholder="Es: Pilota Provetto">
+                <label>NOME_MATRICOLA *</label>
+                <input type="text" id="nome" placeholder="ID UNIVOCO" required oninput="validateForm()">
+                <label style="margin-top:15px;">ANIMA (TAG)</label>
+                <input type="text" id="anima" placeholder="Es: Scintilla Ribelle">
             </div>
             <div>
-                <label>RITRATTO OPERATIVO (Auto-Resize)</label>
+                <label>RITRATTO_OPERATIVO</label>
                 <input type="file" id="img-file" accept="image/*" onchange="handleImage(event)">
-                <div class="img-preview" id="preview-box">OFFLINE</div>
+                <div class="img-preview" id="preview-box">LINK_OFFLINE</div>
             </div>
         </div>
 
-        <div class="form-section">
-            <div class="full-width"><h2 style="font-family:'Orbitron'; color:var(--neon-pink); margin:0;">2. IDENTITÀ</h2></div>
+        <div class="form-section evolution">
+            <div class="full-width"><h2 style="font-family:'Orbitron'; font-size: 0.9rem; color:var(--neon-pink); margin:0;">[02] IDENTITY_PROFILE</h2></div>
             <div>
-                <label>CORE</label><input type="text" id="core">
-                <label style="margin-top:15px;">DIFETTO</label><input type="text" id="difetto">
+                <label>CORE_PRIMARY</label><input type="text" id="core">
+                <label style="margin-top:15px;">DIFETTO_SISTEMA</label><input type="text" id="difetto">
             </div>
             <div>
-                <label>MOTTO</label><input type="text" id="motto">
-                <label style="margin-top:15px;">NEMESI</label><input type="text" id="nemesi">
+                <label>MOTTO_OPERATIVO</label><input type="text" id="motto">
+                <label style="margin-top:15px;">NEMESI_TARGET</label><input type="text" id="nemesi">
             </div>
             <div class="full-width">
-                <label>I 4 TRATTI d8 INIZIALI</label>
-                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
-                    <input type="text" class="tratto-input" placeholder="Tratto 1">
-                    <input type="text" class="tratto-input" placeholder="Tratto 2">
-                    <input type="text" class="tratto-input" placeholder="Tratto 3">
-                    <input type="text" class="tratto-input" placeholder="Tratto 4">
+                <label>MEMETIC_TRAITS (4 x d8)</label>
+                <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap:10px;">
+                    <input type="text" class="tratto-input" placeholder="TRATTO_01">
+                    <input type="text" class="tratto-input" placeholder="TRATTO_02">
+                    <input type="text" class="tratto-input" placeholder="TRATTO_03">
+                    <input type="text" class="tratto-input" placeholder="TRATTO_04">
                 </div>
             </div>
         </div>
 
         <div class="form-section">
-            <div class="full-width"><h2 style="font-family:'Orbitron'; color:var(--neon-pink); margin:0;">3. PROTOCOLLO</h2></div>
-            <div><label>STIRPE *</label><select id="select-stirpe" required onchange="aggiornaEredita()"></select></div>
-            <div><label>JOB *</label><select id="select-job" required onchange="validateForm()"></select></div>
+            <div class="full-width"><h2 style="font-family:'Orbitron'; font-size: 0.9rem; color:var(--neon-pink); margin:0;">[03] SELECTION_STIRPE_JOB</h2></div>
+            <div><label>STIRPE_BASE *</label><select id="select-stirpe" required onchange="aggiornaEredita()"></select></div>
+            <div><label>JOB_PRIMARY *</label><select id="select-job" required onchange="validateForm()"></select></div>
             <div class="full-width">
-                <label style="color:var(--neon-yellow);"><input type="checkbox" id="mezzosangue" onchange="aggiornaEredita()" style="width:auto;"> ATTIVA MEZZOSANGUE</label>
+                <label style="color:var(--neon-yellow); cursor:pointer;">
+                    <input type="checkbox" id="mezzosangue" onchange="aggiornaEredita()" style="width:auto; margin-right:10px;"> ATTIVA_MEZZOSANGUE_OVERRIDE
+                </label>
             </div>
-            <div class="full-width"><label>EREDITÀ SELEZIONATA</label><select id="select-eredita"></select></div>
+            <div class="full-width"><label>EREDITÀ_SINAPTICA</label><select id="select-eredita"></select></div>
+        </div>
+
+        <div id="special-inheritance-section" class="form-section special-section" style="display: none;">
+            <div class="full-width"><h2 style="font-family:'Orbitron'; font-size: 0.9rem; color:var(--neon-yellow); margin:0;">[04] SPECIAL_MODULES_DETECTED</h2></div>
+            
+            <div id="box-doppio-core" class="special-box full-width" style="display: none;">
+                <label>SECONDARY_CORE_LINK</label>
+                <input type="text" id="core-secondario" placeholder="Inserisci secondo Core...">
+            </div>
+
+            <div id="box-talento-naturale" class="special-box full-width" style="display: none;">
+                <label>EXTRA_JOB_ACCESS</label>
+                <select id="select-job-extra"></select>
+            </div>
+
+            <div id="box-mutante" class="special-box full-width" style="display: none;">
+                <label>MUTATION_DATA</label>
+                <input type="text" id="mutazione" placeholder="Descrizione anomalia...">
+            </div>
+
+            <div id="box-hybrid" class="special-box full-width" style="display: none;">
+                <label>HYBRID_FRAME_ID</label>
+                <input type="text" id="frame-extra" placeholder="Specifica Frame secondario...">
+            </div>
+
+            <div id="box-senza-core" class="special-box full-width" style="display: none;">
+                <label>SCINTILLA_ENGINE (VITAL_DRIVE)</label>
+                <input type="text" id="scintilla" placeholder="Cosa ti spinge ad agire?">
+            </div>
         </div>
     </div>
 
-    <div style="display: grid; grid-template-columns: 1fr 3fr; gap: 15px; margin-top: 20px; margin-bottom: 40px;">
-        <button type="button" class="btn-save btn-reset" onclick="resetForm()">REINIZIALIZZA</button>
-        <button class="btn-save" id="btn-save" disabled>SINCRONIZZA CON IL CLOUD</button>
+    <div style="display: grid; grid-template-columns: 1fr 3fr; gap: 15px; margin-top: 20px; margin-bottom: 50px;">
+        <button type="button" class="btn-save btn-reset" onclick="resetForm()">RE-BOOT</button>
+        <button class="btn-save" id="btn-save" disabled>COMMIT_TO_CLOUD</button>
     </div>
 
     <script type="module">
@@ -140,16 +216,15 @@
                 currentUser = user;
                 const configSnap = await getDoc(doc(db, "config", "permissions"));
                 isMaster = user.email.toLowerCase().trim() === (configSnap.exists() ? configSnap.data().masterEmail.toLowerCase().trim() : "");
-                document.getElementById('role-display').innerText = isMaster ? "MASTER" : "GIOCATORE";
+                document.getElementById('role-display').innerText = isMaster ? "MASTER" : "PLAYER";
                 document.getElementById('role-display').className = `role-badge ${isMaster ? 'master' : 'player'}`;
-                
                 init();
             } else { window.location.href = "index.html"; }
         });
 
         document.getElementById('btn-logout').onclick = () => signOut(auth);
 
-        // COMPRESSIONE IMMAGINE (Canvas Resize)
+        // Immagine
         window.handleImage = (e) => {
             const file = e.target.files[0];
             if (!file) return;
@@ -158,19 +233,13 @@
                 const img = new Image();
                 img.onload = () => {
                     const canvas = document.createElement('canvas');
-                    const MAX_WIDTH = 800;
-                    let width = img.width;
-                    let height = img.height;
-
-                    if (width > MAX_WIDTH) {
-                        height *= MAX_WIDTH / width;
-                        width = MAX_WIDTH;
-                    }
-                    canvas.width = width;
-                    canvas.height = height;
+                    const MAX_WIDTH = 600;
+                    let width = img.width, height = img.height;
+                    if (width > MAX_WIDTH) { height *= MAX_WIDTH / width; width = MAX_WIDTH; }
+                    canvas.width = width; canvas.height = height;
                     const ctx = canvas.getContext("2d");
                     ctx.drawImage(img, 0, 0, width, height);
-                    currentImgData = canvas.toDataURL("image/jpeg", 0.7); // 70% qualità
+                    currentImgData = canvas.toDataURL("image/jpeg", 0.7);
                     document.getElementById('preview-box').innerHTML = `<img src="${currentImgData}">`;
                 };
                 img.src = event.target.result;
@@ -178,7 +247,44 @@
             reader.readAsDataURL(file);
         };
 
-        // VALIDAZIONE CAMPI
+        // Logica Eredità Speciali
+        window.checkSpecialInheritance = () => {
+            const eredita = document.getElementById('select-eredita').value;
+            const section = document.getElementById('special-inheritance-section');
+            const boxes = {
+                'Doppio Core': 'box-doppio-core',
+                'Talento naturale': 'box-talento-naturale',
+                'Mutante': 'box-mutante',
+                'Hybrid Frame': 'box-hybrid',
+                'Senza Core': 'box-senza-core'
+            };
+
+            Object.values(boxes).forEach(id => document.getElementById(id).style.display = 'none');
+            
+            if (boxes[eredita]) {
+                document.getElementById(boxes[eredita]).style.display = 'block';
+                section.style.display = 'grid';
+            } else {
+                section.style.display = 'none';
+            }
+        };
+
+        window.aggiornaEredita = () => {
+            const isMez = document.getElementById('mezzosangue').checked;
+            const stirpeSel = document.getElementById('select-stirpe').value;
+            let options = '<option value="">-- SELEZIONA EREDITÀ --</option>';
+            dbStirpi.forEach(s => {
+                if (isMez || s.nome === stirpeSel) {
+                    s.eredita.forEach(e => options += `<option value="${e.nome}">${isMez ? '['+s.nome+'] ' : ''}${e.nome}</option>`);
+                }
+            });
+            const selEr = document.getElementById('select-eredita');
+            selEr.innerHTML = options;
+            selEr.onchange = () => { checkSpecialInheritance(); validateForm(); };
+            checkSpecialInheritance();
+            validateForm();
+        };
+
         window.validateForm = () => {
             const nome = document.getElementById('nome').value.trim();
             const stirpe = document.getElementById('select-stirpe').value;
@@ -186,46 +292,29 @@
             document.getElementById('btn-save').disabled = !(nome && stirpe && job);
         };
 
-        // GESTIONE DATABASE JSON E CARICAMENTO MODIFICA
         async function init() {
             try {
-                const [resS, resJ] = await Promise.all([
-                    fetch('stirpi_database.json'), 
-                    fetch('classi_database.json')
-                ]);
-                
-                if(!resS.ok || !resJ.ok) throw new Error("File JSON non trovati");
-
+                const [resS, resJ] = await Promise.all([fetch('stirpi_database.json'), fetch('classi_database.json')]);
                 dbStirpi = (await resS.json()).items;
                 const jobs = (await resJ.json()).items;
 
                 document.getElementById('select-stirpe').innerHTML = dbStirpi.map(s => `<option value="${s.nome}">${s.nome}</option>`).join('');
-                document.getElementById('select-job').innerHTML = jobs.map(j => `<option value="${j.nome}">${j.nome}</option>`).join('');
+                const jobOptions = jobs.map(j => `<option value="${j.nome}">${j.nome}</option>`).join('');
+                document.getElementById('select-job').innerHTML = jobOptions;
+                document.getElementById('select-job-extra').innerHTML = '<option value="">-- NESSUN JOB EXTRA --</option>' + jobOptions;
+
                 aggiornaEredita();
-                
-                // CONTROLLO MODALITÀ MODIFICA
                 currentEditId = sessionStorage.getItem('editModeId');
-                if(currentEditId) {
-                    await loadCharacterForEdit(currentEditId);
-                } else {
-                    validateForm();
-                }
-            } catch (e) {
-                alert("ERRORE CRITICO: Database Stirpi/Classi mancante.");
-            }
+                if(currentEditId) await loadCharacterForEdit(currentEditId);
+            } catch (e) { alert("DATI_DATABASE_MISSING"); }
         }
 
         async function loadCharacterForEdit(id) {
-            const overlay = document.getElementById('loading-overlay');
-            overlay.style.display = 'flex';
-            document.querySelector('#loading-overlay p').innerText = "RECUPERO DATI MATRICOLA...";
-            
+            document.getElementById('loading-overlay').style.display = 'flex';
             try {
                 const docSnap = await getDoc(doc(db, "personaggi", id));
                 if(docSnap.exists()) {
                     const p = docSnap.data();
-                    
-                    // Riempi campi base
                     document.getElementById('nome').value = p.nome;
                     document.getElementById('anima').value = p.anima || '';
                     document.getElementById('core').value = p.core || '';
@@ -233,73 +322,50 @@
                     document.getElementById('difetto').value = p.difetto || '';
                     document.getElementById('nemesi').value = p.nemesi || '';
                     
-                    // Riempi tratti
                     if(p.tratti) {
-                        const trattiInputs = document.querySelectorAll('.tratto-input');
-                        for(let i=0; i < p.tratti.length && i < trattiInputs.length; i++) {
-                            trattiInputs[i].value = p.tratti[i];
-                        }
+                        const inputs = document.querySelectorAll('.tratto-input');
+                        p.tratti.forEach((t, i) => { if(inputs[i]) inputs[i].value = t; });
                     }
-                    
-                    // Seleziona Stirpe e Job
+
                     document.getElementById('select-stirpe').value = p.stirpe;
                     document.getElementById('select-job').value = p.job;
                     
-                    // Gestisci Mezzosangue (se il PG ha un'eredità non appartenente alla stirpe base)
-                    const stirpeBaseDati = dbStirpi.find(s => s.nome === p.stirpe);
-                    const ereditaBaseNomi = stirpeBaseDati ? stirpeBaseDati.eredita.map(e => e.nome) : [];
-                    if(!ereditaBaseNomi.includes(p.eredita)) {
+                    // Logica Mezzosangue
+                    const sBase = dbStirpi.find(s => s.nome === p.stirpe);
+                    if(sBase && !sBase.eredita.some(e => e.nome === p.eredita)) {
                         document.getElementById('mezzosangue').checked = true;
                     }
-                    
-                    // Aggiorna eredità disponibili e seleziona quella corretta
                     aggiornaEredita();
                     document.getElementById('select-eredita').value = p.eredita;
-                    
-                    // Gestisci Immagine
-                    currentImgData = p.immagine || '';
-                    if(currentImgData) {
-                        document.getElementById('preview-box').innerHTML = `<img src="${currentImgData}">`;
+                    checkSpecialInheritance();
+
+                    // Carica dati speciali
+                    if(p.specialData) {
+                        document.getElementById('core-secondario').value = p.specialData.core2 || '';
+                        document.getElementById('select-job-extra').value = p.specialData.job2 || '';
+                        document.getElementById('mutazione').value = p.specialData.mutazione || '';
+                        document.getElementById('frame-extra').value = p.specialData.frame2 || '';
+                        document.getElementById('scintilla').value = p.specialData.scintilla || '';
                     }
-                    
-                    document.getElementById('btn-save').innerText = "AGGIORNA MATRICOLA";
-                    document.querySelector('.btn-reset').innerText = "ANNULLA MODIFICA";
+
+                    currentImgData = p.immagine || '';
+                    if(currentImgData) document.getElementById('preview-box').innerHTML = `<img src="${currentImgData}">`;
+                    document.getElementById('btn-save').innerText = "UPDATE_IDENTITY";
                 }
-            } catch (e) { alert("Errore caricamento."); }
-            overlay.style.display = 'none';
-            validateForm();
+            } catch (e) { console.error(e); }
+            document.getElementById('loading-overlay').style.display = 'none';
         }
 
-        window.aggiornaEredita = () => {
-            const isMez = document.getElementById('mezzosangue').checked;
-            const stirpeSel = document.getElementById('select-stirpe').value;
-            let options = "";
-            dbStirpi.forEach(s => {
-                if (isMez || s.nome === stirpeSel) {
-                    s.eredita.forEach(e => options += `<option value="${e.nome}">${isMez ? '['+s.nome+'] ' : ''}${e.nome}</option>`);
-                }
-            });
-            document.getElementById('select-eredita').innerHTML = options;
-            validateForm();
-        };
-
         window.resetForm = () => {
-            if(currentEditId) {
-                if(confirm("Annullare le modifiche e tornare all'Archivio?")) {
-                    sessionStorage.removeItem('editModeId');
-                    window.location.href = 'archivio.html';
-                }
-            } else {
-                if(confirm("Protocollo Reset? Tutti i dati andranno persi.")) location.reload();
+            if(confirm("TERMINATE_SESSION? Tutti i dati non salvati andranno persi.")) {
+                sessionStorage.removeItem('editModeId');
+                window.location.href = currentEditId ? "archivio.html" : location.reload();
             }
         };
 
-        // SALVATAGGIO O AGGIORNAMENTO
         document.getElementById('btn-save').onclick = async () => {
-            const overlay = document.getElementById('loading-overlay');
-            overlay.style.display = 'flex';
-            document.querySelector('#loading-overlay p').innerText = currentEditId ? "AGGIORNAMENTO MATRICOLA..." : "SINCRONIZZA CON IL CLOUD...";
-
+            document.getElementById('loading-overlay').style.display = 'flex';
+            
             const pg = {
                 nome: document.getElementById('nome').value.trim(),
                 anima: document.getElementById('anima').value.trim(),
@@ -312,31 +378,30 @@
                 job: document.getElementById('select-job').value,
                 eredita: document.getElementById('select-eredita').value,
                 immagine: currentImgData,
-                // Aggiorna ownerEmail se Master modifica per mantenere consistenza,
-                // ma non cambiare creatoDa se è un PG di un utente
+                specialData: {
+                    core2: document.getElementById('core-secondario').value,
+                    job2: document.getElementById('select-job-extra').value,
+                    mutazione: document.getElementById('mutazione').value,
+                    frame2: document.getElementById('frame-extra').value,
+                    scintilla: document.getElementById('scintilla').value
+                },
                 ownerEmail: currentUser.email,
                 lastUpdate: serverTimestamp()
             };
 
-            // Se è creazione, imposta i metadati iniziali
             if(!currentEditId) {
                 pg.creatoDa = isMaster ? "MASTER" : currentUser.uid;
                 pg.timestamp = serverTimestamp();
             }
 
             try {
-                // Genera ID se nuovo, usa ID esistente se modifica
-                const docId = currentEditId ? currentEditId : `${currentUser.uid}-${Date.now()}`;
+                const docId = currentEditId || `${currentUser.uid}-${Date.now()}`;
                 await setDoc(doc(db, "personaggi", docId), pg, { merge: true });
-                
-                if(currentEditId) sessionStorage.removeItem('editModeId');
-                
-                overlay.style.display = 'none';
-                alert(currentEditId ? "Protocollo Aggiornato." : "Protocollo Completato.");
+                sessionStorage.removeItem('editModeId');
                 window.location.href = "archivio.html";
             } catch (e) {
-                overlay.style.display = 'none';
-                alert("ERRORE CRITICO.");
+                alert("CRITICAL_SYNC_ERROR");
+                document.getElementById('loading-overlay').style.display = 'none';
             }
         };
     </script>
