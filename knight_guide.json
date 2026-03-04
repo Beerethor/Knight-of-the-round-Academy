@@ -1,0 +1,46 @@
+{
+  "titolo": "Anatomia dei Knight",
+  "protocollo": "Protocollo di Classificazione Merlin v.4.2",
+  "citazione_finale": {
+    "testo": "Un pilota senza il suo Frame è solo un passeggero. Un Knight senza il suo Frame è solo ferraglia.",
+    "autore": "Dr. Merlin"
+  },
+  "sezioni": [
+    {
+      "id": 1,
+      "titolo": "Le Classi (Dimensioni e Scala)",
+      "tipo": "grid",
+      "items": [
+        {
+          "nome": "KNAVE",
+          "colore": "var(--neon-yellow)",
+          "descrizione": "Scala ridotta. Mezzi agili e discreti, usati per infiltrazione o lavori pesanti. Possono passare inosservati in aree urbane fitte."
+        },
+        {
+          "nome": "CHEVALIER",
+          "colore": "var(--neon-blue)",
+          "descrizione": "La scala standard. Knight imponenti legati a un elemento. È il modello principale utilizzato dalle Matricole in battaglia."
+        },
+        {
+          "nome": "PALADIN",
+          "colore": "var(--neon-pink)",
+          "descrizione": "Scala colossale. Fortezze semoventi per assedi o battaglie spaziali. Richiedono un equipaggio minimo di 3 piloti."
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "titolo": "I Frame (Funzioni Tattiche)",
+      "tipo": "table",
+      "introduzione": "Il Frame definisce il ruolo del Knight sul campo. Non esistono Knight 'generici'.",
+      "headers": ["FRAME", "SPECIALIZZAZIONE"],
+      "rows": [
+        { "nome": "LANCER", "specializzazione": "Assalto corpo a corpo e velocità d'impatto." },
+        { "nome": "ARCHER", "specializzazione": "Supporto balistico e combattimento a lungo raggio." },
+        { "nome": "TANKER", "specializzazione": "Difesa pesante e protezione della squadra." },
+        { "nome": "SCOUTER", "specializzazione": "Ricognizione, agilità estrema e stealth." },
+        { "nome": "CASTER", "specializzazione": "Manipolazione energetica e uso delle Particelle Dragon." }
+      ]
+    }
+  ]
+}
