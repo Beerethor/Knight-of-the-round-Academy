@@ -181,25 +181,25 @@
             window.location.href = 'creatore.html';
         };
 
-       function openViewer(p) {
-    // 1. Cerca l'eredità corretta in tutto il database Stirpi
-    let ereditaTrovata = null;
-    dbStirpi.forEach(stirpe => {
-        const found = stirpe.eredita.find(e => e.nome === p.eredita);
-        if (found) ereditaTrovata = found;
+      function openViewer(p) {
+    // 1. Cerca i dati dell'Eredità (per la descrizione narrativa)
+    let ereditaDati = null;
+    dbStirpi.forEach(s => { 
+        const found = s.eredita.find(e => e.nome === p.eredita); 
+        if(found) ereditaDati = found; 
     });
 
-    // 2. Cerca la descrizione del Job
+    // 2. Cerca i dati del JOB (per la descrizione e le TECNICHE)
     const jobDati = dbClassi.find(j => j.nome === p.job);
 
-    // 3. Popola i campi base
+    // 3. Popolamento Campi Base
     document.getElementById('v-img').src = p.immagine || '';
     document.getElementById('v-nome').innerText = p.nome;
     document.getElementById('v-motto').innerText = p.motto ? `"${p.motto}"` : "";
     document.getElementById('v-stirpe').innerText = `${p.stirpe} (${p.eredita})`;
-    document.getElementById('v-eredita-desc').innerText = ereditaTrovata ? ereditaTrovata.descrizione : "Dati eredità non trovati.";
+    document.getElementById('v-eredita-desc').innerText = ereditaDati ? ereditaDati.descrizione : "";
     document.getElementById('v-job').innerText = p.job;
-    document.getElementById('v-job-desc').innerText = jobDati ? jobDati.descrizione : "Dati job non trovati.";
+    document.getElementById('v-job-desc').innerText = jobDati ? jobDati.descrizione : "";
     
     document.getElementById('v-params').innerHTML = `
         <strong>ANIMA:</strong> ${p.anima || '--'}<br>
@@ -207,12 +207,12 @@
         <strong>DIFETTO:</strong> ${p.difetto || '--'}<br>
         <strong>NEMESI:</strong> ${p.nemesi || '--'}`;
 
-    // 4. RENDERING TECNICHE (Il punto critico)
+    // 4. RENDERING TECNICHE (Legate al JOB)
     const tBox = document.getElementById('v-tecniche'); 
-    tBox.innerHTML = ""; // Pulisce il box
+    tBox.innerHTML = ""; 
 
-    if (ereditaTrovata && ereditaTrovata.tecniche && ereditaTrovata.tecniche.length > 0) {
-        ereditaTrovata.tecniche.forEach(t => {
+    if (jobDati && jobDati.tecniche && jobDati.tecniche.length > 0) {
+        jobDati.tecniche.forEach(t => {
             tBox.innerHTML += `
                 <div class="tech-tag">
                     <strong style="color:var(--neon-blue); text-transform:uppercase;">${t.nome}:</strong> 
@@ -220,11 +220,12 @@
                 </div>`;
         });
     } else {
-        tBox.innerHTML = `<div style="color:#555; font-style:italic;">Nessuna tecnica rilevata per questa eredità.</div>`;
+        tBox.innerHTML = `<div style="color:#555; font-style:italic;">Nessuna tecnica operativa trovata per il Job ${p.job}.</div>`;
     }
     
-    // 5. Tratti e Pulsanti
+    // 5. Tratti e Pulsante Modifica
     document.getElementById('v-tratti').innerHTML = p.tratti ? p.tratti.map(t => `<span class="trait-pill">${t}</span>`).join('') : '';
+    
     const btnEdit = document.getElementById('v-btn-edit');
     btnEdit.onclick = () => editCharacter(p.id);
     btnEdit.style.display = (isMasterGlobal || p.creatoDa === auth.currentUser.uid) ? 'block' : 'none';
