@@ -181,40 +181,56 @@
             window.location.href = 'creatore.html';
         };
 
-        function openViewer(p) {
-            let ereditaDati = null;
-            dbStirpi.forEach(s => { const found = s.eredita.find(e => e.nome === p.eredita); if(found) ereditaDati = found; });
-            const jobDati = dbClassi.find(j => j.nome === p.job);
+       function openViewer(p) {
+    // 1. Cerca l'eredità corretta in tutto il database Stirpi
+    let ereditaTrovata = null;
+    dbStirpi.forEach(stirpe => {
+        const found = stirpe.eredita.find(e => e.nome === p.eredita);
+        if (found) ereditaTrovata = found;
+    });
 
-            document.getElementById('v-img').src = p.immagine || '';
-            document.getElementById('v-nome').innerText = p.nome;
-            document.getElementById('v-motto').innerText = p.motto ? `"${p.motto}"` : "";
-            document.getElementById('v-stirpe').innerText = `${p.stirpe} (${p.eredita})`;
-            document.getElementById('v-eredita-desc').innerText = ereditaDati ? ereditaDati.descrizione : "";
-            document.getElementById('v-job').innerText = p.job;
-            document.getElementById('v-job-desc').innerText = jobDati ? jobDati.descrizione : "";
-            
-            document.getElementById('v-params').innerHTML = `
-                <strong>ANIMA:</strong> ${p.anima || '--'}<br>
-                <strong>CORE:</strong> ${p.core || '--'}<br>
-                <strong>DIFETTO:</strong> ${p.difetto || '--'}<br>
-                <strong>NEMESI:</strong> ${p.nemesi || '--'}`;
+    // 2. Cerca la descrizione del Job
+    const jobDati = dbClassi.find(j => j.nome === p.job);
 
-            const tBox = document.getElementById('v-tecniche'); tBox.innerHTML = "";
-            if(ereditaDati?.tecniche) {
-                ereditaDati.tecniche.forEach(t => {
-                    tBox.innerHTML += `<div class="tech-tag"><strong>${t.nome}:</strong> ${t.effetto}</div>`;
-                });
-            }
-            
-            document.getElementById('v-tratti').innerHTML = p.tratti ? p.tratti.map(t => `<span class="trait-pill">${t}</span>`).join('') : '';
-            
-            const btnEdit = document.getElementById('v-btn-edit');
-            btnEdit.onclick = () => editCharacter(p.id);
-            btnEdit.style.display = (isMasterGlobal || p.creatoDa === auth.currentUser.uid) ? 'block' : 'none';
+    // 3. Popola i campi base
+    document.getElementById('v-img').src = p.immagine || '';
+    document.getElementById('v-nome').innerText = p.nome;
+    document.getElementById('v-motto').innerText = p.motto ? `"${p.motto}"` : "";
+    document.getElementById('v-stirpe').innerText = `${p.stirpe} (${p.eredita})`;
+    document.getElementById('v-eredita-desc').innerText = ereditaTrovata ? ereditaTrovata.descrizione : "Dati eredità non trovati.";
+    document.getElementById('v-job').innerText = p.job;
+    document.getElementById('v-job-desc').innerText = jobDati ? jobDati.descrizione : "Dati job non trovati.";
+    
+    document.getElementById('v-params').innerHTML = `
+        <strong>ANIMA:</strong> ${p.anima || '--'}<br>
+        <strong>CORE:</strong> ${p.core || '--'}<br>
+        <strong>DIFETTO:</strong> ${p.difetto || '--'}<br>
+        <strong>NEMESI:</strong> ${p.nemesi || '--'}`;
 
-            document.getElementById('viewer-overlay').style.display = 'block';
-        }
+    // 4. RENDERING TECNICHE (Il punto critico)
+    const tBox = document.getElementById('v-tecniche'); 
+    tBox.innerHTML = ""; // Pulisce il box
+
+    if (ereditaTrovata && ereditaTrovata.tecniche && ereditaTrovata.tecniche.length > 0) {
+        ereditaTrovata.tecniche.forEach(t => {
+            tBox.innerHTML += `
+                <div class="tech-tag">
+                    <strong style="color:var(--neon-blue); text-transform:uppercase;">${t.nome}:</strong> 
+                    <span style="color:#ccc;">${t.effetto}</span>
+                </div>`;
+        });
+    } else {
+        tBox.innerHTML = `<div style="color:#555; font-style:italic;">Nessuna tecnica rilevata per questa eredità.</div>`;
+    }
+    
+    // 5. Tratti e Pulsanti
+    document.getElementById('v-tratti').innerHTML = p.tratti ? p.tratti.map(t => `<span class="trait-pill">${t}</span>`).join('') : '';
+    const btnEdit = document.getElementById('v-btn-edit');
+    btnEdit.onclick = () => editCharacter(p.id);
+    btnEdit.style.display = (isMasterGlobal || p.creatoDa === auth.currentUser.uid) ? 'block' : 'none';
+
+    document.getElementById('viewer-overlay').style.display = 'block';
+}
 
         window.closeViewer = () => document.getElementById('viewer-overlay').style.display = 'none';
     </script>
