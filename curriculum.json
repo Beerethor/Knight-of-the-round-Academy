@@ -10,24 +10,25 @@
     "max_punti_affinita_totali": 10
   },
   "definizioni_tecniche": {
-    "Anima": "L'io profondo (Kokoro). Determina l'approccio psicologico della Matricola.",
-    "Core": "Elemento alchemico del 'Respiro del Drago'. Lega pilota e Knight.",
-    "Memoria": "Frammento di passato. Il Nome è la prima Memoria. Ogni Memoria sblocca +3 slot Limite.",
-    "Difetto": "Debolezza narrativa. Se attivata: Difficoltà +1, recupera 1d6 Punti Limite.",
-    "Sovraccarico": "Capacità massima di sforzo bio-meccanico prima del logoramento.",
-    "Tratti": "Competenze, conoscenze o oggetti che aggiungono dadi alle prove."
+    "Anima": "Rappresenta l'essenza più profonda e intima del personaggio. Mentre il Nome ti identifica e la Stirpe dice da dove vieni, l'Anima definisce chi sei veramente nel profondo.",
+    "Core": "Il Core rappresenta il legame elementale tra la Matricola, il suo Knight e il Respiro del Drago (la forza vitale di Brit’an). Solo chi possiede un legame forte con un elemento può diventare una Matricola.",
+    "Memoria": "le Memorie rappresentano i momenti chiave del passato della tua Matricola che ne hanno segnato l'identità.",
+    "Difetto": "Rappresenta un punto debole, una paura o un limite caratteriale che può mettere la Matricola in pericolo (es. Timidezza, Furia cieca, Arroganza). A differenza dei Tratti, non aggiunge dadi alla Prova.",
+    "Sovraccarico": "i Punti Limite sono la barra dell'energia della tua Matricola, simile a quella che vedresti in un videogioco o in un anime quando un personaggio sta per scatenare il suo colpo migliore.",
+    "Tratti": "Sono parole o brevi frasi che definiscono le capacità, le risorse o i legami del personaggio. Possono rappresentare: \nCompetenze: Cosa sai fare o hai studiato (es. Sparare, Magia Sidhe). \nTalenti naturali: Ciò per cui sei portato (es. Convincere). \nOggetti iconici: Strumenti unici (es. Excalibur, L'orologio di mio padre). \nRelazioni e Alleati: Rapporti significativi (es. Ginevra, Il mio famiglio)."
+    "Nemesi": "Rappresenta un trauma, un nemico giurato o una condizione avversa che ha segnato profondamente il personaggio. Non deve essere per forza una persona: \nIndividui: L'assassino di un genitore, un rivale accademico. \nConcetti Astratti: La fame patita in strada, la paura del fallimento. \nEventi: La perdita di una persona cara, un segreto inconfessabile.",
   },
   "orientamento_step_by_step": [
     {
       "id": 1,
       "fase": "IDENTITÀ NOMINATIVA",
-      "descrizione": "Scegli il Nome. Vale come 1° Tratto e 1° Memoria. Permette 1 Rilancio per sessione."
+      "descrizione": "Il Nome non è solo un’etichetta, ma il primo Tratto (e la prima Memoria) della tua Matricola. Serve a: \nGestire l'appello e identificare la famiglia di origine. \nMeccaniche di gioco: Può essere usato come Tratto durante una Prova o per ritirare i dadi una volta a sessione. \nDefinire il passato del personaggio agli occhi degli altri giocatori."
     },
     {
       "id": 2,
       "fase": "SELEZIONE STIRPE",
       "opzioni": ["Andruid", "Avalon", "Bret'on", "Colonie", "Sangue di Drago", "Sax'on", "Sidhe"],
-      "nota": "Ogni Stirpe richiede la scelta di una 'Eredità' specifica tra 4 disponibili."
+      "nota": "Rappresenta il popolo, la specie o la cultura di appartenenza della tua Matricola. Determina le tue radici biologiche o sociali nel mondo di Brit’an."
     },
     {
       "id": 3,
@@ -47,7 +48,7 @@
     {
       "id": 5,
       "fase": "ESTENSIONE MEMETICA (TRATTI)",
-      "regola": "Definisci i primi 4 Tratti: 1 di studio, 1 oggetto iconico, 1 relazione, 1 attitudine."
+      "regola": "Definisci i primi 4 Tratti."
     },
     {
       "id": 6,
@@ -63,7 +64,7 @@
       "id": 8,
       "fase": "SPECIALIZZAZIONE JOB",
       "conteggio_totale": 15,
-      "benefici": "Ogni Job sblocca 4 Tecniche e i relativi Temi narrativi."
+      "benefici": "Non è una scelta statica per tutta la vita, ma il corso di studi che la Matricola decide di seguire. Ogni Job definisce le tue competenze uniche e il tuo ruolo tattico."
     },
     {
       "id": 9,
@@ -74,23 +75,17 @@
     {
       "id": 10,
       "fase": "BATTEZZO DEL KNIGHT",
-      "stile": "Nomi evocativi (Arturiani / Mecha Anime anni '90)."
+      "stile": "Il nome del tuo Knight deve far capire agli avversari (e agli altri giocatori) esattamente che tipo di minaccia hanno davanti ancora prima che tu muova un solo bullone."
     },
     {
       "id": 11,
       "fase": "SELEZIONE FRAME TATTICO",
-      "modelli": [
-        { "codice": "Lancer", "ruolo": "Corpo a corpo / Velocità" },
-        { "codice": "Archer", "ruolo": "Lungo raggio / Balistica" },
-        { "codice": "Tanker", "ruolo": "Difesa pesante / Scudo" },
-        { "codice": "Scouter", "ruolo": "Infiltrazione / Stealth" },
-        { "codice": "Caster", "ruolo": "Emissione energetica / Particelle" }
-      ]
+      "frame": "L'ultimo componente del tuo mecha è il Frame (il Telaio), che ne definisce la funzione pratica e il ruolo sul campo di battaglia."
     },
     {
       "id": 12,
       "fase": "LEGAMI (SPIRITI AFFINI)",
-      "regola": "Scegli fino a 2 SA. Distribuisci 10 punti affinità iniziali."
+      "regola": "le Affinità gestiscono i rapporti interpersonali tra la tua Matricola e gli altri (giocatori o personaggi secondari)."
     }
   ],
   "esempio_compilazione": {
