@@ -3,64 +3,118 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KOTRA - Terminale di Accesso</title>
+    <title>KOTRA - Terminale Archivio</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
-        :root { --neon-blue: #00f2ff; --neon-pink: #ff00ff; --bg-dark: #060608; }
+        :root { --neon-blue: #00f2ff; --neon-pink: #ff00ff; --neon-yellow: #ffff00; --bg-dark: #060608; --panel-bg: #111116; }
         body { background: var(--bg-dark); color: white; font-family: 'Rajdhani', sans-serif; margin: 0; }
         
-        .nav-header { padding: 20px; border-bottom: 1px solid #222; display: flex; justify-content: space-between; align-items: center; }
-        
-        /* Pannelli Sezioni */
-        .archive-section { padding: 20px 40px; }
-        .section-header { 
-            font-family: 'Orbitron'; color: var(--neon-pink); 
-            border-left: 4px solid var(--neon-pink); padding-left: 15px; 
-            margin: 30px 0 20px 0; text-transform: uppercase; letter-spacing: 2px;
-        }
+        /* Header e Nav */
+        .nav-header { padding: 20px; border-bottom: 1px solid #222; display: flex; justify-content: space-between; align-items: center; background: #000; }
+        .btn-action { background: transparent; border: 1px solid var(--neon-blue); color: var(--neon-blue); padding: 8px 15px; font-family: 'Orbitron'; cursor: pointer; text-decoration: none; font-size: 0.8rem; }
+        .btn-logout { border-color: var(--neon-pink); color: var(--neon-pink); margin-left: 10px; }
 
-        .archive-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+        /* Griglia */
+        .section-label { font-family: 'Orbitron'; color: var(--neon-pink); padding: 20px 40px 0; font-size: 0.9rem; letter-spacing: 2px; }
+        .archive-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; padding: 20px 40px 40px; }
         
-        /* Card */
-        .pg-card { background: #111116; border: 1px solid #333; cursor: pointer; transition: 0.3s; }
+        .pg-card { background: var(--panel-bg); border: 1px solid #222; cursor: pointer; transition: 0.3s; position: relative; overflow: hidden; }
         .pg-card:hover { border-color: var(--neon-blue); transform: translateY(-5px); }
-        .pg-card img { width: 100%; height: 180px; object-fit: cover; }
-        .info { padding: 15px; }
+        .pg-card img { width: 100%; height: 180px; object-fit: cover; filter: grayscale(40%); }
+        .pg-card:hover img { filter: grayscale(0%); }
+        .pg-card-info { padding: 15px; border-top: 1px solid #222; }
+        .pg-card-name { font-family: 'Orbitron'; color: var(--neon-blue); font-size: 1.1rem; }
 
-        /* Login Master */
-        #master-auth { 
-            background: rgba(255, 0, 255, 0.05); border: 1px solid var(--neon-pink);
-            padding: 10px; margin: 20px 40px; display: flex; gap: 10px; align-items: center;
-        }
-        input#master-key { background: #000; border: 1px solid #444; color: white; padding: 5px; }
+        /* Overlay Scheda Tattica */
+        #viewer-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.98); z-index: 1000; overflow-y: auto; }
+        .sheet-container { max-width: 1100px; margin: 40px auto; background: #0c0c0f; border: 1px solid #333; display: grid; grid-template-columns: 350px 1fr; position: relative; }
+        .side-img { width: 100%; height: 100%; object-fit: cover; border-right: 1px solid var(--neon-blue); }
+        .main-sheet { padding: 40px; }
+        
+        .data-box { background: rgba(255,255,255,0.03); border-left: 3px solid var(--neon-blue); padding: 15px; margin-bottom: 20px; }
+        .data-box h3 { font-family: 'Orbitron'; font-size: 0.7rem; color: var(--neon-pink); margin: 0 0 10px; }
+        
+        .tech-tag { display: inline-block; background: rgba(0,242,255,0.1); border: 1px solid var(--neon-blue); padding: 4px 10px; margin: 5px; font-size: 0.8rem; }
+        .close-overlay { position: absolute; top: 20px; right: 20px; color: white; cursor: pointer; font-family: 'Orbitron'; font-size: 1.2rem; z-index: 1100; }
+
+        /* Badge Ruoli */
+        .role-tag { font-family: 'Orbitron'; font-size: 0.6rem; padding: 2px 8px; border: 1px solid; border-radius: 4px; vertical-align: middle; margin-left: 10px; }
+        .master-tag { border-color: var(--neon-pink); color: var(--neon-pink); }
+        .player-tag { border-color: var(--neon-blue); color: var(--neon-blue); }
     </style>
 </head>
 <body>
 
     <header class="nav-header">
-        <h1 style="font-family:'Orbitron'; color:var(--neon-blue);">SISTEMA ARCHIVIO KOTRA</h1>
-        <div id="user-info" style="font-size: 0.8rem; color: #888;">ID UTENTE: <span id="uid-display">Generazione...</span></div>
+        <div>
+            <h1 style="font-family:'Orbitron'; color:var(--neon-blue); display:inline-block; margin:0; font-size:1.3rem;">KOTRA // ARCHIVIO</h1>
+            <span id="role-display"></span>
+        </div>
+        <div>
+            <a href="creatore.html" class="btn-action">+ NUOVA MATRICOLA</a>
+            <button class="btn-action btn-logout" id="btn-logout">LOGOUT</button>
+        </div>
     </header>
 
-    <div id="master-auth">
-        <label style="font-family:'Orbitron'; font-size: 0.7rem;">ACCESSO MASTER:</label>
-        <input type="password" id="master-key" placeholder="Inserisci Chiave">
-        <button onclick="checkMaster()" style="cursor:pointer; background:var(--neon-pink); border:none; color:black; font-family:'Orbitron'; font-size:0.6rem; padding:5px 10px;">AUTH</button>
+    <div id="master-view" style="display: none;">
+        <div class="section-label">UNITÀ SOTTOPOSTE (GIOCATORI)</div>
+        <div class="archive-grid" id="grid-utenti"></div>
     </div>
 
-    <div class="archive-section">
-        <div class="section-header" id="label-miei">Le Mie Matricole</div>
-        <div class="archive-grid" id="grid-personali"></div>
+    <div class="section-label" id="label-personali">LE MIE MATRICOLE</div>
+    <div class="archive-grid" id="grid-personali"></div>
 
-        <div id="master-only-area" style="display: none;">
-            <div class="section-header">Database Utenti (Sola Lettura Master)</div>
-            <div class="archive-grid" id="grid-utenti"></div>
+    <div id="viewer-overlay">
+        <span class="close-overlay" onclick="closeViewer()">[ CHIUDI X ]</span>
+        <div class="sheet-container">
+            <img id="v-img" class="side-img" src="">
+            <div class="main-sheet">
+                <div style="border-bottom: 1px solid var(--neon-blue); padding-bottom: 20px; margin-bottom: 20px;">
+                    <h2 id="v-nome" style="font-family:'Orbitron'; font-size: 3rem; margin:0; color:var(--neon-blue);">---</h2>
+                    <p id="v-motto" style="font-style:italic; color:var(--neon-yellow);">"---"</p>
+                </div>
+
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:30px;">
+                    <div>
+                        <div class="data-box">
+                            <h3>STIRPE & EREDITÀ</h3>
+                            <div id="v-stirpe" style="font-weight:bold;">---</div>
+                            <div id="v-eredita-desc" style="font-size:0.9rem; color:#aaa; margin-top:5px;">---</div>
+                        </div>
+                        <div class="data-box">
+                            <h3>JOB</h3>
+                            <div id="v-job" style="font-weight:bold;">---</div>
+                            <div id="v-job-desc" style="font-size:0.9rem; color:#aaa; margin-top:5px;">---</div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="data-box">
+                            <h3>TECNICHE & CAPACITÀ</h3>
+                            <div id="v-tecniche"></div>
+                        </div>
+                        <div class="data-box">
+                            <h3>PARAMETRI</h3>
+                            <div style="font-size:0.9rem;">
+                                <strong>Anima:</strong> <span id="v-anima"></span><br>
+                                <strong>Core:</strong> <span id="v-core"></span><br>
+                                <strong>Difetto:</strong> <span id="v-difetto"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="data-box">
+                    <h3>TRATTI & MEMORIE</h3>
+                    <div id="v-tratti"></div>
+                </div>
+            </div>
         </div>
     </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, collection, getDocs, doc, getDoc, query, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyCAMvHn28SY3k9TiLvz2afjn0zpj73Lw5Y",
@@ -73,66 +127,114 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
+        const auth = getAuth(app);
 
-        // 1. Gestione Identità (Semplice ID nel LocalStorage)
-        let userId = localStorage.getItem('kotra_uid');
-        if (!userId) {
-            userId = 'USR-' + Math.random().toString(36).substr(2, 9).toUpperCase();
-            localStorage.setItem('kotra_uid', userId);
-        }
-        document.getElementById('uid-display').innerText = userId;
+        let dbStirpi = [], dbClassi = [];
 
-        // 2. Controllo Master
-        const MASTER_PASSWORD = "KOTRA-MASTER-2024"; // Sostituisci con la tua chiave
-        window.checkMaster = () => {
-            const key = document.getElementById('master-key').value;
-            if (key === MASTER_PASSWORD) {
-                localStorage.setItem('is_master', 'true');
-                alert("Protocollo Master Attivato.");
-                location.reload();
+        // 1. GESTIONE AUTENTICAZIONE E FILTRI
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                // Recupera email Master dal DB
+                const configSnap = await getDoc(doc(db, "config", "permissions"));
+                const masterEmail = configSnap.exists() ? configSnap.data().masterEmail : "";
+                const isMaster = (user.email === masterEmail);
+
+                // UI Ruolo
+                const rDisplay = document.getElementById('role-display');
+                rDisplay.innerHTML = `<span class="role-tag ${isMaster ? 'master-tag' : 'player-tag'}">${isMaster ? 'AUTORITÀ MASTER' : 'OPERATORE'}</span>`;
+
+                // Carica Database JSON e poi i Personaggi
+                const [resS, resJ] = await Promise.all([fetch('stirpi_database.json'), fetch('classi_database.json')]);
+                dbStirpi = (await resS.json()).items;
+                dbClassi = (await resJ.json()).items;
+
+                loadArchive(user.uid, isMaster);
             } else {
-                alert("Accesso Negato.");
+                window.location.href = "index.html";
             }
-        };
+        });
 
-        async function loadArchive() {
-            const isMaster = localStorage.getItem('is_master') === 'true';
+        document.getElementById('btn-logout').onclick = () => signOut(auth);
+
+        // 2. CARICAMENTO DATI
+        async function loadArchive(uid, isMaster) {
             const gridPersonali = document.getElementById('grid-personali');
             const gridUtenti = document.getElementById('grid-utenti');
             
-            // Query 1: I miei PG (creati da me o creati dal master se io sono il master)
-            const qPersonal = query(collection(db, "personaggi"), where("creatoDa", "==", isMaster ? "MASTER" : userId));
+            // Query 1: I Miei PG (Se master, quelli taggati "MASTER", altrimenti quelli col mio UID)
+            const qPersonal = query(collection(db, "personaggi"), where("creatoDa", "==", isMaster ? "MASTER" : uid));
             const snapPersonal = await getDocs(qPersonal);
-            
-            renderGrid(snapPersonal, gridPersonali);
+            renderCards(snapPersonal, gridPersonali);
 
-            // Query 2: Se sono Master, carica tutti gli altri
+            // Query 2: Se Master, vedi tutti quelli dei giocatori
             if (isMaster) {
-                document.getElementById('master-only-area').style.display = 'block';
-                document.getElementById('label-miei').innerText = "Le Mie Matricole (Master)";
-                
+                document.getElementById('master-view').style.display = 'block';
                 const qUtenti = query(collection(db, "personaggi"), where("creatoDa", "!=", "MASTER"));
                 const snapUtenti = await getDocs(qUtenti);
-                renderGrid(snapUtenti, gridUtenti);
+                renderCards(snapUtenti, gridUtenti);
             }
         }
 
-        function renderGrid(snap, target) {
+        function renderCards(snap, target) {
             target.innerHTML = "";
             snap.forEach(d => {
                 const p = d.data();
-                target.innerHTML += `
-                    <div class="pg-card" onclick="alert('Apertura scheda: ${p.nome}')">
-                        <img src="${p.immagine}">
-                        <div class="info">
-                            <div style="font-family:'Orbitron'; color:var(--neon-blue);">${p.nome}</div>
-                            <div style="font-size:0.7rem; color:#666;">ID: ${p.creatoDa || '---'}</div>
-                        </div>
-                    </div>`;
+                const card = document.createElement('div');
+                card.className = 'pg-card';
+                card.innerHTML = `
+                    <img src="${p.immagine || 'https://via.placeholder.com/300x180'}">
+                    <div class="pg-card-info">
+                        <div class="pg-card-name">${p.nome}</div>
+                        <div style="font-size:0.75rem; color:#666; margin-top:5px;">${p.stirpe} | ${p.job}</div>
+                        ${p.ownerEmail ? `<div style="font-size:0.6rem; color:var(--neon-pink); margin-top:5px;">OWNER: ${p.ownerEmail}</div>` : ''}
+                    </div>
+                `;
+                card.onclick = () => openViewer(p);
+                target.appendChild(card);
             });
         }
 
-        window.onload = loadArchive;
+        // 3. VISUALIZZATORE SCHEDA TATTICA
+        function openViewer(p) {
+            const stirpeDati = dbStirpi.find(s => s.nome === p.stirpe);
+            const jobDati = dbClassi.find(j => j.nome === p.job);
+            
+            // Trova eredità (anche per mezzosangue)
+            let ereditaDati = null;
+            dbStirpi.forEach(s => {
+                const found = s.eredita.find(e => e.nome === p.eredita);
+                if(found) ereditaDati = found;
+            });
+
+            document.getElementById('v-img').src = p.immagine;
+            document.getElementById('v-nome').innerText = p.nome;
+            document.getElementById('v-motto').innerText = p.motto ? `"${p.motto}"` : "";
+            document.getElementById('v-stirpe').innerText = `${p.stirpe} (${p.eredita})`;
+            document.getElementById('v-eredita-desc').innerText = ereditaDati ? ereditaDati.descrizione : "";
+            document.getElementById('v-job').innerText = p.job;
+            document.getElementById('v-job-desc').innerText = jobDati ? jobDati.descrizione : "";
+            document.getElementById('v-anima').innerText = p.anima;
+            document.getElementById('v-core').innerText = p.core;
+            document.getElementById('v-difetto').innerText = p.difetto;
+
+            // Tecniche
+            const techBox = document.getElementById('v-tecniche');
+            techBox.innerHTML = "";
+            if(ereditaDati && ereditaDati.tecniche) {
+                ereditaDati.tecniche.forEach(t => {
+                    techBox.innerHTML += `<div class="tech-tag"><strong>${t.nome}:</strong> ${t.effetto}</div>`;
+                });
+            }
+
+            // Tratti
+            const trattiBox = document.getElementById('v-tratti');
+            trattiBox.innerHTML = p.tratti.map(t => `<span class="tech-tag">${t}</span>`).join('');
+
+            document.getElementById('viewer-overlay').style.display = 'block';
+        }
+
+        window.closeViewer = () => document.getElementById('viewer-overlay').style.display = 'none';
+
     </script>
 </body>
 </html>
