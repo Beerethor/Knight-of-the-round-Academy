@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KOTRA - Terminale Archivio v3.7</title>
+    <title>KOTRA - Terminale Archivio v3.8</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
         :root { 
@@ -28,7 +28,6 @@
             background-size: 50px 50px;
         }
 
-        /* Scanline Overlay */
         body::before {
             content: " ";
             position: fixed;
@@ -40,7 +39,6 @@
             pointer-events: none;
         }
 
-        /* Navigazione */
         .nav-header { 
             padding: 15px 20px; 
             border-bottom: 2px solid var(--neon-blue); 
@@ -67,7 +65,6 @@
         }
         .btn-support:hover { background: var(--neon-yellow); color: black; box-shadow: 0 0 15px var(--neon-yellow); }
 
-        /* Ricerca */
         .search-container { padding: 20px; background: rgba(12, 12, 15, 0.6); display: flex; justify-content: center; }
         .search-input { 
             width: 100%; max-width: 500px; background: rgba(0,0,0,0.7); 
@@ -75,7 +72,6 @@
             font-family: 'Rajdhani'; font-size: 1.1rem; outline: none;
         }
 
-        /* Griglia Card */
         .section-label { font-family: 'Orbitron'; color: var(--neon-pink); padding: 30px 20px 10px; font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase;}
         .archive-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; padding: 10px 20px; }
         
@@ -106,7 +102,6 @@
         .btn-edit-small:hover { background: var(--neon-yellow); color: black; }
         .btn-delete-small:hover { background: var(--neon-pink); color: white; }
 
-        /* Viewer Overlay */
         #viewer-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.98); z-index: 1000; overflow-y: auto; backdrop-filter: blur(10px); }
         .sheet-container { max-width: 1100px; margin: 20px auto; background: var(--panel-bg); border: 1px solid var(--neon-blue); display: grid; grid-template-columns: 350px 1fr; position: relative; }
         
@@ -124,23 +119,20 @@
         .data-box h3 { font-family: 'Orbitron'; font-size: 0.65rem; color: var(--neon-pink); margin: 0 0 8px; letter-spacing: 1px; }
         .tech-tag { background: rgba(0, 242, 255, 0.05); border-left: 2px solid var(--neon-blue); padding: 6px; margin-bottom: 5px; font-size: 0.85rem; }
         .trait-pill { display: inline-block; padding: 3px 8px; border: 1px solid var(--neon-yellow); margin: 2px; font-size: 0.65rem; color: var(--neon-yellow); font-family: 'Orbitron'; }
+        
+        /* Label Speciali (Eredità/Mutazioni) */
+        .special-label { font-size: 0.75rem; color: var(--neon-yellow); margin-top: 4px; border-bottom: 1px solid rgba(255,255,0,0.2); padding-bottom: 2px; }
 
-        /* Punti Limite */
         .limite-container { display: grid; grid-template-columns: repeat(10, 1fr); gap: 4px; margin-top: 10px; }
         .limite-dot { height: 8px; background: #111; border: 1px solid #333; }
         .dot-filled { background: var(--neon-pink); box-shadow: 0 0 8px var(--neon-pink); border-color: white;}
 
-        /* Mobile Responsive */
         @media (max-width: 900px) {
             .sheet-container { grid-template-columns: 1fr; margin: 10px; }
             .side-img { height: 300px; border-right: none; border-bottom: 1px solid var(--neon-blue); }
-            .nav-header { justify-content: center; text-align: center; }
-            .nav-controls { width: 100%; display: flex; flex-wrap: wrap; justify-content: center; gap: 5px; }
-            .btn-action, .btn-support { font-size: 0.6rem; padding: 6px 10px; }
             #v-nome { font-size: 2rem !important; }
         }
 
-        /* Loader */
         #v-loader {
             display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background: var(--bg-dark); z-index: 1001; flex-direction: column; justify-content: center; align-items: center;
@@ -186,22 +178,22 @@
         <div class="sheet-container">
             <img id="v-img" class="side-img" src="">
             <div class="main-sheet">
-                <div style="border-bottom: 1px solid var(--neon-blue); padding-bottom: 15px; margin-bottom: 15px; position: relative;">
+                <div style="border-bottom: 1px solid var(--neon-blue); padding-bottom: 15px; margin-bottom: 15px;">
                     <h2 id="v-nome" style="font-family:'Orbitron'; font-size: 2.5rem; margin:0; color:var(--neon-blue);">---</h2>
-                    <p id="v-motto" style="font-style:italic; color:var(--neon-yellow); margin: 5px 0 0; font-size: 1rem;">"---"</p>
+                    <p id="v-motto" style="font-style:italic; color:var(--neon-yellow); margin: 5px 0 0; font-size: 1rem;"></p>
                 </div>
                 
                 <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:20px;">
                     <div>
                         <div class="data-box" style="border-color: var(--neon-yellow);">
-                            <h3>PROFILO SOCIALE</h3>
-                            <div style="font-size:0.9rem;"><strong>CLUB:</strong> <span id="v-club" style="color:var(--neon-blue)">--</span></div>
-                            <div style="font-size:0.9rem;"><strong>DISTINTIVO:</strong> <span id="v-distintivo" style="color:var(--neon-blue)">--</span></div>
-                            <div id="v-uniforme" style="font-size:0.8rem; color:#888; margin-top:8px;">--</div>
+                            <h3>PROFILO SOCIALE & MOD</h3>
+                            <div style="font-size:0.9rem;"><strong>CLUB:</strong> <span id="v-club" style="color:var(--neon-blue)"></span></div>
+                            <div style="font-size:0.9rem;"><strong>DISTINTIVO:</strong> <span id="v-distintivo" style="color:var(--neon-blue)"></span></div>
+                            <div id="v-extra-social"></div>
                         </div>
                         <div class="data-box">
                             <h3>STIRPE & EREDITÀ</h3>
-                            <div id="v-stirpe" style="font-weight:bold; color:var(--neon-blue); font-family:'Orbitron'; margin-bottom:5px; font-size:0.8rem;">--</div>
+                            <div id="v-stirpe" style="font-weight:bold; color:var(--neon-blue); font-family:'Orbitron'; margin-bottom:5px; font-size:0.8rem;"></div>
                             <div id="v-eredita-desc" style="font-size:0.85rem; line-height:1.4; color:#ccc;"></div>
                         </div>
                     </div>
@@ -209,6 +201,7 @@
                         <div class="data-box" style="border-color: var(--neon-pink);">
                             <h3>CORE SYNC</h3>
                             <div id="v-params" style="display:grid; grid-template-columns: 1fr 1fr; font-size:0.9rem; gap:8px; font-family:'Orbitron';"></div>
+                            <div id="v-extra-core"></div>
                             <div id="v-limite-visual" style="margin-top:10px;"></div>
                         </div>
                         <div class="data-box">
@@ -248,22 +241,17 @@
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 const configSnap = await getDoc(doc(db, "config", "permissions"));
-                let masterEmail = "";
-                let supportEmail = "";
-
-                if(configSnap.exists()){
-                    masterEmail = configSnap.data().masterEmail || "";
-                    supportEmail = configSnap.data().supportEmail || "";
-                }
+                let masterEmail = configSnap.exists() ? configSnap.data().masterEmail || "" : "";
+                let supportEmail = configSnap.exists() ? configSnap.data().supportEmail || "" : "";
 
                 if(supportEmail){
                     const sLink = document.getElementById('support-link');
-                    sLink.href = `mailto:${supportEmail}?subject=Richiesta Supporto KOTRA&body=Utente: ${user.email}%0D%0AUnità: [Nome]%0D%0ADettagli:`;
+                    sLink.href = `mailto:${supportEmail}?subject=Richiesta Supporto KOTRA&body=Utente: ${user.email}`;
                     sLink.style.display = 'inline-block';
                 }
 
                 isMasterGlobal = user.email.toLowerCase().trim() === masterEmail.toLowerCase().trim();
-                document.getElementById('role-display').innerHTML = `<span style="font-family:'Orbitron'; font-size:0.55rem; padding:2px 6px; border:1px solid ${isMasterGlobal?'var(--neon-pink)':'var(--neon-blue)'}; color:${isMasterGlobal?'var(--neon-pink)':'var(--neon-blue)'}; margin-left:10px;">${isMasterGlobal?'MASTER':'OPERATOR'}</span>`;
+                document.getElementById('role-display').innerHTML = `<span style="font-family:'Orbitron'; font-size:0.55rem; padding:2px 6px; border:1px solid var(--neon-blue); color:var(--neon-blue); margin-left:10px;">${isMasterGlobal?'MASTER':'OPERATOR'}</span>`;
 
                 try {
                     const [resS, resJ] = await Promise.all([fetch('stirpi_database.json'), fetch('classi_database.json')]);
@@ -272,129 +260,104 @@
                     const snap = await getDocs(collection(db, "personaggi"));
                     allChars = snap.docs.map(d => ({id: d.id, ...d.data()}));
                     renderArchive(user.uid);
-                } catch (e) { console.error("Database Error:", e); }
+                } catch (e) { console.error(e); }
             } else { window.location.href = "index.html"; }
         });
 
         function renderArchive(uid, filter = "") {
             const gPers = document.getElementById('grid-personali');
             const gUtenti = document.getElementById('grid-utenti');
-            const masterView = document.getElementById('master-view');
-            
-            gPers.innerHTML = ""; 
-            gUtenti.innerHTML = "";
-            masterView.style.display = isMasterGlobal ? 'block' : 'none';
+            gPers.innerHTML = ""; gUtenti.innerHTML = "";
+            document.getElementById('master-view').style.display = isMasterGlobal ? 'block' : 'none';
 
-            allChars.filter(c => 
-                c.nome.toLowerCase().includes(filter.toLowerCase()) || 
-                c.stirpe.toLowerCase().includes(filter.toLowerCase())
-            )
-            .forEach(p => {
+            allChars.filter(c => c.nome.toLowerCase().includes(filter.toLowerCase())).forEach(p => {
                 const card = document.createElement('div');
                 card.className = 'pg-card';
-                
                 const isMio = (p.creatoDa === uid) || (isMasterGlobal && p.creatoDa === "MASTER");
-                const canDelete = isMasterGlobal; 
-                const canEdit = isMasterGlobal || isMio; 
-
-                // Visualizzazione Job Secondario nella card
-                const jobLabel = p.secondoJob ? `${p.job} // ${p.secondoJob}` : p.job;
+                const jobLabel = p.secondoJob ? `${p.job} + ${p.secondoJob}` : p.job;
 
                 card.innerHTML = `
                     <img src="${p.immagine || ''}">
                     <div class="pg-card-info">
                         <div class="pg-card-name">${p.nome}</div>
-                        <div style="font-size:0.7rem; color:#888; font-family:'Orbitron'; text-transform:uppercase;">
-                            ${p.stirpe} // ${jobLabel}
-                        </div>
+                        <div style="font-size:0.7rem; color:#888; font-family:'Orbitron'; text-transform:uppercase;">${p.stirpe} // ${jobLabel}</div>
                         <div style="display:flex; gap:5px; margin-top:10px;">
-                            ${canDelete ? `<button class="btn-delete-small" onclick="event.stopPropagation(); window.deleteChar('${p.id}', '${p.nome}')">EPURARE</button>` : ''}
-                            ${canEdit ? `<button class="btn-edit-small" onclick="event.stopPropagation(); window.editChar('${p.id}')">EVOLVERE</button>` : ''}
+                            ${isMasterGlobal ? `<button class="btn-delete-small" onclick="event.stopPropagation(); window.deleteChar('${p.id}', '${p.nome}')">EPURARE</button>` : ''}
+                            ${(isMasterGlobal || isMio) ? `<button class="btn-edit-small" onclick="event.stopPropagation(); window.editChar('${p.id}')">EVOLVERE</button>` : ''}
                         </div>
                     </div>`;
-                    
                 card.onclick = () => openViewer(p);
-
-                if (isMio) {
-                    gPers.appendChild(card);
-                } else {
-                    gUtenti.appendChild(card);
-                }
+                isMio ? gPers.appendChild(card) : gUtenti.appendChild(card);
             });
         }
 
         window.openViewer = async (p) => {
             const overlay = document.getElementById('viewer-overlay');
             const loader = document.getElementById('v-loader');
-            const bar = document.getElementById('v-hack-fill');
             overlay.style.display = 'block';
             loader.style.display = 'flex';
-            bar.style.width = '0%';
-            
-            await new Promise(r => setTimeout(r, 300));
-            bar.style.width = "100%";
+            document.getElementById('v-hack-fill').style.width = "100%";
 
-            // Caricamento Eredità
+            // Eredità e Dati Database
             let ereditaDati = null;
             dbStirpi.forEach(s => { const found = s.eredita.find(e => e.nome === p.eredita); if(found) ereditaDati = found; });
-            
-            // Caricamento Job (Principale, Secondario, Eredità)
             const jobDati = dbClassi.find(j => j.nome === p.job);
             const secondoJobDati = p.secondoJob ? dbClassi.find(j => j.nome === p.secondoJob) : null;
             const job2Dati = p.job2 ? dbClassi.find(j => j.nome === p.job2) : null;
 
+            // Info Base
             document.getElementById('v-img').src = p.immagine || '';
             document.getElementById('v-nome').innerText = p.nome;
-            document.getElementById('v-motto').innerText = p.motto ? `"${p.motto}"` : "";
+            document.getElementById('v-motto').innerText = p.motto || "";
             document.getElementById('v-club').innerText = p.club || "--";
             document.getElementById('v-distintivo').innerText = p.trattoDistintivo || "--";
-            document.getElementById('v-uniforme').innerText = p.uniforme || "Standard Uniform";
-            
-            // Stirpe e Label Job Extra
+
+            // Sezione Sociale (Frame e Mutazione)
+            const extraSocial = document.getElementById('v-extra-social');
+            extraSocial.innerHTML = "";
+            if(p.frame2) extraSocial.innerHTML += `<div class="special-label">FRAME EREDITÀ: ${p.frame2}</div>`;
+            if(p.mutazione) extraSocial.innerHTML += `<div class="special-label">MUTAZIONE: ${p.mutazione}</div>`;
+
+            // Sezione Core (Core2 e Scintilla)
+            const extraCore = document.getElementById('v-extra-core');
+            extraCore.innerHTML = "";
+            if(p.core2) extraCore.innerHTML += `<div class="special-label" style="color:var(--neon-pink)">CORE EREDITÀ: ${p.core2}</div>`;
+            if(p.scintilla) extraCore.innerHTML += `<div class="special-label" style="color:var(--neon-pink)">SCINTILLA: ${p.scintilla}</div>`;
+
+            // Stirpe Header
             let jobHeader = p.job;
             if(p.secondoJob) jobHeader += ` + ${p.secondoJob}`;
-            if(p.job2) jobHeader += ` [Eredità: ${p.job2}]`;
-
+            if(p.job2) jobHeader += ` [Job Eredità: ${p.job2}]`;
+            
             document.getElementById('v-stirpe').innerHTML = `
                 <div style="color:var(--neon-pink)">${p.stirpe} > ${p.eredita}</div>
-                <div style="font-size:0.65rem; color:var(--neon-yellow); margin-top:4px;">UNIT CONFIG: ${jobHeader}</div>
-            `;
-            
+                <div style="font-size:0.65rem; color:var(--neon-yellow); margin-top:4px;">CONFIG: ${jobHeader}</div>`;
             document.getElementById('v-eredita-desc').innerHTML = `<p>${ereditaDati?.descrizione || ""}</p>` + (ereditaDati?.effetto ? `<div class="tech-tag" style="border-color:var(--neon-pink); color:var(--neon-yellow);">${ereditaDati.effetto}</div>` : "");
-            
+
+            // Stats e Sync
             const numMem = p.memorie?.length || 0;
-            const totLim = 11 + (numMem * 3);
+            const totLim = Math.min(11 + (numMem * 3), 20);
             document.getElementById('v-params').innerHTML = `
-                <div><span style="color:var(--neon-pink)">ANIMA:</span> ${p.anima}</div>
-                <div><span style="color:var(--neon-pink)">CORE:</span> ${p.core}</div>
-                <div><span style="color:var(--neon-pink)">DIFETTO:</span> ${p.difetto}</div>
-                <div><span style="color:var(--neon-pink)">NEMESI:</span> ${p.nemesi}</div>`;
+                <div>ANIMA: ${p.anima}</div><div>CORE: ${p.core}</div>
+                <div>DIFETTO: ${p.difetto}</div><div>NEMESI: ${p.nemesi}</div>`;
             
             let dots = `<div style="font-size:0.5rem; color:var(--neon-pink); margin-bottom:3px;">SYNC: ${totLim}/20</div><div class="limite-container">`;
             for(let i=0; i<20; i++) dots += `<div class="limite-dot ${i<totLim?'dot-filled':''}"></div>`;
-            document.getElementById('v-limite-visual').innerHTML = dots + `</div>`;
+            document.getElementById('v-limite-visual').innerHTML = dots + "</div>";
 
-            // TECNICHE (Mappatura di tutti i Job presenti)
+            // Tecniche
             const tBox = document.getElementById('v-tecniche'); tBox.innerHTML = "";
+            jobDati?.tecniche?.forEach(t => tBox.innerHTML += `<div class="tech-tag"><strong>[${p.job}]</strong> ${t.nome}: ${t.effetto}</div>`);
+            secondoJobDati?.tecniche?.forEach(t => tBox.innerHTML += `<div class="tech-tag" style="border-color:var(--neon-yellow)"><strong>[${p.secondoJob}]</strong> ${t.nome}: ${t.effetto}</div>`);
             
-            // Tecniche Job 1
-            jobDati?.tecniche?.forEach(t => tBox.innerHTML += `<div class="tech-tag"><strong>[${p.job}] ${t.nome}:</strong> ${t.effetto}</div>`);
-            
-            // Tecniche Secondo Job
-            if(secondoJobDati) {
-                secondoJobDati.tecniche?.forEach(t => tBox.innerHTML += `<div class="tech-tag" style="border-color:var(--neon-yellow)"><strong>[${p.secondoJob}] ${t.nome}:</strong> ${t.effetto}</div>`);
-            }
-            
-            // Tecniche Job 2 (Eredità)
+            // Logica Job Eredità (Job2)
             if(job2Dati) {
-                job2Dati.tecniche?.forEach(t => tBox.innerHTML += `<div class="tech-tag" style="border-color:var(--neon-pink)"><strong>[EREDITÀ: ${p.job2}] ${t.nome}:</strong> ${t.effetto}</div>`);
+                job2Dati.tecniche?.forEach(t => tBox.innerHTML += `<div class="tech-tag" style="border-color:var(--neon-pink)"><strong>[JOB EREDITÀ]</strong> ${t.nome}: ${t.effetto}</div>`);
             }
-
             p.capacita?.forEach(c => tBox.innerHTML += `<div class="tech-tag" style="border-color:var(--neon-pink)">${c}</div>`);
-            
-            document.getElementById('v-tratti').innerHTML = p.tratti?.map(t => `<span class="trait-pill">${t}</span>`).join('') || '--';
 
-            setTimeout(() => { loader.style.display = 'none'; }, 200);
+            document.getElementById('v-tratti').innerHTML = p.tratti?.map(t => `<span class="trait-pill">${t}</span>`).join('') || '--';
+            setTimeout(() => { loader.style.display = 'none'; }, 400);
         };
 
         window.closeViewer = () => document.getElementById('viewer-overlay').style.display = 'none';
