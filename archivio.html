@@ -13,7 +13,6 @@
         .nav-header { padding: 20px; border-bottom: 1px solid #222; display: flex; justify-content: space-between; align-items: center; background: #000; flex-wrap: wrap; gap: 15px; }
         .btn-action { background: transparent; border: 1px solid var(--neon-blue); color: var(--neon-blue); padding: 8px 15px; font-family: 'Orbitron'; cursor: pointer; text-decoration: none; font-size: 0.8rem; transition: 0.3s; }
         .btn-action:hover { background: var(--neon-blue); color: black; }
-        .btn-home { border-color: var(--neon-yellow); color: var(--neon-yellow); }
 
         /* Ricerca */
         .search-container { padding: 10px 40px; background: #0c0c0f; border-bottom: 1px solid #222; }
@@ -45,8 +44,12 @@
         .tech-tag { display: block; background: rgba(255,255,255,0.03); border-left: 2px solid var(--neon-blue); padding: 8px; margin-bottom: 6px; font-size: 0.85rem; }
         .trait-pill { display: inline-block; padding: 4px 10px; border: 1px solid #333; margin: 3px; font-size: 0.75rem; color: var(--neon-yellow); background: rgba(0,0,0,0.5); }
         
-        .identity-label { font-size: 0.8rem; color: #777; text-transform: uppercase; margin-right: 5px; }
-        .identity-value { font-weight: bold; color: var(--neon-blue); }
+        /* Punti Limite Visual */
+        .limite-container { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; padding: 10px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,0,255,0.2); border-radius: 4px; }
+        .limite-dot { width: 12px; height: 12px; border-radius: 2px; border: 1px solid var(--neon-pink); }
+        .dot-filled { background: var(--neon-pink); box-shadow: 0 0 8px var(--neon-pink); }
+        .dot-empty { background: transparent; border-color: #333; }
+        .limite-label { font-family: 'Orbitron'; font-size: 0.65rem; color: var(--neon-pink); letter-spacing: 1px; }
 
         @media (max-width: 850px) { .sheet-container { grid-template-columns: 1fr; } .side-img { height: 300px; } }
     </style>
@@ -59,14 +62,14 @@
             <span id="role-display"></span>
         </div>
         <div class="nav-controls">
-            <a href="index.html" class="btn-action btn-home">HUB</a>
+            <a href="index.html" class="btn-action">HUB</a>
             <a href="creatore.html" class="btn-action">+ NUOVA MATRICOLA</a>
-            <button class="btn-action btn-logout" id="btn-logout" style="border-color:var(--neon-pink); color:var(--neon-pink);">LOGOUT</button>
+            <button class="btn-action" id="btn-logout" style="border-color:var(--neon-pink); color:var(--neon-pink);">LOGOUT</button>
         </div>
     </header>
 
     <div class="search-container">
-        <input type="text" id="search-bar" class="search-input" placeholder="Filtra per nome, stirpe o job..." oninput="filterArchive()">
+        <input type="text" id="search-bar" class="search-input" placeholder="Cerca matricola, stirpe o job..." oninput="filterArchive()">
     </div>
 
     <div id="master-view" style="display: none;">
@@ -85,7 +88,7 @@
                 <div style="border-bottom: 1px solid var(--neon-blue); padding-bottom: 20px; margin-bottom: 20px;">
                     <div style="display: flex; justify-content: space-between; align-items: flex-start;">
                         <h2 id="v-nome" style="font-family:'Orbitron'; font-size: 2.5rem; margin:0; color:var(--neon-blue);">---</h2>
-                        <button id="v-btn-edit" class="btn-action" style="border-color: var(--neon-pink); color: var(--neon-pink);">EVOLUZIONE</button>
+                        <button id="v-btn-edit" class="btn-action" style="border-color: var(--neon-yellow); color: var(--neon-yellow);">EVOLUZIONE</button>
                     </div>
                     <p id="v-motto" style="font-style:italic; color:var(--neon-yellow); margin-top: 10px;">"---"</p>
                 </div>
@@ -94,29 +97,29 @@
                     <div>
                         <div class="data-box" style="border-color: var(--neon-yellow);">
                             <h3>IDENTITY & SOCIAL</h3>
-                            <div style="margin-bottom:5px;"><span class="identity-label">Club:</span> <span id="v-club" class="identity-value">--</span></div>
-                            <div style="margin-bottom:5px;"><span class="identity-label">Distintivo:</span> <span id="v-distintivo" class="identity-value">--</span></div>
-                            <div style="margin-top:10px; font-size:0.85rem; color:#aaa; font-style:italic;" id="v-uniforme">--</div>
+                            <div style="font-size:0.9rem; margin-bottom:5px;"><strong>CLUB:</strong> <span id="v-club" style="color:var(--neon-blue)">--</span></div>
+                            <div style="font-size:0.9rem; margin-bottom:5px;"><strong>DISTINTIVO:</strong> <span id="v-distintivo" style="color:var(--neon-blue)">--</span></div>
+                            <div id="v-uniforme" style="font-size:0.8rem; color:#888; font-style:italic; margin-top:8px;">--</div>
                         </div>
 
                         <div class="data-box">
                             <h3>STIRPE & EREDITÀ</h3>
-                            <div id="v-stirpe" style="font-weight: bold; color: var(--neon-blue); margin-bottom: 8px; font-family:'Orbitron'; font-size:0.8rem;">--</div>
+                            <div id="v-stirpe" style="font-weight:bold; color:var(--neon-blue); margin-bottom:5px; font-family:'Orbitron';">--</div>
                             <div id="v-eredita-desc"></div>
                         </div>
 
                         <div class="data-box">
                             <h3>JOB OPERATIVO</h3>
-                            <div id="v-job" style="font-weight: bold; color: var(--neon-blue); margin-bottom: 8px; font-family:'Orbitron'; font-size:0.8rem;">--</div>
+                            <div id="v-job" style="font-weight:bold; color:var(--neon-blue); margin-bottom:5px; font-family:'Orbitron';">--</div>
                             <div id="v-job-desc"></div>
                         </div>
                     </div>
 
                     <div>
                         <div class="data-box" style="border-color: var(--neon-pink);">
-                            <h3>PARAMETRI & CORE</h3>
-                            <div id="v-params" style="font-size:0.9rem; line-height: 1.6;"></div>
-                            <div id="v-bonus-limite" style="margin-top:10px; padding:8px; background:rgba(255,0,255,0.1); border:1px solid var(--neon-pink); color:var(--neon-pink); font-family:'Orbitron'; font-size:0.65rem; text-align:center;"></div>
+                            <h3>SINCRONIZZAZIONE CORE</h3>
+                            <div id="v-params" style="font-size:0.9rem; line-height: 1.6; display:grid; grid-template-columns: 1fr 1fr;"></div>
+                            <div id="v-limite-visual" style="margin-top:15px;"></div>
                         </div>
 
                         <div class="data-box">
@@ -175,7 +178,7 @@
                     const snap = await getDocs(collection(db, "personaggi"));
                     allChars = snap.docs.map(d => ({id: d.id, ...d.data()}));
                     renderArchive(user.uid);
-                } catch (e) { console.error("Sync Error:", e); }
+                } catch (e) { console.error("Database Sync Error", e); }
             } else { window.location.href = "index.html"; }
         });
 
@@ -186,7 +189,6 @@
             const gridUtenti = document.getElementById('grid-utenti');
             const masterView = document.getElementById('master-view');
             gridPersonali.innerHTML = ""; gridUtenti.innerHTML = "";
-            
             if(masterView) masterView.style.display = isMasterGlobal ? 'block' : 'none';
 
             const filtered = allChars.filter(c => 
@@ -199,36 +201,28 @@
                 const card = document.createElement('div');
                 card.className = 'pg-card';
                 const canManage = isMasterGlobal || p.creatoDa === uid;
-                
                 card.innerHTML = `
                     <img src="${p.immagine || ''}">
                     <div class="pg-card-info">
                         <div class="pg-card-name">${p.nome}</div>
                         <div style="font-size:0.7rem; color:#666; text-transform:uppercase;">${p.stirpe} | ${p.job}</div>
                         ${canManage ? `
-                            <button class="btn-delete-small" onclick="event.stopPropagation(); deleteCharacter('${p.id}', '${p.nome}')">ELIMINA</button>
-                            <button class="btn-edit-small" onclick="event.stopPropagation(); editCharacter('${p.id}')">EVOLVI</button>
+                            <button class="btn-delete-small" onclick="event.stopPropagation(); deleteChar('${p.id}', '${p.nome}')">ELIMINA</button>
+                            <button class="btn-edit-small" onclick="event.stopPropagation(); editChar('${p.id}')">EVOLVI</button>
                         ` : ''}
                     </div>`;
                 card.onclick = () => openViewer(p);
-
-                if (p.creatoDa === "MASTER" || (isMasterGlobal && p.ownerEmail === auth.currentUser.email) || p.creatoDa === uid) {
-                    gridPersonali.appendChild(card);
-                } else if (isMasterGlobal) {
-                    gridUtenti.appendChild(card);
+                if (p.creatoDa === uid || isMasterGlobal) {
+                    if (p.creatoDa === uid) gridPersonali.appendChild(card);
+                    else gridUtenti.appendChild(card);
                 }
             });
         }
 
         window.filterArchive = () => renderArchive(auth.currentUser.uid, document.getElementById('search-bar').value);
-
-        window.editCharacter = (id) => {
-            sessionStorage.setItem('updateModeId', id);
-            window.location.href = 'aggiorna.html';
-        };
-
-        window.deleteCharacter = async (id, nome) => {
-            if (confirm(`Confermi l'epurazione definitiva di ${nome.toUpperCase()}?`)) {
+        window.editChar = (id) => { sessionStorage.setItem('updateModeId', id); window.location.href = 'aggiorna.html'; };
+        window.deleteChar = async (id, nome) => {
+            if(confirm(`Epurare definitivamente la matricola ${nome.toUpperCase()}?`)) {
                 await deleteDoc(doc(db, "personaggi", id));
                 location.reload();
             }
@@ -236,41 +230,41 @@
 
         function openViewer(p) {
             let ereditaDati = null;
-            dbStirpi.forEach(s => { 
-                const found = s.eredita.find(e => e.nome === p.eredita); 
-                if(found) ereditaDati = found; 
-            });
+            dbStirpi.forEach(s => { const found = s.eredita.find(e => e.nome === p.eredita); if(found) ereditaDati = found; });
             const jobDati = dbClassi.find(j => j.nome === p.job);
 
-            // Populate Identity
             document.getElementById('v-img').src = p.immagine || '';
             document.getElementById('v-nome').innerText = p.nome;
             document.getElementById('v-motto').innerText = p.motto ? `"${p.motto}"` : "";
             document.getElementById('v-club').innerText = p.club || "--";
             document.getElementById('v-distintivo').innerText = p.trattoDistintivo || "--";
-            document.getElementById('v-uniforme').innerText = p.uniforme ? `Uniforme: ${p.uniforme}` : "Uniforme standard";
+            document.getElementById('v-uniforme').innerText = p.uniforme ? `Uniforme: ${p.uniforme}` : "Uniforme Standard Kotra";
 
             // Eredità & Job
             document.getElementById('v-stirpe').innerText = `${p.stirpe.toUpperCase()} > ${p.eredita.toUpperCase()}`;
-            const testoEffetto = ereditaDati?.effetto || ereditaDati?.effetti || "";
-            document.getElementById('v-eredita-desc').innerHTML = `<p style="color:#ccc; font-size:0.85rem; margin-bottom:10px;">${ereditaDati?.descrizione || ""}</p>` + 
-                (testoEffetto ? `<div class="tech-tag" style="border-color:var(--neon-pink); color:var(--neon-yellow); font-size:0.8rem;">${testoEffetto}</div>` : "");
+            const effetto = ereditaDati?.effetto || ereditaDati?.effetti || "";
+            document.getElementById('v-eredita-desc').innerHTML = `<p style="color:#ccc; font-size:0.85rem;">${ereditaDati?.descrizione || ""}</p>` + 
+                (effetto ? `<div class="tech-tag" style="border-color:var(--neon-pink); color:var(--neon-yellow);">${effetto}</div>` : "");
 
             document.getElementById('v-job').innerText = p.job.toUpperCase();
             document.getElementById('v-job-desc').innerHTML = `<i style="color:var(--neon-blue); font-size:0.8rem;">"${jobDati?.citazione || ''}"</i><p style="color:#ccc; font-size:0.85rem;">${jobDati?.descrizione || ""}</p>`;
 
-            // Parametri & Bonus Limite
-            const bonusMem = (p.memorie?.length || 0) * 3;
+            // Parametri & Punti Limite (Base 8 + Nome 3 + Memorie 3x)
+            const numMemorie = p.memorie?.length || 0;
+            const totaleLimite = 8 + 3 + (numMemorie * 3);
             document.getElementById('v-params').innerHTML = `
-                <strong>ANIMA:</strong> ${p.anima}<br><strong>CORE:</strong> ${p.core}<br>
-                <strong>DIFETTO:</strong> ${p.difetto}<br><strong>NEMESI:</strong> ${p.nemesi}`;
-            document.getElementById('v-bonus-limite').innerText = `BONUS PUNTI LIMITE: +${bonusMem}`;
+                <div><strong>ANIMA:</strong> ${p.anima || '--'}</div><div><strong>CORE:</strong> ${p.core || '--'}</div>
+                <div><strong>DIFETTO:</strong> ${p.difetto || '--'}</div><div><strong>NEMESI:</strong> ${p.nemesi || '--'}</div>`;
+            
+            let dotsHTML = `<span class="limite-label">SYNC LIMITE: ${totaleLimite} / 20</span><div class="limite-container">`;
+            for(let i=0; i<20; i++) { dotsHTML += `<div class="limite-dot ${i < totaleLimite ? 'dot-filled' : 'dot-empty'}"></div>`; }
+            document.getElementById('v-limite-visual').innerHTML = dotsHTML + `</div>`;
 
-            // Tecniche, Capacità, Oggetti
+            // Tecniche & Evoluzione
             const tBox = document.getElementById('v-tecniche'); tBox.innerHTML = "";
             if (jobDati?.tecniche) jobDati.tecniche.forEach(t => tBox.innerHTML += `<div class="tech-tag"><strong>${t.nome}:</strong> ${t.effetto}</div>`);
             if (p.capacita) p.capacita.forEach(c => tBox.innerHTML += `<div class="tech-tag" style="border-color:var(--neon-pink);"><strong>CAPACITÀ:</strong> ${c}</div>`);
-            if (p.oggetti) p.oggetti.forEach(o => tBox.innerHTML += `<div class="tech-tag" style="border-color:var(--neon-yellow); color:#eee;"><strong>OGGETTO:</strong> ${o}</div>`);
+            if (p.oggetti) p.oggetti.forEach(o => tBox.innerHTML += `<div class="tech-tag" style="border-color:var(--neon-yellow);"><strong>OGGETTO:</strong> ${o}</div>`);
 
             // Memorie & Affinità
             document.getElementById('v-memorie-box').innerHTML = `
@@ -280,8 +274,8 @@
             document.getElementById('v-tratti').innerHTML = p.tratti ? p.tratti.map(t => `<span class="trait-pill">${t}</span>`).join('') : '';
             
             const btnEdit = document.getElementById('v-btn-edit');
-            btnEdit.onclick = () => editCharacter(p.id);
             btnEdit.style.display = (isMasterGlobal || p.creatoDa === auth.currentUser.uid) ? 'block' : 'none';
+            btnEdit.onclick = () => editChar(p.id);
 
             document.getElementById('viewer-overlay').style.display = 'block';
         }
