@@ -166,6 +166,7 @@
             <button onclick="window.location.href='index.html'" style="border-color: #fff; color: #fff;">HOME</button>
             <button onclick="loadData('stirpi_database.json', this)">Stirpi</button>
             <button onclick="loadData('classi_database.json', this)">Classi & Job</button>
+            <button onclick="showKnightGuide(this)" style="border-color: var(--neon-pink); color: var(--neon-pink);">GUIDA KNIGHT</button>
             <button id="back-btn" style="display:none; border-color: var(--neon-yellow); color: var(--neon-yellow);" onclick="showList()">← Torna alla Lista</button>
         </div>
     </header>
@@ -280,6 +281,72 @@
             document.getElementById('detail-view').style.display = 'none';
             document.getElementById('back-btn').style.display = 'none';
         }
+        function showKnightGuide(btn) {
+    // UI Feedback
+    document.querySelectorAll('.nav-buttons button').forEach(b => b.classList.remove('active'));
+    if(btn) btn.classList.add('active');
+
+    document.getElementById('list-view').style.display = 'none';
+    document.getElementById('detail-view').style.display = 'block';
+    document.getElementById('back-btn').style.display = 'block';
+
+    document.getElementById('detail-view').innerHTML = `
+        <div style="max-width: 900px; margin: 0 auto; animation: fadeIn 0.5s;">
+            <h1 style="color: var(--neon-blue); text-align: center; font-size: 2.5rem; margin-bottom: 10px;">ANATOMIA DEI KNIGHT</h1>
+            <p style="text-align: center; color: var(--neon-pink); font-family: 'Orbitron';">Protocollo di Classificazione Merlin v.4.2</p>
+            
+            <div class="section-title">1. LE CLASSI (Dimensioni e Scala)</div>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px;">
+                <div class="box">
+                    <b style="color: var(--neon-yellow);">KNAVE</b>
+                    <p style="font-size: 0.9rem;">Scala ridotta. Mezzi agili e discreti, usati per infiltrazione o lavori pesanti. Possono passare inosservati in aree urbane fitte.</p>
+                </div>
+                <div class="box">
+                    <b style="color: var(--neon-blue);">CHEVALIER</b>
+                    <p style="font-size: 0.9rem;">La scala standard. Knight imponenti legati a un elemento. È il modello principale utilizzato dalle Matricole in battaglia.</p>
+                </div>
+                <div class="box" style="border-color: var(--neon-pink);">
+                    <b style="color: var(--neon-pink);">PALADIN</b>
+                    <p style="font-size: 0.9rem;">Scala colossale. Fortezze semoventi per assedi o battaglie spaziali. Richiedono un equipaggio minimo di 3 piloti.</p>
+                </div>
+            </div>
+
+            <div class="section-title">2. I FRAME (Funzioni Tattiche)</div>
+            <p>Il Frame definisce il ruolo del Knight sul campo. Non esistono Knight "generici".</p>
+            <table style="width: 100%; border-collapse: collapse; background: var(--glass); border: 1px solid #333;">
+                <tr style="border-bottom: 1px solid var(--neon-blue); color: var(--neon-blue); text-align: left;">
+                    <th style="padding: 10px;">FRAME</th>
+                    <th style="padding: 10px;">SPECIALIZZAZIONE</th>
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border-bottom: 1px solid #222;"><b>LANCER</b></td>
+                    <td style="padding: 10px; border-bottom: 1px solid #222;">Assalto corpo a corpo e velocità d'impatto.</td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border-bottom: 1px solid #222;"><b>ARCHER</b></td>
+                    <td style="padding: 10px; border-bottom: 1px solid #222;">Supporto balistico e combattimento a lungo raggio.</td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border-bottom: 1px solid #222;"><b>TANKER</b></td>
+                    <td style="padding: 10px; border-bottom: 1px solid #222;">Difesa pesante e protezione della squadra.</td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border-bottom: 1px solid #222;"><b>SCOUTER</b></td>
+                    <td style="padding: 10px; border-bottom: 1px solid #222;">Ricognizione, agilità estrema e stealth.</td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px;"><b>CASTER</b></td>
+                    <td style="padding: 10px;">Manipolazione energetica e uso delle Particelle Dragon.</td>
+                </tr>
+            </table>
+
+            <div class="citazione" style="margin-top: 30px; font-size: 0.9rem;">
+                "Un pilota senza il suo Frame è solo un passeggero. Un Knight senza il suo Frame è solo ferraglia." — Dr. Merlin
+            </div>
+        </div>
+    `;
+    window.scrollTo(0,0);
+}
     </script>
 </body>
 </html>
