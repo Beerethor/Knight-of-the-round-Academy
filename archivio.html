@@ -6,6 +6,28 @@
     <title>KOTRA - Terminale Archivio v3.8</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
+        /* NUOVO LAYOUT BLOCCHI */
+        #viewer-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 1000; overflow-y: auto; padding: 20px; }
+        .sheet-layout { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 320px 1fr; gap: 20px; }
+        
+        .v-sidebar { position: sticky; top: 0; }
+        .v-sidebar img { width: 100%; border: 1px solid var(--neon-blue); background: #000; }
+
+        .data-block { background: rgba(255,255,255,0.02); border: 1px solid rgba(0, 242, 255, 0.2); padding: 15px; margin-bottom: 15px; position: relative; }
+        .data-block::before { content: ""; position: absolute; top: -1px; left: -1px; width: 10px; height: 10px; border-top: 2px solid var(--neon-blue); border-left: 2px solid var(--neon-blue); }
+        .data-block h3 { font-family: 'Orbitron'; font-size: 0.7rem; color: var(--neon-pink); margin: 0 0 10px; text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid rgba(255,0,255,0.2); padding-bottom: 5px; }
+        
+        .trait-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 5px; }
+        .trait-tag { padding: 4px 10px; background: rgba(0,242,255,0.1); border: 1px solid var(--neon-blue); font-size: 0.8rem; color: var(--neon-blue); font-family: 'Orbitron'; }
+        
+        .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 10px; }
+        .stat-item { text-align: center; border: 1px solid rgba(255,255,255,0.1); padding: 10px; }
+        .stat-val { display: block; font-family: 'Orbitron'; font-size: 1.2rem; color: var(--neon-yellow); }
+        .stat-lab { font-size: 0.6rem; color: #888; text-transform: uppercase; }
+
+        .tech-item { border-left: 2px solid var(--neon-blue); padding-left: 10px; margin-bottom: 8px; font-size: 0.9rem; }
+        .tech-item strong { color: var(--neon-blue); }
+        .memory-item { font-style: italic; color: #aaa; font-size: 0.85rem; padding: 5px; border-bottom: 1px dashed #333; margin-bottom: 5px;}
         :root { 
             --neon-blue: #00f2ff; 
             --neon-pink: #ff00ff; 
@@ -168,51 +190,40 @@
     <div class="section-label">LE MIE MATRICOLE</div>
     <div class="archive-grid" id="grid-personali"></div>
 
-    <div id="viewer-overlay">
-        <div id="v-loader">
-            <div style="color:var(--neon-blue); font-family:'Orbitron'; font-size:0.7rem;">DECRYPTING...</div>
-            <div class="hack-bar-container"><div id="v-hack-fill" class="hack-bar-fill"></div></div>
-        </div>
+   <div id="viewer-overlay">
+        <button class="close-overlay" onclick="closeViewer()" style="position:fixed; top:20px; right:20px;">X CHIUDI TERMINALE</button>
+        <div class="sheet-layout">
+            <div class="v-sidebar">
+                <img id="v-img" src="">
+                <div class="data-block" style="margin-top:15px; border-color:var(--neon-yellow);">
+                    <h3>CORE SYNC STATUS</h3>
+                    <div id="v-limite-visual"></div>
+                </div>
+            </div>
 
-        <span class="close-overlay" onclick="closeViewer()">CHIUDI [X]</span>
-        <div class="sheet-container">
-            <img id="v-img" class="side-img" src="">
-            <div class="main-sheet">
-                <div style="border-bottom: 1px solid var(--neon-blue); padding-bottom: 15px; margin-bottom: 15px;">
-                    <h2 id="v-nome" style="font-family:'Orbitron'; font-size: 2.5rem; margin:0; color:var(--neon-blue);">---</h2>
-                    <p id="v-motto" style="font-style:italic; color:var(--neon-yellow); margin: 5px 0 0; font-size: 1rem;"></p>
+            <div class="v-main">
+                <h2 id="v-nome" style="font-family:'Orbitron'; font-size:3rem; color:var(--neon-blue); margin:0;"></h2>
+                <p id="v-motto" style="color:var(--neon-yellow); font-style:italic; margin-bottom:20px;"></p>
+
+                <div class="data-block">
+                    <h3>IDENTITY_ROOT (STIRPE / JOB / KNIGHT)</h3>
+                    <div class="trait-row" id="v-identity-tags"></div>
                 </div>
-                
-                <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:20px;">
-                    <div>
-                        <div class="data-box" style="border-color: var(--neon-yellow);">
-                            <h3>PROFILO SOCIALE & MOD</h3>
-                            <div style="font-size:0.9rem;"><strong>CLUB:</strong> <span id="v-club" style="color:var(--neon-blue)"></span></div>
-                            <div style="font-size:0.9rem;"><strong>DISTINTIVO:</strong> <span id="v-distintivo" style="color:var(--neon-blue)"></span></div>
-                            <div id="v-extra-social"></div>
-                        </div>
-                        <div class="data-box">
-                            <h3>STIRPE & EREDITÀ</h3>
-                            <div id="v-stirpe" style="font-weight:bold; color:var(--neon-blue); font-family:'Orbitron'; margin-bottom:5px; font-size:0.8rem;"></div>
-                            <div id="v-eredita-desc" style="font-size:0.85rem; line-height:1.4; color:#ccc;"></div>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="data-box" style="border-color: var(--neon-pink);">
-                            <h3>CORE SYNC</h3>
-                            <div id="v-params" style="display:grid; grid-template-columns: 1fr 1fr; font-size:0.9rem; gap:8px; font-family:'Orbitron';"></div>
-                            <div id="v-extra-core"></div>
-                            <div id="v-limite-visual" style="margin-top:10px;"></div>
-                        </div>
-                        <div class="data-box">
-                            <h3>CAPACITÀ & EQUIP</h3>
-                            <div id="v-tecniche"></div>
-                        </div>
-                    </div>
+
+                <div class="data-block">
+                    <h3>HARDWARE_PARAMETERS (ANIMA / CORE / MODS)</h3>
+                    <div class="stat-grid" id="v-stats-core"></div>
                 </div>
-                <div class="data-box" style="border-left-color: var(--neon-yellow);">
-                    <h3>TRATTI MEMETICI</h3>
-                    <div id="v-tratti"></div>
+
+                <div class="data-block">
+                    <h3>LOGIC_MODULES & INVENTORY</h3>
+                    <div id="v-tech-list"></div>
+                </div>
+
+                <div class="data-block">
+                    <h3>MEMORY_FRAGMENTS & MEMETIC_TRAITS</h3>
+                    <div id="v-memories" style="margin-bottom:15px;"></div>
+                    <div class="trait-row" id="v-traits-list"></div>
                 </div>
             </div>
         </div>
@@ -291,54 +302,65 @@
             });
         }
 
-       window.openViewer = async (p) => {
-            const overlay = document.getElementById('viewer-overlay');
-            const loader = document.getElementById('v-loader');
-            overlay.style.display = 'block';
-            loader.style.display = 'flex';
-            document.getElementById('v-hack-fill').style.width = "100%";
-
-            // Shortcut per accedere ai dati speciali
+       window.openViewer = (p) => {
             const spec = p.specialData || {};
-
-            // Eredità e Dati Database
-            let ereditaDati = null;
-            dbStirpi.forEach(s => { const found = s.eredita.find(e => e.nome === p.eredita); if(found) ereditaDati = found; });
-            const jobDati = dbClassi.find(j => j.nome === p.job);
-            const secondoJobDati = p.secondoJob ? dbClassi.find(j => j.nome === p.secondoJob) : null;
+            document.getElementById('viewer-overlay').style.display = 'block';
             
-            // Job Eredità cercato in specialData
-            const job2Dati = spec.job2 ? dbClassi.find(j => j.nome === spec.job2) : null;
-
-            // Info Base
             document.getElementById('v-img').src = p.immagine || '';
             document.getElementById('v-nome').innerText = p.nome;
-            document.getElementById('v-motto').innerText = p.motto || "";
-            document.getElementById('v-club').innerText = p.club || "--";
-            document.getElementById('v-distintivo').innerText = p.trattoDistintivo || "--";
+            document.getElementById('v-motto').innerText = p.motto ? `"${p.motto}"` : "";
 
-            // Sezione Sociale (Check in specialData)
-            const extraSocial = document.getElementById('v-extra-social');
-            extraSocial.innerHTML = "";
-            if(spec.frame2) extraSocial.innerHTML += `<div class="special-label">FRAME EREDITÀ: ${spec.frame2}</div>`;
-            if(spec.mutazione) extraSocial.innerHTML += `<div class="special-label">MUTAZIONE: ${spec.mutazione}</div>`;
+            // 1. POPOLA IDENTITÀ
+            const idTags = document.getElementById('v-identity-tags');
+            idTags.innerHTML = `
+                <div class="trait-tag">STIRPE: ${p.stirpe}</div>
+                <div class="trait-tag">EREDITÀ: ${p.eredita}</div>
+                <div class="trait-tag" style="border-color:var(--neon-yellow); color:var(--neon-yellow);">JOB: ${p.job}</div>
+                ${p.secondoJob ? `<div class="trait-tag" style="border-color:var(--neon-yellow); color:var(--neon-yellow);">KNIGHT: ${p.secondoJob}</div>` : ''}
+                ${spec.job2 ? `<div class="trait-tag" style="border-color:var(--neon-pink); color:var(--neon-pink);">JOB_SPEC: ${spec.job2}</div>` : ''}
+            `;
 
-            // Sezione Core (Check in specialData)
-            const extraCore = document.getElementById('v-extra-core');
-            extraCore.innerHTML = "";
-            if(spec.core2) extraCore.innerHTML += `<div class="special-label" style="color:var(--neon-pink)">CORE EREDITÀ: ${spec.core2}</div>`;
-            if(spec.scintilla) extraCore.innerHTML += `<div class="special-label" style="color:var(--neon-pink)">SCINTILLA: ${spec.scintilla}</div>`;
+            // 2. POPOLA PARAMETRI
+            const statsCore = document.getElementById('v-stats-core');
+            statsCore.innerHTML = `
+                <div class="stat-item"><span class="stat-val">${p.anima}</span><span class="stat-lab">Anima</span></div>
+                <div class="stat-item"><span class="stat-val">${p.core}</span><span class="stat-lab">Core</span></div>
+                <div class="stat-item"><span class="stat-val">${spec.core2 || '--'}</span><span class="stat-lab">Core Eredità</span></div>
+                <div class="stat-item"><span class="stat-val">${spec.frame2 || '--'}</span><span class="stat-lab">Frame Mod</span></div>
+                <div class="stat-item"><span class="stat-val">${spec.mutazione || '--'}</span><span class="stat-lab">Mutazione</span></div>
+                <div class="stat-item"><span class="stat-val">${spec.scintilla || '--'}</span><span class="stat-lab">Scintilla</span></div>
+            `;
 
-            // Stirpe Header (Includendo Job2 da specialData)
-            let jobHeader = p.job;
-            if(p.secondoJob) jobHeader += ` + ${p.secondoJob}`;
-            if(spec.job2) jobHeader += ` [Job Eredità: ${spec.job2}]`;
+            // 3. POPOLA TECNICHE E EQUIP
+            const techBox = document.getElementById('v-tech-list');
+            techBox.innerHTML = "";
+            const mainJob = dbClassi.find(j => j.nome === p.job);
+            mainJob?.tecniche?.forEach(t => techBox.innerHTML += `<div class="tech-item"><strong>[${p.job}]</strong> ${t.nome}: ${t.effetto}</div>`);
             
-            document.getElementById('v-stirpe').innerHTML = `
-                <div style="color:var(--neon-pink)">${p.stirpe} > ${p.eredita}</div>
-                <div style="font-size:0.65rem; color:var(--neon-yellow); margin-top:4px;">CONFIG: ${jobHeader}</div>`;
-            
-            document.getElementById('v-eredita-desc').innerHTML = `<p>${ereditaDati?.descrizione || ""}</p>` + (ereditaDati?.effetto ? `<div class="tech-tag" style="border-color:var(--neon-pink); color:var(--neon-yellow);">${ereditaDati.effetto}</div>` : "");
+            const secondJob = dbClassi.find(j => j.nome === p.secondoJob);
+            secondJob?.tecniche?.forEach(t => techBox.innerHTML += `<div class="tech-item" style="border-color:var(--neon-yellow)"><strong>[${p.secondoJob}]</strong> ${t.nome}: ${t.effetto}</div>`);
+
+            const specJob = dbClassi.find(j => j.nome === spec.job2);
+            specJob?.tecniche?.forEach(t => techBox.innerHTML += `<div class="tech-item" style="border-color:var(--neon-pink)"><strong>[${spec.job2}]</strong> ${t.nome}: ${t.effetto}</div>`);
+
+            p.capacita?.forEach(c => techBox.innerHTML += `<div class="tech-item" style="border-color:var(--neon-yellow)"><strong>[EQUIP/SKILL]</strong> ${c}</div>`);
+
+            // 4. POPOLA MEMORIE E TRATTI
+            const memBox = document.getElementById('v-memories');
+            memBox.innerHTML = p.memorie?.length > 0 ? "<h3>FRAGMENT_DATA:</h3>" : "";
+            p.memorie?.forEach(m => memBox.innerHTML += `<div class="memory-item">"${m}"</div>`);
+
+            const traitsBox = document.getElementById('v-traits-list');
+            traitsBox.innerHTML = "";
+            p.tratti?.forEach(t => traitsBox.innerHTML += `<div class="trait-tag" style="border-color:var(--neon-yellow); color:var(--neon-yellow);">${t}</div>`);
+
+            // SYNC BAR
+            const numMem = p.memorie?.length || 0;
+            const totLim = Math.min(11 + (numMem * 3), 20);
+            let dots = `<div style="display:grid; grid-template-columns:repeat(10,1fr); gap:4px;">`;
+            for(let i=0; i<20; i++) dots += `<div style="height:8px; border:1px solid #333; background:${i<totLim?'var(--neon-pink)':'#111'}"></div>`;
+            document.getElementById('v-limite-visual').innerHTML = dots + `</div><div style="font-size:0.6rem; margin-top:5px; text-align:center; font-family:Orbitron;">STABILITY: ${totLim}/20</div>`;
+        };
 
             // Stats e Sync
             const numMem = p.memorie?.length || 0;
