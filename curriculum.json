@@ -24,6 +24,7 @@
     {
       "id": 3,
       "fase": "SINTONIA CORE",
+      "descrizione": "Il Core rappresenta il legame elementale tra la Matricola, il suo Knight e il Respiro del Drago (la forza vitale di Brit’an). Solo chi possiede un legame forte con un elemento può diventare una Matricola.",
       "elementi": ["Fuoco", "Aria", "Acqua", "Terra", "Ghiaccio", "Elettricità", "Gravità", "Suono", "Luce", "Ombra", "Metallo", "Fauna", "Flora", "Caos", "Ordine", "Tempo", "Spazio", "Anima", "Vuoto", "Corruzione"]
     },
     {
@@ -52,7 +53,7 @@
     {
       "id": 7,
       "fase": "IMPRONTA DELLA NEMESI",
-      "Nemesi": "Rappresenta un trauma, un nemico giurato o una condizione avversa che ha segnato profondamente il personaggio. Non deve essere per forza una persona: \nIndividui: L'assassino di un genitore, un rivale accademico. \nConcetti Astratti: La fame patita in strada, la paura del fallimento. \nEventi: La perdita di una persona cara, un segreto inconfessabile.",
+      "descrizione": "Rappresenta un trauma, un nemico giurato o una condizione avversa che ha segnato profondamente il personaggio. Non deve essere per forza una persona: \nIndividui: L'assassino di un genitore, un rivale accademico. \nConcetti Astratti: La fame patita in strada, la paura del fallimento. \nEventi: La perdita di una persona cara, un segreto inconfessabile.",
       "esempi": ["Rivali (Persone)", "Traumi (Cose)", "Conflitti Morali (Ideali)"]
     },
     {
