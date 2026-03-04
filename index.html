@@ -37,13 +37,19 @@
     line-height: 1.4;
     animation: pulse 2s infinite;
 }
-        
-        @keyframes pulse {
-    0% { opacity: 0.7; }
-    50% { opacity: 1; border-color: var(--neon-pink); }
-    100% { opacity: 0.7; }
+        .btn-creatore {
+    border: 2px solid var(--neon-pink);
+    box-shadow: 0 0 10px rgba(255, 0, 255, 0.2);
+    animation: pulse 2s infinite;
 }
 
+@keyframes pulse {
+    0% { box-shadow: 0 0 5px var(--neon-pink); }
+    50% { box-shadow: 0 0 20px var(--neon-pink); }
+    100% { box-shadow: 0 0 5px var(--neon-pink); }
+}
+        
+    
         @media (min-width: 768px) {
     .mobile-tip {
         display: none;
@@ -188,7 +194,7 @@
 <div id="hub-page" class="page">
     <div class="hub-menu">
         <button class="hub-btn" onclick="showPage('home-page')">📂 I Miei Personaggi</button>
-        <button class="hub-btn" onclick="showPage('create-page')">⚔️ Nuova Recluta</button>
+        <button onclick="window.location.href='creatore.html'" style="border-color: var(--neon-pink); color: var(--neon-pink); font-weight: bold;"> INIZIALIZZA MATRICOLA </button>
         <button class="hub-btn" onclick="window.location.href='biblioteca.html'">📚 Biblioteca</button>
     </div>
 </div>
