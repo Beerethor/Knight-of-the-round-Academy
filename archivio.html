@@ -134,31 +134,47 @@
 
         document.getElementById('btn-logout').onclick = () => signOut(auth);
 
-        function renderArchive(uid, isMaster, filter = "") {
-            const gridPersonali = document.getElementById('grid-personali');
-            const gridUtenti = document.getElementById('grid-utenti');
-            gridPersonali.innerHTML = ""; gridUtenti.innerHTML = "";
+       function renderArchive(uid, isMaster, filter = "") {
+    const gridPersonali = document.getElementById('grid-personali');
+    const gridUtenti = document.getElementById('grid-utenti');
+    const masterView = document.getElementById('master-view');
+    
+    gridPersonali.innerHTML = ""; 
+    gridUtenti.innerHTML = "";
+    if(masterView) masterView.style.display = 'none';
 
-            const filtered = allChars.filter(c => 
-                c.nome.toLowerCase().includes(filter.toLowerCase()) ||
-                c.stirpe.toLowerCase().includes(filter.toLowerCase()) ||
-                c.job.toLowerCase().includes(filter.toLowerCase())
-            );
+    console.log("Debug Archivio - UID attuale:", uid, "IsMaster:", isMaster);
 
-            filtered.forEach(p => {
-                const card = document.createElement('div');
-                card.className = 'pg-card';
-                card.innerHTML = `<img src="${p.immagine || ''}"><div class="pg-card-info"><div class="pg-card-name">${p.nome}</div><div style="font-size:0.7rem; color:#666;">${p.stirpe} | ${p.job}</div></div>`;
-                card.onclick = () => openViewer(p);
+    const filtered = allChars.filter(c => 
+        c.nome.toLowerCase().includes(filter.toLowerCase()) ||
+        c.stirpe.toLowerCase().includes(filter.toLowerCase()) ||
+        c.job.toLowerCase().includes(filter.toLowerCase())
+    );
 
-                if (p.creatoDa === uid || (isMaster && p.creatoDa === "MASTER")) {
-                    gridPersonali.appendChild(card);
-                } else if (isMaster) {
-                    document.getElementById('master-view').style.display = 'block';
-                    gridUtenti.appendChild(card);
-                }
-            });
+    filtered.forEach(p => {
+        const card = document.createElement('div');
+        card.className = 'pg-card';
+        card.innerHTML = `
+            <img src="${p.immagine || ''}">
+            <div class="pg-card-info">
+                <div class="pg-card-name">${p.nome}</div>
+                <div style="font-size:0.7rem; color:#666;">${p.stirpe} | ${p.job}</div>
+            </div>`;
+        card.onclick = () => openViewer(p);
+
+        // LOGICA DI SMISTAMENTO CORRETTA
+        // Se il PG è stato creato con la stringa "MASTER" o dall'UID attuale del master
+        if (p.creatoDa === "MASTER" || p.creatoDa === uid) {
+            gridPersonali.appendChild(card);
+        } else {
+            // Se arriviamo qui, il PG è di un utente
+            if (isMaster) {
+                masterView.style.display = 'block';
+                gridUtenti.appendChild(card);
+            }
         }
+    });
+}
 
         window.filterArchive = () => {
             const val = document.getElementById('search-bar').value;
