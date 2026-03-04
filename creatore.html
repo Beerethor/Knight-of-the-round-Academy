@@ -24,11 +24,12 @@
         .full-width { grid-column: 1 / -1; }
         
         label { display: block; color: var(--neon-blue); font-family: 'Orbitron'; font-size: 0.75rem; margin-bottom: 5px; text-transform: uppercase; }
-        input, select { width: 100%; background: #000; border: 1px solid #444; color: white; padding: 12px; font-family: 'Rajdhani'; font-size: 1.1rem; box-sizing: border-box; }
+        input, select { width: 100%; background: #000; border: 1px solid #444; color: white; padding: 12px; margin: 10px 0; border-radius: 8px; box-sizing: border-box; }
         input:invalid { border-color: var(--neon-pink); }
 
-        .img-preview { width: 100%; height: 250px; border: 2px dashed #444; margin-top: 10px; display: flex; align-items: center; justify-content: center; overflow: hidden; background: #000; }
-        .img-preview img { width: 100%; height: 100%; object-fit: cover; }
+        /* Anteprima Immagine Potenziata */
+        .img-preview { width: 100%; height: 250px; border: 2px dashed #444; margin-top: 10px; display: flex; align-items: center; justify-content: center; overflow: hidden; background: #000; border-radius: 8px; }
+        .img-preview img { width: 100%; height: 100%; object-fit: cover; object-position: center 20%; filter: grayscale(0%); transition: 0.3s; }
 
         /* Azioni */
         .btn-save { width: 100%; background: transparent; border: 2px solid var(--neon-blue); color: var(--neon-blue); padding: 15px; font-family: 'Orbitron'; font-weight: bold; cursor: pointer; transition: 0.3s; }
@@ -68,7 +69,7 @@
                 <label>NOME MATRICOLA *</label>
                 <input type="text" id="nome" placeholder="Obbligatorio" required oninput="validateForm()">
                 <label style="margin-top:15px;">ANIMA (Tag)</label>
-                <input type="text" id="anima" placeholder="Es: Fiamme">
+                <input type="text" id="anima" placeholder="Es: Pilota Provetto">
             </div>
             <div>
                 <label>RITRATTO OPERATIVO (Auto-Resize)</label>
@@ -132,22 +133,23 @@
         const db = getFirestore(app);
         const auth = getAuth(app);
 
-        let currentUser = null, isMaster = false, currentImgData = "", dbStirpi = [];
+        let currentUser = null, isMaster = false, currentImgData = "", dbStirpi = [], currentEditId = null;
 
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 currentUser = user;
                 const configSnap = await getDoc(doc(db, "config", "permissions"));
-                isMaster = (user.email === (configSnap.exists() ? configSnap.data().masterEmail : ""));
+                isMaster = user.email.toLowerCase().trim() === (configSnap.exists() ? configSnap.data().masterEmail.toLowerCase().trim() : "");
                 document.getElementById('role-display').innerText = isMaster ? "MASTER" : "GIOCATORE";
                 document.getElementById('role-display').className = `role-badge ${isMaster ? 'master' : 'player'}`;
+                
                 init();
             } else { window.location.href = "index.html"; }
         });
 
         document.getElementById('btn-logout').onclick = () => signOut(auth);
 
-        // 1. COMPRESSIONE IMMAGINE (Canvas Resize)
+        // COMPRESSIONE IMMAGINE (Canvas Resize)
         window.handleImage = (e) => {
             const file = e.target.files[0];
             if (!file) return;
@@ -176,7 +178,7 @@
             reader.readAsDataURL(file);
         };
 
-        // 2. VALIDAZIONE CAMPI
+        // VALIDAZIONE CAMPI
         window.validateForm = () => {
             const nome = document.getElementById('nome').value.trim();
             const stirpe = document.getElementById('select-stirpe').value;
@@ -184,7 +186,7 @@
             document.getElementById('btn-save').disabled = !(nome && stirpe && job);
         };
 
-        // 3. GESTIONE ERRORI DATABASE JSON
+        // GESTIONE DATABASE JSON E CARICAMENTO MODIFICA
         async function init() {
             try {
                 const [resS, resJ] = await Promise.all([
@@ -200,11 +202,72 @@
                 document.getElementById('select-stirpe').innerHTML = dbStirpi.map(s => `<option value="${s.nome}">${s.nome}</option>`).join('');
                 document.getElementById('select-job').innerHTML = jobs.map(j => `<option value="${j.nome}">${j.nome}</option>`).join('');
                 aggiornaEredita();
-                validateForm();
+                
+                // CONTROLLO MODALITÀ MODIFICA
+                currentEditId = sessionStorage.getItem('editModeId');
+                if(currentEditId) {
+                    await loadCharacterForEdit(currentEditId);
+                } else {
+                    validateForm();
+                }
             } catch (e) {
-                alert("ERRORE CRITICO: Database Stirpi/Classi mancante. Contattare il Master.");
-                console.error(e);
+                alert("ERRORE CRITICO: Database Stirpi/Classi mancante.");
             }
+        }
+
+        async function loadCharacterForEdit(id) {
+            const overlay = document.getElementById('loading-overlay');
+            overlay.style.display = 'flex';
+            document.querySelector('#loading-overlay p').innerText = "RECUPERO DATI MATRICOLA...";
+            
+            try {
+                const docSnap = await getDoc(doc(db, "personaggi", id));
+                if(docSnap.exists()) {
+                    const p = docSnap.data();
+                    
+                    // Riempi campi base
+                    document.getElementById('nome').value = p.nome;
+                    document.getElementById('anima').value = p.anima || '';
+                    document.getElementById('core').value = p.core || '';
+                    document.getElementById('motto').value = p.motto || '';
+                    document.getElementById('difetto').value = p.difetto || '';
+                    document.getElementById('nemesi').value = p.nemesi || '';
+                    
+                    // Riempi tratti
+                    if(p.tratti) {
+                        const trattiInputs = document.querySelectorAll('.tratto-input');
+                        for(let i=0; i < p.tratti.length && i < trattiInputs.length; i++) {
+                            trattiInputs[i].value = p.tratti[i];
+                        }
+                    }
+                    
+                    // Seleziona Stirpe e Job
+                    document.getElementById('select-stirpe').value = p.stirpe;
+                    document.getElementById('select-job').value = p.job;
+                    
+                    // Gestisci Mezzosangue (se il PG ha un'eredità non appartenente alla stirpe base)
+                    const stirpeBaseDati = dbStirpi.find(s => s.nome === p.stirpe);
+                    const ereditaBaseNomi = stirpeBaseDati ? stirpeBaseDati.eredita.map(e => e.nome) : [];
+                    if(!ereditaBaseNomi.includes(p.eredita)) {
+                        document.getElementById('mezzosangue').checked = true;
+                    }
+                    
+                    // Aggiorna eredità disponibili e seleziona quella corretta
+                    aggiornaEredita();
+                    document.getElementById('select-eredita').value = p.eredita;
+                    
+                    // Gestisci Immagine
+                    currentImgData = p.immagine || '';
+                    if(currentImgData) {
+                        document.getElementById('preview-box').innerHTML = `<img src="${currentImgData}">`;
+                    }
+                    
+                    document.getElementById('btn-save').innerText = "AGGIORNA MATRICOLA";
+                    document.querySelector('.btn-reset').innerText = "ANNULLA MODIFICA";
+                }
+            } catch (e) { alert("Errore caricamento."); }
+            overlay.style.display = 'none';
+            validateForm();
         }
 
         window.aggiornaEredita = () => {
@@ -221,40 +284,59 @@
         };
 
         window.resetForm = () => {
-            if(confirm("Protocollo Reset?")) location.reload();
+            if(currentEditId) {
+                if(confirm("Annullare le modifiche e tornare all'Archivio?")) {
+                    sessionStorage.removeItem('editModeId');
+                    window.location.href = 'archivio.html';
+                }
+            } else {
+                if(confirm("Protocollo Reset? Tutti i dati andranno persi.")) location.reload();
+            }
         };
 
-        // 4. SALVATAGGIO CON FEEDBACK (SPINNER)
+        // SALVATAGGIO O AGGIORNAMENTO
         document.getElementById('btn-save').onclick = async () => {
             const overlay = document.getElementById('loading-overlay');
             overlay.style.display = 'flex';
+            document.querySelector('#loading-overlay p').innerText = currentEditId ? "AGGIORNAMENTO MATRICOLA..." : "SINCRONIZZA CON IL CLOUD...";
 
             const pg = {
-                nome: document.getElementById('nome').value,
-                anima: document.getElementById('anima').value,
-                core: document.getElementById('core').value,
-                motto: document.getElementById('motto').value,
-                difetto: document.getElementById('difetto').value,
-                nemesi: document.getElementById('nemesi').value,
-                tratti: Array.from(document.querySelectorAll('.tratto-input')).map(i => i.value).filter(v => v !== ""),
+                nome: document.getElementById('nome').value.trim(),
+                anima: document.getElementById('anima').value.trim(),
+                core: document.getElementById('core').value.trim(),
+                motto: document.getElementById('motto').value.trim(),
+                difetto: document.getElementById('difetto').value.trim(),
+                nemesi: document.getElementById('nemesi').value.trim(),
+                tratti: Array.from(document.querySelectorAll('.tratto-input')).map(i => i.value.trim()).filter(v => v !== ""),
                 stirpe: document.getElementById('select-stirpe').value,
                 job: document.getElementById('select-job').value,
                 eredita: document.getElementById('select-eredita').value,
                 immagine: currentImgData,
-                creatoDa: isMaster ? "MASTER" : currentUser.uid,
+                // Aggiorna ownerEmail se Master modifica per mantenere consistenza,
+                // ma non cambiare creatoDa se è un PG di un utente
                 ownerEmail: currentUser.email,
-                timestamp: serverTimestamp()
+                lastUpdate: serverTimestamp()
             };
 
+            // Se è creazione, imposta i metadati iniziali
+            if(!currentEditId) {
+                pg.creatoDa = isMaster ? "MASTER" : currentUser.uid;
+                pg.timestamp = serverTimestamp();
+            }
+
             try {
-                const docId = `${currentUser.uid}-${Date.now()}`;
-                await setDoc(doc(db, "personaggi", docId), pg);
+                // Genera ID se nuovo, usa ID esistente se modifica
+                const docId = currentEditId ? currentEditId : `${currentUser.uid}-${Date.now()}`;
+                await setDoc(doc(db, "personaggi", docId), pg, { merge: true });
+                
+                if(currentEditId) sessionStorage.removeItem('editModeId');
+                
                 overlay.style.display = 'none';
-                alert("Protocollo Completato. Archivio Aggiornato.");
+                alert(currentEditId ? "Protocollo Aggiornato." : "Protocollo Completato.");
                 window.location.href = "archivio.html";
             } catch (e) {
                 overlay.style.display = 'none';
-                alert("ERRORE TRASMISSIONE: Verifica connessione.");
+                alert("ERRORE CRITICO.");
             }
         };
     </script>
