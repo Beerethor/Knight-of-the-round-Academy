@@ -21,7 +21,8 @@
         label { display: block; color: var(--neon-blue); font-family: 'Orbitron'; font-size: 0.7rem; margin-bottom: 5px; text-transform: uppercase; }
         .evolution label { color: var(--neon-pink); }
         
-        input, select, textarea { width: 100%; background: #000; border: 1px solid #333; color: white; padding: 10px; margin-bottom: 10px; border-radius: 4px; font-family: 'Rajdhani'; font-size: 1rem; }
+        input, select, textarea { width: 100%; background: #000; border: 1px solid #333; color: white; padding: 10px; margin-bottom: 10px; border-radius: 4px; font-family: 'Rajdhani'; font-size: 1rem; outline: none; }
+        input:focus, select:focus { border-color: var(--neon-pink); }
         input:read-only { background: #111; color: #888; border-color: #222; cursor: not-allowed; }
         
         .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
@@ -32,6 +33,9 @@
         .btn-update:hover { background: var(--neon-pink); color: black; box-shadow: 0 0 20px var(--neon-pink); }
         
         #loading-overlay { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.9); z-index: 1000; flex-direction: column; align-items: center; justify-content: center; }
+
+        /* Stile speciale per il secondo Job */
+        .job-highlight { border: 1px solid var(--neon-pink); background: rgba(255, 0, 255, 0.05); }
     </style>
 </head>
 <body>
@@ -49,18 +53,32 @@
         <div class="full-width"><h3 style="font-family:'Orbitron'; font-size: 0.8rem; margin:0; color:#888;">DATI CORE BLOCCATI</h3></div>
         <div>
             <label>NOME</label><input type="text" id="nome" readonly>
-            <label>STIRPE / JOB</label><input type="text" id="stirpe-job" readonly>
+            <label>STIRPE</label><input type="text" id="stirpe" readonly>
         </div>
         <div>
-            <label>CORE</label><input type="text" id="core" readonly>
-            <label>ANIMA</label><input type="text" id="anima" readonly>
+            <label>JOB PRIMARIO</label><input type="text" id="job-primario" readonly>
+            <label>SINCRONIA CORE / ANIMA</label>
+            <div class="grid-2">
+                <input type="text" id="core" readonly>
+                <input type="text" id="anima" readonly>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-section evolution">
+        <div class="full-width"><h3 style="font-family:'Orbitron'; font-size: 0.8rem; margin:0;">SINAPSI JOB SECONDARIO</h3></div>
+        <div class="full-width">
+            <label>SECONDO JOB (SBLOCCO MULTICLASSE)</label>
+            <select id="secondo-job" class="job-highlight">
+                <option value="">-- NESSUN SECONDO JOB --</option>
+                </select>
+            <p style="font-size: 0.7rem; color: #888; margin: 0;">L'acquisizione di un secondo Job permette di accedere a nuove Tecniche nel Terminale Archivio.</p>
         </div>
     </div>
 
     <div class="form-section evolution">
         <div class="full-width"><h3 style="font-family:'Orbitron'; font-size: 0.8rem; margin:0;">ESPANSIONE MEMETICA (MAX 10 TRATTI)</h3></div>
-        <div class="full-width grid-4" id="tratti-container">
-            </div>
+        <div class="full-width grid-4" id="tratti-container"></div>
     </div>
 
     <div class="form-section evolution">
@@ -126,44 +144,67 @@
         const updateId = sessionStorage.getItem('updateModeId');
         if(!updateId) window.location.href = "archivio.html";
 
+        let classiDatabase = [];
+
         onAuthStateChanged(auth, async (user) => {
             if (user) {
-                const docSnap = await getDoc(doc(db, "personaggi", updateId));
-                if(docSnap.exists()) {
-                    const p = docSnap.data();
+                try {
+                    // Carica database classi per il menu a tendina
+                    const resJ = await fetch('classi_database.json');
+                    const dataJ = await resJ.json();
+                    classiDatabase = dataJ.items;
                     
-                    // Popolamento Sola Lettura
-                    document.getElementById('nome').value = p.nome;
-                    document.getElementById('stirpe-job').value = `${p.stirpe} / ${p.job}`;
-                    document.getElementById('core').value = p.core;
-                    document.getElementById('anima').value = p.anima;
+                    const selectJob = document.getElementById('secondo-job');
+                    classiDatabase.forEach(job => {
+                        const opt = document.createElement('option');
+                        opt.value = job.nome;
+                        opt.textContent = job.nome.toUpperCase();
+                        selectJob.appendChild(opt);
+                    });
 
-                    // Gestione Tratti (Max 10)
-                    const container = document.getElementById('tratti-container');
-                    for(let i=0; i<10; i++) {
-                        const val = (p.tratti && p.tratti[i]) ? p.tratti[i] : "";
-                        const input = document.createElement('input');
-                        input.type = "text";
-                        input.className = "tratto-input";
-                        input.value = val;
-                        if(i < 4 && val !== "") input.readOnly = true; // Blocca i primi 4 se esistono
-                        container.appendChild(input);
+                    // Carica dati personaggio
+                    const docSnap = await getDoc(doc(db, "personaggi", updateId));
+                    if(docSnap.exists()) {
+                        const p = docSnap.data();
+                        
+                        document.getElementById('nome').value = p.nome;
+                        document.getElementById('stirpe').value = p.stirpe;
+                        document.getElementById('job-primario').value = p.job;
+                        document.getElementById('core').value = p.core;
+                        document.getElementById('anima').value = p.anima;
+
+                        // Secondo Job
+                        if(p.secondoJob) document.getElementById('secondo-job').value = p.secondoJob;
+
+                        // Tratti
+                        const container = document.getElementById('tratti-container');
+                        for(let i=0; i<10; i++) {
+                            const val = (p.tratti && p.tratti[i]) ? p.tratti[i] : "";
+                            const input = document.createElement('input');
+                            input.type = "text";
+                            input.className = "tratto-input";
+                            input.value = val;
+                            if(i < 4 && val !== "") input.readOnly = true;
+                            container.appendChild(input);
+                        }
+
+                        // Helper per caricare array negli input
+                        const fillInputs = (className, dataArray) => {
+                            const inputs = document.querySelectorAll(`.${className}`);
+                            if(dataArray) dataArray.forEach((d, i) => { if(inputs[i]) inputs[i].value = d; });
+                        };
+
+                        fillInputs('cap-input', p.capacita);
+                        fillInputs('item-input', p.oggetti);
+                        fillInputs('mem-input', p.memorie);
+                        fillInputs('aff-input', p.affinita);
+                        
+                        document.getElementById('uniforme').value = p.uniforme || "";
+                        document.getElementById('club').value = p.club || "";
+                        document.getElementById('tratto-distintivo').value = p.trattoDistintivo || "";
                     }
-
-                    // Caricamento Dati Evoluzione (se già presenti)
-                    const fillInputs = (className, dataArray) => {
-                        const inputs = document.querySelectorAll(`.${className}`);
-                        if(dataArray) dataArray.forEach((d, i) => { if(inputs[i]) inputs[i].value = d; });
-                    };
-
-                    fillInputs('cap-input', p.capacita);
-                    fillInputs('item-input', p.oggetti);
-                    fillInputs('mem-input', p.memorie);
-                    fillInputs('aff-input', p.affinita);
-                    
-                    document.getElementById('uniforme').value = p.uniforme || "";
-                    document.getElementById('club').value = p.club || "";
-                    document.getElementById('tratto-distintivo').value = p.trattoDistintivo || "";
+                } catch (e) {
+                    console.error("Errore caricamento:", e);
                 }
             } else { window.location.href = "index.html"; }
         });
@@ -172,11 +213,10 @@
             document.getElementById('loading-overlay').style.display = 'flex';
             
             const memorie = Array.from(document.querySelectorAll('.mem-input')).map(i => i.value).filter(v => v !== "");
-            
-            // Calcolo Punti Limite Extra: +3 per ogni memoria
             const bonusPuntiLimite = memorie.length * 3;
 
             const updatedData = {
+                secondoJob: document.getElementById('secondo-job').value,
                 tratti: Array.from(document.querySelectorAll('.tratto-input')).map(i => i.value).filter(v => v !== ""),
                 capacita: Array.from(document.querySelectorAll('.cap-input')).map(i => i.value).filter(v => v !== ""),
                 oggetti: Array.from(document.querySelectorAll('.item-input')).map(i => i.value).filter(v => v !== ""),
