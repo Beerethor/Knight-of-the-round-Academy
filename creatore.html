@@ -31,30 +31,39 @@
     <h1>Protocollo Inizializzazione Matricola</h1>
 
     <div class="form-section">
-        <div class="full-width"><h2>1. Identità e Anima</h2></div>
+        <div class="full-width"><h2>1. Profilo della Matricola</h2></div>
         <div>
             <label>NOME MATRICOLA</label>
             <input type="text" id="nome" placeholder="Es: Arthur Pendragon">
-        </div>
-        <div>
-            <label>IL MIO MOTTO PERSONALE</label>
-            <input type="text" id="motto" placeholder="Es: Oltre ogni limite">
         </div>
         <div>
             <label>CORE</label>
             <input type="text" id="core" placeholder="Es: Coraggio Ardente">
         </div>
         <div>
-            <label>ANIMA (Parole descrittive)</label>
-            <input type="text" id="anima" placeholder="Es: Fiamma della Speranza">
+            <label>ANIMA (Parole/Descrizione)</label>
+            <input type="text" id="anima" placeholder="Es: Scintilla di Speranza">
         </div>
         <div>
-            <label>IL MIO DIFETTO</label>
-            <input type="text" id="difetto" placeholder="Es: Impulsività cieca">
+            <label>IL MIO MOTTO PERSONALE</label>
+            <input type="text" id="motto" placeholder="Es: Oltre ogni limite">
+        </div>
+        <div>
+            <label>DIFETTO</label>
+            <input type="text" id="difetto" placeholder="Es: Arroganza">
         </div>
         <div>
             <label>NEMESI</label>
-            <input type="text" id="nemesi" placeholder="Es: Mordred l'Oscuro">
+            <input type="text" id="nemesi" placeholder="Es: L'Ombra del Passato">
+        </div>
+        <div class="full-width">
+            <label>I 4 TRATTI DELLA MATRICOLA (d8)</label>
+            <div class="traits-grid">
+                <input type="text" class="tratto-input" placeholder="Tratto 1">
+                <input type="text" class="tratto-input" placeholder="Tratto 2">
+                <input type="text" class="tratto-input" placeholder="Tratto 3">
+                <input type="text" class="tratto-input" placeholder="Tratto 4">
+            </div>
         </div>
     </div>
 
@@ -88,26 +97,20 @@
             <label>FRAME</label>
             <input type="text" id="frame-knight">
         </div>
-        <div class="full-width">
-            <label>I 4 TRATTI DEL KNIGHT</label>
-            <div class="traits-grid">
-                <input type="text" class="tratto-input" placeholder="Tratto 1">
-                <input type="text" class="tratto-input" placeholder="Tratto 2">
-                <input type="text" class="tratto-input" placeholder="Tratto 3">
-                <input type="text" class="tratto-input" placeholder="Tratto 4">
-            </div>
+        <div class="full-width" style="color:#666; font-size:0.8rem;">
+            * Nota: Capacità e Oggetti inizieranno vuoti.
         </div>
     </div>
 
     <div class="form-section">
-        <div class="full-width"><h2>4. Stato Risorse</h2></div>
+        <div class="full-width"><h2>4. Risorse</h2></div>
         <div class="full-width">
             <label>PUNTI LIMITE (8) & SOVRACCARICO (3)</label>
             <div id="pl-display" class="pl-visualizer"></div>
         </div>
     </div>
 
-    <button id="btn-save" onclick="generaScheda()">Salva su Database Cloud</button>
+    <button id="btn-save" onclick="generaScheda()">Inizializza e Salva nel Cloud</button>
 
     <div id="output-scheda"></div>
 
@@ -171,41 +174,39 @@
 
         window.generaScheda = async function() {
             const nome = document.getElementById('nome').value;
-            if(!nome) return alert("Inserisci il nome della Matricola!");
+            if(!nome) return alert("Inserisci il nome!");
 
             const pg = {
                 nome: nome,
-                motto: document.getElementById('motto').value,
                 core: document.getElementById('core').value,
                 anima: document.getElementById('anima').value,
+                motto: document.getElementById('motto').value,
                 difetto: document.getElementById('difetto').value,
                 nemesi: document.getElementById('nemesi').value,
+                tratti: Array.from(document.querySelectorAll('.tratto-input')).map(i => i.value).filter(v => v !== ""),
                 stirpe: document.getElementById('select-stirpe').value,
                 job: document.getElementById('select-job').value,
                 eredita: document.getElementById('select-eredita').value,
                 knight: document.getElementById('nome-knight').value,
                 frame: document.getElementById('frame-knight').value,
-                tratti: Array.from(document.querySelectorAll('.tratto-input')).map(i => i.value).filter(v => v !== ""),
                 puntiLimite: 8,
                 puntiSovraccarico: 3,
-                capacita: [], // Vuote come richiesto
-                oggetti: [],   // Vuote come richiesto
-                creatore: currentUser ? currentUser.email : "Anonimo",
+                capacita: [], // Vuote
+                oggetti: [],   // Vuote
                 timestamp: serverTimestamp()
             };
 
             const id = `${nome.toLowerCase().replace(/\s+/g, '-')}-${Date.now()}`;
 
             try {
-                document.getElementById('btn-save').innerText = "SINCRONIZZAZIONE...";
+                document.getElementById('btn-save').innerText = "ARCHIVIAZIONE...";
                 await setDoc(doc(db, "personaggi", id), pg);
                 const out = document.getElementById('output-scheda');
                 out.style.display = 'block';
-                out.innerHTML = `<h2 style="color:var(--neon-blue);">ARCHIVIATO: ${id}</h2><p>Protocollo sincronizzato nel cloud.</p><button onclick="window.print()">STAMPA SCHEDA</button>`;
-                document.getElementById('btn-save').innerText = "SALVATO!";
+                out.innerHTML = `<h2 style="color:var(--neon-blue);">SINCRONIZZAZIONE COMPLETATA</h2><p>La Matricola è stata registrata nel cloud KOTRA.</p><button onclick="window.print()">STAMPA SCHEDA</button>`;
+                document.getElementById('btn-save').innerText = "SALVATO";
             } catch (e) {
-                alert("Errore cloud!");
-                document.getElementById('btn-save').innerText = "RIPROVA";
+                alert("Errore salvataggio!");
             }
         }
         window.onload = init;
