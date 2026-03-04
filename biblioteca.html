@@ -11,186 +11,234 @@
             --neon-pink: #ff00ff;
             --neon-yellow: #ffff00;
             --bg-dark: #0a0a0c;
-            --card-bg: #16161a;
-            --glass: rgba(255, 255, 255, 0.03);
+            --card-bg: rgba(22, 22, 26, 0.85);
+            --glass: rgba(0, 242, 255, 0.05);
+            --border-glow: rgba(0, 242, 255, 0.3);
         }
 
         body {
             background-color: var(--bg-dark);
+            /* Utilizzo dello sfondo generato per la biblioteca */
+            background-image: linear-gradient(rgba(10, 10, 12, 0.85), rgba(10, 10, 12, 0.85)), url('image_2.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
             color: #e0e0e0;
             font-family: 'Rajdhani', sans-serif;
             margin: 0;
             padding: 20px;
             line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Overlay di Scansione */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), 
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02));
+            background-size: 100% 4px, 3px 100%;
+            pointer-events: none;
+            z-index: 100;
         }
 
         h1, h2, h3 { font-family: 'Orbitron', sans-serif; text-transform: uppercase; letter-spacing: 2px; margin: 0; }
 
         header {
-            border-bottom: 2px solid #333;
-            padding-bottom: 20px;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-glow);
+            padding: 20px;
             margin-bottom: 30px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
             gap: 20px;
+            box-shadow: 0 0 20px rgba(0, 242, 255, 0.1);
         }
 
-        .nav-buttons { display: flex; gap: 10px; flex-wrap: wrap; }
+        .nav-buttons { display: flex; gap: 12px; flex-wrap: wrap; }
 
         button {
             background: transparent;
             border: 1px solid var(--neon-blue);
             color: var(--neon-blue);
-            padding: 10px 18px;
+            padding: 10px 20px;
             cursor: pointer;
             font-family: 'Orbitron', sans-serif;
-            font-size: 0.75rem;
-            transition: 0.3s;
+            font-size: 0.7rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             text-transform: uppercase;
-        }
-
-        button:hover {
-            background: rgba(0, 242, 255, 0.1);
-            box-shadow: 0 0 15px var(--neon-blue);
-        }
-
-        button.active { background: var(--neon-blue); color: var(--bg-dark); }
-        
-        /* Tasti Speciali */
-        .btn-orientamento { border-color: var(--neon-yellow) !important; color: var(--neon-yellow) !important; }
-        .btn-orientamento:hover { background: rgba(255, 255, 0, 0.1) !important; box-shadow: 0 0 15px var(--neon-yellow) !important; }
-        
-        .btn-knight { border-color: var(--neon-pink) !important; color: var(--neon-pink) !important; }
-        .btn-knight:hover { background: rgba(255, 0, 255, 0.1) !important; box-shadow: 0 0 15px var(--neon-pink) !important; }
-
-        /* GRID SYSTEM */
-        .items-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 20px;
-            max-height: 80vh;
-            overflow-y: auto;
-            padding-right: 10px;
-        }
-
-        .card {
-            background: var(--card-bg);
-            border: 1px solid #333;
-            padding: 15px;
-            text-align: center;
-            cursor: pointer;
-            transition: 0.3s ease;
             position: relative;
             overflow: hidden;
         }
 
+        button:hover {
+            background: var(--neon-blue);
+            color: var(--bg-dark);
+            box-shadow: 0 0 20px var(--neon-blue);
+            transform: translateY(-2px);
+        }
+
+        button.active { 
+            background: var(--neon-blue); 
+            color: var(--bg-dark); 
+            box-shadow: 0 0 25px var(--neon-blue);
+        }
+
+        .btn-orientamento { border-color: var(--neon-yellow) !important; color: var(--neon-yellow) !important; }
+        .btn-orientamento:hover { background: var(--neon-yellow) !important; color: black !important; }
+
+        .btn-knight { border-color: var(--neon-pink) !important; color: var(--neon-pink) !important; }
+        .btn-knight:hover { background: var(--neon-pink) !important; color: white !important; }
+
+        /* LISTA CARD */
+        .items-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 25px;
+            padding: 10px;
+            animation: fadeIn 0.8s ease;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 0;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            position: relative;
+            clip-path: polygon(10% 0, 100% 0, 100% 90%, 90% 100%, 0 100%, 0 10%);
+        }
+
         .card:hover {
-            border-color: var(--neon-pink);
-            box-shadow: 0 0 20px rgba(255, 0, 255, 0.2);
-            transform: translateY(-5px);
+            border-color: var(--neon-blue);
+            transform: scale(1.03);
+            box-shadow: 0 0 30px rgba(0, 242, 255, 0.2);
         }
 
         .card img {
             width: 100%;
-            height: 180px;
+            height: 220px;
             object-fit: cover;
-            object-position: center top; 
-            filter: grayscale(30%);
-            margin-bottom: 10px;
-            transition: 0.3s;
+            filter: saturate(0.8) brightness(0.8);
+            transition: 0.5s;
         }
 
-        .card:hover img { filter: grayscale(0%); transform: scale(1.05); }
+        .card:hover img { filter: saturate(1.2) brightness(1.1); }
 
-        /* DETAIL VIEW */
-        #detail-view { display: none; animation: fadeIn 0.4s ease; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .card h3 {
+            padding: 15px;
+            font-size: 0.9rem;
+            background: rgba(0, 0, 0, 0.5);
+            color: var(--neon-blue);
+        }
 
-        .detail-container { display: flex; gap: 40px; flex-wrap: wrap; }
-        .image-side { flex: 1; min-width: 300px; }
-        .content-side { flex: 2; min-width: 400px; }
-        .image-side img { width: 100%; border: 1px solid var(--neon-blue); box-shadow: 0 0 30px rgba(0, 242, 255, 0.15); }
+        /* VISTA DETTAGLIO */
+        #detail-view { 
+            display: none; 
+            max-width: 1200px; 
+            margin: 0 auto;
+            background: rgba(10, 10, 12, 0.95);
+            padding: 40px;
+            border: 1px solid var(--neon-blue);
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+            animation: slideUp 0.5s ease-out;
+        }
+
+        .detail-container { display: flex; gap: 50px; flex-wrap: wrap; }
+        .image-side { flex: 1; min-width: 320px; }
+        .content-side { flex: 1.5; min-width: 400px; }
+
+        .image-side img { 
+            width: 100%; 
+            border: 2px solid var(--neon-blue); 
+            clip-path: polygon(0 0, 90% 0, 100% 10%, 100% 100%, 10% 100%, 0 90%);
+        }
 
         .citazione {
-            font-style: italic;
+            font-family: 'Orbitron';
+            font-size: 0.9rem;
             color: var(--neon-pink);
-            border-left: 3px solid var(--neon-pink);
-            padding: 10px 20px;
-            margin: 20px 0;
-            background: rgba(255, 0, 255, 0.05);
-            font-size: 1.1rem;
+            border-left: 4px solid var(--neon-pink);
+            padding: 15px 25px;
+            margin: 25px 0;
+            background: rgba(255, 0, 255, 0.03);
+            letter-spacing: 1px;
         }
+
+        .box { 
+            background: rgba(255, 255, 255, 0.02); 
+            border: 1px solid rgba(255, 255, 255, 0.05); 
+            padding: 20px; 
+            margin-bottom: 15px;
+            transition: 0.3s;
+        }
+        
+        .box:hover { background: rgba(0, 242, 255, 0.03); border-color: var(--neon-blue); }
 
         .section-title {
             color: var(--neon-blue);
-            border-bottom: 1px solid rgba(0, 242, 255, 0.3);
-            margin: 30px 0 15px 0;
-            font-size: 1rem;
+            font-family: 'Orbitron';
+            border-bottom: 2px solid var(--neon-blue);
+            padding-bottom: 10px;
+            margin: 40px 0 20px 0;
+            font-size: 1.2rem;
+            text-shadow: 0 0 10px var(--neon-blue);
         }
 
-        .box { background: var(--glass); border: 1px solid #333; padding: 15px; margin-bottom: 10px; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        ::-webkit-scrollbar { width: 5px; }
-        ::-webkit-scrollbar-thumb { background: var(--neon-blue); }
+        /* SCROLLBAR */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg-dark); }
+        ::-webkit-scrollbar-thumb { background: var(--neon-blue); box-shadow: 0 0 10px var(--neon-blue); }
     </style>
 </head>
 <body>
 
     <header>
         <div onclick="window.location.href='index.html'" style="cursor:pointer;">
-            <h2 style="color: var(--neon-blue);">Sistema KOTRA v3.0</h2>
-            <small style="color: #666;">Accesso Biblioteca: Autorizzato</small>
+            <h2 style="color: var(--neon-blue); text-shadow: 0 0 10px var(--neon-blue);">SISTEMA KOTRA v3.0</h2>
+            <small style="color: var(--neon-pink); font-family: 'Orbitron'; font-size: 0.6rem; letter-spacing: 2px;">PROTOCOLLO ARCHIVIO: ATTIVO</small>
         </div>
         <div class="nav-buttons">
             <button onclick="window.location.href='index.html'">HUB</button>
-            <button onclick="window.location.href='orientamento.html'" class="btn-orientamento">ORIENTAMENTO STEP-BY-STEP</button>
-            
-            <button onclick="loadData('stirpi_database.json', this)">Stirpi</button>
-            <button onclick="loadData('classi_database.json', this)">Classi & Job</button>
-            
-            <button onclick="showKnightGuide(this)" class="btn-knight">GUIDA KNIGHT & FRAME</button>
-            
-            <button id="back-btn" style="display:none; border-color: var(--neon-yellow); color: var(--neon-yellow);" onclick="showList()">← Torna alla Lista</button>
+            <button onclick="window.location.href='orientamento.html'" class="btn-orientamento">ORIENTAMENTO</button>
+            <button onclick="loadData('stirpi_database.json', this)">STIRPI</button>
+            <button onclick="loadData('classi_database.json', this)">CLASSI & JOB</button>
+            <button onclick="showKnightGuide(this)" class="btn-knight">GUIDA KNIGHT</button>
+            <button id="back-btn" style="display:none; border-color: var(--neon-yellow); color: var(--neon-yellow);" onclick="showList()">← TORNA ALLA LISTA</button>
         </div>
     </header>
 
     <div id="list-view" class="items-grid">
-        <p style="color: #444; text-align: center; grid-column: 1/-1; margin-top: 50px;">Benvenuto nell'Archivio. Seleziona una categoria per iniziare la consultazione.</p>
+        <div style="grid-column: 1/-1; text-align: center; padding: 100px 20px;">
+            <h3 style="color: var(--neon-blue); opacity: 0.5;">IN ATTESA DI SELEZIONE CATEGORIA...</h3>
+            <p style="font-family: 'Rajdhani'; color: #555;">Accedi ai file protetti tramite i pulsanti superiori.</p>
+        </div>
     </div>
 
     <div id="detail-view"></div>
 
     <script>
-        // --- LOGICA DI SINCRONIZZAZIONE TERMINALE -> BIBLIOTECA ---
-window.addEventListener('DOMContentLoaded', () => {
-    // 1. Identifica i parametri nell'URL (es: ?cat=stirpi)
-    const urlParams = new URLSearchParams(window.location.search);
-    const categoria = urlParams.get('cat');
-
-    // 2. Mappa i parametri ai file JSON e ai bottoni corretti
-    if (categoria) {
-        console.log("Protocollo di auto-caricamento avviato per:", categoria);
-        
-        // Timeout minimo per assicurarsi che il resto degli script sia pronto
-        setTimeout(() => {
-            if (categoria === 'stirpi') {
-                const btn = document.querySelector('button[onclick*="stirpi_database.json"]') || document.getElementById('btn-stirpi');
-                loadData('stirpi_database.json', btn);
-            } 
-            else if (categoria === 'classi') {
-                const btn = document.querySelector('button[onclick*="classi_database.json"]') || document.getElementById('btn-classi');
-                loadData('classi_database.json', btn);
-            } 
-            else if (categoria === 'knight') {
-                const btn = document.querySelector('.btn-knight') || document.getElementById('btn-knight');
-                showKnightGuide(btn);
+        // Logica di caricamento (uguale alla precedente ma integrata con la nuova UI)
+        window.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const categoria = urlParams.get('cat');
+            if (categoria) {
+                setTimeout(() => {
+                    if (categoria === 'stirpi') loadData('stirpi_database.json', document.querySelector('button[onclick*="stirpi_database.json"]'));
+                    else if (categoria === 'classi') loadData('classi_database.json', document.querySelector('button[onclick*="classi_database.json"]'));
+                    else if (categoria === 'knight') showKnightGuide(document.querySelector('.btn-knight'));
+                }, 100);
             }
-        }, 100);
-    }
-});
-// --- FINE LOGICA AGGIUNTIVA ---
+        });
+
         let currentData = [];
 
         async function loadData(filename, btn) {
@@ -205,8 +253,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 renderList();
                 showList();
             } catch (e) {
-                console.error(e);
-                document.getElementById('list-view').innerHTML = "<p style='color:red; text-align:center; grid-column:1/-1;'>Errore nel caricamento del database.</p>";
+                document.getElementById('list-view').innerHTML = `<p style='color:red; text-align:center; grid-column:1/-1;'>ERRORE CRITICO: DATABASE ${filename} NON RAGGIUNGIBILE.</p>`;
             }
         }
 
@@ -214,7 +261,7 @@ window.addEventListener('DOMContentLoaded', () => {
             const container = document.getElementById('list-view');
             container.innerHTML = currentData.map((item, index) => `
                 <div class="card" onclick="showDetail(${index})">
-                    <img src="${item.immagine}" onerror="this.src='https://via.placeholder.com/200x180/111/00f2ff?text=${item.nome}'">
+                    <img src="${item.immagine}" onerror="this.src='https://via.placeholder.com/400x300/111/00f2ff?text=${item.nome}'">
                     <h3>${item.nome}</h3>
                 </div>
             `).join('');
@@ -226,24 +273,22 @@ window.addEventListener('DOMContentLoaded', () => {
             document.getElementById('detail-view').style.display = 'block';
             document.getElementById('back-btn').style.display = 'block';
 
-            const descFormattata = item.descrizione ? item.descrizione.replace(/\n/g, "<br>") : "";
-
             let skillSection = "";
             if (item.eredita) {
-                skillSection = `<div class="section-title">Eredità di Stirpe</div>` + 
+                skillSection = `<div class="section-title">EREDITÀ DI STIRPE</div>` + 
                     item.eredita.map(e => `
                         <div class="box">
-                            <b style="color:var(--neon-blue);">${e.nome}</b>
-                            <p style="margin: 5px 0; font-size: 0.9rem;">${e.descrizione}</p>
-                            <div style="color:var(--neon-yellow); font-size:0.85rem;"><i>EFFETTO:</i> ${e.effetto}</div>
+                            <b style="color:var(--neon-blue); font-family:'Orbitron';">${e.nome}</b>
+                            <p style="margin: 8px 0; font-size: 1rem;">${e.descrizione}</p>
+                            <div style="color:var(--neon-yellow); font-size:0.9rem; background: rgba(255,255,0,0.05); padding: 5px 10px;"><i>EFFETTO:</i> ${e.effetto}</div>
                         </div>`).join('');
             } else if (item.tecniche) {
-                skillSection = `<div class="section-title">Protocolli Tecnici (Job)</div>` + 
+                skillSection = `<div class="section-title">PROTOCOLLI TECNICI (JOB)</div>` + 
                     item.tecniche.map(t => `
-                        <div class="box" style="border-left: 2px solid var(--neon-pink);">
-                            <small style="color:var(--neon-pink); font-weight:bold;">${t.tipo}</small><br>
-                            <b style="font-size:1.1rem;">${t.nome}</b>
-                            <p style="margin: 5px 0; font-size: 0.9rem; opacity: 0.8;">${t.effetto}</p>
+                        <div class="box" style="border-left: 3px solid var(--neon-pink);">
+                            <small style="color:var(--neon-pink); font-family:'Orbitron'; font-weight:bold;">${t.tipo}</small><br>
+                            <b style="font-size:1.2rem; color: #fff;">${t.nome}</b>
+                            <p style="margin: 8px 0; font-size: 1rem; opacity: 0.9;">${t.effetto}</p>
                         </div>`).join('');
             }
 
@@ -251,10 +296,10 @@ window.addEventListener('DOMContentLoaded', () => {
                 <div class="detail-container">
                     <div class="image-side"><img src="${item.immagine}"></div>
                     <div class="content-side">
-                        <h1 style="color:var(--neon-blue); font-size: 2.5rem;">${item.nome}</h1>
+                        <h1 style="color:var(--neon-blue); font-size: 3rem; text-shadow: 0 0 15px var(--neon-blue);">${item.nome}</h1>
                         ${item.citazione ? `<div class="citazione">"${item.citazione}"</div>` : ''}
-                        <div class="section-title">Background Operativo</div>
-                        <p>${descFormattata}</p>
+                        <div class="section-title">BACKGROUND OPERATIVO</div>
+                        <p style="font-size: 1.1rem; color: #ccc;">${item.descrizione.replace(/\n/g, "<br>")}</p>
                         ${skillSection}
                     </div>
                 </div>
@@ -263,36 +308,34 @@ window.addEventListener('DOMContentLoaded', () => {
             window.scrollTo(0, 0);
         }
 
-        async function showKnightGuide(btn) {
+        function showKnightGuide(btn) {
             document.querySelectorAll('.nav-buttons button').forEach(b => b.classList.remove('active'));
             if(btn) btn.classList.add('active');
-
             document.getElementById('list-view').style.display = 'none';
             document.getElementById('detail-view').style.display = 'block';
             document.getElementById('back-btn').style.display = 'block';
 
-            // Carichiamo la guida Knight (puoi usare il JSON creato prima o iniettarlo direttamente)
             document.getElementById('detail-view').innerHTML = `
-                <div style="max-width: 900px; margin: 0 auto; animation: fadeIn 0.5s;">
-                    <h1 style="color: var(--neon-blue); text-align: center; font-size: 2.5rem; margin-bottom: 10px;">ANATOMIA DEI KNIGHT</h1>
-                    <p style="text-align: center; color: var(--neon-pink); font-family: 'Orbitron';">Protocollo Merlin v.4.2</p>
+                <div style="max-width: 900px; margin: 0 auto;">
+                    <h1 style="color: var(--neon-blue); text-align: center; font-size: 3rem; text-shadow: 0 0 20px var(--neon-blue);">ANATOMIA DEI KNIGHT</h1>
+                    <p style="text-align: center; color: var(--neon-pink); font-family: 'Orbitron'; letter-spacing: 3px;">PROTOCOLLO MERLIN v.4.2</p>
                     
-                    <div class="section-title">CLASSI E SCALE</div>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px;">
-                        <div class="box"><b style="color:var(--neon-yellow)">KNAVE</b><br><small>Mezzi agili/urbani</small></div>
-                        <div class="box"><b style="color:var(--neon-blue)">CHEVALIER</b><br><small>Scala Standard Matricole</small></div>
-                        <div class="box"><b style="color:var(--neon-pink)">PALADIN</b><br><small>Colossali/Fortezze</small></div>
+                    <div class="section-title">CLASSI E SCALE DIMENSIONALI</div>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 20px;">
+                        <div class="box" style="text-align:center;"><b style="color:var(--neon-yellow); font-family:'Orbitron';">KNAVE</b><br><small>Supporto Urbano</small></div>
+                        <div class="box" style="text-align:center;"><b style="color:var(--neon-blue); font-family:'Orbitron';">CHEVALIER</b><br><small>Standard Mecha</small></div>
+                        <div class="box" style="text-align:center;"><b style="color:var(--neon-pink); font-family:'Orbitron';">PALADIN</b><br><small>Classe Fortezza</small></div>
                     </div>
 
-                    <div class="section-title">FRAME OPERATIVI</div>
-                    <div class="box" style="border-left: 3px solid var(--neon-blue);"><b>LANCER</b>: Assalto corpo a corpo e velocità d'impatto.</div>
-                    <div class="box" style="border-left: 3px solid var(--neon-blue);"><b>ARCHER</b>: Supporto balistico e combattimento a lungo raggio.</div>
-                    <div class="box" style="border-left: 3px solid var(--neon-blue);"><b>TANKER</b>: Difesa pesante e protezione della squadra.</div>
-                    <div class="box" style="border-left: 3px solid var(--neon-blue);"><b>SCOUTER</b>: Ricognizione, agilità estrema e stealth.</div>
-                    <div class="box" style="border-left: 3px solid var(--neon-blue);"><b>CASTER</b>: Manipolazione energetica Particelle Dragon.</div>
+                    <div class="section-title">FRAME OPERATIVI DISPONIBILI</div>
+                    <div class="box" style="border-right: 3px solid var(--neon-blue);"><b>LANCER</b>: Specializzato in ingaggi ravvicinati e velocità cinetica.</div>
+                    <div class="box" style="border-right: 3px solid var(--neon-blue);"><b>ARCHER</b>: Piattaforma di fuoco a lungo raggio e precisione Sidhe.</div>
+                    <div class="box" style="border-right: 3px solid var(--neon-blue);"><b>TANKER</b>: Corazza stratificata e sistemi di difesa ad area.</div>
+                    <div class="box" style="border-right: 3px solid var(--neon-blue);"><b>SCOUTER</b>: Sistemi ECM, occultamento e mobilità estrema.</div>
+                    <div class="box" style="border-right: 3px solid var(--neon-blue);"><b>CASTER</b>: Condotto per particelle Dragon e manipolazione elementale.</div>
 
-                    <div class="citazione" style="margin-top:40px;">
-                        "Un pilota senza il suo Frame è solo un passeggero. Un Knight senza il suo Frame è solo ferraglia." — Dr. Merlin
+                    <div class="citazione" style="text-align:center; margin-top:50px;">
+                        "L'interfaccia neurale non è un comando, è un dialogo tra l'anima del pilota e il metallo del Knight."
                     </div>
                 </div>
             `;
