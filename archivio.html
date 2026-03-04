@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KOTRA - Terminale Archivio</title>
+    <title>KOTRA - Terminale Archivio v3.5</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
         :root { 
@@ -66,7 +66,7 @@
         }
 
         /* Griglia Card */
-        .section-label { font-family: 'Orbitron'; color: var(--neon-pink); padding: 40px 40px 10px; font-size: 0.9rem; letter-spacing: 3px; }
+        .section-label { font-family: 'Orbitron'; color: var(--neon-pink); padding: 40px 40px 10px; font-size: 0.9rem; letter-spacing: 3px; text-transform: uppercase;}
         .archive-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; padding: 20px 40px; }
         
         .pg-card { 
@@ -74,10 +74,27 @@
             cursor: pointer; transition: 0.4s; position: relative; overflow: hidden;
         }
         .pg-card:hover { border-color: var(--neon-blue); transform: translateY(-5px); box-shadow: 0 5px 20px rgba(0, 242, 255, 0.2); }
-        .pg-card img { width: 100%; height: 200px; object-fit: cover; filter: grayscale(50%); transition: 0.5s; }
-        .pg-card:hover img { filter: grayscale(0%); transform: scale(1.05); }
-        .pg-card-info { padding: 20px; background: linear-gradient(to top, #000, transparent); }
-        .pg-card-name { font-family: 'Orbitron'; color: var(--neon-blue); font-size: 1.2rem; }
+        
+        /* Focus sul Viso */
+        .pg-card img { 
+            width: 100%; height: 220px; object-fit: cover; 
+            object-position: center 25%; /* Focalizza sulla parte alta dell'immagine */
+            filter: grayscale(50%) brightness(0.8); 
+            transition: 0.6s cubic-bezier(0.25, 1, 0.5, 1); 
+        }
+        .pg-card:hover img { filter: grayscale(0%) brightness(1.1); transform: scale(1.1); object-position: center 30%; }
+        
+        .pg-card-info { padding: 20px; background: linear-gradient(to top, #000 70%, transparent); position: relative; margin-top: -60px; z-index: 2;}
+        .pg-card-name { font-family: 'Orbitron'; color: var(--neon-blue); font-size: 1.2rem; margin-bottom: 5px; text-shadow: 0 0 5px #000; }
+
+        .btn-edit-small, .btn-delete-small {
+            background: none; border: 1px solid; font-family: 'Orbitron'; font-size: 0.6rem; 
+            padding: 3px 8px; cursor: pointer; margin-top: 10px; transition: 0.3s;
+        }
+        .btn-edit-small { border-color: var(--neon-yellow); color: var(--neon-yellow); }
+        .btn-delete-small { border-color: var(--neon-pink); color: var(--neon-pink); margin-right: 5px; }
+        .btn-edit-small:hover { background: var(--neon-yellow); color: black; }
+        .btn-delete-small:hover { background: var(--neon-pink); color: white; }
 
         /* Loader Hacking */
         #v-loader {
@@ -85,35 +102,36 @@
             background: var(--bg-dark); z-index: 1001; flex-direction: column; justify-content: center; align-items: center;
         }
         .hack-bar-container { width: 300px; height: 4px; background: rgba(0,242,255,0.1); border: 1px solid var(--neon-blue); margin-top: 20px; }
-        .hack-bar-fill { width: 0%; height: 100%; background: var(--neon-blue); box-shadow: 0 0 15px var(--neon-blue); }
-        .hack-text { color: var(--neon-blue); font-family: 'Orbitron'; font-size: 0.8rem; animation: glitch 1s infinite; }
+        .hack-bar-fill { width: 0%; height: 100%; background: var(--neon-blue); box-shadow: 0 0 15px var(--neon-blue); transition: width 0.1s; }
+        .hack-text { color: var(--neon-blue); font-family: 'Orbitron'; font-size: 0.8rem; animation: glitch 1s infinite; letter-spacing: 2px;}
 
         /* Viewer Overlay */
         #viewer-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.98); z-index: 1000; overflow-y: auto; backdrop-filter: blur(10px); }
-        .sheet-container { max-width: 1200px; margin: 40px auto; background: var(--panel-bg); border: 1px solid var(--neon-blue); display: grid; grid-template-columns: 380px 1fr; position: relative; }
-        .side-img { width: 100%; height: 100%; object-fit: cover; border-right: 1px solid var(--neon-blue); }
+        .sheet-container { max-width: 1200px; margin: 40px auto; background: var(--panel-bg); border: 1px solid var(--neon-blue); display: grid; grid-template-columns: 380px 1fr; position: relative; box-shadow: 0 0 30px rgba(0,0,0,1); }
+        .side-img { width: 100%; height: 100%; object-fit: cover; object-position: center 20%; border-right: 1px solid var(--neon-blue); }
         .main-sheet { padding: 40px; }
-        .close-overlay { position: fixed; top: 20px; right: 20px; color: var(--neon-pink); cursor: pointer; font-family: 'Orbitron'; border: 1px solid var(--neon-pink); padding: 8px 15px; z-index: 1100; background: black;}
+        .close-overlay { position: fixed; top: 20px; right: 20px; color: var(--neon-pink); cursor: pointer; font-family: 'Orbitron'; border: 1px solid var(--neon-pink); padding: 8px 15px; z-index: 1100; background: black; transition: 0.3s;}
+        .close-overlay:hover { background: var(--neon-pink); color: white; box-shadow: 0 0 15px var(--neon-pink); }
 
         .data-box { background: rgba(255,255,255,0.03); border-left: 4px solid var(--neon-blue); padding: 20px; margin-bottom: 20px; }
-        .data-box h3 { font-family: 'Orbitron'; font-size: 0.7rem; color: var(--neon-pink); margin: 0 0 10px; letter-spacing: 2px; }
-        .tech-tag { background: rgba(0, 242, 255, 0.05); border-left: 2px solid var(--neon-blue); padding: 8px; margin-bottom: 5px; font-size: 0.9rem; }
-        .trait-pill { display: inline-block; padding: 4px 10px; border: 1px solid var(--neon-yellow); margin: 3px; font-size: 0.7rem; color: var(--neon-yellow); font-family: 'Orbitron'; }
+        .data-box h3 { font-family: 'Orbitron'; font-size: 0.7rem; color: var(--neon-pink); margin: 0 0 10px; letter-spacing: 2px; text-transform: uppercase; }
+        .tech-tag { background: rgba(0, 242, 255, 0.05); border-left: 2px solid var(--neon-blue); padding: 8px; margin-bottom: 5px; font-size: 0.9rem; line-height: 1.4;}
+        .trait-pill { display: inline-block; padding: 4px 10px; border: 1px solid var(--neon-yellow); margin: 3px; font-size: 0.7rem; color: var(--neon-yellow); font-family: 'Orbitron'; text-transform: uppercase;}
 
         /* Punti Limite */
         .limite-container { display: grid; grid-template-columns: repeat(10, 1fr); gap: 5px; margin-top: 10px; }
         .limite-dot { height: 10px; background: #111; border: 1px solid #333; }
-        .dot-filled { background: var(--neon-pink); box-shadow: 0 0 10px var(--neon-pink); }
+        .dot-filled { background: var(--neon-pink); box-shadow: 0 0 10px var(--neon-pink); border-color: white;}
 
         @keyframes glitch { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
-        @media (max-width: 900px) { .sheet-container { grid-template-columns: 1fr; } .side-img { height: 300px; } }
+        @media (max-width: 900px) { .sheet-container { grid-template-columns: 1fr; } .side-img { height: 350px; border-right: none; border-bottom: 1px solid var(--neon-blue); } }
     </style>
 </head>
 <body>
 
     <header class="nav-header">
         <div>
-            <h1 style="font-family:'Orbitron'; color:var(--neon-blue); display:inline-block; margin:0; font-size:1.3rem;">KOTRA // ARCHIVIO</h1>
+            <h1 style="font-family:'Orbitron'; color:var(--neon-blue); display:inline-block; margin:0; font-size:1.3rem; letter-spacing: 2px;">KOTRA // ARCHIVIO</h1>
             <span id="role-display"></span>
         </div>
         <div class="nav-controls">
@@ -142,13 +160,13 @@
             <div id="v-hack-status" style="font-size: 0.6rem; color: var(--neon-pink); margin-top: 10px; font-family:'Orbitron';">[ ACCESSING... ]</div>
         </div>
 
-        <span class="close-overlay" onclick="closeViewer()">CHIUDI [X]</span>
+        <span class="close-overlay" onclick="closeViewer()">CHIUDI CONNESSIONE [X]</span>
         <div class="sheet-container">
             <img id="v-img" class="side-img" src="">
             <div class="main-sheet">
-                <div style="border-bottom: 1px solid var(--neon-blue); padding-bottom: 20px; margin-bottom: 20px; position: relative;">
+                <div style="border-bottom: 2px solid var(--neon-blue); padding-bottom: 20px; margin-bottom: 20px; position: relative;">
                     <h2 id="v-nome" style="font-family:'Orbitron'; font-size: 3rem; margin:0; color:var(--neon-blue);">---</h2>
-                    <p id="v-motto" style="font-style:italic; color:var(--neon-yellow); margin-top: 5px; font-size: 1.1rem;">"---"</p>
+                    <p id="v-motto" style="font-style:italic; color:var(--neon-yellow); margin-top: 5px; font-size: 1.2rem; font-family:'Rajdhani';">"---"</p>
                     <button id="v-btn-edit" class="btn-action" style="position:absolute; top:0; right:0; border-color: var(--neon-yellow); color: var(--neon-yellow);">EVOLVI</button>
                 </div>
                 
@@ -156,34 +174,34 @@
                     <div>
                         <div class="data-box" style="border-color: var(--neon-yellow);">
                             <h3>PROFILO SOCIALE</h3>
-                            <div style="font-size:0.9rem;"><strong>CLUB:</strong> <span id="v-club" style="color:var(--neon-blue)">--</span></div>
-                            <div style="font-size:0.9rem;"><strong>DISTINTIVO:</strong> <span id="v-distintivo" style="color:var(--neon-blue)">--</span></div>
-                            <div id="v-uniforme" style="font-size:0.8rem; color:#888; margin-top:10px;">--</div>
+                            <div style="font-size:0.95rem; margin-bottom:5px;"><strong>CLUB:</strong> <span id="v-club" style="color:var(--neon-blue)">--</span></div>
+                            <div style="font-size:0.95rem; margin-bottom:5px;"><strong>DISTINTIVO:</strong> <span id="v-distintivo" style="color:var(--neon-blue)">--</span></div>
+                            <div id="v-uniforme" style="font-size:0.85rem; color:#888; margin-top:10px; line-height:1.4;">--</div>
                         </div>
                         <div class="data-box">
                             <h3>STIRPE & EREDITÀ</h3>
-                            <div id="v-stirpe" style="font-weight:bold; color:var(--neon-blue); font-family:'Orbitron'; margin-bottom:5px;">--</div>
-                            <div id="v-eredita-desc" style="font-size:0.85rem;"></div>
+                            <div id="v-stirpe" style="font-weight:bold; color:var(--neon-blue); font-family:'Orbitron'; margin-bottom:8px; font-size:0.9rem;">--</div>
+                            <div id="v-eredita-desc" style="font-size:0.9rem; line-height:1.4; color:#ccc;"></div>
                         </div>
                         <div class="data-box">
                             <h3>OPERATIVITÀ JOB</h3>
-                            <div id="v-job" style="font-weight:bold; color:var(--neon-blue); font-family:'Orbitron'; margin-bottom:5px;">--</div>
-                            <div id="v-job-desc" style="font-size:0.85rem;"></div>
+                            <div id="v-job" style="font-weight:bold; color:var(--neon-blue); font-family:'Orbitron'; margin-bottom:8px; font-size:0.9rem;">--</div>
+                            <div id="v-job-desc" style="font-size:0.9rem; line-height:1.4; color:#ccc;"></div>
                         </div>
                     </div>
                     <div>
                         <div class="data-box" style="border-color: var(--neon-pink);">
                             <h3>CORE SYNC</h3>
-                            <div id="v-params" style="display:grid; grid-template-columns: 1fr 1fr; font-size:0.9rem; gap:5px;"></div>
-                            <div id="v-limite-visual"></div>
+                            <div id="v-params" style="display:grid; grid-template-columns: 1fr 1fr; font-size:1rem; gap:10px; font-family:'Orbitron';"></div>
+                            <div id="v-limite-visual" style="margin-top:15px;"></div>
                         </div>
                         <div class="data-box">
                             <h3>CAPACITÀ ATTIVE</h3>
                             <div id="v-tecniche"></div>
                         </div>
                         <div class="data-box">
-                            <h3>MEMORIE</h3>
-                            <div id="v-memorie-box" style="font-size:0.85rem;"></div>
+                            <h3>COLLEGAMENTI NEURALI</h3>
+                            <div id="v-memorie-box" style="font-size:0.9rem; line-height:1.5;"></div>
                         </div>
                     </div>
                 </div>
@@ -221,7 +239,7 @@
                 const masterEmail = configSnap.exists() ? configSnap.data().masterEmail : "";
                 isMasterGlobal = user.email.toLowerCase().trim() === masterEmail.toLowerCase().trim();
                 
-                document.getElementById('role-display').innerHTML = `<span style="font-family:'Orbitron'; font-size:0.6rem; padding:2px 8px; border:1px solid ${isMasterGlobal?'var(--neon-pink)':'var(--neon-blue)'}; color:${isMasterGlobal?'var(--neon-pink)':'var(--neon-blue)'}; margin-left:10px;">${isMasterGlobal?'MASTER':'OPERATORE'}</span>`;
+                document.getElementById('role-display').innerHTML = `<span style="font-family:'Orbitron'; font-size:0.6rem; padding:2px 8px; border:1px solid ${isMasterGlobal?'var(--neon-pink)':'var(--neon-blue)'}; color:${isMasterGlobal?'var(--neon-pink)':'var(--neon-blue)'}; margin-left:10px; border-radius:2px;">${isMasterGlobal?'MASTER ACCESS':'FIELD OPERATOR'}</span>`;
 
                 try {
                     const [resS, resJ] = await Promise.all([fetch('stirpi_database.json'), fetch('classi_database.json')]);
@@ -230,7 +248,7 @@
                     const snap = await getDocs(collection(db, "personaggi"));
                     allChars = snap.docs.map(d => ({id: d.id, ...d.data()}));
                     renderArchive(user.uid);
-                } catch (e) { console.error(e); }
+                } catch (e) { console.error("Database Error:", e); }
             } else { window.location.href = "index.html"; }
         });
 
@@ -252,9 +270,10 @@
                     <img src="${p.immagine || ''}">
                     <div class="pg-card-info">
                         <div class="pg-card-name">${p.nome}</div>
-                        <div style="font-size:0.7rem; color:#666;">${p.stirpe.toUpperCase()} | ${p.job.toUpperCase()}</div>
-                        ${canManage ? `<button class="btn-delete-small" onclick="event.stopPropagation(); window.deleteChar('${p.id}', '${p.nome}')">ELIMINA</button>
-                                       <button class="btn-edit-small" onclick="event.stopPropagation(); window.editChar('${p.id}')">EVOLVI</button>` : ''}
+                        <div style="font-size:0.75rem; color:#888; font-family:'Orbitron'; text-transform:uppercase;">${p.stirpe} // ${p.job}</div>
+                        ${canManage ? `
+                            <button class="btn-delete-small" onclick="event.stopPropagation(); window.deleteChar('${p.id}', '${p.nome}')">EPURARE</button>
+                            <button class="btn-edit-small" onclick="event.stopPropagation(); window.editChar('${p.id}')">EVOLVERE</button>` : ''}
                     </div>`;
                 card.onclick = () => openViewer(p);
                 (isMio ? gPers : gUtenti).appendChild(card);
@@ -269,10 +288,15 @@
             
             overlay.style.display = 'block';
             loader.style.display = 'flex';
+            bar.style.width = '0%';
             
-            const steps = [{p:30, t:"BYPASSING FIREWALL..."}, {p:60, t:"SYNCING NEURAL CORE..."}, {p:100, t:"ACCESS GRANTED"}];
+            const steps = [
+                {p:30, t:"BYPASSING SECURITY LAYER..."}, 
+                {p:65, t:"SYNCING NEURAL CORE..."}, 
+                {p:100, t:"CONNECTION STABLE. ACCESS GRANTED."}
+            ];
             for(let s of steps){
-                await new Promise(r => setTimeout(r, 250));
+                await new Promise(r => setTimeout(r, 200));
                 bar.style.width = s.p+"%";
                 status.innerText = s.t;
             }
@@ -289,33 +313,42 @@
             document.getElementById('v-distintivo').innerText = p.trattoDistintivo || "--";
             document.getElementById('v-uniforme').innerText = p.uniforme || "Uniforme Standard Operativa";
             document.getElementById('v-stirpe').innerText = `${p.stirpe.toUpperCase()} > ${p.eredita.toUpperCase()}`;
-            document.getElementById('v-eredita-desc').innerHTML = `<p>${ereditaDati?.descrizione || ""}</p>` + (ereditaDati?.effetto ? `<div class="tech-tag">${ereditaDati.effetto}</div>` : "");
+            document.getElementById('v-eredita-desc').innerHTML = `<p>${ereditaDati?.descrizione || ""}</p>` + (ereditaDati?.effetto ? `<div class="tech-tag" style="border-color:var(--neon-pink); color:var(--neon-yellow);">${ereditaDati.effetto}</div>` : "");
             document.getElementById('v-job').innerText = p.job.toUpperCase();
-            document.getElementById('v-job-desc').innerHTML = `<p>${jobDati?.descrizione || ""}</p>`;
+            document.getElementById('v-job-desc').innerHTML = `<i style="color:var(--neon-blue); display:block; margin-bottom:5px;">"${jobDati?.citazione || ''}"</i><p>${jobDati?.descrizione || ""}</p>`;
             
             const numMem = p.memorie?.length || 0;
             const totLim = 11 + (numMem * 3);
-            document.getElementById('v-params').innerHTML = `<div>ANIMA: ${p.anima}</div><div>CORE: ${p.core}</div><div>DIFETTO: ${p.difetto}</div><div>NEMESI: ${p.nemesi}</div>`;
-            let dots = `<div class="limite-container">`;
+            document.getElementById('v-params').innerHTML = `
+                <div><span style="color:var(--neon-pink)">ANIMA:</span> ${p.anima}</div>
+                <div><span style="color:var(--neon-pink)">CORE:</span> ${p.core}</div>
+                <div><span style="color:var(--neon-pink)">DIFETTO:</span> ${p.difetto}</div>
+                <div><span style="color:var(--neon-pink)">NEMESI:</span> ${p.nemesi}</div>`;
+            
+            let dots = `<div style="font-size:0.6rem; color:var(--neon-pink); margin-bottom:5px; font-family:'Orbitron'">SYNC LIMITE: ${totLim}/20</div><div class="limite-container">`;
             for(let i=0; i<20; i++) dots += `<div class="limite-dot ${i<totLim?'dot-filled':''}"></div>`;
             document.getElementById('v-limite-visual').innerHTML = dots + `</div>`;
 
             const tBox = document.getElementById('v-tecniche'); tBox.innerHTML = "";
-            jobDati?.tecniche?.forEach(t => tBox.innerHTML += `<div class="tech-tag"><strong>${t.nome}:</strong> ${t.effetto}</div>`);
-            p.capacita?.forEach(c => tBox.innerHTML += `<div class="tech-tag" style="border-color:var(--neon-pink)">${c}</div>`);
+            jobDati?.tecniche?.forEach(t => tBox.innerHTML += `<div class="tech-tag"><strong>${t.nome.toUpperCase()}:</strong> ${t.effetto}</div>`);
+            p.capacita?.forEach(c => tBox.innerHTML += `<div class="tech-tag" style="border-color:var(--neon-pink)"><strong>CAPACITÀ:</strong> ${c}</div>`);
+            p.oggetti?.forEach(o => tBox.innerHTML += `<div class="tech-tag" style="border-color:var(--neon-yellow)"><strong>EQUIP:</strong> ${o}</div>`);
             
-            document.getElementById('v-memorie-box').innerHTML = `MEMORIE: ${p.memorie?.join(' // ') || '--'}<br>AFFINITÀ: ${p.affinita?.join(' // ') || '--'}`;
+            document.getElementById('v-memorie-box').innerHTML = `
+                <div style="margin-bottom:10px;"><strong style="color:var(--neon-pink)">MEMORIE:</strong><br>${p.memorie?.join(' // ') || '--'}</div>
+                <div><strong style="color:var(--neon-blue)">AFFINITÀ:</strong><br>${p.affinita?.join(' // ') || '--'}</div>`;
+            
             document.getElementById('v-tratti').innerHTML = p.tratti?.map(t => `<span class="trait-pill">${t}</span>`).join('') || '';
             document.getElementById('v-btn-edit').style.display = (isMasterGlobal || p.creatoDa === auth.currentUser.uid) ? 'block' : 'none';
             document.getElementById('v-btn-edit').onclick = () => window.editChar(p.id);
 
-            setTimeout(() => { loader.style.display = 'none'; }, 300);
+            setTimeout(() => { loader.style.display = 'none'; }, 400);
         };
 
         window.closeViewer = () => document.getElementById('viewer-overlay').style.display = 'none';
         window.filterArchive = () => renderArchive(auth.currentUser.uid, document.getElementById('search-bar').value);
         window.editChar = (id) => { sessionStorage.setItem('updateModeId', id); window.location.href = 'aggiorna.html'; };
-        window.deleteChar = async (id, nome) => { if(confirm(`EPURARE ${nome.toUpperCase()}?`)) { await deleteDoc(doc(db, "personaggi", id)); location.reload(); } };
+        window.deleteChar = async (id, nome) => { if(confirm(`DEURARE DEFINITIVAMENTE ${nome.toUpperCase()} DALL'ARCHIVIO?`)) { await deleteDoc(doc(db, "personaggi", id)); location.reload(); } };
         document.getElementById('btn-logout').onclick = () => signOut(auth);
     </script>
 </body>
