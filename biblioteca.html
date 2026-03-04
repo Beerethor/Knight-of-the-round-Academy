@@ -163,6 +163,34 @@
     <div id="detail-view"></div>
 
     <script>
+        // --- LOGICA DI SINCRONIZZAZIONE TERMINALE -> BIBLIOTECA ---
+window.addEventListener('DOMContentLoaded', () => {
+    // 1. Identifica i parametri nell'URL (es: ?cat=stirpi)
+    const urlParams = new URLSearchParams(window.location.search);
+    const categoria = urlParams.get('cat');
+
+    // 2. Mappa i parametri ai file JSON e ai bottoni corretti
+    if (categoria) {
+        console.log("Protocollo di auto-caricamento avviato per:", categoria);
+        
+        // Timeout minimo per assicurarsi che il resto degli script sia pronto
+        setTimeout(() => {
+            if (categoria === 'stirpi') {
+                const btn = document.querySelector('button[onclick*="stirpi_database.json"]') || document.getElementById('btn-stirpi');
+                loadData('stirpi_database.json', btn);
+            } 
+            else if (categoria === 'classi') {
+                const btn = document.querySelector('button[onclick*="classi_database.json"]') || document.getElementById('btn-classi');
+                loadData('classi_database.json', btn);
+            } 
+            else if (categoria === 'knight') {
+                const btn = document.querySelector('.btn-knight') || document.getElementById('btn-knight');
+                showKnightGuide(btn);
+            }
+        }, 100);
+    }
+});
+// --- FINE LOGICA AGGIUNTIVA ---
         let currentData = [];
 
         async function loadData(filename, btn) {
