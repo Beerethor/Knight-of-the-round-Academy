@@ -6,58 +6,139 @@
     <title>KOTRA - Evoluzione Matricola</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
-        :root { --neon-blue: #00f2ff; --neon-pink: #ff00ff; --neon-yellow: #ffff00; --bg-dark: #0a0a0c; --glass: rgba(255,255,255,0.03); }
-        body { background: var(--bg-dark); color: white; font-family: 'Rajdhani', sans-serif; padding: 20px; }
-        
-        .nav-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid #333; padding-bottom: 10px; }
-        .btn-nav { text-decoration: none; color: var(--neon-blue); font-family: 'Orbitron'; font-size: 0.8rem; border: 1px solid var(--neon-blue); padding: 5px 15px; transition: 0.3s; }
-        .btn-nav:hover { background: var(--neon-blue); color: black; }
+        :root { 
+            --neon-blue: #00f2ff; 
+            --neon-pink: #ff00ff; 
+            --neon-yellow: #ffff00; 
+            --bg-dark: #060608; 
+            --panel-bg: rgba(15, 15, 20, 0.9);
+            --border-color: rgba(0, 242, 255, 0.2);
+        }
 
-        .form-section { background: var(--glass); padding: 20px; border: 1px solid #222; margin-bottom: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; border-left: 3px solid var(--neon-blue); }
-        .locked { border-left-color: #555; opacity: 0.8; }
-        .evolution { border-left-color: var(--neon-pink); }
+        body { 
+            background: var(--bg-dark); 
+            color: var(--neon-blue); 
+            font-family: 'Rajdhani', sans-serif; 
+            padding: 20px;
+            background-image: 
+                radial-gradient(circle at 50% 50%, rgba(0, 242, 255, 0.05) 0%, transparent 80%),
+                linear-gradient(rgba(0, 242, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 242, 255, 0.02) 1px, transparent 1px);
+            background-size: 100% 100%, 30px 30px, 30px 30px;
+        }
+
+        /* Scanline effect */
+        body::after {
+            content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: repeating-linear-gradient(0deg, rgba(0,0,0,0.1), rgba(0,0,0,0.1) 1px, transparent 1px, transparent 2px);
+            pointer-events: none; z-index: 10;
+        }
+
+        .nav-header { 
+            display: flex; justify-content: space-between; align-items: center; 
+            margin-bottom: 30px; border-bottom: 2px solid var(--neon-blue); 
+            padding-bottom: 10px; box-shadow: 0 5px 15px rgba(0, 242, 255, 0.1);
+        }
+
+        .btn-nav { 
+            text-decoration: none; color: var(--neon-pink); font-family: 'Orbitron'; 
+            font-size: 0.7rem; border: 1px solid var(--neon-pink); padding: 8px 20px; 
+            transition: 0.3s; clip-path: polygon(10% 0, 100% 0, 90% 100%, 0 100%);
+        }
+        .btn-nav:hover { background: var(--neon-pink); color: #000; box-shadow: 0 0 15px var(--neon-pink); }
+
+        .form-section { 
+            background: var(--panel-bg); 
+            padding: 25px; 
+            border: 1px solid var(--border-color); 
+            margin-bottom: 25px; 
+            display: grid; grid-template-columns: 1fr 1fr; gap: 25px; 
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Decoration corners */
+        .form-section::before {
+            content: ""; position: absolute; top: 0; left: 0; width: 10px; height: 10px;
+            border-top: 2px solid var(--neon-blue); border-left: 2px solid var(--neon-blue);
+        }
+
+        .locked { border-left: 4px solid #333; opacity: 0.7; filter: grayscale(1); }
+        .evolution { border-left: 4px solid var(--neon-pink); box-shadow: -5px 0 15px rgba(255, 0, 255, 0.1); }
         .full-width { grid-column: 1 / -1; }
         
-        label { display: block; color: var(--neon-blue); font-family: 'Orbitron'; font-size: 0.7rem; margin-bottom: 5px; text-transform: uppercase; }
+        label { 
+            display: block; color: var(--neon-blue); font-family: 'Orbitron'; 
+            font-size: 0.65rem; margin-bottom: 8px; letter-spacing: 1px;
+        }
         .evolution label { color: var(--neon-pink); }
         
-        input, select, textarea { width: 100%; background: #000; border: 1px solid #333; color: white; padding: 10px; margin-bottom: 10px; border-radius: 4px; font-family: 'Rajdhani'; font-size: 1rem; outline: none; }
-        input:focus, select:focus { border-color: var(--neon-pink); }
-        input:read-only { background: #111; color: #888; border-color: #222; cursor: not-allowed; }
+        input, select, textarea { 
+            width: 100%; background: rgba(0, 0, 0, 0.6); border: 1px solid var(--border-color); 
+            color: #fff; padding: 12px; margin-bottom: 5px; border-radius: 0; 
+            font-family: 'Rajdhani'; font-size: 1rem; transition: 0.3s;
+        }
         
-        .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
-        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-        .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+        input:focus, select:focus, textarea:focus { 
+            border-color: var(--neon-pink); outline: none; background: rgba(255, 0, 255, 0.05); 
+        }
 
-        .btn-update { width: 100%; background: transparent; border: 2px solid var(--neon-pink); color: var(--neon-pink); padding: 15px; font-family: 'Orbitron'; font-weight: bold; cursor: pointer; transition: 0.3s; margin-top: 20px; }
-        .btn-update:hover { background: var(--neon-pink); color: black; box-shadow: 0 0 20px var(--neon-pink); }
+        input:read-only { background: rgba(20, 20, 25, 0.8); color: #555; border-color: #222; cursor: not-allowed; }
         
-        #loading-overlay { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.9); z-index: 1000; flex-direction: column; align-items: center; justify-content: center; }
+        .grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; }
+        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
+        .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
 
-        /* Stile speciale per il secondo Job */
-        .job-highlight { border: 1px solid var(--neon-pink); background: rgba(255, 0, 255, 0.05); }
+        .btn-update { 
+            width: 100%; background: transparent; border: 2px solid var(--neon-pink); 
+            color: var(--neon-pink); padding: 20px; font-family: 'Orbitron'; 
+            font-weight: bold; cursor: pointer; transition: 0.4s; margin-top: 20px;
+            letter-spacing: 4px; text-transform: uppercase;
+            clip-path: polygon(5% 0, 100% 0, 95% 100%, 0 100%);
+        }
+        .btn-update:hover { 
+            background: var(--neon-pink); color: #000; box-shadow: 0 0 30px var(--neon-pink); 
+        }
+        
+        #loading-overlay { 
+            display: none; position: fixed; top:0; left:0; width:100%; height:100%; 
+            background: rgba(6, 6, 8, 0.95); z-index: 1000; flex-direction: column; 
+            align-items: center; justify-content: center; backdrop-filter: blur(5px);
+        }
+
+        .job-highlight { 
+            border: 1px solid var(--neon-pink); color: var(--neon-pink); font-weight: bold;
+        }
+
+        h3 { font-family: 'Orbitron'; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 15px; }
+
+        @media (max-width: 768px) {
+            .form-section { grid-template-columns: 1fr; }
+            .grid-3, .grid-2 { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
 <body>
 
     <div id="loading-overlay">
-        <p style="font-family:'Orbitron'; color:var(--neon-pink);">SINCRONIZZAZIONE EVOLUZIONE...</p>
+        <div style="width: 50px; height: 50px; border: 3px solid var(--neon-pink); border-top-color: transparent; border-radius: 50%; animation: spin 1s linear infinite;"></div>
+        <p style="font-family:'Orbitron'; color:var(--neon-pink); margin-top: 20px; letter-spacing: 3px;">UPLOADING DATA...</p>
     </div>
 
     <header class="nav-header">
-        <h1 style="font-family:'Orbitron'; font-size: 1.2rem; color:var(--neon-blue);">EVOLUZIONE MATRICOLA</h1>
-        <a href="archivio.html" class="btn-nav">ANNULLA</a>
+        <h1 style="font-family:'Orbitron'; font-size: 1.1rem; color:var(--neon-blue); margin: 0;">&gt; EVOLUZIONE_MATRICOLA.EXE</h1>
+        <a href="archivio.html" class="btn-nav">DISCONNETTI</a>
     </header>
 
     <div class="form-section locked">
-        <div class="full-width"><h3 style="font-family:'Orbitron'; font-size: 0.8rem; margin:0; color:#888;">DATI CORE BLOCCATI</h3></div>
+        <div class="full-width"><h3 style="font-size: 0.75rem; color:#555;">[ CORE_DATA_LOCKED ]</h3></div>
         <div>
-            <label>NOME</label><input type="text" id="nome" readonly>
-            <label>STIRPE</label><input type="text" id="stirpe" readonly>
+            <label>SOGGETTO</label><input type="text" id="nome" readonly>
+            <label>ORIGINE_STIRPE</label><input type="text" id="stirpe" readonly>
         </div>
         <div>
-            <label>JOB PRIMARIO</label><input type="text" id="job-primario" readonly>
-            <label>SINCRONIA CORE / ANIMA</label>
+            <label>SYNC_JOB_01</label><input type="text" id="job-primario" readonly>
+            <label>BIO_SYNCHRONIZATION (C/A)</label>
             <div class="grid-2">
                 <input type="text" id="core" readonly>
                 <input type="text" id="anima" readonly>
@@ -66,62 +147,63 @@
     </div>
 
     <div class="form-section evolution">
-        <div class="full-width"><h3 style="font-family:'Orbitron'; font-size: 0.8rem; margin:0;">SINAPSI JOB SECONDARIO</h3></div>
+        <div class="full-width"><h3 style="font-size: 0.75rem;">[ MULTICLASS_NEURAL_LINK ]</h3></div>
         <div class="full-width">
-            <label>SECONDO JOB (SBLOCCO MULTICLASSE)</label>
+            <label>SECONDO JOB (OVERRIDE_SELECT)</label>
             <select id="secondo-job" class="job-highlight">
-                <option value="">-- NESSUN SECONDO JOB --</option>
-                </select>
-            <p style="font-size: 0.7rem; color: #888; margin: 0;">L'acquisizione di un secondo Job permette di accedere a nuove Tecniche nel Terminale Archivio.</p>
+                <option value="">-- NESSUNA SINAPSI RILEVATA --</option>
+            </select>
         </div>
     </div>
 
     <div class="form-section evolution">
-        <div class="full-width"><h3 style="font-family:'Orbitron'; font-size: 0.8rem; margin:0;">ESPANSIONE MEMETICA (MAX 10 TRATTI)</h3></div>
+        <div class="full-width"><h3 style="font-size: 0.75rem;">[ MEMETIC_EXPANSION_SLOTS ]</h3></div>
         <div class="full-width grid-4" id="tratti-container"></div>
     </div>
 
     <div class="form-section evolution">
         <div>
-            <label>CAPACITÀ SPECIALI (MAX 2)</label>
-            <input type="text" class="cap-input" placeholder="Capacità 1">
-            <input type="text" class="cap-input" placeholder="Capacità 2">
+            <label>CAPACITÀ_SPECIALI_SBLOCCATE</label>
+            <input type="text" class="cap-input" placeholder="Slot_01">
+            <input type="text" class="cap-input" placeholder="Slot_02">
         </div>
         <div>
-            <label>EQUIPAGGIAMENTO / OGGETTI (MAX 2)</label>
-            <input type="text" class="item-input" placeholder="Oggetto 1">
-            <input type="text" class="item-input" placeholder="Oggetto 2">
+            <label>EQUIPAGGIAMENTO_MOD</label>
+            <input type="text" class="item-input" placeholder="Item_01">
+            <input type="text" class="item-input" placeholder="Item_02">
         </div>
         <div class="full-width">
-            <label>MEMORIE (+3 PUNTI LIMITE CAD.)</label>
+            <label>RELIQUIA_MEMORIE (LIMIT_UP: +3)</label>
             <div class="grid-3">
-                <input type="text" class="mem-input" placeholder="Memoria 1">
-                <input type="text" class="mem-input" placeholder="Memoria 2">
-                <input type="text" class="mem-input" placeholder="Memoria 3">
+                <input type="text" class="mem-input" placeholder="Fragment_01">
+                <input type="text" class="mem-input" placeholder="Fragment_02">
+                <input type="text" class="mem-input" placeholder="Fragment_03">
             </div>
         </div>
     </div>
 
     <div class="form-section evolution">
-        <div class="full-width"><h3 style="font-family:'Orbitron'; font-size: 0.8rem; margin:0;">PERSONALIZZAZIONE IDENTITY</h3></div>
+        <div class="full-width"><h3 style="font-size: 0.75rem;">[ IDENTITY_PERSONALIZATION ]</h3></div>
         <div>
-            <label>UNIFORME PERSONALIZZATA (DESCRIZIONE)</label>
-            <textarea id="uniforme" rows="2" placeholder="Descrivi lo stile della tua divisa..."></textarea>
-            <label>CLUB SCOLASTICO / FAZIONE</label>
-            <input type="text" id="club" placeholder="Es: Club di Kendo, Consiglio Studentesco...">
+            <label>UNIFORME_CUSTOM_STYLE</label>
+            <textarea id="uniforme" rows="2" placeholder="Input visual data..."></textarea>
+            <label>FAZIONE_CLUB</label>
+            <input type="text" id="club" placeholder="Neural identification...">
         </div>
         <div>
-            <label>TRATTO DISTINTIVO</label>
-            <input type="text" id="tratto-distintivo" placeholder="Es: Occhi eterocromatici, Cicatrice...">
-            <label>AFFINITÀ (MAX 2)</label>
+            <label>DISTINCTIVE_MARK</label>
+            <input type="text" id="tratto-distintivo" placeholder="Anomalies detected...">
+            <label>AFFINITY_LINKS</label>
             <div class="grid-2">
-                <input type="text" class="aff-input" placeholder="Affinità 1">
-                <input type="text" class="aff-input" placeholder="Affinità 2">
+                <input type="text" class="aff-input" placeholder="Link_01">
+                <input type="text" class="aff-input" placeholder="Link_02">
             </div>
         </div>
     </div>
 
-    <button class="btn-update" id="btn-save-evolution">SALVA EVOLUZIONE</button>
+    <button class="btn-update" id="btn-save-evolution">COMMIT_CHANGES</button>
+
+    <style>@keyframes spin { 100% { transform: rotate(360deg); } }</style>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
@@ -149,7 +231,6 @@
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 try {
-                    // Carica database classi per il menu a tendina
                     const resJ = await fetch('classi_database.json');
                     const dataJ = await resJ.json();
                     classiDatabase = dataJ.items;
@@ -159,10 +240,10 @@
                         const opt = document.createElement('option');
                         opt.value = job.nome;
                         opt.textContent = job.nome.toUpperCase();
+                        opt.style.background = "#060608";
                         selectJob.appendChild(opt);
                     });
 
-                    // Carica dati personaggio
                     const docSnap = await getDoc(doc(db, "personaggi", updateId));
                     if(docSnap.exists()) {
                         const p = docSnap.data();
@@ -172,23 +253,20 @@
                         document.getElementById('job-primario').value = p.job;
                         document.getElementById('core').value = p.core;
                         document.getElementById('anima').value = p.anima;
-
-                        // Secondo Job
                         if(p.secondoJob) document.getElementById('secondo-job').value = p.secondoJob;
 
-                        // Tratti
                         const container = document.getElementById('tratti-container');
                         for(let i=0; i<10; i++) {
                             const val = (p.tratti && p.tratti[i]) ? p.tratti[i] : "";
                             const input = document.createElement('input');
                             input.type = "text";
                             input.className = "tratto-input";
+                            input.placeholder = `TRAIT_${i+1}`;
                             input.value = val;
                             if(i < 4 && val !== "") input.readOnly = true;
                             container.appendChild(input);
                         }
 
-                        // Helper per caricare array negli input
                         const fillInputs = (className, dataArray) => {
                             const inputs = document.querySelectorAll(`.${className}`);
                             if(dataArray) dataArray.forEach((d, i) => { if(inputs[i]) inputs[i].value = d; });
@@ -203,25 +281,21 @@
                         document.getElementById('club').value = p.club || "";
                         document.getElementById('tratto-distintivo').value = p.trattoDistintivo || "";
                     }
-                } catch (e) {
-                    console.error("Errore caricamento:", e);
-                }
+                } catch (e) { console.error(e); }
             } else { window.location.href = "index.html"; }
         });
 
         document.getElementById('btn-save-evolution').onclick = async () => {
             document.getElementById('loading-overlay').style.display = 'flex';
-            
             const memorie = Array.from(document.querySelectorAll('.mem-input')).map(i => i.value).filter(v => v !== "");
-            const bonusPuntiLimite = memorie.length * 3;
-
+            
             const updatedData = {
                 secondoJob: document.getElementById('secondo-job').value,
                 tratti: Array.from(document.querySelectorAll('.tratto-input')).map(i => i.value).filter(v => v !== ""),
                 capacita: Array.from(document.querySelectorAll('.cap-input')).map(i => i.value).filter(v => v !== ""),
                 oggetti: Array.from(document.querySelectorAll('.item-input')).map(i => i.value).filter(v => v !== ""),
                 memorie: memorie,
-                bonusPuntiLimite: bonusPuntiLimite,
+                bonusPuntiLimite: memorie.length * 3,
                 uniforme: document.getElementById('uniforme').value,
                 club: document.getElementById('club').value,
                 trattoDistintivo: document.getElementById('tratto-distintivo').value,
@@ -233,7 +307,7 @@
                 sessionStorage.removeItem('updateModeId');
                 window.location.href = "archivio.html";
             } catch (e) {
-                alert("Errore sincronizzazione.");
+                alert("SYNC_ERROR: UNABLE TO COMMIT CHANGES.");
                 document.getElementById('loading-overlay').style.display = 'none';
             }
         };
