@@ -10,37 +10,38 @@
         body { background: var(--bg-dark); color: white; font-family: 'Rajdhani', sans-serif; margin: 0; }
         
         /* Header e Nav */
-        .nav-header { padding: 20px; border-bottom: 1px solid #222; display: flex; justify-content: space-between; align-items: center; background: #000; }
-        .btn-action { background: transparent; border: 1px solid var(--neon-blue); color: var(--neon-blue); padding: 8px 15px; font-family: 'Orbitron'; cursor: pointer; text-decoration: none; font-size: 0.8rem; }
-        .btn-logout { border-color: var(--neon-pink); color: var(--neon-pink); margin-left: 10px; }
+        .nav-header { padding: 20px; border-bottom: 1px solid #222; display: flex; justify-content: space-between; align-items: center; background: #000; flex-wrap: wrap; gap: 15px; }
+        .nav-controls { display: flex; align-items: center; gap: 10px; }
+        .btn-action { background: transparent; border: 1px solid var(--neon-blue); color: var(--neon-blue); padding: 8px 15px; font-family: 'Orbitron'; cursor: pointer; text-decoration: none; font-size: 0.8rem; transition: 0.3s; }
+        .btn-action:hover { background: var(--neon-blue); color: black; }
+        .btn-home { border-color: var(--neon-yellow); color: var(--neon-yellow); }
+        .btn-logout { border-color: var(--neon-pink); color: var(--neon-pink); }
+
+        /* Ricerca */
+        .search-container { padding: 10px 40px; background: #0c0c0f; border-bottom: 1px solid #222; }
+        .search-input { width: 100%; max-width: 500px; background: #000; border: 1px solid var(--neon-blue); color: white; padding: 10px 15px; font-family: 'Rajdhani'; font-size: 1.1rem; border-radius: 4px; outline: none; box-shadow: 0 0 10px rgba(0, 242, 255, 0.1); }
+        .search-input:focus { box-shadow: 0 0 15px var(--neon-blue); }
 
         /* Griglia */
         .section-label { font-family: 'Orbitron'; color: var(--neon-pink); padding: 20px 40px 0; font-size: 0.9rem; letter-spacing: 2px; }
         .archive-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; padding: 20px 40px 40px; }
         
-        .pg-card { background: var(--panel-bg); border: 1px solid #222; cursor: pointer; transition: 0.3s; position: relative; overflow: hidden; }
+        .pg-card { background: var(--panel-bg); border: 1px solid #222; cursor: pointer; transition: 0.3s; position: relative; overflow: hidden; border-radius: 4px; }
         .pg-card:hover { border-color: var(--neon-blue); transform: translateY(-5px); }
         .pg-card img { width: 100%; height: 180px; object-fit: cover; filter: grayscale(40%); }
         .pg-card:hover img { filter: grayscale(0%); }
         .pg-card-info { padding: 15px; border-top: 1px solid #222; }
         .pg-card-name { font-family: 'Orbitron'; color: var(--neon-blue); font-size: 1.1rem; }
 
-        /* Overlay Scheda Tattica */
+        /* Viewer Overlay */
         #viewer-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.98); z-index: 1000; overflow-y: auto; }
         .sheet-container { max-width: 1100px; margin: 40px auto; background: #0c0c0f; border: 1px solid #333; display: grid; grid-template-columns: 350px 1fr; position: relative; }
         .side-img { width: 100%; height: 100%; object-fit: cover; border-right: 1px solid var(--neon-blue); }
         .main-sheet { padding: 40px; }
-        
+        .close-overlay { position: absolute; top: 20px; right: 20px; color: white; cursor: pointer; font-family: 'Orbitron'; font-size: 1.2rem; z-index: 1100; }
         .data-box { background: rgba(255,255,255,0.03); border-left: 3px solid var(--neon-blue); padding: 15px; margin-bottom: 20px; }
         .data-box h3 { font-family: 'Orbitron'; font-size: 0.7rem; color: var(--neon-pink); margin: 0 0 10px; }
-        
         .tech-tag { display: inline-block; background: rgba(0,242,255,0.1); border: 1px solid var(--neon-blue); padding: 4px 10px; margin: 5px; font-size: 0.8rem; }
-        .close-overlay { position: absolute; top: 20px; right: 20px; color: white; cursor: pointer; font-family: 'Orbitron'; font-size: 1.2rem; z-index: 1100; }
-
-        /* Badge Ruoli */
-        .role-tag { font-family: 'Orbitron'; font-size: 0.6rem; padding: 2px 8px; border: 1px solid; border-radius: 4px; vertical-align: middle; margin-left: 10px; }
-        .master-tag { border-color: var(--neon-pink); color: var(--neon-pink); }
-        .player-tag { border-color: var(--neon-blue); color: var(--neon-blue); }
     </style>
 </head>
 <body>
@@ -50,18 +51,23 @@
             <h1 style="font-family:'Orbitron'; color:var(--neon-blue); display:inline-block; margin:0; font-size:1.3rem;">KOTRA // ARCHIVIO</h1>
             <span id="role-display"></span>
         </div>
-        <div>
+        <div class="nav-controls">
+            <a href="index.html" class="btn-action btn-home">HUB</a>
             <a href="creatore.html" class="btn-action">+ NUOVA MATRICOLA</a>
             <button class="btn-action btn-logout" id="btn-logout">LOGOUT</button>
         </div>
     </header>
+
+    <div class="search-container">
+        <input type="text" id="search-bar" class="search-input" placeholder="Cerca per nome, stirpe o job..." oninput="filterArchive()">
+    </div>
 
     <div id="master-view" style="display: none;">
         <div class="section-label">UNITÀ SOTTOPOSTE (GIOCATORI)</div>
         <div class="archive-grid" id="grid-utenti"></div>
     </div>
 
-    <div class="section-label" id="label-personali">LE MIE MATRICOLE</div>
+    <div class="section-label">LE MIE MATRICOLE</div>
     <div class="archive-grid" id="grid-personali"></div>
 
     <div id="viewer-overlay">
@@ -73,40 +79,17 @@
                     <h2 id="v-nome" style="font-family:'Orbitron'; font-size: 3rem; margin:0; color:var(--neon-blue);">---</h2>
                     <p id="v-motto" style="font-style:italic; color:var(--neon-yellow);">"---"</p>
                 </div>
-
                 <div style="display:grid; grid-template-columns: 1fr 1fr; gap:30px;">
                     <div>
-                        <div class="data-box">
-                            <h3>STIRPE & EREDITÀ</h3>
-                            <div id="v-stirpe" style="font-weight:bold;">---</div>
-                            <div id="v-eredita-desc" style="font-size:0.9rem; color:#aaa; margin-top:5px;">---</div>
-                        </div>
-                        <div class="data-box">
-                            <h3>JOB</h3>
-                            <div id="v-job" style="font-weight:bold;">---</div>
-                            <div id="v-job-desc" style="font-size:0.9rem; color:#aaa; margin-top:5px;">---</div>
-                        </div>
+                        <div class="data-box"><h3>STIRPE & EREDITÀ</h3><div id="v-stirpe">---</div><div id="v-eredita-desc" style="font-size:0.8rem; color:#aaa;">---</div></div>
+                        <div class="data-box"><h3>JOB</h3><div id="v-job">---</div><div id="v-job-desc" style="font-size:0.8rem; color:#aaa;">---</div></div>
                     </div>
                     <div>
-                        <div class="data-box">
-                            <h3>TECNICHE & CAPACITÀ</h3>
-                            <div id="v-tecniche"></div>
-                        </div>
-                        <div class="data-box">
-                            <h3>PARAMETRI</h3>
-                            <div style="font-size:0.9rem;">
-                                <strong>Anima:</strong> <span id="v-anima"></span><br>
-                                <strong>Core:</strong> <span id="v-core"></span><br>
-                                <strong>Difetto:</strong> <span id="v-difetto"></span>
-                            </div>
-                        </div>
+                        <div class="data-box"><h3>TECNICHE</h3><div id="v-tecniche"></div></div>
+                        <div class="data-box"><h3>PARAMETRI</h3><div id="v-params" style="font-size:0.85rem;"></div></div>
                     </div>
                 </div>
-
-                <div class="data-box">
-                    <h3>TRATTI & MEMORIE</h3>
-                    <div id="v-tratti"></div>
-                </div>
+                <div class="data-box"><h3>TRATTI</h3><div id="v-tratti"></div></div>
             </div>
         </div>
     </div>
@@ -129,112 +112,84 @@
         const db = getFirestore(app);
         const auth = getAuth(app);
 
-        let dbStirpi = [], dbClassi = [];
+        let allChars = [], dbStirpi = [], dbClassi = [];
 
-        // 1. GESTIONE AUTENTICAZIONE E FILTRI
         onAuthStateChanged(auth, async (user) => {
             if (user) {
-                // Recupera email Master dal DB
                 const configSnap = await getDoc(doc(db, "config", "permissions"));
-                const masterEmail = configSnap.exists() ? configSnap.data().masterEmail : "";
-                const isMaster = (user.email === masterEmail);
+                const isMaster = user.email === (configSnap.exists() ? configSnap.data().masterEmail : "");
+                document.getElementById('role-display').innerHTML = `<span style="font-family:'Orbitron'; font-size:0.6rem; padding:2px 8px; border:1px solid ${isMaster?'var(--neon-pink)':'var(--neon-blue)'}; color:${isMaster?'var(--neon-pink)':'var(--neon-blue)'}; border-radius:4px; margin-left:10px;">${isMaster?'MASTER':'OPERATORE'}</span>`;
 
-                // UI Ruolo
-                const rDisplay = document.getElementById('role-display');
-                rDisplay.innerHTML = `<span class="role-tag ${isMaster ? 'master-tag' : 'player-tag'}">${isMaster ? 'AUTORITÀ MASTER' : 'OPERATORE'}</span>`;
-
-                // Carica Database JSON e poi i Personaggi
-                const [resS, resJ] = await Promise.all([fetch('stirpi_database.json'), fetch('classi_database.json')]);
-                dbStirpi = (await resS.json()).items;
-                dbClassi = (await resJ.json()).items;
-
-                loadArchive(user.uid, isMaster);
-            } else {
-                window.location.href = "index.html";
-            }
+                try {
+                    const [resS, resJ] = await Promise.all([fetch('stirpi_database.json'), fetch('classi_database.json')]);
+                    dbStirpi = (await resS.json()).items;
+                    dbClassi = (await resJ.json()).items;
+                    
+                    const snap = await getDocs(collection(db, "personaggi"));
+                    allChars = snap.docs.map(d => ({id: d.id, ...d.data()}));
+                    renderArchive(user.uid, isMaster);
+                } catch (e) { console.error("Errore setup."); }
+            } else { window.location.href = "index.html"; }
         });
 
         document.getElementById('btn-logout').onclick = () => signOut(auth);
 
-        // 2. CARICAMENTO DATI
-        async function loadArchive(uid, isMaster) {
+        function renderArchive(uid, isMaster, filter = "") {
             const gridPersonali = document.getElementById('grid-personali');
             const gridUtenti = document.getElementById('grid-utenti');
-            
-            // Query 1: I Miei PG (Se master, quelli taggati "MASTER", altrimenti quelli col mio UID)
-            const qPersonal = query(collection(db, "personaggi"), where("creatoDa", "==", isMaster ? "MASTER" : uid));
-            const snapPersonal = await getDocs(qPersonal);
-            renderCards(snapPersonal, gridPersonali);
+            gridPersonali.innerHTML = ""; gridUtenti.innerHTML = "";
 
-            // Query 2: Se Master, vedi tutti quelli dei giocatori
-            if (isMaster) {
-                document.getElementById('master-view').style.display = 'block';
-                const qUtenti = query(collection(db, "personaggi"), where("creatoDa", "!=", "MASTER"));
-                const snapUtenti = await getDocs(qUtenti);
-                renderCards(snapUtenti, gridUtenti);
-            }
-        }
+            const filtered = allChars.filter(c => 
+                c.nome.toLowerCase().includes(filter.toLowerCase()) ||
+                c.stirpe.toLowerCase().includes(filter.toLowerCase()) ||
+                c.job.toLowerCase().includes(filter.toLowerCase())
+            );
 
-        function renderCards(snap, target) {
-            target.innerHTML = "";
-            snap.forEach(d => {
-                const p = d.data();
+            filtered.forEach(p => {
                 const card = document.createElement('div');
                 card.className = 'pg-card';
-                card.innerHTML = `
-                    <img src="${p.immagine || 'https://via.placeholder.com/300x180'}">
-                    <div class="pg-card-info">
-                        <div class="pg-card-name">${p.nome}</div>
-                        <div style="font-size:0.75rem; color:#666; margin-top:5px;">${p.stirpe} | ${p.job}</div>
-                        ${p.ownerEmail ? `<div style="font-size:0.6rem; color:var(--neon-pink); margin-top:5px;">OWNER: ${p.ownerEmail}</div>` : ''}
-                    </div>
-                `;
+                card.innerHTML = `<img src="${p.immagine || ''}"><div class="pg-card-info"><div class="pg-card-name">${p.nome}</div><div style="font-size:0.7rem; color:#666;">${p.stirpe} | ${p.job}</div></div>`;
                 card.onclick = () => openViewer(p);
-                target.appendChild(card);
+
+                if (p.creatoDa === uid || (isMaster && p.creatoDa === "MASTER")) {
+                    gridPersonali.appendChild(card);
+                } else if (isMaster) {
+                    document.getElementById('master-view').style.display = 'block';
+                    gridUtenti.appendChild(card);
+                }
             });
         }
 
-        // 3. VISUALIZZATORE SCHEDA TATTICA
-        function openViewer(p) {
-            const stirpeDati = dbStirpi.find(s => s.nome === p.stirpe);
-            const jobDati = dbClassi.find(j => j.nome === p.job);
-            
-            // Trova eredità (anche per mezzosangue)
-            let ereditaDati = null;
-            dbStirpi.forEach(s => {
-                const found = s.eredita.find(e => e.nome === p.eredita);
-                if(found) ereditaDati = found;
+        window.filterArchive = () => {
+            const val = document.getElementById('search-bar').value;
+            onAuthStateChanged(auth, user => {
+                const isMaster = document.querySelector('#role-display span').innerText === 'MASTER';
+                renderArchive(user.uid, isMaster, val);
             });
+        };
 
-            document.getElementById('v-img').src = p.immagine;
+        function openViewer(p) {
+            let ereditaDati = null;
+            dbStirpi.forEach(s => { const found = s.eredita.find(e => e.nome === p.eredita); if(found) ereditaDati = found; });
+            const jobDati = dbClassi.find(j => j.nome === p.job);
+
+            document.getElementById('v-img').src = p.immagine || '';
             document.getElementById('v-nome').innerText = p.nome;
             document.getElementById('v-motto').innerText = p.motto ? `"${p.motto}"` : "";
             document.getElementById('v-stirpe').innerText = `${p.stirpe} (${p.eredita})`;
             document.getElementById('v-eredita-desc').innerText = ereditaDati ? ereditaDati.descrizione : "";
             document.getElementById('v-job').innerText = p.job;
             document.getElementById('v-job-desc').innerText = jobDati ? jobDati.descrizione : "";
-            document.getElementById('v-anima').innerText = p.anima;
-            document.getElementById('v-core').innerText = p.core;
-            document.getElementById('v-difetto').innerText = p.difetto;
+            document.getElementById('v-params').innerHTML = `Anima: ${p.anima}<br>Core: ${p.core}<br>Difetto: ${p.difetto}`;
 
-            // Tecniche
-            const techBox = document.getElementById('v-tecniche');
-            techBox.innerHTML = "";
-            if(ereditaDati && ereditaDati.tecniche) {
-                ereditaDati.tecniche.forEach(t => {
-                    techBox.innerHTML += `<div class="tech-tag"><strong>${t.nome}:</strong> ${t.effetto}</div>`;
-                });
-            }
-
-            // Tratti
-            const trattiBox = document.getElementById('v-tratti');
-            trattiBox.innerHTML = p.tratti.map(t => `<span class="tech-tag">${t}</span>`).join('');
-
+            const tBox = document.getElementById('v-tecniche'); tBox.innerHTML = "";
+            if(ereditaDati?.tecniche) ereditaDati.tecniche.forEach(t => tBox.innerHTML += `<div class="tech-tag"><strong>${t.nome}:</strong> ${t.effetto}</div>`);
+            
+            document.getElementById('v-tratti').innerHTML = p.tratti.map(t => `<span class="tech-tag">${t}</span>`).join('');
             document.getElementById('viewer-overlay').style.display = 'block';
         }
 
         window.closeViewer = () => document.getElementById('viewer-overlay').style.display = 'none';
-
     </script>
 </body>
 </html>
