@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KOTRA - Terminale Archivio v4.5</title>
+    <title>KOTRA - Terminale Archivio v4.8</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
         :root { 
@@ -22,29 +22,27 @@
             z-index: 9999; pointer-events: none; background-size: 100% 4px, 3px 100%;
         }
 
-        /* Nav & Layout */
         .nav-header { padding: 15px 20px; border-bottom: 2px solid var(--neon-blue); display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.9); position: sticky; top:0; z-index:100; }
         .section-divider { padding: 10px 20px; background: rgba(0, 242, 255, 0.1); border-left: 5px solid var(--neon-blue); font-family: 'Orbitron'; font-size: 0.8rem; letter-spacing: 2px; margin: 20px 20px 10px; color: var(--neon-blue); }
         .section-divider.master { border-left-color: var(--neon-pink); color: var(--neon-pink); background: rgba(255, 0, 255, 0.05); }
 
-        /* Grid & Cards */
         .archive-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; padding: 20px; }
         .pg-card { background: var(--panel-bg); border: 1px solid rgba(255,255,255,0.1); cursor: pointer; transition: 0.4s; position: relative; }
         .pg-card img { width: 100%; height: 200px; object-fit: contain; background: #000; filter: brightness(0.8); transition: 0.6s; }
         .pg-card:hover { border-color: var(--neon-blue); transform: translateY(-5px); }
         .pg-card-info { padding: 12px; background: #000; border-top: 1px solid rgba(0, 242, 255, 0.3); }
 
-        /* Blocchi Dati & Chip */
         .data-chip { display: inline-block; padding: 5px 12px; margin: 4px 4px 4px 0; border: 1px solid var(--neon-blue); background: rgba(0, 242, 255, 0.05); font-family: 'Orbitron'; font-size: 0.65rem; color: var(--neon-blue); clip-path: polygon(10% 0, 100% 0, 90% 100%, 0 100%); text-transform: uppercase; }
         .data-chip.job { border-color: var(--neon-pink); color: var(--neon-pink); background: rgba(255, 0, 255, 0.05); }
+        .data-chip.job-3 { border-color: #00ff88; color: #00ff88; background: rgba(0, 255, 136, 0.05); }
         .data-chip.special { border-color: var(--neon-yellow); color: var(--neon-yellow); background: rgba(255, 255, 0, 0.05); }
 
-        .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 20px; }
+        .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); gap: 10px; margin-bottom: 20px; }
         .stat-block { text-align: center; border: 1px solid #333; padding: 10px; background: rgba(0,0,0,0.4); }
-        .stat-value { display: block; font-size: 1.4rem; color: var(--neon-pink); font-family: 'Orbitron'; }
+        .stat-value { display: block; font-size: 1.2rem; color: var(--neon-pink); font-family: 'Orbitron'; }
         .stat-label { font-size: 0.55rem; color: #888; letter-spacing: 1px; }
+        .stat-block.highlight { border-color: var(--neon-yellow); background: rgba(255, 255, 0, 0.05); }
 
-        /* Viewer Styles */
         #viewer-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.98); z-index: 1000; overflow-y: auto; backdrop-filter: blur(10px); }
         .sheet-container { max-width: 1200px; margin: 20px auto; background: var(--panel-bg); border: 1px solid var(--neon-blue); display: grid; grid-template-columns: 350px 1fr; }
         .side-img { width: 100%; height: 100%; object-fit: contain; background: #000; border-right: 1px solid var(--neon-blue); }
@@ -58,19 +56,18 @@
 
         .btn-action { background: transparent; border: 1px solid var(--neon-blue); color: var(--neon-blue); padding: 6px 12px; font-family: 'Orbitron'; cursor: pointer; font-size: 0.6rem; transition: 0.3s; clip-path: polygon(10% 0, 100% 0, 90% 100%, 0 100%); text-decoration: none; display: inline-block; }
         .btn-action:hover { background: var(--neon-blue); color: black; box-shadow: 0 0 10px var(--neon-blue); }
-        .btn-delete { border-color: var(--neon-pink); color: var(--neon-pink); }
 
-        .limite-container { display: grid; grid-template-columns: repeat(10, 1fr); gap: 4px; margin-top: 8px; }
-        .limite-dot { height: 8px; background: #111; border: 1px solid #333; }
+        .limite-container { display: grid; grid-template-columns: repeat(10, 2fr); gap: 4px; margin-top: 8px; }
+        .limite-dot { height: 10px; background: #111; border: 1px solid #333; }
         .dot-filled { background: var(--neon-pink); box-shadow: 0 0 8px var(--neon-pink); }
 
-        @media (max-width: 900px) { .sheet-container { grid-template-columns: 1fr; margin: 10px; } .side-img { height: 300px; border-right: none; border-bottom: 1px solid var(--neon-blue); } .stat-grid { grid-template-columns: 1fr 1fr; } }
+        @media (max-width: 900px) { .sheet-container { grid-template-columns: 1fr; margin: 10px; } .side-img { height: 300px; border-right: none; border-bottom: 1px solid var(--neon-blue); } }
     </style>
 </head>
 <body>
 
     <header class="nav-header">
-        <h1 style="color:var(--neon-blue); margin:0; font-size:1rem; font-family:'Orbitron';">KOTRA // ARCHIVE_v4.5</h1>
+        <h1 style="color:var(--neon-blue); margin:0; font-size:1rem; font-family:'Orbitron';">KOTRA // ARCHIVE_v4.8</h1>
         <div id="role-display" style="font-size:0.6rem; color:var(--neon-yellow); font-family:'Orbitron';">AUTHENTICATING...</div>
         <div class="nav-controls">
             <a href="creatore.html" class="btn-action">+ REGISTRA_UNITÀ</a>
@@ -79,7 +76,7 @@
     </header>
 
     <div style="padding: 15px 20px;">
-        <input type="text" id="search-bar" style="width:100%; background:#000; border:1px solid var(--neon-blue); color:white; padding:12px; font-family:'Rajdhani';" placeholder="CERCA PER NOME, JOB O STIRPE..." oninput="filterArchive()">
+        <input type="text" id="search-bar" style="width:100%; background:#000; border:1px solid var(--neon-blue); color:white; padding:12px; font-family:'Rajdhani';" placeholder="RICERCA DATABASE...">
     </div>
 
     <div id="section-master-title" class="section-divider master" style="display:none;">[CORE_UNITS] - AMMINISTRAZIONE MASTER</div>
@@ -106,6 +103,7 @@
                             <h3>MODULI EREDITÀ & ANOMALIE</h3>
                             <div id="v-anomalie-tags"></div>
                             <div id="v-eredita-box"></div>
+                            <div id="v-anomalia-extra" style="margin-top:10px;"></div>
                         </div>
                         <div class="data-box" style="border-color: var(--neon-yellow);">
                             <h3>ARCHIVIO MEMORIE</h3>
@@ -125,7 +123,7 @@
                 </div>
 
                 <div class="data-box" style="border-color: var(--neon-pink);">
-                    <h3>STATO SINCRONIZZAZIONE CORE</h3>
+                    <h3>STATO SINCRONIZZAZIONE CORE (SYNC LEVEL)</h3>
                     <div id="v-sync-bar"></div>
                 </div>
             </div>
@@ -157,11 +155,9 @@
                 const configSnap = await getDoc(doc(db, "config", "permissions"));
                 isMaster = user.email.toLowerCase() === (configSnap.exists() ? configSnap.data().masterEmail.toLowerCase() : "");
                 document.getElementById('role-display').innerText = isMaster ? "SYS_ADMIN_ACTIVE" : "OPERATOR_SYNCED";
-                
                 const [resS, resJ] = await Promise.all([fetch('stirpi_database.json'), fetch('classi_database.json')]);
                 dbStirpi = (await resS.json()).items;
                 dbClassi = (await resJ.json()).items;
-                
                 const snap = await getDocs(collection(db, "personaggi"));
                 allChars = snap.docs.map(d => ({id: d.id, ...d.data()}));
                 renderArchive();
@@ -171,26 +167,21 @@
         window.renderArchive = (filter = "") => {
             const gridMaster = document.getElementById('grid-master');
             const gridUsers = document.getElementById('grid-users');
-            const titleMaster = document.getElementById('section-master-title');
             gridMaster.innerHTML = ""; gridUsers.innerHTML = "";
-            
             allChars.filter(c => c.nome.toLowerCase().includes(filter.toLowerCase())).forEach(p => {
                 const card = document.createElement('div');
                 card.className = 'pg-card';
-                card.innerHTML = `
-                    <img src="${p.immagine || ''}">
-                    <div class="pg-card-info">
-                        <div style="color:var(--neon-blue); font-family:'Orbitron'; font-size:0.9rem;">${p.nome.toUpperCase()}</div>
-                        <div style="font-size:0.6rem; color:#888;">${p.stirpe} // ${p.job}</div>
-                        <div style="margin-top:10px; display:flex; gap:5px;">
-                            <button class="btn-action" onclick="event.stopPropagation(); window.evolviChar('${p.id}')">EVOLVI</button>
-                            ${isMaster ? `<button class="btn-action btn-delete" onclick="event.stopPropagation(); window.epuraChar('${p.id}','${p.nome}')">EPURA</button>` : ''}
-                        </div>
-                    </div>`;
+                card.innerHTML = `<img src="${p.immagine || ''}"><div class="pg-card-info">
+                    <div style="color:var(--neon-blue); font-family:'Orbitron'; font-size:0.9rem;">${p.nome.toUpperCase()}</div>
+                    <div style="font-size:0.6rem; color:#888;">${p.stirpe} // ${p.job}</div>
+                    <div style="margin-top:10px; display:flex; gap:5px;">
+                        <button class="btn-action" onclick="event.stopPropagation(); window.evolviChar('${p.id}')">EVOLVI</button>
+                        ${isMaster ? `<button class="btn-action" style="border-color:red; color:red" onclick="event.stopPropagation(); window.epuraChar('${p.id}','${p.nome}')">EPURA</button>` : ''}
+                    </div></div>`;
                 card.onclick = () => openViewer(p);
                 (p.creatoDa === 'MASTER' ? gridMaster : gridUsers).appendChild(card);
-                if(p.creatoDa === 'MASTER') titleMaster.style.display = "block";
             });
+            document.getElementById('section-master-title').style.display = gridMaster.innerHTML ? "block" : "none";
         };
 
         window.openViewer = (p) => {
@@ -198,64 +189,76 @@
             document.getElementById('v-img').src = p.immagine || '';
             document.getElementById('v-nome').innerText = p.nome;
 
-            // 1. CHIPS PRIMARI
-            document.getElementById('v-primary-chips').innerHTML = `
-                <span class="data-chip">${p.stirpe}</span>
-                <span class="data-chip job">${p.job}</span>
-                ${p.specialData?.job2 ? `<span class="data-chip job">SEC: ${p.specialData.job2}</span>` : ''}
-            `;
+            // 1. CHIPS
+            let chipHtml = `<span class="data-chip">${p.stirpe}</span><span class="data-chip job">${p.job}</span>`;
+            if(p.specialData?.job2) chipHtml += `<span class="data-chip job">SEC: ${p.specialData.job2}</span>`;
+            if(p.specialData?.talentoNaturale && p.specialData?.job3) chipHtml += `<span class="data-chip job-3">NATURAL: ${p.specialData.job3}</span>`;
+            document.getElementById('v-primary-chips').innerHTML = chipHtml;
 
-            // 2. STATS GRID
-            const stats = [
-                {l: 'ANIMA', v: p.anima}, {l: 'CORE', v: p.core},
-                {l: 'DIFETTO', v: p.difetto}, {l: 'NEMESI', v: p.nemesi}
-            ];
+            // 2. STATS GRID (LOGICA ANOMALIE)
+            const stats = [{l:'ANIMA', v:p.anima}];
+            if(p.specialData?.senzaCore) {
+                stats.push({l:'SCINTILLA', v: p.specialData.scintilla || '---', highlight: true});
+            } else {
+                stats.push({l:'CORE', v: p.core});
+            }
+            if(p.specialData?.doppioCore) stats.push({l:'CORE_SEC', v: p.specialData.coreSecondario || '---', highlight: true});
+            stats.push({l:'DIFETTO', v:p.difetto}, {l:'NEMESI', v:p.nemesi});
             document.getElementById('v-stats-grid').innerHTML = stats.map(s => `
-                <div class="stat-block"><span class="stat-label">${s.l}</span><span class="stat-value">${s.v}</span></div>
+                <div class="stat-block ${s.highlight ? 'highlight' : ''}">
+                    <span class="stat-label">${s.l}</span>
+                    <span class="stat-value" style="${s.highlight ? 'color:var(--neon-yellow)' : ''}">${s.v}</span>
+                </div>
             `).join('');
 
-            // 3. ANOMALIE E EREDITA'
+            // 3. ANOMALIE EXTRA
             const anoTags = document.getElementById('v-anomalie-tags');
-            anoTags.innerHTML = "";
+            const extraBox = document.getElementById('v-anomalia-extra');
+            anoTags.innerHTML = ""; extraBox.innerHTML = "";
             if(p.specialData) {
                 if(p.specialData.doppioCore) anoTags.innerHTML += `<span class="data-chip special">DOPPIO CORE</span>`;
-                if(p.specialData.mutante) anoTags.innerHTML += `<span class="data-chip special">MUTANTE</span>`;
-                if(p.specialData.hybridFrame) anoTags.innerHTML += `<span class="data-chip special">HYBRID: ${p.specialData.frameSecondario || 'EXTRA'}</span>`;
+                if(p.specialData.mutante) {
+                    anoTags.innerHTML += `<span class="data-chip special">MUTANTE</span>`;
+                    extraBox.innerHTML += `<div class="item-tag yellow"><strong>MUTAZIONE:</strong> ${p.specialData.mutazione}</div>`;
+                }
+                if(p.specialData.hybridFrame) {
+                    anoTags.innerHTML += `<span class="data-chip special">HYBRID FRAME</span>`;
+                    extraBox.innerHTML += `<div class="item-tag yellow"><strong>FRAME_AGGIUNTIVO:</strong> ${p.specialData.frameSecondario}</div>`;
+                }
                 if(p.specialData.talentoNaturale) anoTags.innerHTML += `<span class="data-chip special">TALENTO NATURALE</span>`;
                 if(p.specialData.senzaCore) anoTags.innerHTML += `<span class="data-chip special" style="border-color:red; color:red;">SENZA CORE</span>`;
             }
 
+            // 4. EREDITÀ
             let erObj = null;
             dbStirpi.forEach(s => { const e = s.eredita.find(er => er.nome === p.eredita); if(e) erObj = e; });
-            document.getElementById('v-eredita-box').innerHTML = `
-                <div class="item-tag" style="border-color:var(--neon-blue)"><strong>${p.eredita}:</strong> ${erObj?.descrizione || ''}</div>
-                ${erObj?.effetto ? `<div class="item-tag" style="border-color:var(--neon-pink)"><em>EFFETTO:</em> ${erObj.effetto}</div>` : ''}
-            `;
+            document.getElementById('v-eredita-box').innerHTML = `<div class="item-tag"><strong>${p.eredita}:</strong> ${erObj?.descrizione || ''}</div>`;
 
-            // 4. MEMORIE
-            document.getElementById('v-memorie-list').innerHTML = p.memorie?.map(m => `
-                <div class="item-tag yellow"><strong>MEMORIA:</strong> ${m.testo || m}</div>
-            `).join('') || '<div class="stat-label">NESSUNA MEMORIA ATTIVA</div>';
-
-            // 5. TECNICHE E OGGETTI
-            const techList = document.getElementById('v-tech-list');
-            const jobDati = dbClassi.find(j => j.nome === p.job);
-            techList.innerHTML = jobDati?.tecniche?.map(t => `<div class="item-tag"><strong>${t.nome}:</strong> ${t.effetto}</div>`).join('') || "";
-            techList.innerHTML += p.capacita?.map(c => `<div class="item-tag" style="border-color:var(--neon-pink)">${c}</div>`).join('') || "";
+            // 5. LISTE (MEMORIE, TECNICHE, OGGETTI)
+            const memCount = p.memorie?.length || 0;
+            document.getElementById('v-memorie-list').innerHTML = p.memorie?.map(m => `<div class="item-tag yellow"><strong>MEMORIA:</strong> ${m.testo || m}</div>`).join('') || '<div class="stat-label">NESSUNA MEMORIA</div>';
             
-            document.getElementById('v-oggetti-list').innerHTML = p.oggetti?.map(o => `
-                <div class="item-tag" style="border-color:var(--neon-yellow)">[EQUIP] ${o}</div>
-            `).join('') || '<div class="stat-label">NESSUN OGGETTO RILEVATO</div>';
+            const techList = document.getElementById('v-tech-list');
+            techList.innerHTML = "";
+            [p.job, p.specialData?.job2, (p.specialData?.talentoNaturale ? p.specialData?.job3 : null)].forEach(jobName => {
+                if(jobName) {
+                    const jd = dbClassi.find(j => j.nome === jobName);
+                    jd?.tecniche?.forEach(t => techList.innerHTML += `<div class="item-tag"><strong>[${jobName}] ${t.nome}:</strong> ${t.effetto}</div>`);
+                }
+            });
+            p.capacita?.forEach(c => techList.innerHTML += `<div class="item-tag" style="border-color:var(--neon-pink)">${c}</div>`);
+            document.getElementById('v-oggetti-list').innerHTML = p.oggetti?.map(o => `<div class="item-tag" style="border-color:var(--neon-yellow)">[EQUIP] ${o}</div>`).join('') || '<div class="stat-label">NESSUN OGGETTO</div>';
 
-            // 6. SYNC BAR
-            const syncVal = 11 + (p.tratti?.length || 0);
-            let bar = `<div style="font-family:'Orbitron'; font-size:0.6rem; color:var(--neon-pink); margin-bottom:5px;">SYNC_LEVEL: ${syncVal}/20</div><div class="limite-container">`;
-            for(let i=0; i<20; i++) bar += `<div class="limite-dot ${i<syncVal?'dot-filled':''}"></div>`;
+            // 6. CALCOLO NUOVO SYNC LEVEL (8 + 3 BASE + (3 * NUM_MEMORIE))
+            const syncVal = 11 + (memCount * 3);
+            const maxSync = 40; // Alzato il limite visivo della barra per accomodare i nuovi calcoli
+            let bar = `<div style="font-family:'Orbitron'; font-size:0.6rem; color:var(--neon-pink); margin-bottom:5px;">SYNC_LEVEL: ${syncVal} (BASE 11 + ${memCount*3} MEM)</div><div class="limite-container">`;
+            for(let i=0; i<maxSync; i++) bar += `<div class="limite-dot ${i<syncVal?'dot-filled':''}"></div>`;
             document.getElementById('v-sync-bar').innerHTML = bar + `</div>`;
         };
 
         window.evolviChar = (id) => { sessionStorage.setItem('updateModeId', id); window.location.href = 'aggiorna.html'; };
-        window.epuraChar = async (id, n) => { if(confirm(`EPURARE ${n.toUpperCase()}?`)) { await deleteDoc(doc(db,"personaggi",id)); location.reload(); } };
+        window.epuraChar = async (id, n) => { if(confirm(`ELIMINARE ${n}?`)) { await deleteDoc(doc(db,"personaggi",id)); location.reload(); } };
         window.closeViewer = () => document.getElementById('viewer-overlay').style.display = 'none';
         window.filterArchive = () => renderArchive(document.getElementById('search-bar').value);
         document.getElementById('btn-logout').onclick = () => signOut(auth);
