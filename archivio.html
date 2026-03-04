@@ -215,63 +215,70 @@
             }
         };
 
-        function openViewer(p) {
-            let ereditaDati = null;
-            dbStirpi.forEach(s => { 
-                const found = s.eredita.find(e => e.nome === p.eredita); 
-                if(found) ereditaDati = found; 
-            });
-            const jobDati = dbClassi.find(j => j.nome === p.job);
+       function openViewer(p) {
+    let ereditaDati = null;
+    dbStirpi.forEach(s => { 
+        const found = s.eredita.find(e => e.nome === p.eredita); 
+        if(found) ereditaDati = found; 
+    });
+    const jobDati = dbClassi.find(j => j.nome === p.job);
 
-            document.getElementById('v-img').src = p.immagine || '';
-            document.getElementById('v-nome').innerText = p.nome;
-            document.getElementById('v-motto').innerText = p.motto ? `"${p.motto}"` : "";
+    document.getElementById('v-img').src = p.immagine || '';
+    document.getElementById('v-nome').innerText = p.nome;
+    document.getElementById('v-motto').innerText = p.motto ? `"${p.motto}"` : "";
 
-            // EREDITA (Lore + Effetti)
-            document.getElementById('v-stirpe').innerText = `${p.stirpe.toUpperCase()} > ${p.eredita.toUpperCase()}`;
-            let htmlEredita = `<p style="color:#ccc; font-size:0.85rem; margin:0 0 10px 0;">${ereditaDati ? ereditaDati.descrizione : "Dati lore non trovati."}</p>`;
-            if(ereditaDati?.effetti) {
-                htmlEredita += `<div style="border-top:1px solid #333; padding-top:8px;">
-                    <strong style="color:var(--neon-pink); font-size:0.65rem; text-transform:uppercase;">Effetti Genetici:</strong>
-                    <div style="color:var(--neon-yellow); font-size:0.8rem; margin-top:3px; line-height:1.3;">${ereditaDati.effetti}</div>
-                </div>`;
-            }
-            document.getElementById('v-eredita-desc').innerHTML = htmlEredita;
+    // --- SEZIONE EREDITÀ (Lore + Effetti) ---
+    document.getElementById('v-stirpe').innerText = `${p.stirpe.toUpperCase()} > ${p.eredita.toUpperCase()}`;
+    
+    // Recupero il testo dell'effetto (gestisco sia 'effetto' che 'effetti')
+    const testoEffetto = ereditaDati?.effetto || ereditaDati?.effetti || "";
+    
+    let htmlEredita = `<p style="color:#ccc; font-size:0.85rem; margin:0 0 10px 0; line-height:1.4;">${ereditaDati ? ereditaDati.descrizione : "Dati lore non trovati."}</p>`;
+    
+    if(testoEffetto) {
+        htmlEredita += `
+            <div style="background: rgba(255, 0, 255, 0.05); border: 1px solid rgba(255, 0, 255, 0.2); padding: 10px; border-radius: 4px; margin-top: 10px;">
+                <strong style="color:var(--neon-pink); font-size:0.65rem; text-transform:uppercase; display:block; margin-bottom:4px; letter-spacing:1px;">POTENZIALE GENETICO / SOCIALE:</strong>
+                <div style="color:var(--neon-yellow); font-size:0.85rem; line-height:1.3; font-weight:500;">${testoEffetto}</div>
+            </div>`;
+    }
+    document.getElementById('v-eredita-desc').innerHTML = htmlEredita;
 
-            // JOB (Lore + Citazione)
-            document.getElementById('v-job').innerText = p.job.toUpperCase();
-            let htmlJob = "";
-            if(jobDati?.citazione) htmlJob += `<i style="color:var(--neon-blue); font-size:0.85rem; display:block; margin-bottom:8px; opacity:0.8;">"${jobDati.citazione}"</i>`;
-            htmlJob += `<p style="color:#ccc; font-size:0.85rem; margin:0;">${jobDati ? jobDati.descrizione : "Protocollo operativo non trovato."}</p>`;
-            document.getElementById('v-job-desc').innerHTML = htmlJob;
-            
-            // PARAMETRI
-            document.getElementById('v-params').innerHTML = `
-                <strong style="color:var(--neon-pink)">ANIMA:</strong> ${p.anima || '--'}<br>
-                <strong style="color:var(--neon-pink)">CORE:</strong> ${p.core || '--'}<br>
-                <strong style="color:var(--neon-pink)">DIFETTO:</strong> ${p.difetto || '--'}<br>
-                <strong style="color:var(--neon-pink)">NEMESI:</strong> ${p.nemesi || '--'}`;
+    // --- SEZIONE JOB (Citazione + Descrizione) ---
+    document.getElementById('v-job').innerText = p.job.toUpperCase();
+    let htmlJob = "";
+    if(jobDati?.citazione) htmlJob += `<i style="color:var(--neon-blue); font-size:0.85rem; display:block; margin-bottom:8px; opacity:0.8; border-left: 2px solid var(--neon-blue); padding-left: 10px;">"${jobDati.citazione}"</i>`;
+    htmlJob += `<p style="color:#ccc; font-size:0.85rem; margin:0; line-height:1.4;">${jobDati ? jobDati.descrizione : "Protocollo operativo non trovato."}</p>`;
+    document.getElementById('v-job-desc').innerHTML = htmlJob;
+    
+    // --- PARAMETRI ---
+    document.getElementById('v-params').innerHTML = `
+        <div style="margin-bottom:5px;"><strong style="color:var(--neon-pink); font-size:0.7rem;">ANIMA:</strong> <span style="color:white;">${p.anima || '--'}</span></div>
+        <div style="margin-bottom:5px;"><strong style="color:var(--neon-pink); font-size:0.7rem;">CORE:</strong> <span style="color:white;">${p.core || '--'}</span></div>
+        <div style="margin-bottom:5px;"><strong style="color:var(--neon-pink); font-size:0.7rem;">DIFETTO:</strong> <span style="color:white;">${p.difetto || '--'}</span></div>
+        <div style="margin-bottom:5px;"><strong style="color:var(--neon-pink); font-size:0.7rem;">NEMESI:</strong> <span style="color:white;">${p.nemesi || '--'}</span></div>`;
 
-            // TECNICHE (Dal Job)
-            const tBox = document.getElementById('v-tecniche'); tBox.innerHTML = "";
-            if (jobDati?.tecniche) {
-                jobDati.tecniche.forEach(t => {
-                    tBox.innerHTML += `
-                    <div class="tech-tag">
-                        <strong style="color:var(--neon-blue); text-transform:uppercase; font-size:0.75rem;">${t.nome}:</strong> 
-                        <span style="color:#ddd; font-size:0.85rem;">${t.effetto}</span>
-                    </div>`;
-                });
-            }
+    // --- TECNICHE (Dal Job) ---
+    const tBox = document.getElementById('v-tecniche'); 
+    tBox.innerHTML = "";
+    if (jobDati?.tecniche) {
+        jobDati.tecniche.forEach(t => {
+            tBox.innerHTML += `
+            <div class="tech-tag">
+                <strong style="color:var(--neon-blue); text-transform:uppercase; font-size:0.75rem;">${t.nome}:</strong> 
+                <span style="color:#ddd; font-size:0.85rem;">${t.effetto}</span>
+            </div>`;
+        });
+    }
 
-            document.getElementById('v-tratti').innerHTML = p.tratti ? p.tratti.map(t => `<span class="trait-pill">${t}</span>`).join('') : '';
-            
-            const btnEdit = document.getElementById('v-btn-edit');
-            btnEdit.onclick = () => editCharacter(p.id);
-            btnEdit.style.display = (isMasterGlobal || p.creatoDa === auth.currentUser.uid) ? 'block' : 'none';
+    document.getElementById('v-tratti').innerHTML = p.tratti ? p.tratti.map(t => `<span class="trait-pill">${t}</span>`).join('') : '';
+    
+    const btnEdit = document.getElementById('v-btn-edit');
+    btnEdit.onclick = () => editCharacter(p.id);
+    btnEdit.style.display = (isMasterGlobal || p.creatoDa === auth.currentUser.uid) ? 'block' : 'none';
 
-            document.getElementById('viewer-overlay').style.display = 'block';
-        }
+    document.getElementById('viewer-overlay').style.display = 'block';
+}
 
         window.closeViewer = () => document.getElementById('viewer-overlay').style.display = 'none';
     </script>
