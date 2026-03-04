@@ -1,0 +1,115 @@
+{
+  "nome_sistema": "KotR:A",
+  "versione_database": "3.0",
+  "configurazione_base": {
+    "titolo_scheda": "Curriculum Vitae Matricola",
+    "accademia": "Accademia del Round",
+    "punti_limite_base": 8,
+    "bonus_sovraccarico_per_memoria": 3,
+    "max_spiriti_affini": 2,
+    "max_punti_affinita_totali": 10
+  },
+  "definizioni_tecniche": {
+    "Anima": "L'io profondo (Kokoro). Determina l'approccio psicologico della Matricola.",
+    "Core": "Elemento alchemico del 'Respiro del Drago'. Lega pilota e Knight.",
+    "Memoria": "Frammento di passato. Il Nome è la prima Memoria. Ogni Memoria sblocca +3 slot Limite.",
+    "Difetto": "Debolezza narrativa. Se attivata: Difficoltà +1, recupera 1d6 Punti Limite.",
+    "Sovraccarico": "Capacità massima di sforzo bio-meccanico prima del logoramento.",
+    "Tratti": "Competenze, conoscenze o oggetti che aggiungono dadi alle prove."
+  },
+  "orientamento_step_by_step": [
+    {
+      "id": 1,
+      "fase": "IDENTITÀ NOMINATIVA",
+      "descrizione": "Scegli il Nome. Vale come 1° Tratto e 1° Memoria. Permette 1 Rilancio per sessione."
+    },
+    {
+      "id": 2,
+      "fase": "SELEZIONE STIRPE",
+      "opzioni": ["Andruid", "Avalon", "Bret'on", "Colonie", "Sangue di Drago", "Sax'on", "Sidhe"],
+      "nota": "Ogni Stirpe richiede la scelta di una 'Eredità' specifica tra 4 disponibili."
+    },
+    {
+      "id": 3,
+      "fase": "SINTONIA CORE",
+      "elementi": ["Fuoco", "Aria", "Acqua", "Terra", "Ghiaccio", "Elettricità", "Gravità", "Suono", "Luce", "Ombra", "Metallo", "Fauna", "Flora", "Caos", "Ordine", "Tempo", "Spazio", "Anima", "Vuoto", "Corruzione"]
+    },
+    {
+      "id": 4,
+      "fase": "ANALISI DELL'ANIMA",
+      "categorie": {
+        "Passato": ["Soldato bambino", "Primogenito", "Enfant prodige", "Ladruncolo", "Ex-gladiatrice", "Nata in battaglia", "Pecora nera", "Tormentato", "Contadina"],
+        "Presente": ["Studentessa modello", "Agente Intelligence", "Principe", "Reietto", "Cercatrice", "Appassionato di Mecha", "Genio incompreso", "Pura di cuore", "Senza talento"],
+        "Futuro": ["Destinato al trono", "Prescelto dalle profezie", "Potenziale nascosto", "Asso", "Scienziato in erba", "Scelta dagli elementi", "Ignorato dal Fato", "Arma perfetta", "Messia"],
+        "Ruolo_Gruppo": ["Leader", "Rivale", "Bella e tenebrosa", "La spalla", "Gigante gentile", "Curatore", "Tsundere", "Yandere", "Tuttofare"]
+      }
+    },
+    {
+      "id": 5,
+      "fase": "ESTENSIONE MEMETICA (TRATTI)",
+      "regola": "Definisci i primi 4 Tratti: 1 di studio, 1 oggetto iconico, 1 relazione, 1 attitudine."
+    },
+    {
+      "id": 6,
+      "fase": "CONFIGURAZIONE DIFETTO",
+      "tipi": ["Fisico (es. Instabilità Core)", "Caratteriale (es. Impulsività)", "Sociale (es. Identità perduta)"]
+    },
+    {
+      "id": 7,
+      "fase": "IMPRONTA DELLA NEMESI",
+      "esempi": ["Rivali (Persone)", "Traumi (Cose)", "Conflitti Morali (Ideali)"]
+    },
+    {
+      "id": 8,
+      "fase": "SPECIALIZZAZIONE JOB",
+      "conteggio_totale": 15,
+      "benefici": "Ogni Job sblocca 4 Tecniche e i relativi Temi narrativi."
+    },
+    {
+      "id": 9,
+      "fase": "CALCOLO SINCRONIZZAZIONE",
+      "formula_limite": "8 (Base) + 3 (Nome) + (3 * Memorie Extra)",
+      "massimo_teorico": 20
+    },
+    {
+      "id": 10,
+      "fase": "BATTEZZO DEL KNIGHT",
+      "stile": "Nomi evocativi (Arturiani / Mecha Anime anni '90)."
+    },
+    {
+      "id": 11,
+      "fase": "SELEZIONE FRAME TATTICO",
+      "modelli": [
+        { "codice": "Lancer", "ruolo": "Corpo a corpo / Velocità" },
+        { "codice": "Archer", "ruolo": "Lungo raggio / Balistica" },
+        { "codice": "Tanker", "ruolo": "Difesa pesante / Scudo" },
+        { "codice": "Scouter", "ruolo": "Infiltrazione / Stealth" },
+        { "codice": "Caster", "ruolo": "Emissione energetica / Particelle" }
+      ]
+    },
+    {
+      "id": 12,
+      "fase": "LEGAMI (SPIRITI AFFINI)",
+      "regola": "Scegli fino a 2 SA. Distribuisci 10 punti affinità iniziali."
+    }
+  ],
+  "esempio_compilazione": {
+    "nome_matricola": "Gallad",
+    "stirpe": "Avalon",
+    "eredita": "Sangue Antico",
+    "core": "Fuoco",
+    "anima": "Pilota provetto",
+    "job": "Cadet",
+    "tratti": ["Determinato", "Spada Laser Custom", "Cerca la Verità", "Gioco di squadra"],
+    "difetto": "Crisi d'identità",
+    "nemesi": "Aggro Vain",
+    "knight": {
+      "nome": "Corbenik",
+      "frame": "Lancer"
+    },
+    "spiriti_affini": [
+      { "nome": "Nimue", "punti": 6 },
+      { "nome": "Arthur", "punti": 4 }
+    ]
+  }
+}
