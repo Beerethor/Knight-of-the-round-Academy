@@ -302,7 +302,7 @@
             });
         }
 
-       window.openViewer = (p) => {
+      window.openViewer = (p) => {
             const spec = p.specialData || {};
             document.getElementById('viewer-overlay').style.display = 'block';
             
@@ -336,7 +336,6 @@
             const techBox = document.getElementById('v-tech-list');
             techBox.innerHTML = "";
             
-            // Cerca i dati nei database caricati (dbClassi)
             const mainJob = dbClassi.find(j => j.nome === p.job);
             mainJob?.tecniche?.forEach(t => techBox.innerHTML += `<div class="tech-item"><strong>[${p.job}]</strong> ${t.nome}: ${t.effetto}</div>`);
             
@@ -346,7 +345,6 @@
             const specJob = dbClassi.find(j => j.nome === spec.job2);
             specJob?.tecniche?.forEach(t => techBox.innerHTML += `<div class="tech-item" style="border-color:var(--neon-pink)"><strong>[${spec.job2}]</strong> ${t.nome}: ${t.effetto}</div>`);
 
-            // Capacità manuali
             p.capacita?.forEach(c => techBox.innerHTML += `<div class="tech-item" style="border-color:var(--neon-yellow)"><strong>[EQUIP/SKILL]</strong> ${c}</div>`);
 
             // 4. POPOLA MEMORIE E TRATTI
@@ -364,32 +362,6 @@
             let dots = `<div style="display:grid; grid-template-columns:repeat(10,1fr); gap:4px;">`;
             for(let i=0; i<20; i++) dots += `<div style="height:8px; border:1px solid #333; background:${i<totLim?'var(--neon-pink)':'#111'}"></div>`;
             document.getElementById('v-limite-visual').innerHTML = dots + `</div><div style="font-size:0.6rem; margin-top:5px; text-align:center; font-family:Orbitron;">STABILITY: ${totLim}/20</div>`;
-        };
-            // Stats e Sync
-            const numMem = p.memorie?.length || 0;
-            const totLim = Math.min(11 + (numMem * 3), 20);
-            document.getElementById('v-params').innerHTML = `
-                <div>ANIMA: ${p.anima}</div><div>CORE: ${p.core}</div>
-                <div>DIFETTO: ${p.difetto}</div><div>NEMESI: ${p.nemesi}</div>`;
-            
-            let dots = `<div style="font-size:0.5rem; color:var(--neon-pink); margin-bottom:3px;">SYNC: ${totLim}/20</div><div class="limite-container">`;
-            for(let i=0; i<20; i++) dots += `<div class="limite-dot ${i<totLim?'dot-filled':''}"></div>`;
-            document.getElementById('v-limite-visual').innerHTML = dots + "</div>";
-
-            // Tecniche
-            const tBox = document.getElementById('v-tecniche'); tBox.innerHTML = "";
-            jobDati?.tecniche?.forEach(t => tBox.innerHTML += `<div class="tech-tag"><strong>[${p.job}]</strong> ${t.nome}: ${t.effetto}</div>`);
-            secondoJobDati?.tecniche?.forEach(t => tBox.innerHTML += `<div class="tech-tag" style="border-color:var(--neon-yellow)"><strong>[${p.secondoJob}]</strong> ${t.nome}: ${t.effetto}</div>`);
-            
-            // Tecniche da Job Eredità (Job2 in specialData)
-            if(job2Dati) {
-                job2Dati.tecniche?.forEach(t => tBox.innerHTML += `<div class="tech-tag" style="border-color:var(--neon-pink)"><strong>[JOB EREDITÀ: ${spec.job2}]</strong> ${t.nome}: ${t.effetto}</div>`);
-            }
-            
-            p.capacita?.forEach(c => tBox.innerHTML += `<div class="tech-tag" style="border-color:var(--neon-pink)">${c}</div>`);
-
-            document.getElementById('v-tratti').innerHTML = p.tratti?.map(t => `<span class="trait-pill">${t}</span>`).join('') || '--';
-            setTimeout(() => { loader.style.display = 'none'; }, 400);
         };
 
         window.closeViewer = () => document.getElementById('viewer-overlay').style.display = 'none';
