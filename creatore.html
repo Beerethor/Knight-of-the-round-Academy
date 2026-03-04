@@ -9,41 +9,53 @@
         :root { --neon-blue: #00f2ff; --neon-pink: #ff00ff; --neon-yellow: #ffff00; --bg-dark: #0a0a0c; }
         body { background: var(--bg-dark); color: white; font-family: 'Rajdhani', sans-serif; padding: 20px; line-height: 1.4; }
         
+        /* Navigazione */
         .nav-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid #333; padding-bottom: 10px; }
-        .btn-nav { text-decoration: none; color: var(--neon-blue); font-family: 'Orbitron'; font-size: 0.8rem; border: 1px solid var(--neon-blue); padding: 5px 15px; }
+        .btn-nav { text-decoration: none; color: var(--neon-blue); font-family: 'Orbitron'; font-size: 0.8rem; border: 1px solid var(--neon-blue); padding: 5px 15px; margin-left: 5px; transition: 0.3s; }
+        .btn-nav:hover { background: var(--neon-blue); color: black; }
         .btn-logout { background: transparent; border: 1px solid var(--neon-pink); color: var(--neon-pink); padding: 5px 15px; font-family: 'Orbitron'; font-size: 0.7rem; cursor: pointer; margin-left: 10px; }
 
         .role-badge { font-family: 'Orbitron'; font-size: 0.65rem; padding: 2px 8px; border-radius: 10px; border: 1px solid; margin-left: 10px; }
-        .master { border-color: var(--neon-pink); color: var(--neon-pink); box-shadow: 0 0 5px var(--neon-pink); }
+        .master { border-color: var(--neon-pink); color: var(--neon-pink); }
         .player { border-color: var(--neon-blue); color: var(--neon-blue); }
 
+        /* Form Layout */
         .form-section { background: rgba(255,255,255,0.05); padding: 20px; border: 1px solid #333; margin-bottom: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; border-left: 3px solid var(--neon-blue); }
         .full-width { grid-column: 1 / -1; }
         
         label { display: block; color: var(--neon-blue); font-family: 'Orbitron'; font-size: 0.75rem; margin-bottom: 5px; text-transform: uppercase; }
-        input, select, textarea { width: 100%; background: #000; border: 1px solid #444; color: white; padding: 12px; font-family: 'Rajdhani'; font-size: 1.1rem; box-sizing: border-box; }
+        input, select { width: 100%; background: #000; border: 1px solid #444; color: white; padding: 12px; font-family: 'Rajdhani'; font-size: 1.1rem; box-sizing: border-box; }
+        input:invalid { border-color: var(--neon-pink); }
+
+        .img-preview { width: 100%; height: 250px; border: 2px dashed #444; margin-top: 10px; display: flex; align-items: center; justify-content: center; overflow: hidden; background: #000; }
+        .img-preview img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* Azioni */
+        .btn-save { width: 100%; background: transparent; border: 2px solid var(--neon-blue); color: var(--neon-blue); padding: 15px; font-family: 'Orbitron'; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        .btn-save:hover:not(:disabled) { background: var(--neon-blue); color: black; box-shadow: 0 0 15px var(--neon-blue); }
+        .btn-save:disabled { border-color: #444; color: #444; cursor: not-allowed; opacity: 0.5; }
+        .btn-reset { border-color: var(--neon-pink); color: var(--neon-pink); }
         
-        .img-preview { width: 100%; height: 250px; border: 2px dashed #444; margin-top: 10px; display: flex; align-items: center; justify-content: center; overflow: hidden; background: #000; position: relative; }
-        .img-preview img { width: 100%; height: 100%; object-fit: cover; object-position: center 20%; }
-
-        .pl-visualizer { display: flex; gap: 8px; margin-top: 10px; }
-        .dot { width: 16px; height: 16px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.4); }
-        .dot.limite { background: var(--neon-blue); box-shadow: 0 0 10px var(--neon-blue); }
-        .dot.sovraccarico { background: #fff; box-shadow: 0 0 10px #fff; }
-
-        .btn-save { width: 100%; background: transparent; border: 2px solid var(--neon-blue); color: var(--neon-blue); padding: 20px; font-family: 'Orbitron'; font-weight: bold; cursor: pointer; transition: 0.3s; margin-top: 20px; }
-        .btn-save:hover { background: var(--neon-blue); color: black; box-shadow: 0 0 20px var(--neon-blue); }
-        .btn-save:disabled { border-color: #444; color: #444; cursor: wait; }
+        /* Spinner */
+        #loading-overlay { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.8); z-index: 1000; flex-direction: column; align-items: center; justify-content: center; }
+        .spinner { width: 50px; height: 50px; border: 5px solid var(--neon-blue); border-top-color: transparent; border-radius: 50%; animation: spin 1s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
 
+    <div id="loading-overlay">
+        <div class="spinner"></div>
+        <p style="font-family:'Orbitron'; margin-top:15px; color:var(--neon-blue);">SINCRONIZZAZIONE DATI...</p>
+    </div>
+
     <header class="nav-header">
         <div>
-            <h1 style="display:inline-block; font-size: 1.2rem; margin:0;">GENERATORE MATRICOLE</h1>
-            <span id="role-display" class="role-badge">SINCRONIZZAZIONE...</span>
+            <h1 style="display:inline-block; font-size: 1.2rem; margin:0;">INIZIALIZZAZIONE MATRICOLA</h1>
+            <span id="role-display" class="role-badge">VERIFICA...</span>
         </div>
         <div style="display: flex; align-items: center;">
+            <a href="index.html" class="btn-nav" style="border-color: var(--neon-yellow); color: var(--neon-yellow);">HUB</a>
             <a href="archivio.html" class="btn-nav">ARCHIVIO</a>
             <button class="btn-logout" id="btn-logout">LOGOUT</button>
         </div>
@@ -51,22 +63,22 @@
 
     <div id="pg-form">
         <div class="form-section">
-            <div class="full-width"><h2 style="font-family:'Orbitron'; color:var(--neon-pink); margin:0;">1. BIOMETRIA</h2></div>
+            <div class="full-width"><h2 style="font-family:'Orbitron'; color:var(--neon-pink); margin:0;">1. DATI CORE</h2></div>
             <div>
-                <label>NOME (Memoria I)</label>
-                <input type="text" id="nome" placeholder="Es: Kael">
+                <label>NOME MATRICOLA *</label>
+                <input type="text" id="nome" placeholder="Obbligatorio" required oninput="validateForm()">
                 <label style="margin-top:15px;">ANIMA (Tag)</label>
-                <input type="text" id="anima" placeholder="Es: Vetro, Tempesta">
+                <input type="text" id="anima" placeholder="Es: Fiamme">
             </div>
             <div>
-                <label>RITRATTO (Max 800kb)</label>
+                <label>RITRATTO OPERATIVO (Auto-Resize)</label>
                 <input type="file" id="img-file" accept="image/*" onchange="handleImage(event)">
-                <div class="img-preview" id="preview-box">SISTEMA OTTICO OFFLINE</div>
+                <div class="img-preview" id="preview-box">OFFLINE</div>
             </div>
         </div>
 
         <div class="form-section">
-            <div class="full-width"><h2 style="font-family:'Orbitron'; color:var(--neon-pink); margin:0;">2. PARAMETRI PSICHICI</h2></div>
+            <div class="full-width"><h2 style="font-family:'Orbitron'; color:var(--neon-pink); margin:0;">2. IDENTITÀ</h2></div>
             <div>
                 <label>CORE</label><input type="text" id="core">
                 <label style="margin-top:15px;">DIFETTO</label><input type="text" id="difetto">
@@ -87,22 +99,20 @@
         </div>
 
         <div class="form-section">
-            <div class="full-width"><h2 style="font-family:'Orbitron'; color:var(--neon-pink); margin:0;">3. CONFIGURAZIONE KNIGHT</h2></div>
-            <div><label>STIRPE</label><select id="select-stirpe" onchange="aggiornaEredita()"></select></div>
-            <div><label>JOB</label><select id="select-job"></select></div>
-            
-            <div class="full-width" style="background:rgba(255,255,0,0.05); padding:10px; border:1px solid rgba(255,255,0,0.3);">
-                <label style="color:var(--neon-yellow); cursor:pointer;">
-                    <input type="checkbox" id="mezzosangue" onchange="aggiornaEredita()" style="width:auto;"> 
-                    ATTIVA PROTOCOLLO MEZZOSANGUE (Accesso a tutte le Eredità)
-                </label>
+            <div class="full-width"><h2 style="font-family:'Orbitron'; color:var(--neon-pink); margin:0;">3. PROTOCOLLO</h2></div>
+            <div><label>STIRPE *</label><select id="select-stirpe" required onchange="aggiornaEredita()"></select></div>
+            <div><label>JOB *</label><select id="select-job" required onchange="validateForm()"></select></div>
+            <div class="full-width">
+                <label style="color:var(--neon-yellow);"><input type="checkbox" id="mezzosangue" onchange="aggiornaEredita()" style="width:auto;"> ATTIVA MEZZOSANGUE</label>
             </div>
-
-            <div class="full-width"><label>EREDITÀ DISPONIBILI</label><select id="select-eredita"></select></div>
+            <div class="full-width"><label>EREDITÀ SELEZIONATA</label><select id="select-eredita"></select></div>
         </div>
     </div>
 
-    <button class="btn-save" id="btn-save">INVIA DATI AL TERMINALE ARCHIVIO</button>
+    <div style="display: grid; grid-template-columns: 1fr 3fr; gap: 15px; margin-top: 20px; margin-bottom: 40px;">
+        <button type="button" class="btn-save btn-reset" onclick="resetForm()">REINIZIALIZZA</button>
+        <button class="btn-save" id="btn-save" disabled>SINCRONIZZA CON IL CLOUD</button>
+    </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
@@ -122,95 +132,105 @@
         const db = getFirestore(app);
         const auth = getAuth(app);
 
-        let currentUser = null;
-        let isMaster = false;
-        let currentImgData = "";
-        let dbStirpi = [];
+        let currentUser = null, isMaster = false, currentImgData = "", dbStirpi = [];
 
-        // 1. RECUPERO RUOLO MASTER DA FIREBASE
-        async function checkMasterRole(email) {
-            try {
-                const docSnap = await getDoc(doc(db, "config", "permissions"));
-                if (docSnap.exists()) {
-                    return email === docSnap.data().masterEmail;
-                }
-            } catch (e) { console.error("Errore permessi:", e); }
-            return false;
-        }
-
-        // 2. GESTIONE SESSIONE
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 currentUser = user;
-                isMaster = await checkMasterRole(user.email);
-                
-                const badge = document.getElementById('role-display');
-                badge.innerText = isMaster ? "AUTORITÀ MASTER" : `UTENTE: ${user.email}`;
-                badge.className = `role-badge ${isMaster ? 'master' : 'player'}`;
-                
-                initForm();
-            } else {
-                window.location.href = "index.html";
-            }
+                const configSnap = await getDoc(doc(db, "config", "permissions"));
+                isMaster = (user.email === (configSnap.exists() ? configSnap.data().masterEmail : ""));
+                document.getElementById('role-display').innerText = isMaster ? "MASTER" : "GIOCATORE";
+                document.getElementById('role-display').className = `role-badge ${isMaster ? 'master' : 'player'}`;
+                init();
+            } else { window.location.href = "index.html"; }
         });
 
-        document.getElementById('btn-logout').addEventListener('click', () => signOut(auth));
+        document.getElementById('btn-logout').onclick = () => signOut(auth);
 
-        // 3. LOGICA IMMAGINI
+        // 1. COMPRESSIONE IMMAGINE (Canvas Resize)
         window.handleImage = (e) => {
             const file = e.target.files[0];
-            if(file && file.size > 850000) return alert("File troppo pesante (Max 800KB)!");
+            if (!file) return;
             const reader = new FileReader();
-            reader.onload = () => {
-                currentImgData = reader.result;
-                document.getElementById('preview-box').innerHTML = `<img src="${currentImgData}">`;
+            reader.onload = (event) => {
+                const img = new Image();
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    const MAX_WIDTH = 800;
+                    let width = img.width;
+                    let height = img.height;
+
+                    if (width > MAX_WIDTH) {
+                        height *= MAX_WIDTH / width;
+                        width = MAX_WIDTH;
+                    }
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext("2d");
+                    ctx.drawImage(img, 0, 0, width, height);
+                    currentImgData = canvas.toDataURL("image/jpeg", 0.7); // 70% qualità
+                    document.getElementById('preview-box').innerHTML = `<img src="${currentImgData}">`;
+                };
+                img.src = event.target.result;
             };
             reader.readAsDataURL(file);
         };
 
-        // 4. CARICAMENTO DATI JSON
-        async function initForm() {
+        // 2. VALIDAZIONE CAMPI
+        window.validateForm = () => {
+            const nome = document.getElementById('nome').value.trim();
+            const stirpe = document.getElementById('select-stirpe').value;
+            const job = document.getElementById('select-job').value;
+            document.getElementById('btn-save').disabled = !(nome && stirpe && job);
+        };
+
+        // 3. GESTIONE ERRORI DATABASE JSON
+        async function init() {
             try {
                 const [resS, resJ] = await Promise.all([
                     fetch('stirpi_database.json'), 
                     fetch('classi_database.json')
                 ]);
+                
+                if(!resS.ok || !resJ.ok) throw new Error("File JSON non trovati");
+
                 dbStirpi = (await resS.json()).items;
                 const jobs = (await resJ.json()).items;
-                
-                const sStirpe = document.getElementById('select-stirpe');
-                const sJob = document.getElementById('select-job');
-                
-                sStirpe.innerHTML = dbStirpi.map(s => `<option value="${s.nome}">${s.nome}</option>`).join('');
-                sJob.innerHTML = jobs.map(j => `<option value="${j.nome}">${j.nome}</option>`).join('');
-                
+
+                document.getElementById('select-stirpe').innerHTML = dbStirpi.map(s => `<option value="${s.nome}">${s.nome}</option>`).join('');
+                document.getElementById('select-job').innerHTML = jobs.map(j => `<option value="${j.nome}">${j.nome}</option>`).join('');
                 aggiornaEredita();
-            } catch (e) { console.error("Database JSON mancanti."); }
+                validateForm();
+            } catch (e) {
+                alert("ERRORE CRITICO: Database Stirpi/Classi mancante. Contattare il Master.");
+                console.error(e);
+            }
         }
 
         window.aggiornaEredita = () => {
             const isMez = document.getElementById('mezzosangue').checked;
             const stirpeSel = document.getElementById('select-stirpe').value;
-            const sEredita = document.getElementById('select-eredita');
-            
             let options = "";
             dbStirpi.forEach(s => {
                 if (isMez || s.nome === stirpeSel) {
-                    s.eredita.forEach(e => {
-                        options += `<option value="${e.nome}">${isMez ? '['+s.nome+'] ' : ''}${e.nome}</option>`;
-                    });
+                    s.eredita.forEach(e => options += `<option value="${e.nome}">${isMez ? '['+s.nome+'] ' : ''}${e.nome}</option>`);
                 }
             });
-            sEredita.innerHTML = options;
+            document.getElementById('select-eredita').innerHTML = options;
+            validateForm();
         };
 
-        // 5. SALVATAGGIO
-        document.getElementById('btn-save').addEventListener('click', async () => {
-            const nome = document.getElementById('nome').value.trim();
-            if(!nome) return alert("Identificativo Matricola mancante!");
+        window.resetForm = () => {
+            if(confirm("Protocollo Reset?")) location.reload();
+        };
+
+        // 4. SALVATAGGIO CON FEEDBACK (SPINNER)
+        document.getElementById('btn-save').onclick = async () => {
+            const overlay = document.getElementById('loading-overlay');
+            overlay.style.display = 'flex';
 
             const pg = {
-                nome: nome,
+                nome: document.getElementById('nome').value,
                 anima: document.getElementById('anima').value,
                 core: document.getElementById('core').value,
                 motto: document.getElementById('motto').value,
@@ -221,36 +241,22 @@
                 job: document.getElementById('select-job').value,
                 eredita: document.getElementById('select-eredita').value,
                 immagine: currentImgData,
-                
-                // METADATI DI PROPRIETÀ
                 creatoDa: isMaster ? "MASTER" : currentUser.uid,
                 ownerEmail: currentUser.email,
-                timestamp: serverTimestamp(),
-                
-                // STATO INIZIALE
-                memorie: [],
-                capacita: [],
-                oggetti: []
+                timestamp: serverTimestamp()
             };
 
             try {
-                const btn = document.getElementById('btn-save');
-                btn.disabled = true;
-                btn.innerText = "TRASMISSIONE IN CORSO...";
-
-                // ID univoco per evitare sovrascritture accidentali
                 const docId = `${currentUser.uid}-${Date.now()}`;
                 await setDoc(doc(db, "personaggi", docId), pg);
-                
-                alert("Sincronizzazione completata. Benvenuta, Matricola.");
+                overlay.style.display = 'none';
+                alert("Protocollo Completato. Archivio Aggiornato.");
                 window.location.href = "archivio.html";
             } catch (e) {
-                alert("Errore di trasmissione! Controlla la connessione.");
-                console.error(e);
-                document.getElementById('btn-save').disabled = false;
-                document.getElementById('btn-save').innerText = "RIPROVA INVIO";
+                overlay.style.display = 'none';
+                alert("ERRORE TRASMISSIONE: Verifica connessione.");
             }
-        });
+        };
     </script>
 </body>
 </html>
