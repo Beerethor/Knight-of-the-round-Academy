@@ -9,13 +9,15 @@
         /* NUOVO LAYOUT BLOCCHI */
         #viewer-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 1000; overflow-y: auto; padding: 20px; }
         .sheet-layout { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: 300px 1fr 300px; gap: 20px; }
-        /* Aggiungi questa regola per gestire i dispositivi mobili */
+/* Responsive: su schermi piccoli torna a colonna singola */
         @media (max-width: 1100px) {
-            .sheet-layout 
-            {
-                grid-template-columns: 1fr;
+            .sheet-layout { 
+                grid-template-columns: 1fr; 
             }
         }
+        /* Pannello Destro con effetto "Sticky" (rimane fisso mentre scorri) */
+        .v-right-pane {position: sticky; top: 20px; height: fit-content;}
+
         
         .v-sidebar { position: sticky; top: 0; }
         .v-sidebar img { width: 100%; border: 1px solid var(--neon-blue); background: #000; }
@@ -203,25 +205,6 @@
             <div class="v-sidebar">
                 <img id="v-img" src="">
 
-                 <div class="data-block" style="margin-top:15px; border-color:var(--neon-blue); font-size: 0.8rem;">
-                     <h3>STIRPE & EREDITÀ</h3>
-                     <div id="v-stirpe" style="font-weight:bold; color:var(--neon-blue); margin-bottom:8px; font-family:'Orbitron'; font-size:0.85rem;">--</div>
-                     <div id="v-eredita-desc"></div>
-                 </div>
-                
-                <div class="data-block" style="margin-top:15px; border-color:var(--neon-blue); font-size: 0.8rem;">
-                    <h3>OPERATIONAL_LOG</h3>
-                    <div style="margin-bottom:5px;">
-                        <strong style="color:var(--neon-blue); font-size:0.6rem; display:block;">AFFILIAZIONE/CLUB:</strong>
-                        <span id="v-club" style="color:white;"></span>
-                    </div>
-                    <div style="margin-bottom:5px;">
-                        <strong style="color:var(--neon-blue); font-size:0.6rem; display:block;">SEGNI PARTICOLARI:</strong>
-                        <span id="v-distintivo" style="color:white;"></span>
-                    </div>
-                    <div id="v-uniforme" style="font-size:0.7rem; color:var(--neon-yellow); border-top:1px solid rgba(0,242,255,0.1); margin-top:5px; padding-top:5px;"></div>
-                </div>
-
                 <div class="data-block" style="border-color:var(--neon-yellow);">
                     <h3>CORE SYNC STATUS</h3>
                     <div id="v-limite-visual"></div>
@@ -258,8 +241,28 @@
                     <div id="v-tratti"></div>
                 </div>
                 </div>
+            <div class="v-right-pane">
+                 <div class="data-block" style="margin-top:15px; border-color:var(--neon-blue); font-size: 0.8rem;">
+                    <h3>OPERATIONAL_LOG</h3>
+                    <div style="margin-bottom:5px;">
+                        <strong style="color:var(--neon-blue); font-size:0.6rem; display:block;">AFFILIAZIONE/CLUB:</strong>
+                        <span id="v-club" style="color:white;"></span>
+                    </div>
+                    <div style="margin-bottom:5px;">
+                        <strong style="color:var(--neon-blue); font-size:0.6rem; display:block;">SEGNI PARTICOLARI:</strong>
+                        <span id="v-distintivo" style="color:white;"></span>
+                    </div>
+                    <div id="v-uniforme" style="font-size:0.7rem; color:var(--neon-yellow); border-top:1px solid rgba(0,242,255,0.1); margin-top:5px; padding-top:5px;"></div>
+                </div>
+
+                <div class="data-block" style="margin-top:15px; border-color:var(--neon-blue); font-size: 0.8rem;">
+                     <h3>STIRPE & EREDITÀ</h3>
+                     <div id="v-stirpe" style="font-weight:bold; color:var(--neon-blue); margin-bottom:8px; font-family:'Orbitron'; font-size:0.85rem;">--</div>
+                     <div id="v-eredita-desc"></div>
+                 </div>
             </div>
         </div>
+      </div>
     
     <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
@@ -331,6 +334,10 @@ window.openViewer = (p) => {
         <div class="trait-tag">EREDITÀ: ${p.eredita || '---'}</div>
         <div class="trait-tag" style="border-color:var(--neon-yellow); color:var(--neon-yellow);">JOB: ${p.job || '---'}</div>
         ${p.secondoJob ? `<div class="trait-tag" style="border-color:var(--neon-yellow); color:var(--neon-yellow);">JOB_2: ${p.secondoJob}</div>` : ''}
+        ${spec.Job2 ? `<div class="trait-tag" style="border-color:var(--neon-pink); color:var(--neon-pink);">JOB_EREDITA': ${spec.job2}</div>` : ''}
+        ${p.knight ? `<div class="trait-tag" style="border-color:var(--neon-red); color:var(--neon-red);">KNIGHT': ${p.knight}</div>` : ''}
+        ${p.frame ? `<div class="trait-tag" style="border-color:var(--neon-red); color:var(--neon-red);">FRAME': ${p.frame}</div>` : ''}
+        ${spec.frame2 ? `<div class="trait-tag" style="border-color:var(--neon-pink); color:var(--neon-pink);">Frame_EREDITA': ${spec.frame2}</div>` : ''}
     `;
 
     // 4. PARAMETRI HARDWARE
@@ -388,6 +395,7 @@ if (ereditaDati) {
     };
     if(p.job) addTechs(p.job, "var(--neon-blue)", p.job);
     if(p.secondoJob) addTechs(p.secondoJob, "var(--neon-yellow)", p.secondoJob);
+    if(spec.job2) addTechs(spec.job2, "var(--neon-pink)", spec.job2);
 
     // 7. MEMORIE
     const memBox = document.getElementById('v-memorie-box');
