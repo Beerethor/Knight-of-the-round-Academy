@@ -331,23 +331,42 @@ window.openViewer = (p) => {
     const renderStat = (val, label) => (val && val !== "--") ? `<div class="stat-item"><span class="stat-val">${val}</span><span class="stat-lab">${label}</span></div>` : "";
     statsCore.innerHTML = renderStat(p.anima, "Anima") + renderStat(p.core, "Core") + renderStat(spec.core2, "Core Eredità") + renderStat(spec.mutazione, "Mutazione");
 
-    // 5. STIRPE & EREDITÀ (LOGICA CORRETTA)
-    const stirpeNome = (p.stirpe || "").toLowerCase().trim();
-    const ereditaNome = (p.eredita || "").toLowerCase().trim();
-    const sData = dbStirpi.find(s => s.nome?.toLowerCase().trim() === stirpeNome);
-    const eData = sData?.eredita?.find(e => e.nome?.toLowerCase().trim() === ereditaNome);
+    // 5. LOGICA EREDITÀ (PESCA DAL JSON)
+const stirpeNomeCard = (p.stirpe || "").toLowerCase().trim();
+const ereditaNomeCard = (p.eredita || "").toLowerCase().trim();
 
-    document.getElementById('v-stirpe').innerText = `${(p.stirpe || "").toUpperCase()} > ${(p.eredita || "").toUpperCase()}`;
-    const descElement = document.getElementById('v-eredita-desc');
+// Cerca la stirpe nel database caricato
+const stirpeTrovata = dbStirpi.find(s => s.nome?.toLowerCase().trim() === stirpeNomeCard);
+
+// Se trova la stirpe, cerca l'eredità specifica al suo interno
+const ereditaTrovata = stirpeTrovata?.eredita?.find(e => e.nome?.toLowerCase().trim() === ereditaNomeCard);
+
+const descElement = document.getElementById('v-eredita-desc');
+const stirpeTitolo = document.getElementById('v-stirpe');
+
+if (stirpeTrovata && ereditaTrovata) {
+    // Aggiorna il titolo con i nomi ufficiali del DB
+    stirpeTitolo.innerText = `${stirpeTrovata.nome.toUpperCase()} > ${ereditaTrovata.nome.toUpperCase()}`;
     
-    if (eData) {
-        descElement.innerHTML = `
-            <p style="color:#ccc; font-size:0.85rem; line-height:1.4;">${eData.descrizione || ""}</p>
-            <div class="tech-tag" style="border-color:var(--neon-pink); color:var(--neon-yellow);">${eData.effetto || eData.effetti || ""}</div>
-        `;
-    } else {
-        descElement.innerHTML = `<p style="color:#555;">Dati d'archivio non trovati.</p>`;
-    }
+    // Inserisce descrizione ed effetto
+    descElement.innerHTML = `
+        <p style="color:#ccc; font-size:0.85rem; line-height:1.4; margin-bottom:10px;">
+            ${ereditaTrovata.descrizione || "Descrizione d'archivio non disponibile."}
+        </p>
+        <div class="tech-tag" style="border-color:var(--neon-pink); color:var(--neon-yellow); font-weight:500; background:rgba(255,0,255,0.05);">
+            <strong style="color:var(--neon-pink); font-size:0.7rem;">EFFETTO:</strong> ${ereditaTrovata.effetto || ereditaTrovata.effetti || "Nessun effetto registrato."}
+        </div>
+    `;
+} else {
+    // Messaggio di errore se i nomi non coincidono tra Firebase e JSON
+    stirpeTitolo.innerText = `${(p.stirpe || "IGNOTO").toUpperCase()} > ${(p.eredita || "IGNOTO").toUpperCase()}`;
+    descElement.innerHTML = `
+        <div style="border:1px dashed #444; padding:10px; color:#666; font-size:0.8rem;">
+            ⚠️ DATA_MISSING: Il terminale non ha trovato corrispondenze nel database Stirpi per questa combinazione. 
+            Verificare la digitazione nel database.
+        </div>
+    `;
+}
 
     // 6. TECNICHE
     const techBox = document.getElementById('v-tech-list');
