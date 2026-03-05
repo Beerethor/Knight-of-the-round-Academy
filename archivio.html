@@ -1,0 +1,491 @@
+<!DOCTYPE html> 
+<html lang="it"> 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KOTRA - Terminale Archivio v3.8</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* NUOVO LAYOUT BLOCCHI */
+        #viewer-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 1000; overflow-y: auto; padding: 20px; }
+        .sheet-layout { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 320px 1fr; gap: 20px; }
+        
+        .v-sidebar { position: sticky; top: 0; }
+        .v-sidebar img { width: 100%; border: 1px solid var(--neon-blue); background: #000; }
+
+        .data-block { background: rgba(255,255,255,0.02); border: 1px solid rgba(0, 242, 255, 0.2); padding: 15px; margin-bottom: 15px; position: relative; }
+        .data-block::before { content: ""; position: absolute; top: -1px; left: -1px; width: 10px; height: 10px; border-top: 2px solid var(--neon-blue); border-left: 2px solid var(--neon-blue); }
+        .data-block h3 { font-family: 'Orbitron'; font-size: 0.7rem; color: var(--neon-pink); margin: 0 0 10px; text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid rgba(255,0,255,0.2); padding-bottom: 5px; }
+        
+        .trait-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 5px; }
+        .trait-tag { padding: 4px 10px; background: rgba(0,242,255,0.1); border: 1px solid var(--neon-blue); font-size: 0.8rem; color: var(--neon-blue); font-family: 'Orbitron'; }
+        
+        .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 10px; }
+        .stat-item { text-align: center; border: 1px solid rgba(255,255,255,0.1); padding: 10px; }
+        .stat-val { display: block; font-family: 'Orbitron'; font-size: 1.2rem; color: var(--neon-yellow); }
+        .stat-lab { font-size: 0.6rem; color: #888; text-transform: uppercase; }
+
+        .tech-item { border-left: 2px solid var(--neon-blue); padding-left: 10px; margin-bottom: 8px; font-size: 0.9rem; }
+        .tech-item strong { color: var(--neon-blue); }
+        .memory-item { font-style: italic; color: #aaa; font-size: 0.85rem; padding: 5px; border-bottom: 1px dashed #333; margin-bottom: 5px;}
+        :root { 
+            --neon-blue: #00f2ff; 
+            --neon-pink: #ff00ff; 
+            --neon-yellow: #ffff00; 
+            --bg-dark: #060608; 
+            --panel-bg: rgba(17, 17, 22, 0.95);
+        }
+
+        * { box-sizing: border-box; }
+
+        body { 
+            background: var(--bg-dark); 
+            color: white; 
+            font-family: 'Rajdhani', sans-serif; 
+            margin: 0; 
+            overflow-x: hidden;
+            background-image: 
+                linear-gradient(rgba(0, 242, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 242, 255, 0.05) 1px, transparent 1px);
+            background-size: 50px 50px;
+        }
+
+        body::before {
+            content: " ";
+            position: fixed;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), 
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+            z-index: 9999;
+            background-size: 100% 4px, 3px 100%;
+            pointer-events: none;
+        }
+
+        .nav-header { 
+            padding: 15px 20px; 
+            border-bottom: 2px solid var(--neon-blue); 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            background: rgba(0,0,0,0.9); 
+            backdrop-filter: blur(10px);
+            position: sticky; top: 0; z-index: 100;
+            flex-wrap: wrap; gap: 10px;
+        }
+
+        .btn-action { 
+            background: transparent; border: 1px solid var(--neon-blue); color: var(--neon-blue); 
+            padding: 8px 15px; font-family: 'Orbitron'; cursor: pointer; text-decoration: none; 
+            font-size: 0.7rem; transition: 0.3s; clip-path: polygon(10% 0, 100% 0, 90% 100%, 0 100%);
+        }
+        .btn-action:hover { background: var(--neon-blue); color: black; box-shadow: 0 0 15px var(--neon-blue); }
+
+        .btn-support {
+            background: rgba(255, 255, 0, 0.05); border: 1px solid var(--neon-yellow); color: var(--neon-yellow);
+            padding: 8px 15px; font-family: 'Orbitron'; cursor: pointer; text-decoration: none;
+            font-size: 0.7rem; transition: 0.3s; clip-path: polygon(0 0, 90% 0, 100% 100%, 10% 100%);
+        }
+        .btn-support:hover { background: var(--neon-yellow); color: black; box-shadow: 0 0 15px var(--neon-yellow); }
+
+        .search-container { padding: 20px; background: rgba(12, 12, 15, 0.6); display: flex; justify-content: center; }
+        .search-input { 
+            width: 100%; max-width: 500px; background: rgba(0,0,0,0.7); 
+            border: 1px solid var(--neon-blue); color: white; padding: 12px; 
+            font-family: 'Rajdhani'; font-size: 1.1rem; outline: none;
+        }
+
+        .section-label { font-family: 'Orbitron'; color: var(--neon-pink); padding: 30px 20px 10px; font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase;}
+        .archive-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; padding: 10px 20px; }
+        
+        .pg-card { 
+            background: var(--panel-bg); border: 1px solid rgba(255,255,255,0.1); 
+            cursor: pointer; transition: 0.4s; position: relative; overflow: hidden;
+        }
+        .pg-card:hover { border-color: var(--neon-blue); transform: translateY(-5px); }
+        
+        .pg-card img { 
+            width: 100%; height: 200px; 
+            object-fit: contain; 
+            background: #000; 
+            filter: brightness(0.8); 
+            transition: 0.6s; 
+        }
+        .pg-card:hover img { filter: brightness(1.1); }
+        
+        .pg-card-info { padding: 15px; background: linear-gradient(to top, #000 80%, transparent); position: relative; margin-top: -40px; z-index: 2;}
+        .pg-card-name { font-family: 'Orbitron'; color: var(--neon-blue); font-size: 1.1rem; margin-bottom: 5px; }
+
+        .btn-edit-small, .btn-delete-small {
+            background: none; border: 1px solid; font-family: 'Orbitron'; font-size: 0.55rem; 
+            padding: 4px 8px; cursor: pointer; transition: 0.3s; margin-top: 10px;
+        }
+        .btn-edit-small { border-color: var(--neon-yellow); color: var(--neon-yellow); }
+        .btn-delete-small { border-color: var(--neon-pink); color: var(--neon-pink); }
+        .btn-edit-small:hover { background: var(--neon-yellow); color: black; }
+        .btn-delete-small:hover { background: var(--neon-pink); color: white; }
+
+        #viewer-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.98); z-index: 1000; overflow-y: auto; backdrop-filter: blur(10px); }
+        .sheet-container { max-width: 1100px; margin: 20px auto; background: var(--panel-bg); border: 1px solid var(--neon-blue); display: grid; grid-template-columns: 350px 1fr; position: relative; }
+        
+        .side-img { 
+            width: 100%; height: 100%; 
+            object-fit: contain; 
+            background: #000;
+            border-right: 1px solid var(--neon-blue); 
+        }
+
+        .main-sheet { padding: 25px; }
+        .close-overlay { position: fixed; top: 15px; right: 15px; color: var(--neon-pink); cursor: pointer; font-family: 'Orbitron'; border: 1px solid var(--neon-pink); padding: 5px 10px; z-index: 1100; background: black; font-size: 0.8rem;}
+
+        .data-box { background: rgba(255,255,255,0.03); border-left: 3px solid var(--neon-blue); padding: 15px; margin-bottom: 15px; }
+        .data-box h3 { font-family: 'Orbitron'; font-size: 0.65rem; color: var(--neon-pink); margin: 0 0 8px; letter-spacing: 1px; }
+        .tech-tag { background: rgba(0, 242, 255, 0.05); border-left: 2px solid var(--neon-blue); padding: 6px; margin-bottom: 5px; font-size: 0.85rem; }
+        .trait-pill { display: inline-block; padding: 3px 8px; border: 1px solid var(--neon-yellow); margin: 2px; font-size: 0.65rem; color: var(--neon-yellow); font-family: 'Orbitron'; }
+        
+        /* Label Speciali (Eredità/Mutazioni) */
+        .special-label { font-size: 0.75rem; color: var(--neon-yellow); margin-top: 4px; border-bottom: 1px solid rgba(255,255,0,0.2); padding-bottom: 2px; }
+
+        .limite-container { display: grid; grid-template-columns: repeat(10, 1fr); gap: 4px; margin-top: 10px; }
+        .limite-dot { height: 8px; background: #111; border: 1px solid #333; }
+        .dot-filled { background: var(--neon-pink); box-shadow: 0 0 8px var(--neon-pink); border-color: white;}
+
+        @media (max-width: 900px) {
+            .sheet-container { grid-template-columns: 1fr; margin: 10px; }
+            .side-img { height: 300px; border-right: none; border-bottom: 1px solid var(--neon-blue); }
+            #v-nome { font-size: 2rem !important; }
+        }
+
+        #v-loader {
+            display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bg-dark); z-index: 1001; flex-direction: column; justify-content: center; align-items: center;
+        }
+        .hack-bar-container { width: 200px; height: 3px; background: rgba(0,242,255,0.1); border: 1px solid var(--neon-blue); margin-top: 15px; }
+        .hack-bar-fill { width: 0%; height: 100%; background: var(--neon-blue); transition: width 0.1s; }
+    </style>
+</head>
+<body>
+
+    <header class="nav-header">
+        <div>
+            <h1 style="color:var(--neon-blue); margin:0; font-size:1.1rem; letter-spacing: 1px;">KOTRA // ARCHIVIO</h1>
+            <span id="role-display"></span>
+        </div>
+        <div class="nav-controls">
+            <a id="support-link" href="#" class="btn-support" style="display:none;">AIUTO MODIFICA</a>
+            <a href="index.html" class="btn-action">HUB</a>
+            <a href="creatore.html" class="btn-action">+ REGISTRAZIONE</a>
+            <button class="btn-action" id="btn-logout" style="border-color:var(--neon-pink); color:var(--neon-pink);">LOGOUT</button>
+        </div>
+    </header>
+
+    <div class="search-container">
+        <input type="text" id="search-bar" class="search-input" placeholder="Scansione database (nome, stirpe, job)..." oninput="filterArchive()">
+    </div>
+
+    <div id="master-view" style="display: none;">
+        <div class="section-label">UNITÀ SOTTOPOSTE [ADMIN]</div>
+        <div class="archive-grid" id="grid-utenti"></div>
+    </div>
+
+    <div class="section-label">LE MIE MATRICOLE</div>
+    <div class="archive-grid" id="grid-personali"></div>
+
+  <div id="viewer-overlay">
+        <button class="close-overlay" onclick="closeViewer()">X CHIUDI TERMINALE</button>
+        <div class="sheet-layout">
+            <div class="v-sidebar">
+                <img id="v-img" src="">
+                
+                <div class="data-block" style="margin-top:15px; border-color:var(--neon-blue); font-size: 0.8rem;">
+                    <h3>OPERATIONAL_LOG</h3>
+                    <div style="margin-bottom:5px;">
+                        <strong style="color:var(--neon-blue); font-size:0.6rem; display:block;">AFFILIAZIONE/CLUB:</strong>
+                        <span id="v-club" style="color:white;"></span>
+                    </div>
+                    <div style="margin-bottom:5px;">
+                        <strong style="color:var(--neon-blue); font-size:0.6rem; display:block;">SEGNI PARTICOLARI:</strong>
+                        <span id="v-distintivo" style="color:white;"></span>
+                    </div>
+                    <div id="v-uniforme" style="font-size:0.7rem; color:var(--neon-yellow); border-top:1px solid rgba(0,242,255,0.1); margin-top:5px; padding-top:5px;"></div>
+                </div>
+
+                <div class="data-block" style="border-color:var(--neon-yellow);">
+                    <h3>CORE SYNC STATUS</h3>
+                    <div id="v-limite-visual"></div>
+                </div>
+            </div>
+
+            <div class="v-main">
+                <h2 id="v-nome" style="font-family:'Orbitron'; font-size:3rem; color:var(--neon-blue); margin:0;"></h2>
+                <p id="v-motto" style="color:var(--neon-yellow); font-style:italic; margin-bottom:20px;"></p>
+
+                <div class="data-block">
+                    <h3>IDENTITY_ROOT (STIRPE / JOB / KNIGHT)</h3>
+                    <div class="trait-row" id="v-identity-tags"></div>
+                </div>
+
+                <div class="data-block">
+                    <h3>HARDWARE_PARAMETERS</h3>
+                    <div class="stat-grid" id="v-stats-core"></div>
+                </div>
+
+                 <div class="data-block">
+                     <h3>STIRPE & EREDITÀ</h3>
+                     <div id="v-stirpe" style="font-weight:bold; color:var(--neon-blue); margin-bottom:8px; font-family:'Orbitron'; font-size:0.85rem;">--</div>
+                     <div id="v-eredita-desc"></div>
+                 </div>
+
+                
+                <div class="data-block">
+                    <h3>LOGIC_MODULES & INVENTORY</h3>
+                    <div id="v-tech-list"></div>
+                </div>
+
+                <div class="data-block">
+                            <h3>MEMORIE & AFFINITÀ</h3>
+                            <div id="v-memorie-box" style="font-size:0.85rem; line-height:1.5;"></div>
+                        </div>
+
+                <div class="data-block">
+                    <h3>TRATTI MEMETICI (ESTENSIONE MAX 10)</h3>
+                    <div id="v-tratti"></div>
+                </div>
+                </div>
+            </div>
+        </div>
+    
+    <script type="module">
+       import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+import { getFirestore, collection, getDocs, doc, getDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+const firebaseConfig = {
+    apiKey: "AIzaSyCAMvHn28SY3k9TiLvz2afjn0zpj73Lw5Y",
+    authDomain: "kotra-8da26.firebaseapp.com",
+    projectId: "kotra-8da26",
+    storageBucket: "kotra-8da26.firebasestorage.app",
+    messagingSenderId: "932848394064",
+    appId: "1:932848394064:web:d368c9ae301b54bab01655"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const auth = getAuth(app);
+
+let allChars = [], dbStirpi = [], dbClassi = [], isMasterGlobal = false;
+
+onAuthStateChanged(auth, async (user) => {
+    if (user) {
+        const configSnap = await getDoc(doc(db, "config", "permissions"));
+        let masterEmail = configSnap.exists() ? configSnap.data().masterEmail || "" : "";
+        let supportEmail = configSnap.exists() ? configSnap.data().supportEmail || "" : "";
+
+        if(supportEmail){
+            const sLink = document.getElementById('support-link');
+            sLink.href = `mailto:${supportEmail}?subject=Richiesta Supporto KOTRA&body=Utente: ${user.email}`;
+            sLink.style.display = 'inline-block';
+        }
+
+        isMasterGlobal = user.email.toLowerCase().trim() === masterEmail.toLowerCase().trim();
+        document.getElementById('role-display').innerHTML = `<span style="font-family:'Orbitron'; font-size:0.55rem; padding:2px 6px; border:1px solid var(--neon-blue); color:var(--neon-blue); margin-left:10px;">${isMasterGlobal?'MASTER':'OPERATOR'}</span>`;
+
+        try {
+            const [resS, resJ] = await Promise.all([fetch('stirpi_database.json'), fetch('classi_database.json')]);
+            const dataS = await resS.json();
+            const dataJ = await resJ.json();
+            dbStirpi = dataS.items || dataS.stirpi || dataS; 
+            dbClassi = dataJ.items || dataJ.classi || dataJ;
+
+            const snap = await getDocs(collection(db, "personaggi"));
+            allChars = snap.docs.map(d => ({id: d.id, ...d.data()}));
+            renderArchive(user.uid);
+        } catch (e) { console.error("Errore caricamento database:", e); }
+    } else { window.location.href = "index.html"; }
+});
+
+window.openViewer = (p) => {
+    const spec = p.specialData || {};
+    document.getElementById('viewer-overlay').style.display = 'block';
+
+    // 1. SIDEBAR
+    document.getElementById('v-img').src = p.immagine || '';
+    document.getElementById('v-club').innerText = p.club || "--";
+    document.getElementById('v-distintivo').innerText = p.trattoDistintivo || "--";
+    document.getElementById('v-uniforme').innerText = p.uniforme || "Uniforme Standard Operativa";
+
+    // 2. INFO TESTUALI
+    document.getElementById('v-nome').innerText = p.nome || "MATRICOLA IGNOTA";
+    document.getElementById('v-motto').innerText = p.motto ? `"${p.motto}"` : "";
+
+    // 3. IDENTITÀ TAGS
+    const idTags = document.getElementById('v-identity-tags');
+    idTags.innerHTML = `
+        <div class="trait-tag">STIRPE: ${p.stirpe || '---'}</div>
+        <div class="trait-tag">EREDITÀ: ${p.eredita || '---'}</div>
+        <div class="trait-tag" style="border-color:var(--neon-yellow); color:var(--neon-yellow);">JOB: ${p.job || '---'}</div>
+        ${p.secondoJob ? `<div class="trait-tag" style="border-color:var(--neon-yellow); color:var(--neon-yellow);">JOB_2: ${p.secondoJob}</div>` : ''}
+    `;
+
+    // 4. PARAMETRI HARDWARE
+    const statsCore = document.getElementById('v-stats-core');
+    const renderStat = (val, label) => (val && val !== "--") ? `<div class="stat-item"><span class="stat-val">${val}</span><span class="stat-lab">${label}</span></div>` : "";
+    statsCore.innerHTML = renderStat(p.anima, "Anima") + renderStat(p.core, "Core") + renderStat(spec.core2, "Core Eredità") + renderStat(spec.mutazione, "Mutazione");
+
+    // 5. STIRPE & EREDITÀ
+// Sostituisci la parte del caricamento Stirpe con questa:
+const stirpeNome = (p.stirpe || "").toLowerCase().trim();
+const ereditaNome = (p.eredita || "").toLowerCase().trim();
+
+// Cerca nel database con un controllo più flessibile
+const sData = dbStirpi.find(s => s.nome?.toLowerCase().trim() === stirpeNome);
+const eData = sData?.eredita?.find(e => e.nome?.toLowerCase().trim() === ereditaNome);
+
+const descElement = document.getElementById('v-eredita-desc');
+if (eData) {
+    descElement.innerHTML = `
+        <p style="color:#ccc; font-size:0.85rem; line-height:1.4;">${eData.descrizione || ""}</p>
+        <div class="tech-tag" style="border-color:var(--neon-pink); color:var(--neon-yellow);">${eData.effetto || eData.effetti || ""}</div>
+    `;
+} else {
+    descElement.innerHTML = `<p style="color:#555;">Dati d'archivio non trovati per: ${p.stirpe} > ${p.eredita}</p>`;
+}
+    const techBox = document.getElementById('v-tech-list');
+    techBox.innerHTML = "";
+    const addTechs = (jobName, color, label) => {
+        const jobData = dbClassi.find(j => j.nome === jobName);
+        jobData?.tecniche?.forEach(t => {
+            techBox.innerHTML += `<div class="tech-item" style="border-color:${color}"><strong>[${label}]</strong> ${t.nome}: ${t.effettonome || t.effetto}</div>`;
+        });
+    };
+    if(p.job) addTechs(p.job, "var(--neon-blue)", p.job);
+    if(p.secondoJob) addTechs(p.secondoJob, "var(--neon-yellow)", p.secondoJob);
+
+    // 7. MEMORIE
+    const memBox = document.getElementById('v-memorie-box');
+    memBox.innerHTML = (p.memorie && p.memorie.length > 0) ? "" : "Nessun frammento rilevato.";
+    p.memorie?.forEach(m => {
+        if(m) memBox.innerHTML += `<div class="memory-item">"${m}"</div>`;
+    });
+
+    // 8. SYNC STATUS
+    const nMem = p.memorie?.length || 0;
+    const totLim = Math.min(11 + (nMem * 3), 20);
+    let dots = `<div style="display:grid; grid-template-columns:repeat(10,1fr); gap:4px;">`;
+    for(let i=0; i<20; i++) dots += `<div style="height:8px; border:1px solid #333; background:${i<totLim?'var(--neon-pink)':'#111'}"></div>`;
+    document.getElementById('v-limite-visual').innerHTML = dots + `</div><div style="font-size:0.6rem; margin-top:5px; text-align:center; font-family:Orbitron;">STABILITY: ${totLim}/20</div>`;
+
+    // 9. TRATTI
+    document.getElementById('v-tratti').innerHTML = p.tratti ? p.tratti.map(t => `<span class="trait-pill">${t}</span>`).join('') : '';
+};
+
+window.closeViewer = () => document.getElementById('viewer-overlay').style.display = 'none';
+window.filterArchive = () => renderArchive(auth.currentUser.uid, document.getElementById('search-bar').value);
+window.editChar = (id) => { sessionStorage.setItem('updateModeId', id); window.location.href = 'aggiorna.html'; };
+window.deleteChar = async (id, nome) => { if(confirm(`ELIMINARE DEFINITIVAMENTE ${nome}?`)) { await deleteDoc(doc(db, "personaggi", id)); location.reload(); } };
+document.getElementById('btn-logout').onclick = () => signOut(auth);
+
+function renderArchive(uid, filter = "") {
+    const gPers = document.getElementById('grid-personali');
+    const gUtenti = document.getElementById('grid-utenti');
+    gPers.innerHTML = ""; gUtenti.innerHTML = "";
+    document.getElementById('master-view').style.display = isMasterGlobal ? 'block' : 'none';
+
+    allChars.filter(c => c.nome.toLowerCase().includes(filter.toLowerCase())).forEach(p => {
+        const card = document.createElement('div');
+        card.className = 'pg-card';
+        const isMio = (p.creatoDa === uid) || (isMasterGlobal && p.creatoDa === "MASTER");
+        const jobLabel = p.secondoJob ? `${p.job} + ${p.secondoJob}` : p.job;
+
+        card.innerHTML = `
+            <img src="${p.immagine || ''}">
+            <div class="pg-card-info">
+                <div class="pg-card-name">${p.nome}</div>
+                <div style="font-size:0.7rem; color:#888; font-family:'Orbitron'; text-transform:uppercase;">${p.stirpe} // ${jobLabel}</div>
+                <div style="display:flex; gap:5px; margin-top:10px;">
+                    ${isMasterGlobal ? `<button class="btn-delete-small" onclick="event.stopPropagation(); window.deleteChar('${p.id}', '${p.nome}')">EPURARE</button>` : ''}
+                    ${(isMasterGlobal || isMio) ? `<button class="btn-edit-small" onclick="event.stopPropagation(); window.editChar('${p.id}')">EVOLVERE</button>` : ''}
+                </div>
+            </div>`;
+        card.onclick = () => window.openViewer(p);
+        isMio ? gPers.appendChild(card) : gUtenti.appendChild(card);
+    });
+}
+       window.openViewer = (p) => {
+            const spec = p.specialData || {};
+            document.getElementById('viewer-overlay').style.display = 'block';
+
+            // 1. SIDEBAR & LOGS
+            document.getElementById('v-img').src = p.immagine || '';
+            document.getElementById('v-club').innerText = p.club || "--";
+            document.getElementById('v-distintivo').innerText = p.trattoDistintivo || "--";
+            document.getElementById('v-uniforme').innerText = p.uniforme ? p.uniforme : "Uniforme Standard Operativa";
+
+            // 2. INFO TESTUALI MAIN
+            document.getElementById('v-nome').innerText = p.nome || "MATRICOLA IGNOTA";
+            document.getElementById('v-motto').innerText = p.motto ? `"${p.motto}"` : "";
+
+            // 3. IDENTITÀ TAGS
+            const idTags = document.getElementById('v-identity-tags');
+            idTags.innerHTML = `
+                <div class="trait-tag">STIRPE: ${p.stirpe || '---'}</div>
+                <div class="trait-tag">EREDITÀ: ${p.eredita || '---'}</div>
+                <div class="trait-tag" style="border-color:var(--neon-yellow); color:var(--neon-yellow);">JOB: ${p.job || '---'}</div>
+                ${p.secondoJob ? `<div class="trait-tag" style="border-color:var(--neon-yellow); color:var(--neon-yellow);">JOB_2: ${p.secondoJob}</div>` : ''}
+                ${spec.job2 ? `<div class="trait-tag" style="border-color:var(--neon-pink); color:var(--neon-pink);">JOB_EREDITA': ${spec.job2}</div>` : ''}
+                ${p.knight ? `<div class="trait-tag" style="border-color:var(--neon-red); color:var(--neon-red);">KNIGHT: ${p.knight}</div>` : ''}
+                ${p.frame ? `<div class="trait-tag" style="border-color:var(--neon-red); color:var(--neon-red);">FRAME: ${p.frame}</div>` : ''}
+                ${spec.frame2 ? `<div class="trait-tag" style="border-color:var(--neon-pink); color:var(--neon-pink);">FRAME_EREDITA': ${spec.frame2}</div>` : ''}
+            `;
+
+            // 4. PARAMETRI HARDWARE
+            const statsCore = document.getElementById('v-stats-core');
+            const renderStat = (val, label) => (val && val !== "--") ? `<div class="stat-item"><span class="stat-val">${val}</span><span class="stat-lab">${label}</span></div>` : "";
+            statsCore.innerHTML = renderStat(p.anima, "Anima") + renderStat(p.core, "Core") + renderStat(spec.core2, "Core Eredità") + renderStat(spec.mutazione, "Mutazione") + renderStat(spec.scintilla, "Scintilla");
+
+            // 5. LOGICA EREDITÀ (DESCRIZIONE + EFFETTO)
+            document.getElementById('v-stirpe').innerText = `${p.stirpe.toUpperCase()} > ${p.eredita.toUpperCase()}`;
+            const effetto = ereditaDati?.effetto || ereditaDati?.effetti || "";
+            document.getElementById('v-eredita-desc').innerHTML = `<p style="color:#ccc; font-size:0.85rem; line-height:1.4;">${ereditaDati?.descrizione || ""}</p>` + 
+                (effetto ? `<div class="tech-tag" style="border-color:var(--neon-pink); color:var(--neon-yellow); font-weight:500;">${effetto}</div>` : "");
+
+            // 6. TECNICHE & INVENTORY
+            const techBox = document.getElementById('v-tech-list');
+            techBox.innerHTML = "";
+            const addTechs = (jobName, color, label) => {
+                const jobData = dbClassi.find(j => j.nome === jobName);
+                jobData?.tecniche?.forEach(t => {
+                    techBox.innerHTML += `<div class="tech-item" style="border-color:${color}"><strong>[${label}]</strong> ${t.nome}: ${t.effettonome || t.effetto}</div>`;
+                });
+            };
+            addTechs(p.job, "var(--neon-blue)", p.job);
+            if(p.secondoJob) addTechs(p.secondoJob, "var(--neon-yellow)", p.secondoJob);
+            p.capacita?.forEach(c => techBox.innerHTML += `<div class="tech-item" style="border-color:var(--neon-yellow)"><strong>[EXTRA]</strong> ${c}</div>`);
+
+            // 7. MEMORIE (Una sola istanza pulita)
+            const memBox = document.getElementById('v-memories');
+            if (memBox) {
+                memBox.innerHTML = (p.memorie && p.memorie.length > 0) ? "<h3>FRAGMENT_DATA:</h3>" : "";
+                p.memorie?.forEach(m => {
+                    if(m) memBox.innerHTML += `<div class="memory-item">"${m}"</div>`;
+                });
+            }
+
+            // 8. STABILITY BAR (SYNC STATUS)
+            const nMem = p.memorie?.length || 0;
+            const totLim = Math.min(11 + (nMem * 3), 20);
+            let dots = `<div style="display:grid; grid-template-columns:repeat(10,1fr); gap:4px;">`;
+            for(let i=0; i<20; i++) dots += `<div style="height:8px; border:1px solid #333; background:${i<totLim?'var(--neon-pink)':'#111'}"></div>`;
+            document.getElementById('v-limite-visual').innerHTML = dots + `</div><div style="font-size:0.6rem; margin-top:5px; text-align:center; font-family:Orbitron;">STABILITY: ${totLim}/20</div>`;
+
+           // 9. Tratti
+            document.getElementById('v-tratti').innerHTML = p.tratti ? p.tratti.map(t => `<span class="trait-pill">${t}</span>`).join('') : '';
+        };
+
+        window.closeViewer = () => document.getElementById('viewer-overlay').style.display = 'none';
+        window.filterArchive = () => renderArchive(auth.currentUser.uid, document.getElementById('search-bar').value);
+        window.editChar = (id) => { sessionStorage.setItem('updateModeId', id); window.location.href = 'aggiorna.html'; };
+        window.deleteChar = async (id, nome) => { if(confirm(`ELIMINARE DEFINITIVAMENTE ${nome}?`)) { await deleteDoc(doc(db, "personaggi", id)); location.reload(); } };
+        document.getElementById('btn-logout').onclick = () => signOut(auth);    
+    </script>
+</body>
+</html>
