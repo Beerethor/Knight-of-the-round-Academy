@@ -238,7 +238,7 @@
     </div>
 
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+       import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, collection, getDocs, doc, getDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
@@ -274,12 +274,16 @@
 
                 try {
                     const [resS, resJ] = await Promise.all([fetch('stirpi_database.json'), fetch('classi_database.json')]);
-                    dbStirpi = (await resS.json()).items;
-                    dbClassi = (await resJ.json()).items;
+                    // Verifichiamo se i dati sono sotto .items o se il JSON è un array diretto
+                    const dataS = await resS.json();
+                    const dataJ = await resJ.json();
+                    dbStirpi = dataS.items || dataS.stirpi || dataS; 
+                    dbClassi = dataJ.items || dataJ.classi || dataJ;
+
                     const snap = await getDocs(collection(db, "personaggi"));
                     allChars = snap.docs.map(d => ({id: d.id, ...d.data()}));
                     renderArchive(user.uid);
-                } catch (e) { console.error(e); }
+                } catch (e) { console.error("Errore caricamento database:", e); }
             } else { window.location.href = "index.html"; }
         });
 
@@ -305,89 +309,83 @@
                             ${(isMasterGlobal || isMio) ? `<button class="btn-edit-small" onclick="event.stopPropagation(); window.editChar('${p.id}')">EVOLVERE</button>` : ''}
                         </div>
                     </div>`;
-                card.onclick = () => (p);
+                // CORRETTO: Ora chiama la funzione openViewer passando i dati p
+                card.onclick = () => window.openViewer(p);
                 isMio ? gPers.appendChild(card) : gUtenti.appendChild(card);
             });
         }
 
-      window.openViewer = (p) => {
+        window.openViewer = (p) => {
             const spec = p.specialData || {};
             document.getElementById('viewer-overlay').style.display = 'block';
 
-          // --- LOGICA EREDITÀ DINAMICA ---
-    const ereditaBlock = document.getElementById('v-eredita-block');
-    const ereditaNome = document.getElementById('v-eredita-nome');
-    const ereditaDesc = document.getElementById('v-eredita-desc');
+            // 1. LOGICA EREDITÀ DINAMICA
+            const ereditaBlock = document.getElementById('v-eredita-block');
+            const ereditaNome = document.getElementById('v-eredita-nome');
+            const ereditaDesc = document.getElementById('v-eredita-desc');
 
-    // Cerchiamo la stirpe nel database caricato all'inizio (dbStirpi)
-    const stirpeDati = dbStirpi.find(s => s.nome.toLowerCase() === p.stirpe.toLowerCase());
-    
-    if (stirpeDati && p.eredita) {
-        // Cerchiamo l'effetto specifico dell'eredità nell'array della stirpe
-        const effetto = stirpeDati.eredita.find(e => e.nome.toLowerCase() === p.eredita.toLowerCase());
-        
-        if (effetto) {
-            ereditaBlock.style.display = 'block';
-            ereditaNome.innerText = effetto.nome.toUpperCase();
-            ereditaDesc.innerText = effetto.descrizione;
-        } else {
-            ereditaBlock.style.display = 'none';
-        }
-    } else {
-        ereditaBlock.style.display = 'none';
-    }
-
+            if (dbStirpi && p.stirpe && p.eredita) {
+                const stirpeDati = dbStirpi.find(s => s.nome?.toLowerCase() === p.stirpe.toLowerCase());
+                const effetto = stirpeDati?.eredita?.find(e => e.nome?.toLowerCase() === p.eredita.toLowerCase());
+                
+                if (effetto) {
+                    ereditaBlock.style.display = 'block';
+                    ereditaNome.innerText = effetto.nome.toUpperCase();
+                    ereditaDesc.innerText = effetto.descrizione;
+                } else { ereditaBlock.style.display = 'none'; }
+            } else { ereditaBlock.style.display = 'none'; }
           
-            // Info Base
+            // 2. INFO BASE
             document.getElementById('v-img').src = p.immagine || '';
             document.getElementById('v-nome').innerText = p.nome;
             document.getElementById('v-motto').innerText = p.motto ? `"${p.motto}"` : "";
 
-            // 1. POPOLA IDENTITÀ
+            // 3. POPOLA IDENTITÀ
             const idTags = document.getElementById('v-identity-tags');
             idTags.innerHTML = `
-                <div class="trait-tag">STIRPE: ${p.stirpe}</div>
-                <div class="trait-tag">EREDITÀ: ${p.eredita}</div>
-                <div class="trait-tag" style="border-color:var(--neon-yellow); color:var(--neon-yellow);">JOB: ${p.job}</div>
-                ${p.secondoJob ? `<div class="trait-tag" style="border-color:var(--neon-yellow); color:var(--neon-yellow);">Job_2: ${p.secondoJob}</div>` : ''}
-                ${spec.job2 ? `<div class="trait-tag" style="border-color:var(--neon-pink); color:var(--neon-pink);">JOB_SPEC: ${spec.job2}</div>` : ''}
-                <div class="trait-tag" style="border-color:var(--neon-red); color:var(--neon-red);">Knight: ${p.knight}</div>
-                <div class="trait-tag" style="border-color:var(--neon-red); color:var(--neon-red);">Frame: ${p.frame}</div>
-                
+                <div class="trait-tag">STIRPE: ${p.stirpe || '---'}</div>
+                <div class="trait-tag">EREDITÀ: ${p.eredita || '---'}</div>
+                <div class="trait-tag" style="border-color:var(--neon-yellow); color:var(--neon-yellow);">JOB: ${p.job || '---'}</div>
+                ${p.secondoJob ? `<div class="trait-tag" style="border-color:var(--neon-yellow); color:var(--neon-yellow);">JOB_2: ${p.secondoJob}</div>` : ''}
+                ${spec.job2 ? `<div class="trait-tag" style="border-color:var(--neon-pink); color:var(--neon-pink);">JOB_Eredità: ${spec.job2}</div>` : ''}
+                ${p.knight ? `<div class="trait-tag" style="border-color:var(--neon-pink); color:var(--neon-pink);">KNIGHT: ${p.knight}</div>` : ''}
+                ${p.frame ? `<div class="trait-tag" style="border-color:var(--neon-pink); color:var(--neon-pink);">FRAME: ${p.frame}</div>` : ''}
+                ${spec.frame2 ? `<div class="trait-tag" style="border-color:var(--neon-pink); color:var(--neon-pink);">FRAME_Eredità: ${spec.frame2}</div>` : ''}
             `;
 
-           // 2. POPOLA PARAMETRI
-const statsCore = document.getElementById('v-stats-core');
-    const renderStat = (val, label) => {
-        if (val === undefined || val === null || val === "" || val === "--") return "";
-        return `<div class="stat-item"><span class="stat-val">${val}</span><span class="stat-lab">${label}</span></div>`;
-    };
+            // 4. POPOLA PARAMETRI
+            const statsCore = document.getElementById('v-stats-core');
+            const renderStat = (val, label) => {
+                if (!val || val === "--") return "";
+                return `<div class="stat-item"><span class="stat-val">${val}</span><span class="stat-lab">${label}</span></div>`;
+            };
 
-    let htmlStats = "";
-    htmlStats += renderStat(p.anima, "Anima");
-    htmlStats += renderStat(p.core, "Core");
-    htmlStats += renderStat(spec.frame2, "Frame Eredità");
-    htmlStats += renderStat(spec.core2, "Core Eredità");
-    htmlStats += renderStat(spec.mutazione, "Mutazione");
-    htmlStats += renderStat(spec.scintilla, "Scintilla");
-    statsCore.innerHTML = htmlStats;
+            let htmlStats = "";
+            htmlStats += renderStat(p.anima, "Anima");
+            htmlStats += renderStat(p.core, "Core");
+            htmlStats += renderStat(spec.core2, "Core Eredità");
+            htmlStats += renderStat(spec.mutazione, "Mutazione");
+            htmlStats += renderStat(spec.scintilla, "Scintilla");
+            statsCore.innerHTML = htmlStats;
 
-            // 3. POPOLA TECNICHE E EQUIP
+            // 5. POPOLA TECNICHE
             const techBox = document.getElementById('v-tech-list');
             techBox.innerHTML = "";
             
-            const mainJob = dbClassi.find(j => j.nome === p.job);
-            mainJob?.tecniche?.forEach(t => techBox.innerHTML += `<div class="tech-item"><strong>[${p.job}]</strong> ${t.nome}: ${t.effetto}</div>`);
-            
-            const secondJob = dbClassi.find(j => j.nome === p.secondoJob);
-            secondJob?.tecniche?.forEach(t => techBox.innerHTML += `<div class="tech-item" style="border-color:var(--neon-yellow)"><strong>[${p.secondoJob}]</strong> ${t.nome}: ${t.effetto}</div>`);
+            const addTechs = (jobName, color, label) => {
+                if(!jobName) return;
+                const jobData = dbClassi.find(j => j.nome === jobName);
+                jobData?.tecniche?.forEach(t => {
+                    techBox.innerHTML += `<div class="tech-item" style="border-color:${color}"><strong>[${label}]</strong> ${t.nome}: ${t.effetto}</div>`;
+                });
+            };
 
-            const specJob = dbClassi.find(j => j.nome === spec.job2);
-            specJob?.tecniche?.forEach(t => techBox.innerHTML += `<div class="tech-item" style="border-color:var(--neon-pink)"><strong>[${spec.job2}]</strong> ${t.nome}: ${t.effetto}</div>`);
-
+            addTechs(p.job, "var(--neon-blue)", p.job);
+            if(p.secondoJob) addTechs(p.secondoJob, "var(--neon-yellow)", p.secondoJob);
+            if(spec.job2) addTechs(spec.job2, "var(--neon-pink)", spec.job2);
             p.capacita?.forEach(c => techBox.innerHTML += `<div class="tech-item" style="border-color:var(--neon-yellow)"><strong>[EQUIP/SKILL]</strong> ${c}</div>`);
 
-            // 4. POPOLA MEMORIE E TRATTI
+            // 6. POPOLA MEMORIE E TRATTI
             const memBox = document.getElementById('v-memories');
             memBox.innerHTML = (p.memorie && p.memorie.length > 0) ? "<h3>FRAGMENT_DATA:</h3>" : "";
             p.memorie?.forEach(m => memBox.innerHTML += `<div class="memory-item">"${m}"</div>`);
@@ -396,7 +394,7 @@ const statsCore = document.getElementById('v-stats-core');
             traitsBox.innerHTML = "";
             p.tratti?.forEach(t => traitsBox.innerHTML += `<div class="trait-tag" style="border-color:var(--neon-yellow); color:var(--neon-yellow);">${t}</div>`);
 
-            // SYNC BAR
+            // 7. SYNC BAR
             const numMem = p.memorie?.length || 0;
             const totLim = Math.min(11 + (numMem * 3), 20);
             let dots = `<div style="display:grid; grid-template-columns:repeat(10,1fr); gap:4px;">`;
