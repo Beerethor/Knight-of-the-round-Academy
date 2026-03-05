@@ -8,17 +8,14 @@
     <style>
         /* NUOVO LAYOUT BLOCCHI */
         #viewer-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 1000; overflow-y: auto; padding: 20px; }
-        .sheet-layout { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: 300px 1fr 300px; gap: 20px; align-items: start; /* Allinea i blocchi all'inizio della riga */}
+        .sheet-layout { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: 300px 1fr 300px; gap: 20px; }
 /* Responsive: su schermi piccoli torna a colonna singola */
         @media (max-width: 1100px) {
             .sheet-layout { 
                 grid-template-columns: 1fr; 
             }
         }
-        /* Pannello Destro con effetto "Sticky" (rimane fisso mentre scorri) */
-        .v-right-pane {position: relative; top: 20px; height: fit-content;}
-
-        
+       
         .v-sidebar { position: sticky; top: 0; }
         .v-sidebar img { width: 100%; border: 1px solid var(--neon-blue); background: #000; }
 
