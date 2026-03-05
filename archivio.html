@@ -333,17 +333,17 @@
             const spec = p.specialData || {};
             document.getElementById('viewer-overlay').style.display = 'block';
 
-            // 1. SIDEBAR & NUOVI CAMPI
+            // 1. SIDEBAR & LOGS
             document.getElementById('v-img').src = p.immagine || '';
             document.getElementById('v-club').innerText = p.club || "--";
             document.getElementById('v-distintivo').innerText = p.trattoDistintivo || "--";
             document.getElementById('v-uniforme').innerText = p.uniforme ? p.uniforme : "Uniforme Standard Operativa";
 
-            // 3. INFO TESTUALI MAIN
+            // 2. INFO TESTUALI MAIN
             document.getElementById('v-nome').innerText = p.nome || "MATRICOLA IGNOTA";
             document.getElementById('v-motto').innerText = p.motto ? `"${p.motto}"` : "";
 
-            // 4. POPOLA IDENTITÀ
+            // 3. IDENTITÀ TAGS
             const idTags = document.getElementById('v-identity-tags');
             idTags.innerHTML = `
                 <div class="trait-tag">STIRPE: ${p.stirpe || '---'}</div>
@@ -352,54 +352,44 @@
                 ${p.secondoJob ? `<div class="trait-tag" style="border-color:var(--neon-yellow); color:var(--neon-yellow);">JOB_2: ${p.secondoJob}</div>` : ''}
                 ${spec.job2 ? `<div class="trait-tag" style="border-color:var(--neon-pink); color:var(--neon-pink);">JOB_EREDITA': ${spec.job2}</div>` : ''}
                 ${p.knight ? `<div class="trait-tag" style="border-color:var(--neon-red); color:var(--neon-red);">KNIGHT: ${p.knight}</div>` : ''}
-                ${p.frame ? `<div class="trait-tag" style="border-color:var(--neon-red); color:var(--neon-red);">FRAME: ${p.frame}</div>` : ''}
-                ${spec.frame2 ? `<div class="trait-tag" style="border-color:var(--neon-pink); color:var(--neon-pink);">FRAME_EREDITA': ${spec.frame2}</div>` : ''}
             `;
 
-            // 5. PARAMETRI HARDWARE
+            // 4. PARAMETRI HARDWARE
             const statsCore = document.getElementById('v-stats-core');
             const renderStat = (val, label) => (val && val !== "--") ? `<div class="stat-item"><span class="stat-val">${val}</span><span class="stat-lab">${label}</span></div>` : "";
             statsCore.innerHTML = renderStat(p.anima, "Anima") + renderStat(p.core, "Core") + renderStat(spec.core2, "Core Eredità") + renderStat(spec.mutazione, "Mutazione") + renderStat(spec.scintilla, "Scintilla");
 
-          // --- LOGICA EREDITÀ DINAMICA ---
-const ereditaBlock = document.getElementById('v-eredita-block');
-const ereditaDescContainer = document.getElementById('v-eredita-desc');
+            // 5. LOGICA EREDITÀ (DESCRIZIONE + EFFETTO)
+            const ereditaBlock = document.getElementById('v-eredita-block');
+            const ereditaDescContainer = document.getElementById('v-eredita-desc');
 
-if (ereditaBlock && ereditaDescContainer) {
-    ereditaBlock.style.display = 'none'; // Nascondi di base se non trova match
+            if (ereditaBlock && ereditaDescContainer) {
+                ereditaBlock.style.display = 'none'; 
+                const sCercata = p.stirpe?.trim().toLowerCase();
+                const eCercata = p.eredita?.trim().toLowerCase();
+                const stirpeDati = dbStirpi.find(s => s.nome?.toLowerCase().trim() === sCercata);
+                const ereditaDati = stirpeDati?.eredita?.find(e => e.nome?.toLowerCase().trim() === eCercata);
 
-    const sCercata = p.stirpe?.trim().toLowerCase();
-    const eCercata = p.eredita?.trim().toLowerCase();
-
-    // Trova la stirpe nel database
-    const stirpeDati = dbStirpi.find(s => s.nome?.toLowerCase().trim() === sCercata);
-    // Trova l'eredità specifica dentro quella stirpe
-    const ereditaDati = stirpeDati?.eredita?.find(e => e.nome?.toLowerCase().trim() === eCercata);
-
-    if (ereditaDati) {
-        ereditaBlock.style.display = 'block';
-        
-        // 1. Imposta il Nome
-        document.getElementById('v-eredita-nome').innerText = (ereditaDati.nome || p.eredita).toUpperCase();
-
-        // 2. Recupera l'effetto (gestisce entrambi i nomi di proprietà)
-        const effettoTxt = ereditaDati.effetto || ereditaDati.effetti || "";
-        
-        // 3. Costruisci l'HTML interno
-        ereditaDescContainer.innerHTML = `
-            <p style="color:#ccc; font-size:0.85rem; line-height:1.4; margin-bottom:10px;">
-                ${ereditaDati.descrizione || "Nessuna descrizione disponibile."}
-            </p>
-            ${effettoTxt ? `
-                <div class="tech-tag" style="border-color:var(--neon-pink); color:var(--neon-yellow); font-weight:500; padding:8px; border-left:4px solid var(--neon-pink); background:rgba(255,0,255,0.05);">
-                    <span style="color:var(--neon-pink); font-size:0.7rem; display:block; font-family:'Orbitron';">LOGIC_EFFECT:</span>
-                    ${effettoTxt}
-                </div>` : ""
+                if (ereditaDati) {
+                    ereditaBlock.style.display = 'block';
+                    document.getElementById('v-eredita-nome').innerText = (ereditaDati.nome || p.eredita).toUpperCase();
+                    const effettoTxt = ereditaDati.effetto || ereditaDati.effetti || "";
+                    
+                    ereditaDescContainer.innerHTML = `
+                        <p style="color:#ccc; font-size:0.85rem; line-height:1.4; margin-bottom:10px;">
+                            ${ereditaDati.descrizione || "Nessuna descrizione disponibile."}
+                        </p>
+                        ${effettoTxt ? `
+                            <div class="tech-tag" style="border-color:var(--neon-pink); color:var(--neon-yellow); font-weight:500; padding:8px; border-left:4px solid var(--neon-pink); background:rgba(255,0,255,0.05);">
+                                <span style="color:var(--neon-pink); font-size:0.7rem; display:block; font-family:'Orbitron';">LOGIC_EFFECT:</span>
+                                ${effettoTxt}
+                            </div>` : ""
+                        }
+                    `;
+                }
             }
-        `;
-    }
-}
-            // 6. TECNICHE
+
+            // 6. TECNICHE & INVENTORY
             const techBox = document.getElementById('v-tech-list');
             techBox.innerHTML = "";
             const addTechs = (jobName, color, label) => {
@@ -428,14 +418,12 @@ if (ereditaBlock && ereditaDescContainer) {
             for(let i=0; i<20; i++) dots += `<div style="height:8px; border:1px solid #333; background:${i<totLim?'var(--neon-pink)':'#111'}"></div>`;
             document.getElementById('v-limite-visual').innerHTML = dots + `</div><div style="font-size:0.6rem; margin-top:5px; text-align:center; font-family:Orbitron;">STABILITY: ${totLim}/20</div>`;
         };
-    }
-        };
 
         window.closeViewer = () => document.getElementById('viewer-overlay').style.display = 'none';
         window.filterArchive = () => renderArchive(auth.currentUser.uid, document.getElementById('search-bar').value);
         window.editChar = (id) => { sessionStorage.setItem('updateModeId', id); window.location.href = 'aggiorna.html'; };
         window.deleteChar = async (id, nome) => { if(confirm(`ELIMINARE DEFINITIVAMENTE ${nome}?`)) { await deleteDoc(doc(db, "personaggi", id)); location.reload(); } };
-        document.getElementById('btn-logout').onclick = () => signOut(auth);
+        document.getElementById('btn-logout').onclick = () => signOut(auth);    
     </script>
 </body>
 </html>
