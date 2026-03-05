@@ -319,21 +319,33 @@
             const spec = p.specialData || {};
             document.getElementById('viewer-overlay').style.display = 'block';
 
-            // 1. LOGICA EREDITÀ DINAMICA
+           // 1. LOGICA EREDITÀ DINAMICA (Potenziata)
             const ereditaBlock = document.getElementById('v-eredita-block');
             const ereditaNome = document.getElementById('v-eredita-nome');
             const ereditaDesc = document.getElementById('v-eredita-desc');
 
             if (dbStirpi && p.stirpe && p.eredita) {
-                const stirpeDati = dbStirpi.find(s => s.nome?.toLowerCase() === p.stirpe.toLowerCase());
-                const effetto = stirpeDati?.eredita?.find(e => e.nome?.toLowerCase() === p.eredita.toLowerCase());
+                // Pulizia stringhe per confronto sicuro
+                const stirpeCercata = p.stirpe.trim().toLowerCase();
+                const ereditaCercata = p.eredita.trim().toLowerCase();
+
+                const stirpeDati = dbStirpi.find(s => s.nome?.toLowerCase().trim() === stirpeCercata);
+                
+                // Cerca l'effetto dentro l'array eredita della stirpe trovata
+                const effetto = stirpeDati?.eredita?.find(e => e.nome?.toLowerCase().trim() === ereditaCercata);
                 
                 if (effetto) {
                     ereditaBlock.style.display = 'block';
                     ereditaNome.innerText = effetto.nome.toUpperCase();
                     ereditaDesc.innerText = effetto.descrizione;
-                } else { ereditaBlock.style.display = 'none'; }
-            } else { ereditaBlock.style.display = 'none'; }
+                    console.log("Eredità trovata:", effetto.nome); // Log di controllo in console
+                } else { 
+                    console.warn("Eredità non trovata nel DB:", ereditaCercata);
+                    ereditaBlock.style.display = 'none'; 
+                }
+            } else { 
+                ereditaBlock.style.display = 'none'; 
+            }
           
             // 2. INFO BASE
             document.getElementById('v-img').src = p.immagine || '';
@@ -348,9 +360,9 @@
                 <div class="trait-tag" style="border-color:var(--neon-yellow); color:var(--neon-yellow);">JOB: ${p.job || '---'}</div>
                 ${p.secondoJob ? `<div class="trait-tag" style="border-color:var(--neon-yellow); color:var(--neon-yellow);">JOB_2: ${p.secondoJob}</div>` : ''}
                 ${spec.job2 ? `<div class="trait-tag" style="border-color:var(--neon-pink); color:var(--neon-pink);">JOB_Eredità: ${spec.job2}</div>` : ''}
-                ${p.knight ? `<div class="trait-tag" style="border-color:var(--neon-pink); color:var(--neon-pink);">KNIGHT: ${p.knight}</div>` : ''}
-                ${p.frame ? `<div class="trait-tag" style="border-color:var(--neon-pink); color:var(--neon-pink);">FRAME: ${p.frame}</div>` : ''}
-                ${spec.frame2 ? `<div class="trait-tag" style="border-color:var(--neon-pink); color:var(--neon-pink);">FRAME_Eredità: ${spec.frame2}</div>` : ''}
+                ${p.knight ? `<div class="trait-tag" style="border-color:var(--neon-red); color:var(--neon-red);">KNIGHT: ${p.knight}</div>` : ''}
+                ${p.frame ? `<div class="trait-tag" style="border-color:var(--neon-red); color:var(--neon-red);">FRAME: ${p.frame}</div>` : ''}
+                ${spec.frame2 ? `<div class="trait-tag" style="border-color:var(--neon-red); color:var(--neon-red);">FRAME_Eredità: ${spec.frame2}</div>` : ''}
             `;
 
             // 4. POPOLA PARAMETRI
