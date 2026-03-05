@@ -159,8 +159,15 @@
             </div>
         </div>
 
+        <div class="form-section">
         <div class="full-width"><h2 style="font-family:'Orbitron'; font-size: 0.9rem; color:var(--neon-blue); margin-top:15px;">[05] CHASSIS_CONFIGURATION</h2></div>
         <div>
+            <div>
+                <label>KNIGHT_CLASS (SCALE)</label>
+                <select id="select-knight-class">
+                    <option value="">-- CARICAMENTO CLASSI... --</option>
+                </select>
+            </div>
             <label>KNIGHT_MODEL (CHASSIS)</label>
             <input type="text" id="knight" placeholder="Es: MK-V Paladin">
         </div>
@@ -170,6 +177,7 @@
                 <option value="">-- CARICAMENTO DATI... --</option>
             </select>
         </div>
+            </div>
 
         
         <div class="form-section">
@@ -349,6 +357,14 @@ async function init() {
         document.getElementById('select-job').innerHTML = jobOptions;
 
         // 2. Popola i FRAME dalla knight_guide.json
+        // 1. Popola le CLASSI KNIGHT (dalla Sezione 1)
+const sezioneClassi = dbKnightGuide.sezioni.find(s => s.id === 1);
+if (sezioneClassi && sezioneClassi.items) {
+    const classOptions = sezioneClassi.items.map(c => 
+        `<option value="${c.nome}">${c.nome}</option>`
+    ).join('');
+    document.getElementById('select-knight-class').innerHTML = '<option value="">-- SELEZIONA CLASSE --</option>' + classOptions;
+}
         // Cerchiamo la sezione con id: 2 (I Frame)
         const sezioneFrame = dbKnightGuide.sezioni.find(s => s.id === 2);
         if (sezioneFrame && sezioneFrame.rows) {
