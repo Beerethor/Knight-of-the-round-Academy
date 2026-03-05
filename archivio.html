@@ -190,34 +190,26 @@
     <div class="section-label">LE MIE MATRICOLE</div>
     <div class="archive-grid" id="grid-personali"></div>
 
-   <div id="viewer-overlay">
-        <button class="close-overlay" onclick="closeViewer()" style="position:fixed; top:20px; right:20px;">X CHIUDI TERMINALE</button>
+  <div id="viewer-overlay">
+        <button class="close-overlay" onclick="closeViewer()">X CHIUDI TERMINALE</button>
         <div class="sheet-layout">
             <div class="v-sidebar">
                 <img id="v-img" src="">
-                <div class="v-sidebar">
-    <img id="v-img" src="">
-    
-    <div class="data-block" style="margin-top:15px; border-color:var(--neon-blue); font-size: 0.8rem;">
-        <h3>OPERATIONAL_LOG</h3>
-        <div style="margin-bottom:5px;">
-            <strong style="color:var(--neon-blue); font-size:0.6rem; display:block;">AFFILIAZIONE/CLUB:</strong>
-            <span id="v-club" style="color:white;"></span>
-        </div>
-        <div style="margin-bottom:5px;">
-            <strong style="color:var(--neon-blue); font-size:0.6rem; display:block;">SEGNI PARTICOLARI:</strong>
-            <span id="v-distintivo" style="color:white;"></span>
-        </div>
-        <div id="v-uniforme" style="font-size:0.7rem; color:var(--neon-yellow); border-top:1px solid rgba(0,242,255,0.1); margin-top:5px; padding-top:5px;"></div>
-    </div>
+                
+                <div class="data-block" style="margin-top:15px; border-color:var(--neon-blue); font-size: 0.8rem;">
+                    <h3>OPERATIONAL_LOG</h3>
+                    <div style="margin-bottom:5px;">
+                        <strong style="color:var(--neon-blue); font-size:0.6rem; display:block;">AFFILIAZIONE/CLUB:</strong>
+                        <span id="v-club" style="color:white;"></span>
+                    </div>
+                    <div style="margin-bottom:5px;">
+                        <strong style="color:var(--neon-blue); font-size:0.6rem; display:block;">SEGNI PARTICOLARI:</strong>
+                        <span id="v-distintivo" style="color:white;"></span>
+                    </div>
+                    <div id="v-uniforme" style="font-size:0.7rem; color:var(--neon-yellow); border-top:1px solid rgba(0,242,255,0.1); margin-top:5px; padding-top:5px;"></div>
+                </div>
 
-    <div class="data-block" style="border-color:var(--neon-yellow);">
-        <h3>CORE SYNC STATUS</h3>
-        <div id="v-limite-visual"></div>
-    </div>
-</div>
-              
-                <div class="data-block" style="margin-top:15px; border-color:var(--neon-yellow);">
+                <div class="data-block" style="border-color:var(--neon-yellow);">
                     <h3>CORE SYNC STATUS</h3>
                     <div id="v-limite-visual"></div>
                 </div>
@@ -232,19 +224,18 @@
                     <div class="trait-row" id="v-identity-tags"></div>
                 </div>
 
-
                 <div class="data-block">
-                    <h3>HARDWARE_PARAMETERS (ANIMA / CORE / MODS)</h3>
+                    <h3>HARDWARE_PARAMETERS</h3>
                     <div class="stat-grid" id="v-stats-core"></div>
                 </div>
 
                 <div class="data-block" id="v-eredita-block" style="border-color:var(--neon-yellow); display:none;">
-    <h3>HERITAGE_DATABASE // DEFINIZIONE E EFFETTO</h3>
-    <div id="v-eredita-info" style="font-size: 0.9rem; line-height: 1.4;">
-        <strong id="v-eredita-nome" style="color:var(--neon-yellow); display:block; margin-bottom:5px;"></strong>
-        <span id="v-eredita-desc" style="color:#ccc; font-style:italic;"></span>
-    </div>
-</div>
+                    <h3>HERITAGE_DATABASE // DEFINIZIONE E EFFETTO</h3>
+                    <div id="v-eredita-info" style="font-size: 0.9rem; line-height: 1.4;">
+                        <strong id="v-eredita-nome" style="color:var(--neon-yellow); display:block; margin-bottom:5px;"></strong>
+                        <span id="v-eredita-desc" style="color:#ccc; font-style:italic;"></span>
+                    </div>
+                </div>
 
                 <div class="data-block">
                     <h3>LOGIC_MODULES & INVENTORY</h3>
@@ -252,14 +243,14 @@
                 </div>
 
                 <div class="data-block">
-                    <h3>MEMORY_FRAGMENTS & MEMETIC_TRAITS</h3>
+                    <h3>MEMORY_FRAGMENTS</h3>
                     <div id="v-memories" style="margin-bottom:15px;"></div>
                     <div class="trait-row" id="v-traits-list"></div>
                 </div>
             </div>
         </div>
     </div>
-
+    
     <script type="module">
        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, collection, getDocs, doc, getDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
@@ -338,105 +329,71 @@
             });
         }
 
-        window.openViewer = (p) => {
+       window.openViewer = (p) => {
             const spec = p.specialData || {};
             document.getElementById('viewer-overlay').style.display = 'block';
 
-           // 1. LOGICA EREDITÀ DINAMICA (Potenziata)
-            const ereditaBlock = document.getElementById('v-eredita-block');
-            const ereditaNome = document.getElementById('v-eredita-nome');
-            const ereditaDesc = document.getElementById('v-eredita-desc');
-
-            if (dbStirpi && p.stirpe && p.eredita) {
-                // Pulizia stringhe per confronto sicuro
-                const stirpeCercata = p.stirpe.trim().toLowerCase();
-                const ereditaCercata = p.eredita.trim().toLowerCase();
-
-                const stirpeDati = dbStirpi.find(s => s.nome?.toLowerCase().trim() === stirpeCercata);
-                
-                // Cerca l'effetto dentro l'array eredita della stirpe trovata
-                const effetto = stirpeDati?.eredita?.find(e => e.nome?.toLowerCase().trim() === ereditaCercata);
-                
-                if (effetto) {
-                    ereditaBlock.style.display = 'block';
-                    ereditaNome.innerText = effetto.nome.toUpperCase();
-                    ereditaDesc.innerText = effetto.descrizione;
-                    console.log("Eredità trovata:", effetto.nome); // Log di controllo in console
-                } else { 
-                    console.warn("Eredità non trovata nel DB:", ereditaCercata);
-                    ereditaBlock.style.display = 'none'; 
-                }
-            } else { 
-                ereditaBlock.style.display = 'none'; 
-            }
-          
-            // 2. INFO BASE
+            // 1. SIDEBAR & NUOVI CAMPI
             document.getElementById('v-img').src = p.immagine || '';
-            document.getElementById('v-nome').innerText = p.nome;
-            document.getElementById('v-motto').innerText = p.motto ? `"${p.motto}"` : "";
-
-            // Inserimento dei tuoi nuovi codici:
             document.getElementById('v-club').innerText = p.club || "--";
             document.getElementById('v-distintivo').innerText = p.trattoDistintivo || "--";
             document.getElementById('v-uniforme').innerText = p.uniforme ? p.uniforme : "Uniforme Standard Operativa";
-            
-            // 3. POPOLA IDENTITÀ
+
+            // 2. LOGICA EREDITÀ (Con controllo DB)
+            const ereditaBlock = document.getElementById('v-eredita-block');
+            if (ereditaBlock) {
+                ereditaBlock.style.display = 'none'; // Reset
+                const sCercata = p.stirpe?.trim().toLowerCase();
+                const eCercata = p.eredita?.trim().toLowerCase();
+
+                const stirpeDati = dbStirpi.find(s => s.nome?.toLowerCase().trim() === sCercata);
+                const effetto = stirpeDati?.eredita?.find(e => e.nome?.toLowerCase().trim() === eCercata);
+
+                if (effetto) {
+                    ereditaBlock.style.display = 'block';
+                    document.getElementById('v-eredita-nome').innerText = effetto.nome.toUpperCase();
+                    document.getElementById('v-eredita-desc').innerText = effetto.descrizione;
+                }
+            }
+
+            // 3. INFO TESTUALI MAIN
+            document.getElementById('v-nome').innerText = p.nome || "MATRICOLA IGNOTA";
+            document.getElementById('v-motto').innerText = p.motto ? `"${p.motto}"` : "";
+
+            // 4. POPOLA IDENTITÀ
             const idTags = document.getElementById('v-identity-tags');
             idTags.innerHTML = `
                 <div class="trait-tag">STIRPE: ${p.stirpe || '---'}</div>
                 <div class="trait-tag">EREDITÀ: ${p.eredita || '---'}</div>
                 <div class="trait-tag" style="border-color:var(--neon-yellow); color:var(--neon-yellow);">JOB: ${p.job || '---'}</div>
                 ${p.secondoJob ? `<div class="trait-tag" style="border-color:var(--neon-yellow); color:var(--neon-yellow);">JOB_2: ${p.secondoJob}</div>` : ''}
-                ${spec.job2 ? `<div class="trait-tag" style="border-color:var(--neon-pink); color:var(--neon-pink);">JOB_Eredità: ${spec.job2}</div>` : ''}
-                ${p.knight ? `<div class="trait-tag" style="border-color:var(--neon-red); color:var(--neon-red);">KNIGHT: ${p.knight}</div>` : ''}
-                ${p.frame ? `<div class="trait-tag" style="border-color:var(--neon-red); color:var(--neon-red);">FRAME: ${p.frame}</div>` : ''}
-                ${spec.frame2 ? `<div class="trait-tag" style="border-color:var(--neon-red); color:var(--neon-red);">FRAME_Eredità: ${spec.frame2}</div>` : ''}
             `;
 
-            // 4. POPOLA PARAMETRI
+            // 5. PARAMETRI HARDWARE
             const statsCore = document.getElementById('v-stats-core');
-            const renderStat = (val, label) => {
-                if (!val || val === "--") return "";
-                return `<div class="stat-item"><span class="stat-val">${val}</span><span class="stat-lab">${label}</span></div>`;
-            };
+            const renderStat = (val, label) => (val && val !== "--") ? `<div class="stat-item"><span class="stat-val">${val}</span><span class="stat-lab">${label}</span></div>` : "";
+            statsCore.innerHTML = renderStat(p.anima, "Anima") + renderStat(p.core, "Core") + renderStat(spec.core2, "Core Eredità") + renderStat(spec.mutazione, "Mutazione") + renderStat(spec.scintilla, "Scintilla");
 
-            let htmlStats = "";
-            htmlStats += renderStat(p.anima, "Anima");
-            htmlStats += renderStat(p.core, "Core");
-            htmlStats += renderStat(spec.core2, "Core Eredità");
-            htmlStats += renderStat(spec.mutazione, "Mutazione");
-            htmlStats += renderStat(spec.scintilla, "Scintilla");
-            statsCore.innerHTML = htmlStats;
-
-            // 5. POPOLA TECNICHE
+            // 6. TECNICHE
             const techBox = document.getElementById('v-tech-list');
             techBox.innerHTML = "";
-            
             const addTechs = (jobName, color, label) => {
-                if(!jobName) return;
                 const jobData = dbClassi.find(j => j.nome === jobName);
                 jobData?.tecniche?.forEach(t => {
-                    techBox.innerHTML += `<div class="tech-item" style="border-color:${color}"><strong>[${label}]</strong> ${t.nome}: ${t.effetto}</div>`;
+                    techBox.innerHTML += `<div class="tech-item" style="border-color:${color}"><strong>[${label}]</strong> ${t.nome}: ${t.effettonome || t.effetto}</div>`;
                 });
             };
-
             addTechs(p.job, "var(--neon-blue)", p.job);
             if(p.secondoJob) addTechs(p.secondoJob, "var(--neon-yellow)", p.secondoJob);
-            if(spec.job2) addTechs(spec.job2, "var(--neon-pink)", spec.job2);
-            p.capacita?.forEach(c => techBox.innerHTML += `<div class="tech-item" style="border-color:var(--neon-yellow)"><strong>[EQUIP/SKILL]</strong> ${c}</div>`);
+            p.capacita?.forEach(c => techBox.innerHTML += `<div class="tech-item" style="border-color:var(--neon-yellow)"><strong>[EXTRA]</strong> ${c}</div>`);
 
-            // 6. POPOLA MEMORIE E TRATTI
+            // 7. MEMORIE E SYNC BAR
             const memBox = document.getElementById('v-memories');
-            memBox.innerHTML = (p.memorie && p.memorie.length > 0) ? "<h3>FRAGMENT_DATA:</h3>" : "";
+            memBox.innerHTML = (p.memorie?.length > 0) ? "<h3>FRAGMENT_DATA:</h3>" : "";
             p.memorie?.forEach(m => memBox.innerHTML += `<div class="memory-item">"${m}"</div>`);
 
-            const traitsBox = document.getElementById('v-traits-list');
-            traitsBox.innerHTML = "";
-            p.tratti?.forEach(t => traitsBox.innerHTML += `<div class="trait-tag" style="border-color:var(--neon-yellow); color:var(--neon-yellow);">${t}</div>`);
-
-            // 7. SYNC BAR
-            const numMem = p.memorie?.length || 0;
-            const totLim = Math.min(11 + (numMem * 3), 20);
+            const nMem = p.memorie?.length || 0;
+            const totLim = Math.min(11 + (nMem * 3), 20);
             let dots = `<div style="display:grid; grid-template-columns:repeat(10,1fr); gap:4px;">`;
             for(let i=0; i<20; i++) dots += `<div style="height:8px; border:1px solid #333; background:${i<totLim?'var(--neon-pink)':'#111'}"></div>`;
             document.getElementById('v-limite-visual').innerHTML = dots + `</div><div style="font-size:0.6rem; margin-top:5px; text-align:center; font-family:Orbitron;">STABILITY: ${totLim}/20</div>`;
