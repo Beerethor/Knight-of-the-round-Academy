@@ -210,6 +210,15 @@
                     <div class="trait-row" id="v-identity-tags"></div>
                 </div>
 
+                <div class="data-block" style="border-color:var(--neon-blue);">
+    <h3>OPERATIONAL_DETAILS (CLUB / LOOK / GEAR)</h3>
+    <div style="font-size: 0.9rem; line-height: 1.6;">
+        <div><strong style="color:var(--neon-blue);">AFFILIAZIONE:</strong> <span id="v-club"></span></div>
+        <div><strong style="color:var(--neon-blue);">SEGNI PARTICOLARI:</strong> <span id="v-distintivo"></span></div>
+        <div id="v-uniforme" style="margin-top:5px; color:#aaa; font-style:italic;"></div>
+    </div>
+</div>
+
                 <div class="data-block">
                     <h3>HARDWARE_PARAMETERS (ANIMA / CORE / MODS)</h3>
                     <div class="stat-grid" id="v-stats-core"></div>
@@ -352,6 +361,11 @@
             document.getElementById('v-nome').innerText = p.nome;
             document.getElementById('v-motto').innerText = p.motto ? `"${p.motto}"` : "";
 
+            // Inserimento dei tuoi nuovi codici:
+            document.getElementById('v-club').innerText = p.club || "--";
+            document.getElementById('v-distintivo').innerText = p.trattoDistintivo || "--";
+           document.getElementById('v-uniforme').innerHTML = p.uniforme ? `<span style="color:var(--neon-pink)">[CUSTOM_GEAR]:</span> ${p.uniforme}` : `<span style="color:var(--neon-blue)">[STANDARD_ISSUE]:</span> Operativa KOTRA`;
+            
             // 3. POPOLA IDENTITÀ
             const idTags = document.getElementById('v-identity-tags');
             idTags.innerHTML = `
