@@ -423,8 +423,14 @@ if (ereditaBlock && ereditaDescContainer) {
             for(let i=0; i<20; i++) dots += `<div style="height:8px; border:1px solid #333; background:${i<totLim?'var(--neon-pink)':'#111'}"></div>`;
             document.getElementById('v-limite-visual').innerHTML = dots + `</div><div style="font-size:0.6rem; margin-top:5px; text-align:center; font-family:Orbitron;">STABILITY: ${totLim}/20</div>`;
 
-           // 8. Tratti
-            document.getElementById('v-tratti').innerHTML = p.tratti ? p.tratti.map(t => `<span class="trait-pill">${t}</span>`).join('') : '';
+           // 8. MEMORIE (Ripristinate)
+    const memBox = document.getElementById('v-memories');
+    if (memBox) {
+        memBox.innerHTML = (p.memorie && p.memorie.length > 0) ? "<h3>FRAGMENT_DATA:</h3>" : "";
+        p.memorie?.forEach(m => {
+            if(m) memBox.innerHTML += `<div class="memory-item">"${m}"</div>`;
+        });
+    }
         };
 
         window.closeViewer = () => document.getElementById('viewer-overlay').style.display = 'none';
