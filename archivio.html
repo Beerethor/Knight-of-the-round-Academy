@@ -215,6 +215,14 @@
                     <div class="stat-grid" id="v-stats-core"></div>
                 </div>
 
+                <div class="data-block" id="v-eredita-block" style="border-color:var(--neon-yellow); display:none;">
+    <h3>HERITAGE_DATABASE // DEFINIZIONE E EFFETTO</h3>
+    <div id="v-eredita-info" style="font-size: 0.9rem; line-height: 1.4;">
+        <strong id="v-eredita-nome" style="color:var(--neon-yellow); display:block; margin-bottom:5px;"></strong>
+        <span id="v-eredita-desc" style="color:#ccc; font-style:italic;"></span>
+    </div>
+</div>
+
                 <div class="data-block">
                     <h3>LOGIC_MODULES & INVENTORY</h3>
                     <div id="v-tech-list"></div>
@@ -297,7 +305,7 @@
                             ${(isMasterGlobal || isMio) ? `<button class="btn-edit-small" onclick="event.stopPropagation(); window.editChar('${p.id}')">EVOLVERE</button>` : ''}
                         </div>
                     </div>`;
-                card.onclick = () => openViewer(p);
+                card.onclick = () => (p);
                 isMio ? gPers.appendChild(card) : gUtenti.appendChild(card);
             });
         }
@@ -305,7 +313,31 @@
       window.openViewer = (p) => {
             const spec = p.specialData || {};
             document.getElementById('viewer-overlay').style.display = 'block';
-            
+
+          // --- LOGICA EREDITÀ DINAMICA ---
+    const ereditaBlock = document.getElementById('v-eredita-block');
+    const ereditaNome = document.getElementById('v-eredita-nome');
+    const ereditaDesc = document.getElementById('v-eredita-desc');
+
+    // Cerchiamo la stirpe nel database caricato all'inizio (dbStirpi)
+    const stirpeDati = dbStirpi.find(s => s.nome.toLowerCase() === p.stirpe.toLowerCase());
+    
+    if (stirpeDati && p.eredita) {
+        // Cerchiamo l'effetto specifico dell'eredità nell'array della stirpe
+        const effetto = stirpeDati.eredita.find(e => e.nome.toLowerCase() === p.eredita.toLowerCase());
+        
+        if (effetto) {
+            ereditaBlock.style.display = 'block';
+            ereditaNome.innerText = effetto.nome.toUpperCase();
+            ereditaDesc.innerText = effetto.descrizione;
+        } else {
+            ereditaBlock.style.display = 'none';
+        }
+    } else {
+        ereditaBlock.style.display = 'none';
+    }
+
+          
             // Info Base
             document.getElementById('v-img').src = p.immagine || '';
             document.getElementById('v-nome').innerText = p.nome;
