@@ -159,6 +159,19 @@
             </div>
         </div>
 
+        <div class="full-width"><h2 style="font-family:'Orbitron'; font-size: 0.9rem; color:var(--neon-blue); margin-top:15px;">[05] CHASSIS_CONFIGURATION</h2></div>
+        <div>
+            <label>KNIGHT_MODEL (CHASSIS)</label>
+            <input type="text" id="knight" placeholder="Es: MK-V Paladin">
+        </div>
+        <div>
+            <label>FRAME_TYPE (TACTICAL_ROLE)</label>
+            <select id="select-frame">
+                <option value="">-- CARICAMENTO DATI... --</option>
+            </select>
+        </div>
+
+        
         <div class="form-section">
             <div class="full-width"><h2 style="font-family:'Orbitron'; font-size: 0.9rem; color:var(--neon-pink); margin:0;">[03] SELECTION_STIRPE_JOB</h2></div>
             <div><label>STIRPE_BASE *</label><select id="select-stirpe" required onchange="aggiornaEredita()"></select></div>
@@ -315,22 +328,47 @@
             document.getElementById('btn-save').disabled = !(nome && stirpe && job);
         };
 
-        async function init() {
-            try {
-                const [resS, resJ] = await Promise.all([fetch('stirpi_database.json'), fetch('classi_database.json')]);
-                dbStirpi = (await resS.json()).items;
-                const jobs = (await resJ.json()).items;
+       let dbKnightGuide = null;
 
-                document.getElementById('select-stirpe').innerHTML = dbStirpi.map(s => `<option value="${s.nome}">${s.nome}</option>`).join('');
-                const jobOptions = jobs.map(j => `<option value="${j.nome}">${j.nome}</option>`).join('');
-                document.getElementById('select-job').innerHTML = jobOptions;
-                document.getElementById('select-job-extra').innerHTML = '<option value="">-- NESSUN JOB EXTRA --</option>' + jobOptions;
+async function init() {
+    try {
+        // Carichiamo tutti i database necessari
+        const [resS, resJ, resK] = await Promise.all([
+            fetch('stirpi_database.json'), 
+            fetch('classi_database.json'),
+            fetch('knight_guide.json') // Il tuo nuovo file
+        ]);
 
-                aggiornaEredita();
-                currentEditId = sessionStorage.getItem('editModeId');
-                if(currentEditId) await loadCharacterForEdit(currentEditId);
-            } catch (e) { alert("DATI_DATABASE_MISSING"); }
+        dbStirpi = (await resS.json()).items;
+        const jobs = (await resJ.json()).items;
+        dbKnightGuide = await resK.json();
+
+        // 1. Popola Stirpi e Job (codice esistente)
+        document.getElementById('select-stirpe').innerHTML = dbStirpi.map(s => `<option value="${s.nome}">${s.nome}</option>`).join('');
+        const jobOptions = jobs.map(j => `<option value="${j.nome}">${j.nome}</option>`).join('');
+        document.getElementById('select-job').innerHTML = jobOptions;
+
+        // 2. Popola i FRAME dalla knight_guide.json
+        // Cerchiamo la sezione con id: 2 (I Frame)
+        const sezioneFrame = dbKnightGuide.sezioni.find(s => s.id === 2);
+        if (sezioneFrame && sezioneFrame.rows) {
+            const frameOptions = sezioneFrame.rows.map(f => 
+                `<option value="${f.nome}">${f.nome} (${f.specializzazione})</option>`
+            ).join('');
+            document.getElementById('select-frame').innerHTML = '<option value="">-- SELEZIONA FRAME --</option>' + frameOptions;
         }
+
+        aggiornaEredita();
+        
+        // Gestione Edit Mode
+        currentEditId = sessionStorage.getItem('editModeId');
+        if(currentEditId) await loadCharacterForEdit(currentEditId);
+
+    } catch (e) { 
+        console.error("Errore caricamento database:", e);
+        alert("CRITICAL_ERROR: Database Knight non raggiungibile."); 
+    }
+}
 
         async function loadCharacterForEdit(id) {
             document.getElementById('loading-overlay').style.display = 'flex';
@@ -419,6 +457,8 @@
                 stirpe: document.getElementById('select-stirpe').value,
                 job: document.getElementById('select-job').value,
                 eredita: document.getElementById('select-eredita').value,
+                knight: document.getElementById('knight').value.trim(),
+                frame: document.getElementById('frame').value.trim(),
                 immagine: currentImgData,
                 specialData: {
                     core2: document.getElementById('core-secondario').value,
