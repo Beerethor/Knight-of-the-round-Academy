@@ -339,23 +339,6 @@
             document.getElementById('v-distintivo').innerText = p.trattoDistintivo || "--";
             document.getElementById('v-uniforme').innerText = p.uniforme ? p.uniforme : "Uniforme Standard Operativa";
 
-            // 2. LOGICA EREDITÀ (Con controllo DB)
-            const ereditaBlock = document.getElementById('v-eredita-block');
-            if (ereditaBlock) {
-                ereditaBlock.style.display = 'none'; // Reset
-                const sCercata = p.stirpe?.trim().toLowerCase();
-                const eCercata = p.eredita?.trim().toLowerCase();
-
-                const stirpeDati = dbStirpi.find(s => s.nome?.toLowerCase().trim() === sCercata);
-                const effetto = stirpeDati?.eredita?.find(e => e.nome?.toLowerCase().trim() === eCercata);
-
-                if (effetto) {
-                    ereditaBlock.style.display = 'block';
-                    document.getElementById('v-eredita-nome').innerText = effetto.nome.toUpperCase();
-                    document.getElementById('v-eredita-desc').innerText = effetto.descrizione;
-                }
-            }
-
             // 3. INFO TESTUALI MAIN
             document.getElementById('v-nome').innerText = p.nome || "MATRICOLA IGNOTA";
             document.getElementById('v-motto').innerText = p.motto ? `"${p.motto}"` : "";
