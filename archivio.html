@@ -255,7 +255,7 @@
         </div>
     
     <script type="module">
-       import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { getFirestore, collection, getDocs, doc, getDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
@@ -331,24 +331,25 @@ window.openViewer = (p) => {
     const renderStat = (val, label) => (val && val !== "--") ? `<div class="stat-item"><span class="stat-val">${val}</span><span class="stat-lab">${label}</span></div>` : "";
     statsCore.innerHTML = renderStat(p.anima, "Anima") + renderStat(p.core, "Core") + renderStat(spec.core2, "Core Eredità") + renderStat(spec.mutazione, "Mutazione");
 
-    // 5. STIRPE & EREDITÀ
-// Sostituisci la parte del caricamento Stirpe con questa:
-const stirpeNome = (p.stirpe || "").toLowerCase().trim();
-const ereditaNome = (p.eredita || "").toLowerCase().trim();
+    // 5. STIRPE & EREDITÀ (LOGICA CORRETTA)
+    const stirpeNome = (p.stirpe || "").toLowerCase().trim();
+    const ereditaNome = (p.eredita || "").toLowerCase().trim();
+    const sData = dbStirpi.find(s => s.nome?.toLowerCase().trim() === stirpeNome);
+    const eData = sData?.eredita?.find(e => e.nome?.toLowerCase().trim() === ereditaNome);
 
-// Cerca nel database con un controllo più flessibile
-const sData = dbStirpi.find(s => s.nome?.toLowerCase().trim() === stirpeNome);
-const eData = sData?.eredita?.find(e => e.nome?.toLowerCase().trim() === ereditaNome);
+    document.getElementById('v-stirpe').innerText = `${(p.stirpe || "").toUpperCase()} > ${(p.eredita || "").toUpperCase()}`;
+    const descElement = document.getElementById('v-eredita-desc');
+    
+    if (eData) {
+        descElement.innerHTML = `
+            <p style="color:#ccc; font-size:0.85rem; line-height:1.4;">${eData.descrizione || ""}</p>
+            <div class="tech-tag" style="border-color:var(--neon-pink); color:var(--neon-yellow);">${eData.effetto || eData.effetti || ""}</div>
+        `;
+    } else {
+        descElement.innerHTML = `<p style="color:#555;">Dati d'archivio non trovati.</p>`;
+    }
 
-const descElement = document.getElementById('v-eredita-desc');
-if (eData) {
-    descElement.innerHTML = `
-        <p style="color:#ccc; font-size:0.85rem; line-height:1.4;">${eData.descrizione || ""}</p>
-        <div class="tech-tag" style="border-color:var(--neon-pink); color:var(--neon-yellow);">${eData.effetto || eData.effetti || ""}</div>
-    `;
-} else {
-    descElement.innerHTML = `<p style="color:#555;">Dati d'archivio non trovati per: ${p.stirpe} > ${p.eredita}</p>`;
-}
+    // 6. TECNICHE
     const techBox = document.getElementById('v-tech-list');
     techBox.innerHTML = "";
     const addTechs = (jobName, color, label) => {
@@ -410,82 +411,6 @@ function renderArchive(uid, filter = "") {
         isMio ? gPers.appendChild(card) : gUtenti.appendChild(card);
     });
 }
-       window.openViewer = (p) => {
-            const spec = p.specialData || {};
-            document.getElementById('viewer-overlay').style.display = 'block';
-
-            // 1. SIDEBAR & LOGS
-            document.getElementById('v-img').src = p.immagine || '';
-            document.getElementById('v-club').innerText = p.club || "--";
-            document.getElementById('v-distintivo').innerText = p.trattoDistintivo || "--";
-            document.getElementById('v-uniforme').innerText = p.uniforme ? p.uniforme : "Uniforme Standard Operativa";
-
-            // 2. INFO TESTUALI MAIN
-            document.getElementById('v-nome').innerText = p.nome || "MATRICOLA IGNOTA";
-            document.getElementById('v-motto').innerText = p.motto ? `"${p.motto}"` : "";
-
-            // 3. IDENTITÀ TAGS
-            const idTags = document.getElementById('v-identity-tags');
-            idTags.innerHTML = `
-                <div class="trait-tag">STIRPE: ${p.stirpe || '---'}</div>
-                <div class="trait-tag">EREDITÀ: ${p.eredita || '---'}</div>
-                <div class="trait-tag" style="border-color:var(--neon-yellow); color:var(--neon-yellow);">JOB: ${p.job || '---'}</div>
-                ${p.secondoJob ? `<div class="trait-tag" style="border-color:var(--neon-yellow); color:var(--neon-yellow);">JOB_2: ${p.secondoJob}</div>` : ''}
-                ${spec.job2 ? `<div class="trait-tag" style="border-color:var(--neon-pink); color:var(--neon-pink);">JOB_EREDITA': ${spec.job2}</div>` : ''}
-                ${p.knight ? `<div class="trait-tag" style="border-color:var(--neon-red); color:var(--neon-red);">KNIGHT: ${p.knight}</div>` : ''}
-                ${p.frame ? `<div class="trait-tag" style="border-color:var(--neon-red); color:var(--neon-red);">FRAME: ${p.frame}</div>` : ''}
-                ${spec.frame2 ? `<div class="trait-tag" style="border-color:var(--neon-pink); color:var(--neon-pink);">FRAME_EREDITA': ${spec.frame2}</div>` : ''}
-            `;
-
-            // 4. PARAMETRI HARDWARE
-            const statsCore = document.getElementById('v-stats-core');
-            const renderStat = (val, label) => (val && val !== "--") ? `<div class="stat-item"><span class="stat-val">${val}</span><span class="stat-lab">${label}</span></div>` : "";
-            statsCore.innerHTML = renderStat(p.anima, "Anima") + renderStat(p.core, "Core") + renderStat(spec.core2, "Core Eredità") + renderStat(spec.mutazione, "Mutazione") + renderStat(spec.scintilla, "Scintilla");
-
-            // 5. LOGICA EREDITÀ (DESCRIZIONE + EFFETTO)
-            document.getElementById('v-stirpe').innerText = `${p.stirpe.toUpperCase()} > ${p.eredita.toUpperCase()}`;
-            const effetto = ereditaDati?.effetto || ereditaDati?.effetti || "";
-            document.getElementById('v-eredita-desc').innerHTML = `<p style="color:#ccc; font-size:0.85rem; line-height:1.4;">${ereditaDati?.descrizione || ""}</p>` + 
-                (effetto ? `<div class="tech-tag" style="border-color:var(--neon-pink); color:var(--neon-yellow); font-weight:500;">${effetto}</div>` : "");
-
-            // 6. TECNICHE & INVENTORY
-            const techBox = document.getElementById('v-tech-list');
-            techBox.innerHTML = "";
-            const addTechs = (jobName, color, label) => {
-                const jobData = dbClassi.find(j => j.nome === jobName);
-                jobData?.tecniche?.forEach(t => {
-                    techBox.innerHTML += `<div class="tech-item" style="border-color:${color}"><strong>[${label}]</strong> ${t.nome}: ${t.effettonome || t.effetto}</div>`;
-                });
-            };
-            addTechs(p.job, "var(--neon-blue)", p.job);
-            if(p.secondoJob) addTechs(p.secondoJob, "var(--neon-yellow)", p.secondoJob);
-            p.capacita?.forEach(c => techBox.innerHTML += `<div class="tech-item" style="border-color:var(--neon-yellow)"><strong>[EXTRA]</strong> ${c}</div>`);
-
-            // 7. MEMORIE (Una sola istanza pulita)
-            const memBox = document.getElementById('v-memories');
-            if (memBox) {
-                memBox.innerHTML = (p.memorie && p.memorie.length > 0) ? "<h3>FRAGMENT_DATA:</h3>" : "";
-                p.memorie?.forEach(m => {
-                    if(m) memBox.innerHTML += `<div class="memory-item">"${m}"</div>`;
-                });
-            }
-
-            // 8. STABILITY BAR (SYNC STATUS)
-            const nMem = p.memorie?.length || 0;
-            const totLim = Math.min(11 + (nMem * 3), 20);
-            let dots = `<div style="display:grid; grid-template-columns:repeat(10,1fr); gap:4px;">`;
-            for(let i=0; i<20; i++) dots += `<div style="height:8px; border:1px solid #333; background:${i<totLim?'var(--neon-pink)':'#111'}"></div>`;
-            document.getElementById('v-limite-visual').innerHTML = dots + `</div><div style="font-size:0.6rem; margin-top:5px; text-align:center; font-family:Orbitron;">STABILITY: ${totLim}/20</div>`;
-
-           // 9. Tratti
-            document.getElementById('v-tratti').innerHTML = p.tratti ? p.tratti.map(t => `<span class="trait-pill">${t}</span>`).join('') : '';
-        };
-
-        window.closeViewer = () => document.getElementById('viewer-overlay').style.display = 'none';
-        window.filterArchive = () => renderArchive(auth.currentUser.uid, document.getElementById('search-bar').value);
-        window.editChar = (id) => { sessionStorage.setItem('updateModeId', id); window.location.href = 'aggiorna.html'; };
-        window.deleteChar = async (id, nome) => { if(confirm(`ELIMINARE DEFINITIVAMENTE ${nome}?`)) { await deleteDoc(doc(db, "personaggi", id)); location.reload(); } };
-        document.getElementById('btn-logout').onclick = () => signOut(auth);    
-    </script>
+</script>
 </body>
 </html>
