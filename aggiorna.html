@@ -145,14 +145,20 @@
 
     <div class="form-section evolution">
         <div class="full-width"><h3 style="font-size: 0.75rem;">[ NEURAL & HARDWARE UPGRADE ]</h3></div>
-        <div>
-            <label>SINAPSI_KNIGHT (OVERRIDE)</label>
-            <input type="text" id="knight" class="highlight-input" placeholder="Es: Lancelot, The Fool...">
-        </div>
-        <div>
-            <label>FRAME_MODIFICATION (TYPE)</label>
-            <input type="text" id="frame" class="highlight-input" placeholder="Es: Lancer, Heavy-Shell...">
-        </div>
+    <div>
+        <label>KNIGHT_CLASS (SCALE_RESONANCE)</label>
+        <select id="select-knight-class" class="highlight-input">
+            <option value="">-- SELEZIONA CLASSE --</option>
+        </select>
+        <label style="margin-top:15px;">SINAPSI_KNIGHT (UNIT_NAME)</label>
+        <input type="text" id="knight-nome-specifico" class="highlight-input" placeholder="Es: Lancelot, The Fool...">
+    </div>
+    <div>
+        <label>FRAME_MODIFICATION (TACTICAL_ROLE)</label>
+        <select id="select-frame" class="highlight-input">
+            <option value="">-- SELEZIONA FRAME --</option>
+        </select>
+    </div>
     </div>
 
     <div class="form-section evolution">
