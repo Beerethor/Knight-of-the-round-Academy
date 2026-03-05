@@ -242,10 +242,17 @@
                     <div id="v-tech-list"></div>
                 </div>
 
+                <div class="data-box">
+                            <h3>MEMORIE & AFFINITÀ</h3>
+                            <div id="v-memorie-box" style="font-size:0.85rem; line-height:1.5;"></div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="data-block">
-                    <h3>MEMORY_FRAGMENTS</h3>
-                    <div id="v-memories" style="margin-bottom:15px;"></div>
-                    <div class="trait-row" id="v-traits-list"></div>
+                    <h3>TRATTI MEMETICI (ESTENSIONE MAX 10)</h3>
+                    <div id="v-tratti"></div>
+                </div>
                 </div>
             </div>
         </div>
@@ -417,6 +424,9 @@
             let dots = `<div style="display:grid; grid-template-columns:repeat(10,1fr); gap:4px;">`;
             for(let i=0; i<20; i++) dots += `<div style="height:8px; border:1px solid #333; background:${i<totLim?'var(--neon-pink)':'#111'}"></div>`;
             document.getElementById('v-limite-visual').innerHTML = dots + `</div><div style="font-size:0.6rem; margin-top:5px; text-align:center; font-family:Orbitron;">STABILITY: ${totLim}/20</div>`;
+
+           // 9. Tratti
+            document.getElementById('v-tratti').innerHTML = p.tratti ? p.tratti.map(t => `<span class="trait-pill">${t}</span>`).join('') : '';
         };
 
         window.closeViewer = () => document.getElementById('viewer-overlay').style.display = 'none';
