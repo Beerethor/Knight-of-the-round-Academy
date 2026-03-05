@@ -319,18 +319,27 @@
                 <div class="trait-tag" style="border-color:var(--neon-yellow); color:var(--neon-yellow);">JOB: ${p.job}</div>
                 ${p.secondoJob ? `<div class="trait-tag" style="border-color:var(--neon-yellow); color:var(--neon-yellow);">Job_2: ${p.secondoJob}</div>` : ''}
                 ${spec.job2 ? `<div class="trait-tag" style="border-color:var(--neon-pink); color:var(--neon-pink);">JOB_SPEC: ${spec.job2}</div>` : ''}
+                <div class="trait-tag" style="border-color:var(--neon-red); color:var(--neon-red);">Knight: ${p.knight}</div>
+                <div class="trait-tag" style="border-color:var(--neon-red); color:var(--neon-red);">Frame: ${p.frame}</div>
+                
             `;
 
-            // 2. POPOLA PARAMETRI
-            const statsCore = document.getElementById('v-stats-core');
-            statsCore.innerHTML = `
-                <div class="stat-item"><span class="stat-val">${p.anima}</span><span class="stat-lab">Anima</span></div>
-                <div class="stat-item"><span class="stat-val">${p.core}</span><span class="stat-lab">Core</span></div>
-                <div class="stat-item"><span class="stat-val">${spec.core2 || '--'}</span><span class="stat-lab">Core Eredità</span></div>
-                <div class="stat-item"><span class="stat-val">${spec.frame2 || '--'}</span><span class="stat-lab">Frame Mod</span></div>
-                <div class="stat-item"><span class="stat-val">${spec.mutazione || '--'}</span><span class="stat-lab">Mutazione</span></div>
-                <div class="stat-item"><span class="stat-val">${spec.scintilla || '--'}</span><span class="stat-lab">Scintilla</span></div>
-            `;
+           // 2. POPOLA PARAMETRI
+const statsCore = document.getElementById('v-stats-core');
+
+// Funzione helper veloce per generare l'HTML solo se il valore esiste e non è vuoto
+const renderStat = (val, label) => {
+    if (!val || val === "" || val === 0 || val === "--") return ""; 
+    return `<div class="stat-item"><span class="stat-val">${val}</span><span class="stat-lab">${label}</span></div>`;
+};
+
+statsCore.innerHTML = `
+    ${renderStat(p.job2, "Job Eredità")}
+    ${renderStat(spec.core2, "Core Eredità")}
+    ${renderStat(p.frame2, "Frame Eredità")}
+    ${renderStat(spec.mutazione, "Mutazione")}
+    ${renderStat(spec.scintilla, "Scintilla")}
+`;
 
             // 3. POPOLA TECNICHE E EQUIP
             const techBox = document.getElementById('v-tech-list');
