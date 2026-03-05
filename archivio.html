@@ -326,19 +326,22 @@
 
            // 2. POPOLA PARAMETRI
 const statsCore = document.getElementById('v-stats-core');
+          const spec = p.specialData || {};
 
 // Funzione helper veloce per generare l'HTML solo se il valore esiste e non è vuoto
 const renderStat = (val, label) => {
-    if (!val || val === "" || val === 0 || val === "--") return ""; 
+    // Se il valore è nullo, indefinito o stringa vuota, non restituire nulla
+    if (val === undefined || val === null || val === "" || val === "--") return "";
     return `<div class="stat-item"><span class="stat-val">${val}</span><span class="stat-lab">${label}</span></div>`;
 };
 
-statsCore.innerHTML = `
-    ${renderStat(p.job2, "Job Eredità")}
-    ${renderStat(spec.core2, "Core Eredità")}
-    ${renderStat(p.frame2, "Frame Eredità")}
-    ${renderStat(spec.mutazione, "Mutazione")}
-    ${renderStat(spec.scintilla, "Scintilla")}
+let htmlPezzi = "";
+htmlPezzi += renderStat(spec.job2, "Job Eredità");
+htmlPezzi += renderStat(spec.core2, "Core Eredità");
+htmlPezzi += renderStat(spec.frame2, "Frame Eredità"); // Usiamo p.frame invece di spec.frame2
+htmlPezzi += renderStat(spec.mutazione, "Mutazione");
+htmlPezzi += renderStat(spec.scintilla, "Scintilla");
+          statsCore.innerHTML = htmlPezzi;
 `;
 
             // 3. POPOLA TECNICHE E EQUIP
