@@ -242,17 +242,55 @@
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 try {
-                    // Carica Database Classi
-                    const resJ = await fetch('classi_database.json');
-                    const dataJ = await resJ.json();
-                    const selectJob = document.getElementById('secondo-job');
-                    dataJ.items.forEach(job => {
-                        const opt = document.createElement('option');
-                        opt.value = job.nome;
-                        opt.textContent = job.nome.toUpperCase();
-                        opt.style.background = "#060608";
-                        selectJob.appendChild(opt);
-                    });
+    // 1. Carica Database esistenti + Knight Guide
+    const [resJ, resK] = await Promise.all([
+        fetch('classi_database.json'),
+        fetch('knight_guide.json')
+    ]);
+    
+    const dataJ = await resJ.json();
+    const dbKnight = await resK.json();
+
+    // Popola Secondo Job
+    const selectJob = document.getElementById('secondo-job');
+    dataJ.items.forEach(job => {
+        const opt = document.createElement('option');
+        opt.value = job.nome;
+        opt.textContent = job.nome.toUpperCase();
+        selectJob.appendChild(opt);
+    });
+
+    // 2. Popola Classi Knight (Sezione 1)
+    const sClassi = dbKnight.sezioni.find(s => s.id === 1);
+    const selectKClass = document.getElementById('select-knight-class');
+    sClassi.items.forEach(c => {
+        const opt = document.createElement('option');
+        opt.value = c.nome;
+        opt.textContent = c.nome;
+        selectKClass.appendChild(opt);
+    });
+
+    // 3. Popola i Frame (Sezione 2)
+    const sFrame = dbKnight.sezioni.find(s => s.id === 2);
+    const selectFrame = document.getElementById('select-frame');
+    sFrame.rows.forEach(f => {
+        const opt = document.createElement('option');
+        opt.value = f.nome;
+        opt.textContent = f.nome;
+        selectFrame.appendChild(opt);
+    });
+
+    // --- Caricamento Dati Personaggio dal DB ---
+    const docSnap = await getDoc(doc(db, "personaggi", updateId));
+    if(docSnap.exists()) {
+        const p = docSnap.data();
+        
+        // Assegnazione valori hardware
+        document.getElementById('select-knight-class').value = p.knightClass || "";
+        document.getElementById('select-frame').value = p.frame || "";
+        document.getElementById('knight-nome-specifico').value = p.knightNome || "";
+
+                    
 
                     // Carica Dati Personaggio
                     const docSnap = await getDoc(doc(db, "personaggi", updateId));
