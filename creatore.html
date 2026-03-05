@@ -377,12 +377,34 @@
             document.getElementById('loading-overlay').style.display = 'none';
         }
 
-        window.resetForm = () => {
-            if(confirm("TERMINATE_SESSION? I dati non salvati andranno persi.")) {
-                sessionStorage.removeItem('editModeId');
-                window.location.href = currentEditId ? "archivio.html" : location.reload();
+       window.resetForm = () => {
+    if(confirm("TERMINATE_SESSION? Tutti i dati non salvati verranno sovrascritti.")) {
+        // 1. Pulisce tutti gli input di testo, textarea e select
+        const inputs = document.querySelectorAll('input, select, textarea');
+        inputs.forEach(input => {
+            if (input.type === 'checkbox') {
+                input.checked = false;
+            } else {
+                input.value = '';
             }
-        };
+        });
+
+        // 2. Reset specifico per le Stirpi e Job (riporta alle prime opzioni)
+        init(); // Ricarica le opzioni dai JSON per resettare i select
+
+        // 3. Reset dell'immagine
+        currentImgData = "";
+        document.getElementById('preview-box').innerHTML = `<span style="font-size:0.6rem; color:#444;">NO_SIGNAL</span>`;
+
+        // 4. Nasconde le sezioni speciali
+        document.getElementById('special-inheritance-section').style.display = 'none';
+
+        // 5. Disabilita il tasto salva
+        validateForm();
+        
+        console.log("SYSTEM_REBOOT: Campi resettati.");
+    }
+};
 
         document.getElementById('btn-save').onclick = async () => {
             document.getElementById('loading-overlay').style.display = 'flex';
