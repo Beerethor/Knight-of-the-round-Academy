@@ -195,6 +195,28 @@
         <div class="sheet-layout">
             <div class="v-sidebar">
                 <img id="v-img" src="">
+                <div class="v-sidebar">
+    <img id="v-img" src="">
+    
+    <div class="data-block" style="margin-top:15px; border-color:var(--neon-blue); font-size: 0.8rem;">
+        <h3>OPERATIONAL_LOG</h3>
+        <div style="margin-bottom:5px;">
+            <strong style="color:var(--neon-blue); font-size:0.6rem; display:block;">AFFILIAZIONE/CLUB:</strong>
+            <span id="v-club" style="color:white;"></span>
+        </div>
+        <div style="margin-bottom:5px;">
+            <strong style="color:var(--neon-blue); font-size:0.6rem; display:block;">SEGNI PARTICOLARI:</strong>
+            <span id="v-distintivo" style="color:white;"></span>
+        </div>
+        <div id="v-uniforme" style="font-size:0.7rem; color:var(--neon-yellow); border-top:1px solid rgba(0,242,255,0.1); margin-top:5px; padding-top:5px;"></div>
+    </div>
+
+    <div class="data-block" style="border-color:var(--neon-yellow);">
+        <h3>CORE SYNC STATUS</h3>
+        <div id="v-limite-visual"></div>
+    </div>
+</div>
+              
                 <div class="data-block" style="margin-top:15px; border-color:var(--neon-yellow);">
                     <h3>CORE SYNC STATUS</h3>
                     <div id="v-limite-visual"></div>
@@ -210,14 +232,6 @@
                     <div class="trait-row" id="v-identity-tags"></div>
                 </div>
 
-                <div class="data-block" style="border-color:var(--neon-blue);">
-    <h3>OPERATIONAL_DETAILS (CLUB / LOOK / GEAR)</h3>
-    <div style="font-size: 0.9rem; line-height: 1.6;">
-        <div><strong style="color:var(--neon-blue);">AFFILIAZIONE:</strong> <span id="v-club"></span></div>
-        <div><strong style="color:var(--neon-blue);">SEGNI PARTICOLARI:</strong> <span id="v-distintivo"></span></div>
-        <div id="v-uniforme" style="margin-top:5px; color:#aaa; font-style:italic;"></div>
-    </div>
-</div>
 
                 <div class="data-block">
                     <h3>HARDWARE_PARAMETERS (ANIMA / CORE / MODS)</h3>
@@ -364,7 +378,7 @@
             // Inserimento dei tuoi nuovi codici:
             document.getElementById('v-club').innerText = p.club || "--";
             document.getElementById('v-distintivo').innerText = p.trattoDistintivo || "--";
-           document.getElementById('v-uniforme').innerHTML = p.uniforme ? `<span style="color:var(--neon-pink)">[CUSTOM_GEAR]:</span> ${p.uniforme}` : `<span style="color:var(--neon-blue)">[STANDARD_ISSUE]:</span> Operativa KOTRA`;
+            document.getElementById('v-uniforme').innerText = p.uniforme ? p.uniforme : "Uniforme Standard Operativa";
             
             // 3. POPOLA IDENTITÀ
             const idTags = document.getElementById('v-identity-tags');
