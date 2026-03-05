@@ -145,20 +145,20 @@
 
     <div class="form-section evolution">
         <div class="full-width"><h3 style="font-size: 0.75rem;">[ NEURAL & HARDWARE UPGRADE ]</h3></div>
-    <div>
-        <label>KNIGHT_CLASS (SCALE_RESONANCE)</label>
-        <select id="select-knight-class" class="highlight-input">
-            <option value="">-- SELEZIONA CLASSE --</option>
-        </select>
-        <label style="margin-top:15px;">SINAPSI_KNIGHT (UNIT_NAME)</label>
-        <input type="text" id="knight-nome-specifico" class="highlight-input" placeholder="Es: Lancelot, The Fool...">
-    </div>
-    <div>
-        <label>FRAME_MODIFICATION (TACTICAL_ROLE)</label>
-        <select id="select-frame" class="highlight-input">
-            <option value="">-- SELEZIONA FRAME --</option>
-        </select>
-    </div>
+        <div>
+            <label>KNIGHT_CLASS (SCALE_RESONANCE)</label>
+            <select id="select-knight-class" class="highlight-input">
+                <option value="">-- SELEZIONA CLASSE --</option>
+            </select>
+            <label style="margin-top:15px;">SINAPSI_KNIGHT (UNIT_NAME)</label>
+            <input type="text" id="knight-nome-specifico" class="highlight-input" placeholder="Es: Lancelot, The Fool...">
+        </div>
+        <div>
+            <label>FRAME_MODIFICATION (TACTICAL_ROLE)</label>
+            <select id="select-frame" class="highlight-input">
+                <option value="">-- SELEZIONA FRAME --</option>
+            </select>
+        </div>
     </div>
 
     <div class="form-section evolution">
@@ -242,74 +242,64 @@
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 try {
-    // 1. Carica Database esistenti + Knight Guide
-    const [resJ, resK] = await Promise.all([
-        fetch('classi_database.json'),
-        fetch('knight_guide.json')
-    ]);
-    
-    const dataJ = await resJ.json();
-    const dbKnight = await resK.json();
-
-    // Popola Secondo Job
-    const selectJob = document.getElementById('secondo-job');
-    dataJ.items.forEach(job => {
-        const opt = document.createElement('option');
-        opt.value = job.nome;
-        opt.textContent = job.nome.toUpperCase();
-        selectJob.appendChild(opt);
-    });
-
-    // 2. Popola Classi Knight (Sezione 1)
-    const sClassi = dbKnight.sezioni.find(s => s.id === 1);
-    const selectKClass = document.getElementById('select-knight-class');
-    sClassi.items.forEach(c => {
-        const opt = document.createElement('option');
-        opt.value = c.nome;
-        opt.textContent = c.nome;
-        selectKClass.appendChild(opt);
-    });
-
-    // 3. Popola i Frame (Sezione 2)
-    const sFrame = dbKnight.sezioni.find(s => s.id === 2);
-    const selectFrame = document.getElementById('select-frame');
-    sFrame.rows.forEach(f => {
-        const opt = document.createElement('option');
-        opt.value = f.nome;
-        opt.textContent = f.nome;
-        selectFrame.appendChild(opt);
-    });
-
-    // --- Caricamento Dati Personaggio dal DB ---
-    const docSnap = await getDoc(doc(db, "personaggi", updateId));
-    if(docSnap.exists()) {
-        const p = docSnap.data();
-        
-        // Assegnazione valori hardware
-        document.getElementById('select-knight-class').value = p.knightClass || "";
-        document.getElementById('select-frame').value = p.frame || "";
-        document.getElementById('knight-nome-specifico').value = p.knightNome || "";
-
+                    // 1. CARICAMENTO DATABASE JSON
+                    const [resJ, resK] = await Promise.all([
+                        fetch('classi_database.json'),
+                        fetch('knight_guide.json')
+                    ]);
                     
+                    const dataJ = await resJ.json();
+                    const dbKnight = await resK.json();
 
-                    // Carica Dati Personaggio
+                    // Popola Secondo Job
+                    const selectJob = document.getElementById('secondo-job');
+                    dataJ.items.forEach(job => {
+                        const opt = document.createElement('option');
+                        opt.value = job.nome;
+                        opt.textContent = job.nome.toUpperCase();
+                        selectJob.appendChild(opt);
+                    });
+
+                    // Popola Classi Knight (id: 1)
+                    const sClassi = dbKnight.sezioni.find(s => s.id === 1);
+                    const selectKClass = document.getElementById('select-knight-class');
+                    sClassi.items.forEach(c => {
+                        const opt = document.createElement('option');
+                        opt.value = c.nome;
+                        opt.textContent = c.nome;
+                        selectKClass.appendChild(opt);
+                    });
+
+                    // Popola Frame (id: 2)
+                    const sFrame = dbKnight.sezioni.find(s => s.id === 2);
+                    const selectFrame = document.getElementById('select-frame');
+                    sFrame.rows.forEach(f => {
+                        const opt = document.createElement('option');
+                        opt.value = f.nome;
+                        opt.textContent = f.nome;
+                        selectFrame.appendChild(opt);
+                    });
+
+                    // 2. CARICAMENTO DATI DA FIREBASE
                     const docSnap = await getDoc(doc(db, "personaggi", updateId));
                     if(docSnap.exists()) {
                         const p = docSnap.data();
                         
+                        // Dati base (Sola lettura)
                         document.getElementById('nome').value = p.nome || "";
                         document.getElementById('stirpe').value = p.stirpe || "";
                         document.getElementById('job-primario').value = p.job || "";
                         document.getElementById('core').value = p.core || "";
                         document.getElementById('anima').value = p.anima || "";
                         
-                        // Knight e Frame (campi diretti)
-                        document.getElementById('knight').value = p.knight || "";
-                        document.getElementById('frame').value = p.frame || "";
+                        // Hardware (Select e Input)
+                        document.getElementById('select-knight-class').value = p.knightClass || "";
+                        document.getElementById('select-frame').value = p.frame || "";
+                        document.getElementById('knight-nome-specifico').value = p.knightNome || "";
                         
                         if(p.secondoJob) document.getElementById('secondo-job').value = p.secondoJob;
 
-                        // Genera input Tratti
+                        // Generazione dinamica Tratti (max 10)
                         const container = document.getElementById('tratti-container');
                         for(let i=0; i<10; i++) {
                             const val = (p.tratti && p.tratti[i]) ? p.tratti[i] : "";
@@ -318,11 +308,12 @@
                             input.className = "tratto-input";
                             input.placeholder = `TRAIT_${i+1}`;
                             input.value = val;
+                            // Se è uno dei primi 4 ed è già pieno, lo blocchiamo (opzionale)
                             if(i < 4 && val !== "") input.readOnly = true;
                             container.appendChild(input);
                         }
 
-                        // Helper per riempire array
+                        // Helper per riempire array di input
                         const fillArr = (cls, arr) => {
                             const ins = document.querySelectorAll(`.${cls}`);
                             if(arr) arr.forEach((v, i) => { if(ins[i]) ins[i].value = v; });
@@ -337,18 +328,27 @@
                         document.getElementById('club').value = p.club || "";
                         document.getElementById('tratto-distintivo').value = p.trattoDistintivo || "";
                     }
-                } catch (e) { console.error("LOAD_ERROR:", e); }
-            } else { window.location.href = "index.html"; }
+                } catch (e) { 
+                    console.error("LOAD_ERROR:", e); 
+                }
+            } else { 
+                window.location.href = "index.html"; 
+            }
         });
 
+        // SALVATAGGIO EVOLUZIONE
         document.getElementById('btn-save-evolution').onclick = async () => {
             document.getElementById('loading-overlay').style.display = 'flex';
             
             const getVals = (cls) => Array.from(document.querySelectorAll(`.${cls}`)).map(i => i.value).filter(v => v !== "");
 
             const updatedData = {
-                knight: document.getElementById('knight').value,
-                frame: document.getElementById('frame').value,
+                // Nuovi campi Hardware
+                knightClass: document.getElementById('select-knight-class').value,
+                frame: document.getElementById('select-frame').value,
+                knightNome: document.getElementById('knight-nome-specifico').value.trim(),
+                
+                // Campi esistenti
                 secondoJob: document.getElementById('secondo-job').value,
                 tratti: getVals('tratto-input'),
                 capacita: getVals('cap-input'),
