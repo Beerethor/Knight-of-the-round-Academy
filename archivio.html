@@ -412,24 +412,22 @@ if (ereditaBlock && ereditaDescContainer) {
             if(p.secondoJob) addTechs(p.secondoJob, "var(--neon-yellow)", p.secondoJob);
             p.capacita?.forEach(c => techBox.innerHTML += `<div class="tech-item" style="border-color:var(--neon-yellow)"><strong>[EXTRA]</strong> ${c}</div>`);
 
-            // 7. MEMORIE E SYNC BAR
+            // 7. MEMORIE (Una sola istanza pulita)
             const memBox = document.getElementById('v-memories');
-            memBox.innerHTML = (p.memorie?.length > 0) ? "<h3>FRAGMENT_DATA:</h3>" : "";
-            p.memorie?.forEach(m => memBox.innerHTML += `<div class="memory-item">"${m}"</div>`);
+            if (memBox) {
+                memBox.innerHTML = (p.memorie && p.memorie.length > 0) ? "<h3>FRAGMENT_DATA:</h3>" : "";
+                p.memorie?.forEach(m => {
+                    if(m) memBox.innerHTML += `<div class="memory-item">"${m}"</div>`;
+                });
+            }
 
+            // 8. STABILITY BAR (SYNC STATUS)
             const nMem = p.memorie?.length || 0;
             const totLim = Math.min(11 + (nMem * 3), 20);
             let dots = `<div style="display:grid; grid-template-columns:repeat(10,1fr); gap:4px;">`;
             for(let i=0; i<20; i++) dots += `<div style="height:8px; border:1px solid #333; background:${i<totLim?'var(--neon-pink)':'#111'}"></div>`;
             document.getElementById('v-limite-visual').innerHTML = dots + `</div><div style="font-size:0.6rem; margin-top:5px; text-align:center; font-family:Orbitron;">STABILITY: ${totLim}/20</div>`;
-
-           // 8. MEMORIE (Ripristinate)
-    const memBox = document.getElementById('v-memories');
-    if (memBox) {
-        memBox.innerHTML = (p.memorie && p.memorie.length > 0) ? "<h3>FRAGMENT_DATA:</h3>" : "";
-        p.memorie?.forEach(m => {
-            if(m) memBox.innerHTML += `<div class="memory-item">"${m}"</div>`;
-        });
+        };
     }
         };
 
