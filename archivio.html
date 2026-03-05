@@ -351,6 +351,9 @@
             document.getElementById('v-img').src = p.immagine || '';
             document.getElementById('v-nome').innerText = p.nome;
             document.getElementById('v-motto').innerText = p.motto ? `"${p.motto}"` : "";
+            document.getElementById('v-club').innerText = p.club || "--";
+            document.getElementById('v-distintivo').innerText = p.trattoDistintivo || "--";
+            document.getElementById('v-uniforme').innerText = p.uniforme ? `Uniforme: ${p.uniforme}` : "Uniforme Standard Operativa";
 
             // 3. POPOLA IDENTITÀ
             const idTags = document.getElementById('v-identity-tags');
@@ -412,10 +415,6 @@
             let dots = `<div style="display:grid; grid-template-columns:repeat(10,1fr); gap:4px;">`;
             for(let i=0; i<20; i++) dots += `<div style="height:8px; border:1px solid #333; background:${i<totLim?'var(--neon-pink)':'#111'}"></div>`;
             document.getElementById('v-limite-visual').innerHTML = dots + `</div><div style="font-size:0.6rem; margin-top:5px; text-align:center; font-family:Orbitron;">STABILITY: ${totLim}/20</div>`;
-
-            document.getElementById('v-club').innerText = p.club || "--";
-            document.getElementById('v-distintivo').innerText = p.trattoDistintivo || "--";
-            document.getElementById('v-uniforme').innerText = p.uniforme ? `Uniforme: ${p.uniforme}` : "Uniforme Standard Operativa";
         };
 
         window.closeViewer = () => document.getElementById('viewer-overlay').style.display = 'none';
