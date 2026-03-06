@@ -296,19 +296,32 @@ onAuthStateChanged(auth, async (user) => {
         isMasterGlobal = user.email.toLowerCase().trim() === masterEmail.toLowerCase().trim();
         document.getElementById('role-display').innerHTML = `<span style="font-family:'Orbitron'; font-size:0.55rem; padding:2px 6px; border:1px solid var(--neon-blue); color:var(--neon-blue); margin-left:10px;">${isMasterGlobal?'MASTER':'OPERATOR'}</span>`;
 
-        try {
-            const [resS, resJ] = await Promise.all([fetch('stirpi_database.json'), fetch('classi_database.json')]);
-            const dataS = await resS.json();
-            const dataJ = await resJ.json();
-            dbStirpi = dataS.items || dataS.stirpi || dataS; 
-            dbClassi = dataJ.items || dataJ.classi || dataJ;
+       try {
+    const [resS, resJ] = await Promise.all([
+        fetch('stirpi_database.json').catch(() => null),
+        fetch('classi_database.json').catch(() => null)
+    ]);
 
-            const snap = await getDocs(collection(db, "personaggi"));
-            allChars = snap.docs.map(d => ({id: d.id, ...d.data()}));
-            renderArchive(user.uid);
-        } catch (e) { console.error("Errore caricamento database:", e); }
-    } else { window.location.href = "index.html"; }
-});
+    if (resS && resS.ok) {
+        const dataS = await resS.json();
+        dbStirpi = dataS.items || dataS.stirpi || dataS;
+    }
+    if (resJ && resJ.ok) {
+        const dataJ = await resJ.json();
+        dbClassi = dataJ.items || dataJ.classi || dataJ;
+    }
+
+    // Spostiamo il caricamento dei personaggi FUORI dal controllo dei JSON
+    // così l'archivio si vede anche se i database tecnici hanno problemi
+    const snap = await getDocs(collection(db, "personaggi"));
+    allChars = snap.docs.map(d => ({id: d.id, ...d.data()}));
+    renderArchive(user.uid);
+
+} catch (e) { 
+    console.error("Errore critico:", e);
+    // Forza il rendering anche in caso di errore per vedere almeno le card
+    renderArchive(user.uid); 
+}
 
 window.openViewer = (p) => {
     const spec = p.specialData || {};
