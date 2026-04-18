@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KOTRA - Database Minacce</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --neon-pink: #ff007a;
+            --neon-blue: #00f2ff;
+            --neon-yellow: #ffff00;
+            --bg-dark: #06070a;
+            --panel-bg: rgba(10, 11, 16, 0.95);
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: #e0e0e0;
+            font-family: 'Rajdhani', sans-serif;
+            margin: 0;
+            background-image: linear-gradient(rgba(255, 0, 122, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 0, 122, 0.05) 1px, transparent 1px);
+            background-size: 30px 30px;
+        }
+
+        /* --- STILE TERMINALE --- */
+        .nav-header { padding: 15px 25px; background: rgba(0,0,0,0.9); border-bottom: 2px solid var(--neon-pink); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
+        .btn-action { background: transparent; border: 1px solid var(--neon-pink); color: var(--neon-pink); padding: 8px 15px; font-family: 'Orbitron'; cursor: pointer; text-decoration: none; font-size: 0.7rem; }
+        .btn-action:hover { background: var(--neon-pink); color: white; box-shadow: 0 0 15px var(--neon-pink); }
+
+        .container { max-width: 1200px; margin: 20px auto; padding: 0 20px; }
+        
+        /* --- FORM DI CREAZIONE (MASTER) --- */
+        .master-only { display: none; background: var(--panel-bg); border: 1px solid var(--neon-pink); padding: 25px; margin-bottom: 40px; position: relative; }
+        .master-only::before { content: "AUTO_THREAT_GENERATOR"; position: absolute; top: -10px; left: 20px; background: var(--neon-pink); color: black; padding: 2px 10px; font-family: 'Orbitron'; font-size: 0.6rem; }
+
+        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
+        input, select, textarea { background: rgba(0,0,0,0.7); border: 1px solid #333; color: white; padding: 10px; font-family: 'Rajdhani'; width: 100%; }
+        input:focus { border-color: var(--neon-pink); outline: none; }
+        label { display: block; font-family: 'Orbitron'; font-size: 0.65rem; color: var(--neon-pink); margin-bottom: 5px; margin-top: 10px; }
+
+        /* --- ARCHIVIO MINACCE --- */
+        .threat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+        .threat-card { background: rgba(20, 10, 15, 0.9); border: 1px solid rgba(255,0,122,0.3); padding: 20px; position: relative; transition: 0.3s; }
+        .threat-card:hover { border-color: var(--neon-pink); transform: scale(1.02); }
+        .threat-name { font-family: 'Orbitron'; font-size: 1.2rem; color: var(--neon-pink); border-bottom: 1px solid var(--neon-pink); padding-bottom: 5px; margin-bottom: 10px; }
+
+        .stat-badge { display: inline-block; padding: 2px 8px; font-family: 'Orbitron'; font-size: 0.7rem; margin-right: 5px; border: 1px solid; }
+        .diff-badge { border-color: var(--neon-blue); color: var(--neon-blue); }
+        .pot-badge { border-color: var(--neon-yellow); color: var(--neon-yellow); }
+
+        .tratto-tag { background: rgba(255,255,255,0.05); border-left: 2px solid var(--neon-pink); padding: 5px 10px; margin: 5px 0; font-size: 0.9rem; }
+        .punto-debole { color: var(--neon-yellow); font-size: 0.8rem; border: 1px dashed var(--neon-yellow); padding: 5px; margin-top: 10px; }
+
+        /* --- GUIDA --- */
+        .guida-box { background: rgba(0, 242, 255, 0.05); border: 1px solid var(--neon-blue); padding: 20px; margin-top: 50px; font-size: 0.9rem; line-height: 1.6; }
+        .guida-box h2 { font-family: 'Orbitron'; color: var(--neon-blue); font-size: 1rem; }
+    </style>
+</head>
+<body>
+
+<header class="nav-header">
+    <div>
+        <h1 style="color:var(--neon-pink); margin:0; font-size:1.1rem; letter-spacing: 1px;">KOTRA // ARCHIVIO_MINACCE</h1>
+    </div>
+    <div class="nav-controls">
+        <a href="index.html" class="btn-action">TORNA_HUB</a>
+        <button class="btn-action" id="btn-master-toggle" style="display:none; border-color:var(--neon-yellow); color:var(--neon-yellow);">MODO_MASTER</button>
+    </div>
+</header>
+
+<div class="container">
+    
+    <div id="creatore-minacce" class="master-only">
+        <div class="form-grid">
+            <div>
+                <label>NOME MINACCIA</label>
+                <input type="text" id="m-nome" placeholder="Es: Drago di Latta">
+            </div>
+            <div>
+                <label>DIFFICOLTÀ (1-6)</label>
+                <input type="number" id="m-diff" min="1" max="6" value="1">
+            </div>
+            <div>
+                <label>POTENZA (1-5)</label>
+                <input type="number" id="m-pot" min="1" max="5" value="1">
+            </div>
+        </div>
+
+        <label>DESCRIZIONE BREVE</label>
+        <textarea id="m-desc" rows="2"></textarea>
+
+        <div class="form-grid">
+            <div>
+                <label>TRATTI / FERITE (Uno per riga)</label>
+                <textarea id="m-tratti" rows="3" placeholder="Tratto 1 (Cuore)&#10;Tratto 2&#10;Tratto 3"></textarea>
+            </div>
+            <div>
+                <label>TECNICA SPECIALE (Attiva/Passiva)</label>
+                <textarea id="m-tecnica" rows="3" placeholder="Effetto della tecnica..."></textarea>
+            </div>
+        </div>
+
+        <label>PUNTO DEBOLE</label>
+        <input type="text" id="m-debole" placeholder="Cosa la rende vulnerabile?">
+
+        <button class="btn-action" style="margin-top: 20px; width: 100%;" onclick="saveThreat()">ARCHIVIA_MINACCIA</button>
+    </div>
+
+    <div class="threat-grid" id="threat-list">
+        </div>
+
+    <div class="guida-box">
+        <h2>📚 PROTOCOLLO CREAZIONE MINACCE</h2>
+        <ul>
+            <li><b>Difficoltà:</b> Da aggiungere a tutte le Prove (1 Facile - 6 Estrema).</li>
+            <li><b>Potenza:</b> Rappresenta la forza d'impatto e pericolosità (1-5).</li>
+            <li><b>Tratti (Ferite):</b> Una Minaccia ha da 1 a 3 Tratti che ne compongono il cuore. Ogni volta che una Matricola colpisce, un Tratto viene rimosso. Esauriti i Tratti, la Minaccia è sconfitta.</li>
+            <li><b>Tecnica:</b> Può essere <b>Attiva (A)</b> (si attiva con Fallimenti/Disastri) o <b>Passiva (P)</b> (sempre in gioco o attiva a determinate condizioni).</li>
+            <li><b>Punto Debole:</b> Una condizione o azione che facilita lo scontro o bypassa le difese.</li>
+        </ul>
+    </div>
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyCAMvHn28SY3k9TiLvz2afjn0zpj73Lw5Y",
+        authDomain: "kotra-8da26.firebaseapp.com",
+        projectId: "kotra-8da26",
+        storageBucket: "kotra-8da26.firebasestorage.app",
+        messagingSenderId: "932848394064",
+        appId: "1:932848394064:web:d368c9ae301b54bab01655"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
+    const MASTER_EMAIL = "t.giuseppeinfante@gmail.com";
+
+    onAuthStateChanged(auth, async (user) => {
+        if (user) {
+            if (user.email === MASTER_EMAIL) {
+                document.getElementById('creatore-minacce').style.display = 'block';
+                document.getElementById('btn-master-toggle').style.display = 'block';
+            }
+            loadThreats();
+        } else {
+            window.location.href = "index.html";
+        }
+    });
+
+    window.saveThreat = async () => {
+        const threat = {
+            nome: document.getElementById('m-nome').value,
+            diff: document.getElementById('m-diff').value,
+            pot: document.getElementById('m-pot').value,
+            desc: document.getElementById('m-desc').value,
+            tratti: document.getElementById('m-tratti').value.split('\n'),
+            tecnica: document.getElementById('m-tecnica').value,
+            debole: document.getElementById('m-debole').value,
+            data: new Date()
+        };
+
+        if(!threat.nome) return alert("Inserire almeno il nome.");
+        
+        try {
+            await addDoc(collection(db, "minacce"), threat);
+            alert("MINACCIA ARCHIVIATA");
+            location.reload();
+        } catch (e) { console.error(e); }
+    };
+
+    async function loadThreats() {
+        const list = document.getElementById('threat-list');
+        list.innerHTML = "";
+        const snap = await getDocs(collection(db, "minacce"));
+        
+        snap.forEach(docSnap => {
+            const m = docSnap.data();
+            const card = document.createElement('div');
+            card.className = 'threat-card';
+            card.innerHTML = `
+                <div class="threat-name">${m.nome}</div>
+                <div style="margin-bottom:10px;">
+                    <span class="stat-badge diff-badge">DIFF: ${m.diff}</span>
+                    <span class="stat-badge pot-badge">POT: ${m.pot}</span>
+                </div>
+                <p style="font-size:0.8rem; color:#aaa;">${m.desc}</p>
+                <label>TRATTI_CUORE (FERITE)</label>
+                ${m.tratti.map(t => `<div class="tratto-tag">${t}</div>`).join('')}
+                <label>TECNICA SPECIALE</label>
+                <div style="font-size:0.85rem; border:1px solid #444; padding:8px;">${m.tecnica}</div>
+                <div class="punto-debole"><b>DEBOLEZZA:</b> ${m.debole}</div>
+                ${auth.currentUser.email === MASTER_EMAIL ? `<button onclick="deleteThreat('${docSnap.id}')" style="background:none; border:none; color:red; cursor:pointer; margin-top:10px; font-size:0.6rem;">[EPURA_DATI]</button>` : ''}
+            `;
+            list.appendChild(card);
+        });
+    }
+
+    window.deleteThreat = async (id) => {
+        if(confirm("Eliminare definitivamente questa minaccia?")) {
+            await deleteDoc(doc(db, "minacce", id));
+            location.reload();
+        }
+    };
+</script>
+</body>
+</html>
