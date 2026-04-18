@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>KOTRA - Archivio Minacce</title>
+    <title>KOTRA - Database Minacce</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -23,112 +23,97 @@
             background-attachment: fixed;
         }
 
-        /* HEADER */
         .nav-header { padding: 15px; background: rgba(0,0,0,0.95); border-bottom: 2px solid var(--neon-pink); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
         .header-title { color: var(--neon-pink); font-family: 'Orbitron'; font-size: 0.9rem; margin: 0; }
 
         .btn-action { 
             background: transparent; border: 1px solid var(--neon-pink); color: var(--neon-pink); 
-            padding: 8px 12px; font-family: 'Orbitron'; cursor: pointer; text-decoration: none; font-size: 0.65rem; 
+            padding: 8px 12px; font-family: 'Orbitron'; cursor: pointer; font-size: 0.65rem; 
         }
         .btn-action:hover { background: var(--neon-pink); color: white; }
 
         .container { padding: 15px; max-width: 1200px; margin: auto; }
         
         /* PANNELLO MASTER */
-        .master-panel { display: none; background: var(--panel-bg); border: 1px solid var(--neon-yellow); padding: 20px; margin-bottom: 30px; box-shadow: 0 0 20px rgba(255, 0, 122, 0.1); }
-        .form-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
+        .master-panel { display: none; background: var(--panel-bg); border: 1px solid var(--neon-yellow); padding: 20px; margin-bottom: 30px; }
+        .form-grid { display: grid; grid-template-columns: 1fr; gap: 12px; margin-bottom: 10px; }
         @media (min-width: 768px) { .form-grid { grid-template-columns: repeat(3, 1fr); } }
 
-        input, textarea { background: #000; border: 1px solid #444; color: #fff; padding: 10px; width: 100%; box-sizing: border-box; font-family: 'Rajdhani'; font-size: 1rem; }
-        label { color: var(--neon-pink); font-family: 'Orbitron'; font-size: 0.6rem; display: block; margin-bottom: 5px; margin-top: 10px; }
+        input, textarea { background: #000; border: 1px solid #444; color: #fff; padding: 10px; width: 100%; box-sizing: border-box; font-family: 'Rajdhani'; }
+        label { color: var(--neon-pink); font-family: 'Orbitron'; font-size: 0.55rem; display: block; margin-bottom: 5px; }
 
-        /* GRIGLIA MINACCE */
+        /* SCHEDA MINACCIA */
         .threat-grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
         @media (min-width: 768px) { .threat-grid { grid-template-columns: repeat(2, 1fr); } }
         @media (min-width: 1100px) { .threat-grid { grid-template-columns: repeat(3, 1fr); } }
 
-        .threat-card { background: rgba(20, 21, 28, 0.95); border: 1px solid #333; overflow: hidden; display: flex; flex-direction: column; border-top: 3px solid var(--neon-pink); }
-        .threat-img { width: 100%; height: 220px; object-fit: cover; filter: grayscale(30%) contrast(120%); }
+        .threat-card { background: rgba(20, 21, 28, 0.95); border: 1px solid #333; overflow: hidden; display: flex; flex-direction: column; border-top: 3px solid var(--neon-pink); position: relative; }
+        .threat-img { width: 100%; height: 200px; object-fit: cover; }
         .threat-content { padding: 15px; }
-        .threat-name { font-family: 'Orbitron'; font-size: 1.2rem; color: #fff; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
+        .threat-name { font-family: 'Orbitron'; font-size: 1.1rem; color: #fff; margin-bottom: 10px; text-transform: uppercase; }
 
-        .badge { display: inline-block; padding: 3px 10px; font-family: 'Orbitron'; font-size: 0.7rem; border: 1px solid; margin-right: 8px; margin-bottom: 10px; }
-        .bg-diff { border-color: var(--neon-blue); color: var(--neon-blue); background: rgba(0, 242, 255, 0.05); }
-        .bg-pot { border-color: var(--neon-yellow); color: var(--neon-yellow); background: rgba(255, 255, 0, 0.05); }
+        .badge { display: inline-block; padding: 3px 8px; font-family: 'Orbitron'; font-size: 0.65rem; border: 1px solid; margin-right: 5px; margin-bottom: 10px; }
+        .bg-diff { border-color: var(--neon-blue); color: var(--neon-blue); }
+        .bg-pot { border-color: var(--neon-yellow); color: var(--neon-yellow); }
 
-        /* FERITE / TRATTI */
-        .section-label { font-family: 'Orbitron'; font-size: 0.6rem; color: var(--neon-pink); margin-top: 15px; display: block; border-bottom: 1px solid rgba(255, 0, 122, 0.2); padding-bottom: 3px; margin-bottom: 8px; }
+        .section-label { font-family: 'Orbitron'; font-size: 0.55rem; color: var(--neon-pink); margin-top: 12px; display: block; border-bottom: 1px solid rgba(255, 0, 122, 0.2); padding-bottom: 2px; }
         
         .ferita-item { 
-            background: rgba(255, 255, 255, 0.03); padding: 10px; margin: 5px 0; border: 1px solid #222; 
-            cursor: pointer; display: flex; align-items: center; font-size: 0.95rem; transition: 0.2s;
+            background: rgba(255, 255, 255, 0.03); padding: 8px; margin: 4px 0; border: 1px solid #222; 
+            cursor: pointer; display: flex; align-items: center; font-size: 0.9rem; 
         }
-        .ferita-item::before { content: '▢'; margin-right: 12px; color: var(--neon-pink); font-family: 'Orbitron'; font-size: 1.1rem; }
-        .ferita-item.damaged { opacity: 0.3; text-decoration: line-through; background: rgba(255, 0, 122, 0.1); border-color: var(--neon-pink); }
-        .ferita-item.damaged::before { content: '▣'; }
+        .ferita-item.damaged { opacity: 0.3; text-decoration: line-through; border-color: var(--neon-pink); }
 
-        .tecnica-box { font-size: 0.9rem; color: var(--neon-blue); border-left: 2px solid var(--neon-blue); padding: 8px; margin-top: 5px; background: rgba(0, 242, 255, 0.03); }
-        .debole-box { margin-top: 15px; font-size: 0.85rem; color: var(--neon-yellow); border: 1px dashed var(--neon-yellow); padding: 10px; }
+        .tratto-extra { font-size: 0.85rem; color: #ccc; padding-left: 10px; margin: 3px 0; font-style: italic; }
+        .tratto-extra::before { content: "» "; color: var(--neon-blue); }
+
+        .admin-controls { display: flex; gap: 10px; margin-top: 20px; border-top: 1px solid #333; padding-top: 10px; }
+        .btn-edit { color: var(--neon-yellow); border: 1px solid var(--neon-yellow); background: none; font-family: 'Orbitron'; font-size: 0.5rem; padding: 5px; cursor: pointer; }
+        .btn-del { color: #ff4444; border: 1px solid #ff4444; background: none; font-family: 'Orbitron'; font-size: 0.5rem; padding: 5px; cursor: pointer; }
     </style>
 </head>
 <body>
 
 <header class="nav-header">
-    <h1 class="header-title">KOTRA // THREAT_ARCHIVE</h1>
+    <h1 class="header-title">KOTRA // THREAT_OS</h1>
     <div>
         <a href="index.html" class="btn-action">HUB</a>
-        <button class="btn-action" id="btn-add" style="display:none; border-color:var(--neon-yellow); color:var(--neon-yellow);" onclick="togglePanel()">+ PROTOCOLLO_GENESI</button>
+        <button class="btn-action" id="btn-add" style="display:none; border-color:var(--neon-yellow); color:var(--neon-yellow);" onclick="togglePanel()">+ NUOVO_DENTRO</button>
     </div>
 </header>
 
 <div class="container">
     <div id="master-panel" class="master-panel">
-        <div class="form-grid">
-            <div><label>NOME MINACCIA</label><input type="text" id="m-nome" placeholder="Codename..."></div>
-            <div><label>DIFFICOLTÀ (1-6)</label><input type="number" id="m-diff" value="1" min="1" max="6"></div>
-            <div><label>POTENZA (1-5)</label><input type="number" id="m-pot" value="1" min="1" max="5"></div>
+        <input type="hidden" id="edit-id"> <div class="form-grid">
+            <div><label>NOME</label><input type="text" id="m-nome"></div>
+            <div><label>DIFFICOLTÀ (1-6)</label><input type="number" id="m-diff" value="1"></div>
+            <div><label>POTENZA (1-5)</label><input type="number" id="m-pot" value="1"></div>
         </div>
         
         <div class="form-grid">
-            <div>
-                <label>IMMAGINE (File)</label>
-                <input type="file" id="m-file" accept="image/*">
-            </div>
-            <div style="grid-column: span 2;">
-                <label>DESCRIZIONE BREVE</label>
-                <textarea id="m-desc" rows="2" placeholder="Sintesi della minaccia..."></textarea>
-            </div>
+            <div><label>IMMAGINE (Opzionale per edit)</label><input type="file" id="m-file" accept="image/*"></div>
+            <div style="grid-column: span 2;"><label>DESCRIZIONE BREVE</label><textarea id="m-desc" rows="1"></textarea></div>
         </div>
 
         <div class="form-grid">
-            <div>
-                <label>FERITE / TRATTI (uno per riga)</label>
-                <textarea id="m-tratti" rows="4" placeholder="Tratto Ferita 1&#10;Tratto Ferita 2&#10;Tratto Ferita 3"></textarea>
-            </div>
-            <div>
-                <label>TECNICA MINACCIA</label>
-                <textarea id="m-tecnica" rows="4" placeholder="Effetto speciale..."></textarea>
-            </div>
-            <div>
-                <label>PUNTO DEBOLE</label>
-                <textarea id="m-debole" rows="4" placeholder="Come abbatterla?"></textarea>
-            </div>
+            <div><label>FERITE / TRATTI (1 per riga)</label><textarea id="m-tratti" rows="3"></textarea></div>
+            <div><label>TRATTI AGGIUNTIVI (1 per riga)</label><textarea id="m-extra" rows="3" placeholder="Resistenze, Abilità..."></textarea></div>
+            <div><label>TECNICA SPECIALE</label><textarea id="m-tecnica" rows="3"></textarea></div>
         </div>
+        
+        <label>PUNTO DEBOLE</label>
+        <input type="text" id="m-debole">
 
-        <button class="btn-action" style="margin-top:20px; width:100%; height:50px; font-size:1rem;" id="btn-save" onclick="saveThreat()">ARCHIVIA RECORD NEL DATABASE</button>
+        <button class="btn-action" style="margin-top:20px; width:100%; border-color:var(--neon-yellow); color:var(--neon-yellow);" id="btn-save" onclick="saveThreat()">ESEGUI SALVATAGGIO RECORD</button>
+        <button class="btn-action" style="margin-top:10px; width:100%; border-color:#666; color:#666;" onclick="location.reload()">ANNULLA</button>
     </div>
 
-    <div id="threat-list" class="threat-grid">
-        <div style="color:var(--neon-blue); font-family:'Orbitron'; padding:40px; text-align:center; width:100%;">
-            CARICAMENTO DATABASE MINACCE...
-        </div>
-    </div>
+    <div id="threat-list" class="threat-grid"></div>
 </div>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { getFirestore, collection, addDoc, getDocs, deleteDoc, updateDoc, doc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
     import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
     import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
 
@@ -147,9 +132,11 @@
     const storage = getStorage(app);
     const MASTER_EMAIL = "t.giuseppeinfante@gmail.com";
 
+    let allThreats = [];
+
     window.togglePanel = () => {
-        const p = document.getElementById('master-panel');
-        p.style.display = (p.style.display === 'block') ? 'none' : 'block';
+        document.getElementById('master-panel').style.display = 'block';
+        window.scrollTo(0,0);
     };
 
     onAuthStateChanged(auth, (user) => {
@@ -160,84 +147,107 @@
     });
 
     window.saveThreat = async () => {
+        const editId = document.getElementById('edit-id').value;
         const file = document.getElementById('m-file').files[0];
-        if(!file) return alert("Protocollo negato: Caricare immagine minaccia.");
-        
         const btn = document.getElementById('btn-save');
         btn.disabled = true;
-        btn.innerText = "UPLOADING TO CLOUD...";
+        btn.innerText = "ELABORAZIONE...";
 
         try {
-            const storageRef = ref(storage, `minacce/${Date.now()}_${file.name}`);
-            const snapshot = await uploadBytes(storageRef, file);
-            const imgUrl = await getDownloadURL(snapshot.ref);
+            let imgUrl = null;
+            if (file) {
+                const storageRef = ref(storage, `minacce/${Date.now()}_${file.name}`);
+                const snapshot = await uploadBytes(storageRef, file);
+                imgUrl = await getDownloadURL(snapshot.ref);
+            }
 
-            const threat = {
+            const data = {
                 nome: document.getElementById('m-nome').value,
                 diff: document.getElementById('m-diff').value,
                 pot: document.getElementById('m-pot').value,
                 desc: document.getElementById('m-desc').value,
                 tratti: document.getElementById('m-tratti').value.split('\n').filter(t => t.trim() !== ""),
+                extra: document.getElementById('m-extra').value.split('\n').filter(t => t.trim() !== ""),
                 tecnica: document.getElementById('m-tecnica').value,
                 debole: document.getElementById('m-debole').value,
-                immagine: imgUrl,
-                createdAt: new Date()
+                updatedAt: new Date()
             };
 
-            await addDoc(collection(db, "minacce"), threat);
+            if (imgUrl) data.immagine = imgUrl;
+
+            if (editId) {
+                await updateDoc(doc(db, "minacce", editId), data);
+            } else {
+                data.createdAt = new Date();
+                if(!imgUrl) throw new Error("Immagine obbligatoria per nuovi record.");
+                await addDoc(collection(db, "minacce"), data);
+            }
             location.reload();
-        } catch (e) { 
-            alert("Errore: " + e.message); 
-            btn.disabled = false;
-        }
+        } catch (e) { alert(e.message); btn.disabled = false; }
     };
 
     async function loadThreats() {
         const container = document.getElementById('threat-list');
-        const q = query(collection(db, "minacce"), orderBy("createdAt", "desc"));
+        const q = query(collection(db, "minacce"), orderBy("updatedAt", "desc"));
         const snap = await getDocs(q);
         container.innerHTML = "";
+        allThreats = snap.docs.map(d => ({id: d.id, ...d.data()}));
 
-        if(snap.empty) {
-            container.innerHTML = "<div style='color:#666; padding:40px;'>SETTORE SICURO: Nessuna minaccia registrata.</div>";
-            return;
-        }
-
-        snap.forEach(d => {
-            const m = d.data();
+        allThreats.forEach(m => {
             const card = document.createElement('div');
             card.className = 'threat-card';
             card.innerHTML = `
                 <img src="${m.immagine}" class="threat-img">
                 <div class="threat-content">
                     <div class="threat-name">${m.nome}</div>
-                    <span class="badge bg-diff">DIFFICOLTÀ: ${m.diff}</span>
-                    <span class="badge bg-pot">POTENZA: ${m.pot}</span>
+                    <span class="badge bg-diff">DIFF: ${m.diff}</span>
+                    <span class="badge bg-pot">POT: ${m.pot}</span>
+                    <p style="font-size:0.85rem; color:#888;">${m.desc}</p>
                     
-                    <p style="font-size:0.9rem; color:#bbb; margin:10px 0; line-height:1.4;">${m.desc}</p>
+                    <span class="section-label">FERITE (CLICCA PER BARRARE)</span>
+                    ${m.tratti.map(t => `<div class="ferita-item" onclick="this.classList.toggle('damaged')">▢ ${t}</div>`).join('')}
                     
-                    <span class="section-label">FERITE // TRATTI VITALI</span>
-                    <div>
-                        ${m.tratti.map(t => `<div class="ferita-item" onclick="this.classList.toggle('damaged')">${t}</div>`).join('')}
+                    ${m.extra && m.extra.length > 0 ? `
+                        <span class="section-label">TRATTI AGGIUNTIVI</span>
+                        ${m.extra.map(e => `<div class="tratto-extra">${e}</div>`).join('')}
+                    ` : ''}
+
+                    <span class="section-label">TECNICA</span>
+                    <div style="font-size:0.8rem; color:var(--neon-blue); padding:5px;">${m.tecnica}</div>
+
+                    <div style="margin-top:10px; font-size:0.8rem; color:var(--neon-yellow); border:1px dashed var(--neon-yellow); padding:5px;">
+                        <b>DEBOLEZZA:</b> ${m.debole}
                     </div>
 
-                    <span class="section-label">TECNICA MINACCIA</span>
-                    <div class="tecnica-box">${m.tecnica}</div>
-
-                    <div class="debe-box">
-                        <span class="section-label" style="color:var(--neon-yellow); border-color:rgba(255,255,0,0.2);">PUNTO DEBOLE</span>
-                        <div style="font-size:0.9rem; color:var(--neon-yellow); padding:5px;">${m.debole}</div>
-                    </div>
-
-                    ${auth.currentUser.email === MASTER_EMAIL ? `<button onclick="deleteThreat('${d.id}')" style="background:none; border:none; color:#444; cursor:pointer; font-size:0.6rem; margin-top:20px;">[CANCELLA_RECORD]</button>` : ''}
+                    ${auth.currentUser.email === MASTER_EMAIL ? `
+                        <div class="admin-controls">
+                            <button class="btn-edit" onclick="editThreat('${m.id}')">EDIT</button>
+                            <button class="btn-del" onclick="deleteThreat('${m.id}')">DELETE</button>
+                        </div>
+                    ` : ''}
                 </div>
             `;
             container.appendChild(card);
         });
     }
 
+    window.editThreat = (id) => {
+        const m = allThreats.find(t => t.id === id);
+        document.getElementById('edit-id').value = m.id;
+        document.getElementById('m-nome').value = m.nome;
+        document.getElementById('m-diff').value = m.diff;
+        document.getElementById('m-pot').value = m.pot;
+        document.getElementById('m-desc').value = m.desc;
+        document.getElementById('m-tratti').value = m.tratti.join('\n');
+        document.getElementById('m-extra').value = (m.extra || []).join('\n');
+        document.getElementById('m-tecnica').value = m.tecnica;
+        document.getElementById('m-debole').value = m.debole;
+        togglePanel();
+        document.getElementById('btn-save').innerText = "CONFERMA MODIFICHE RECORD";
+    };
+
     window.deleteThreat = async (id) => {
-        if(confirm("Eliminare definitivamente il record della minaccia?")) {
+        if(confirm("Protocollo Epurazione: Eliminare definitivamente il record?")) {
             await deleteDoc(doc(db, "minacce", id));
             location.reload();
         }
