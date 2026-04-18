@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KOTRA - Terminale Archivio v3.8</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         /* NUOVO LAYOUT BLOCCHI */
         #viewer-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 1000; overflow-y: auto; padding: 20px; }
@@ -197,8 +198,14 @@
     <div class="archive-grid" id="grid-personali"></div>
 
   <div id="viewer-overlay">
-        <button class="close-overlay" onclick="closeViewer()">X CHIUDI TERMINALE</button>
-        <div class="sheet-layout">
+        <div style="position: fixed; top: 15px; right: 15px; z-index: 1100; display: flex; gap: 10px;">
+            <button id="btn-download" onclick="downloadSheet()" class="btn-action" style="border-color: var(--neon-yellow); color: var(--neon-yellow); background: rgba(0,0,0,0.8); padding: 5px 10px; font-size: 0.8rem;">
+                [💾] ESTRAI DATI DATABATE
+            </button>
+            <button class="close-overlay" onclick="closeViewer()" style="position: static; margin: 0;">X CHIUDI TERMINALE</button>
+        </div>
+        
+        <div class="sheet-layout" id="sheet-to-capture" style="padding: 20px; border-radius: 5px;">
             <div class="v-sidebar">
                 <img id="v-img" src="">
 
@@ -444,6 +451,51 @@ function renderArchive(uid, filter = "") {
         card.onclick = () => window.openViewer(p);
         isMio ? gPers.appendChild(card) : gUtenti.appendChild(card);
     });
+    // --- FUNZIONE PER SALVARE LA SCHEDA IN PNG ---
+window.downloadSheet = async () => {
+    const sheetElement = document.getElementById('sheet-to-capture');
+    const btn = document.getElementById('btn-download');
+    const originalText = btn.innerText;
+
+    try {
+        // Feedback visivo
+        btn.innerText = "[⏳] ELABORAZIONE...";
+        btn.disabled = true;
+
+        // Recupera il nome del personaggio per il nome del file
+        let charName = document.getElementById('v-nome').innerText || "IGNOTO";
+        charName = charName.replace(/[^a-zA-Z0-9]/g, '_'); // Pulisce il nome per il file
+
+        // html2canvas configurato per il tuo layout neon
+        const canvas = await html2canvas(sheetElement, {
+            useCORS: true,           // FONDAMENTALE per scaricare le immagini esterne/Firebase
+            allowTaint: true,
+            backgroundColor: "#060608", // Usa il colore di sfondo scuro del tuo CSS
+            scale: 2,                // Qualità x2 (ottimo per display retina e mobile)
+            logging: false           // Disattiva i log in console
+        });
+
+        // Converte il canvas in immagine PNG
+        const imageData = canvas.toDataURL("image/png", 1.0);
+
+        // Crea un link invisibile e simula il click per il download
+        const downloadLink = document.createElement('a');
+        downloadLink.href = imageData;
+        downloadLink.download = `KOTRA_ARCHIVIO_${charName}.png`;
+        
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+
+    } catch (error) {
+        console.error("Errore durante l'estrazione dati:", error);
+        alert("ERRORE DI SISTEMA: Impossibile generare il Dataslate.");
+    } finally {
+        // Ripristina il bottone
+        btn.innerText = originalText;
+        btn.disabled = false;
+    }
+};
 }
 </script>
 </body>
