@@ -33,16 +33,15 @@
 
         .btn-action { 
             background: transparent; border: 1px solid var(--neon-pink); color: var(--neon-pink); 
-            padding: 8px 12px; font-family: 'Orbitron'; cursor: pointer; font-size: 0.65rem;
+            padding: 8px 12px; font-family: 'Orbitron'; cursor: pointer; font-size: 0.65rem; transition: 0.2s;
         }
 
-        /* RICERCA E FILTRI */
+        /* FILTRI */
         .search-container {
             background: rgba(255, 255, 255, 0.05); padding: 15px; margin: 20px auto; max-width: 1170px;
             border: 1px solid #333; display: grid; grid-template-columns: 1fr; gap: 10px;
         }
         @media (min-width: 768px) { .search-container { grid-template-columns: 2fr 1fr 1fr; } }
-
         .filter-input { background: #000; border: 1px solid #444; color: #fff; padding: 10px; font-family: 'Rajdhani'; width: 100%; box-sizing: border-box; }
         .filter-label { font-family: 'Orbitron'; font-size: 0.6rem; color: var(--neon-blue); display: block; margin-bottom: 5px; }
 
@@ -51,49 +50,42 @@
         /* GRID */
         .threat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 15px; }
         @media (min-width: 768px) { .threat-grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); } }
-
         .preview-card { background: #111; border: 1px solid #333; cursor: pointer; border-bottom: 2px solid var(--neon-pink); height: 260px; position: relative; overflow: hidden; }
-        .preview-card img { width: 100%; height: 100%; object-fit: contain; background: #000; opacity: 0.8; }
+        .preview-card img { width: 100%; height: 100%; object-fit: contain; background: #000; }
         .preview-info { position: absolute; bottom: 0; width: 100%; padding: 10px; background: linear-gradient(transparent, #000); box-sizing: border-box; }
-        .preview-name { font-family: 'Orbitron'; font-size: 0.75rem; color: #fff; }
+        .preview-name { font-family: 'Orbitron'; font-size: 0.75rem; color: #fff; text-transform: uppercase; }
 
-        /* SCHEDA DETTAGLI */
+        /* DETTAGLI */
         #details-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 200; overflow-y: auto; padding: 10px; box-sizing: border-box; }
         .details-container { max-width: 900px; margin: 10px auto; background: #0f1016; border: 1px solid var(--neon-pink); display: flex; flex-direction: column; }
         @media (min-width: 768px) { .details-container { flex-direction: row; } }
-
         .details-img { width: 100%; height: auto; max-height: 450px; object-fit: contain; background: #000; cursor: zoom-in; }
         @media (min-width: 768px) { .details-img { width: 380px; max-height: none; border-right: 1px solid #333; } }
-
         .details-content { padding: 25px; flex: 1; }
-        .section-label { font-family: 'Orbitron'; font-size: 0.6rem; color: var(--neon-pink); margin-top: 20px; display: block; border-bottom: 1px solid rgba(255, 0, 122, 0.2); }
         .badge { display: inline-block; padding: 3px 10px; font-family: 'Orbitron'; font-size: 0.7rem; border: 1px solid; margin-right: 8px; margin-top: 10px; }
         .bg-diff { border-color: var(--neon-blue); color: var(--neon-blue); }
         .bg-pot { border-color: var(--neon-yellow); color: var(--neon-yellow); }
-
+        .section-label { font-family: 'Orbitron'; font-size: 0.6rem; color: var(--neon-pink); margin-top: 20px; display: block; border-bottom: 1px solid rgba(255, 0, 122, 0.2); }
         .ferita-item { background: rgba(255,255,255,0.03); padding: 12px; margin: 8px 0; border: 1px solid #222; cursor: pointer; }
         .ferita-item.damaged { opacity: 0.3; text-decoration: line-through; color: var(--neon-pink); }
 
-        /* LIGHTBOX (IL SECONDO OVERLAY) */
-        #lightbox-overlay { 
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: rgba(0,0,0,0.98); z-index: 300; cursor: zoom-out; 
-            justify-content: center; align-items: center; 
-        }
+        /* LIGHTBOX */
+        #lightbox-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.98); z-index: 300; cursor: zoom-out; justify-content: center; align-items: center; }
         #lightbox-overlay img { max-width: 98%; max-height: 98%; object-fit: contain; box-shadow: 0 0 30px var(--neon-pink); }
 
         .btn-dl { background: #000; border: 1px solid var(--neon-blue); color: var(--neon-blue); padding: 12px; font-family: 'Orbitron'; cursor: pointer; width: 100%; max-width: 900px; display: block; margin: 0 auto 10px; }
         .close-btn { position: sticky; top: 0; float: right; background: var(--neon-pink); color: #fff; border: none; padding: 10px 20px; font-family: 'Orbitron'; cursor: pointer; z-index: 201; }
 
-        /* MASTER */
+        /* MASTER PANEL */
         .master-panel { display: none; background: #111; border: 1px solid var(--neon-yellow); padding: 20px; margin: 20px auto; max-width: 1170px; }
-        input, textarea { background: #000; border: 1px solid #444; color: #fff; padding: 10px; width: 100%; box-sizing: border-box; margin-bottom: 10px; font-family: 'Rajdhani'; }
+        .master-panel label { color: var(--neon-yellow); font-family: 'Orbitron'; font-size: 0.6rem; display: block; margin-top: 10px; }
+        input, textarea { background: #000; border: 1px solid #444; color: #fff; padding: 10px; width: 100%; box-sizing: border-box; margin-bottom: 5px; font-family: 'Rajdhani'; }
     </style>
 </head>
 <body>
 
 <header class="nav-header">
-    <h1 class="header-title">KOTRA // THREAT_OS</h1>
+    <h1 class="header-title">KOTRA // THREAT_DATABASE</h1>
     <div>
         <a href="index.html" class="btn-action">HUB</a>
         <button class="btn-action" id="btn-add" style="display:none; border-color:var(--neon-yellow); color:var(--neon-yellow);" onclick="togglePanel()">+ AGGIUNGI</button>
@@ -102,23 +94,27 @@
 
 <div class="search-container">
     <div><label class="filter-label">NOME</label><input type="text" id="search-name" class="filter-input" oninput="filterThreats()"></div>
-    <div><label class="filter-label">DIFFICOLTÀ (Min)</label><input type="number" id="filter-diff" class="filter-input" oninput="filterThreats()"></div>
-    <div><label class="filter-label">POTENZA (Min)</label><input type="number" id="filter-pot" class="filter-input" oninput="filterThreats()"></div>
+    <div><label class="filter-label">DIFF (Min)</label><input type="number" id="filter-diff" class="filter-input" oninput="filterThreats()"></div>
+    <div><label class="filter-label">POT (Min)</label><input type="number" id="filter-pot" class="filter-input" oninput="filterThreats()"></div>
 </div>
 
 <div class="container">
     <div id="master-panel" class="master-panel">
+        <h3 id="panel-title" style="color:var(--neon-yellow); font-family:'Orbitron'; margin:0 0 15px 0; font-size:0.8rem;">NUOVO INSERIMENTO</h3>
         <input type="hidden" id="edit-id">
-        <input type="text" id="m-nome" placeholder="NOME">
-        <input type="number" id="m-diff" placeholder="DIFF (1-6)">
-        <input type="number" id="m-pot" placeholder="POT (1-5)">
-        <input type="text" id="m-img-url" placeholder="URL IMMAGINE">
-        <textarea id="m-desc" placeholder="DESCRIZIONE"></textarea>
-        <textarea id="m-tratti" placeholder="FERITE (una per riga)"></textarea>
-        <textarea id="m-extra" placeholder="EXTRA (una per riga)"></textarea>
-        <textarea id="m-tecnica" placeholder="TECNICA"></textarea>
-        <input type="text" id="m-debole" placeholder="DEBOLEZZA">
-        <button class="btn-action" style="width:100%; border-color:var(--neon-yellow); color:var(--neon-yellow);" onclick="saveThreat()">SALVA RECORD</button>
+        <label>NOME MINACCIA</label><input type="text" id="m-nome">
+        <div style="display:flex; gap:10px;">
+            <div style="flex:1;"><label>DIFFICOLTÀ (1-6)</label><input type="number" id="m-diff" value="1"></div>
+            <div style="flex:1;"><label>POTENZA (1-5)</label><input type="number" id="m-pot" value="1"></div>
+        </div>
+        <label>URL IMMAGINE</label><input type="text" id="m-img-url">
+        <label>DESCRIZIONE BREVE</label><textarea id="m-desc" rows="1"></textarea>
+        <label>FERITE (una per riga)</label><textarea id="m-tratti" rows="2"></textarea>
+        <label>EXTRA (uno per riga)</label><textarea id="m-extra" rows="2"></textarea>
+        <label>TECNICA SPECIALE</label><textarea id="m-tecnica" rows="2"></textarea>
+        <label>VULNERABILITÀ</label><input type="text" id="m-debole">
+        <button class="btn-action" style="width:100%; margin-top:15px; border-color:var(--neon-yellow); color:var(--neon-yellow);" onclick="saveThreat()">SINCRONIZZA DATABASE</button>
+        <button class="btn-action" style="width:100%; margin-top:5px; border-color:#555; color:#555;" onclick="location.reload()">ANNULLA / CHIUDI</button>
     </div>
     <div id="threat-grid" class="threat-grid"></div>
 </div>
@@ -159,7 +155,10 @@
         } else { window.location.href = "index.html"; }
     });
 
-    window.togglePanel = () => { document.getElementById('master-panel').style.display = 'block'; };
+    window.togglePanel = () => { 
+        document.getElementById('master-panel').style.display = 'block'; 
+        window.scrollTo({top: 0, behavior: 'smooth'});
+    };
 
     async function loadThreats() {
         const snap = await getDocs(query(collection(db, "minacce"), orderBy("updatedAt", "desc")));
@@ -173,6 +172,7 @@
                 <img src="${m.immagine}" onerror="this.src='https://via.placeholder.com/300?text=KOTRA'">
                 <div class="preview-info">
                     <div class="preview-name">${m.nome}</div>
+                    <div style="font-size:0.6rem; color:var(--neon-blue);">D:${m.diff} | P:${m.pot}</div>
                 </div>
             </div>
         `).join('');
@@ -182,28 +182,36 @@
         const n = document.getElementById('search-name').value.toLowerCase();
         const d = parseInt(document.getElementById('filter-diff').value) || 0;
         const p = parseInt(document.getElementById('filter-pot').value) || 0;
-        const filtered = allThreats.filter(m => m.nome.toLowerCase().includes(n) && m.diff >= d && m.pot >= p);
+        const filtered = allThreats.filter(m => m.nome.toLowerCase().includes(n) && (m.diff >= d) && (m.pot >= p));
         renderGrid(filtered);
     };
 
     window.showDetails = (id) => {
         const m = allThreats.find(t => t.id === id);
+        const isAdmin = auth.currentUser.email === MASTER_EMAIL;
         document.getElementById('details-render').innerHTML = `
-            <button class="btn-dl" onclick="downloadPDF('${m.id}')">💾 ESPORTA PDF</button>
+            <button class="btn-dl" onclick="downloadPDF('${m.id}')">💾 ESPORTA PDF SCHEDA</button>
             <div class="details-container" id="capture-area">
                 <img src="${m.immagine}" class="details-img" onclick="openLightbox('${m.immagine}')">
                 <div class="details-content">
                     <h2 style="font-family:'Orbitron'; color:var(--neon-pink); margin:0;">${m.nome}</h2>
                     <span class="badge bg-diff">DIFF: ${m.diff}</span><span class="badge bg-pot">POT: ${m.pot}</span>
                     <p style="color:#aaa; font-size:0.9rem;">${m.desc}</p>
-                    <span class="section-label">VITALI</span>
+                    <span class="section-label">STATO VITALI // FERITE</span>
                     ${m.tratti.map(t => `<div class="ferita-item" onclick="this.classList.toggle('damaged')">▢ ${t}</div>`).join('')}
-                    <span class="section-label">TECNICA</span>
+                    ${m.extra.length ? `<span class="section-label">EXTRA</span>` : ''}
+                    ${m.extra.map(e => `<div style="font-size:0.8rem; color:var(--neon-blue); margin-top:5px;">» ${e}</div>`).join('')}
+                    <span class="section-label">TECNICA MINACCIA</span>
                     <div style="color:var(--neon-blue); font-size:0.85rem; margin-top:5px;">${m.tecnica}</div>
-                    <div style="margin-top:15px; border:1px dashed var(--neon-yellow); padding:10px; color:var(--neon-yellow); font-size:0.8rem;"><b>DEBOLEZZA:</b> ${m.debole}</div>
+                    <div style="margin-top:15px; border:1px dashed var(--neon-yellow); padding:10px; color:var(--neon-yellow); font-size:0.8rem;"><b>VULNERABILITÀ:</b> ${m.debole}</div>
                 </div>
             </div>
-            ${auth.currentUser.email === MASTER_EMAIL ? `<button class="btn-action" onclick="deleteThreat('${m.id}')">ELIMINA</button>` : ''}
+            ${isAdmin ? `
+                <div style="max-width:900px; margin: 15px auto; display:flex; gap:10px;">
+                    <button class="btn-action" style="flex:1; border-color:var(--neon-yellow); color:var(--neon-yellow);" onclick="editThreat('${m.id}')">MODIFICA</button>
+                    <button class="btn-action" style="flex:1; border-color:#ff4444; color:#ff4444;" onclick="deleteThreat('${m.id}')">ELIMINA</button>
+                </div>
+            ` : ''}
         `;
         document.getElementById('details-overlay').style.display = 'block';
         document.body.style.overflow = 'hidden';
@@ -219,14 +227,13 @@
         const area = document.getElementById('capture-area');
         html2canvas(area, { useCORS: true, scale: 2, backgroundColor: "#0f1016" }).then(canvas => {
             const pdf = new jsPDF({ orientation: canvas.width > canvas.height ? "l" : "p", unit: "px", format: [canvas.width/2, canvas.height/2] });
-            pdf.addImage(canvas.toDataURL("image/jpeg", 0.95), 'JPEG', 0, 0, canvas.width/2, canvas.height/2);
-            pdf.save("KOTRA_Threat.pdf");
+            pdf.addImage(canvas.toDataURL("image/jpeg", 0.9), 'JPEG', 0, 0, canvas.width/2, canvas.height/2);
+            pdf.save("KOTRA_Record.pdf");
         });
     };
 
-    window.closeDetails = () => { document.getElementById('details-overlay').style.display = 'none'; document.body.style.overflow = 'auto'; };
-
     window.saveThreat = async () => {
+        const editId = document.getElementById('edit-id').value;
         const data = {
             nome: document.getElementById('m-nome').value,
             diff: document.getElementById('m-diff').value,
@@ -239,11 +246,41 @@
             debole: document.getElementById('m-debole').value,
             updatedAt: new Date()
         };
-        await addDoc(collection(db, "minacce"), data);
+        
+        if (editId) {
+            await updateDoc(doc(db, "minacce", editId), data);
+        } else {
+            await addDoc(collection(db, "minacce"), data);
+        }
         location.reload();
     };
 
-    window.deleteThreat = async (id) => { if(confirm("ELIMINARE?")) { await deleteDoc(doc(db, "minacce", id)); location.reload(); } };
+    window.editThreat = (id) => {
+        const m = allThreats.find(t => t.id === id);
+        document.getElementById('edit-id').value = m.id;
+        document.getElementById('m-nome').value = m.nome;
+        document.getElementById('m-img-url').value = m.immagine;
+        document.getElementById('m-diff').value = m.diff;
+        document.getElementById('m-pot').value = m.pot;
+        document.getElementById('m-desc').value = m.desc;
+        document.getElementById('m-tratti').value = m.tratti.join('\n');
+        document.getElementById('m-extra').value = m.extra.join('\n');
+        document.getElementById('m-tecnica').value = m.tecnica;
+        document.getElementById('m-debole').value = m.debole;
+        
+        document.getElementById('panel-title').innerText = "MODIFICA RECORD: " + m.nome;
+        closeDetails();
+        togglePanel();
+    };
+
+    window.deleteThreat = async (id) => {
+        if(confirm("CONFERMI ELIMINAZIONE DEFINITIVA?")) {
+            await deleteDoc(doc(db, "minacce", id));
+            location.reload();
+        }
+    };
+
+    window.closeDetails = () => { document.getElementById('details-overlay').style.display = 'none'; document.body.style.overflow = 'auto'; };
 </script>
 </body>
 </html>
