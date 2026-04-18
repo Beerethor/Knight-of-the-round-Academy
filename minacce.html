@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>KOTRA - Threat Database</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     
     <style>
@@ -26,6 +27,7 @@
             overflow-x: hidden;
         }
 
+        /* HEADER */
         .nav-header { padding: 15px; background: rgba(0,0,0,0.95); border-bottom: 2px solid var(--neon-pink); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
         .header-title { color: var(--neon-pink); font-family: 'Orbitron'; font-size: 0.9rem; margin: 0; }
 
@@ -36,7 +38,7 @@
 
         .container { padding: 15px; max-width: 1200px; margin: auto; }
 
-        /* GRIGLIA */
+        /* GRIGLIA ANTEPRIME */
         .threat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 15px; }
         @media (min-width: 768px) { .threat-grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); } }
 
@@ -48,10 +50,10 @@
         .preview-info { position: absolute; bottom: 0; left: 0; width: 100%; padding: 10px; background: linear-gradient(transparent, rgba(0,0,0,0.9)); box-sizing: border-box; }
         .preview-name { font-family: 'Orbitron'; font-size: 0.8rem; color: #fff; text-transform: uppercase; }
 
-        /* OVERLAY DETTAGLI */
+        /* OVERLAY SCHEDA */
         #details-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 200; overflow-y: auto; padding: 10px; box-sizing: border-box; }
         
-        /* AREA CHE VERRÀ SCARICATA */
+        /* AREA CATTURA */
         .details-container { 
             max-width: 900px; margin: 10px auto; background: #0f1016; border: 1px solid var(--neon-pink);
             display: grid; grid-template-columns: 1fr;
@@ -70,16 +72,16 @@
         .ferita-item { background: rgba(255,255,255,0.03); padding: 10px; margin: 5px 0; border: 1px solid #222; cursor: pointer; font-size: 0.9rem; }
         .ferita-item.damaged { opacity: 0.3; text-decoration: line-through; color: var(--neon-pink); }
 
-        /* TASTI */
-        .btn-download { background: transparent; border: 1px solid var(--neon-blue); color: var(--neon-blue); padding: 10px; font-family: 'Orbitron'; cursor: pointer; font-size: 0.6rem; margin-bottom: 10px; width: 100%; max-width: 900px; display: block; margin-left: auto; margin-right: auto; }
+        /* BOTTONI */
+        .btn-download { background: transparent; border: 1px solid var(--neon-blue); color: var(--neon-blue); padding: 10px; font-family: 'Orbitron'; cursor: pointer; font-size: 0.6rem; margin-bottom: 10px; width: 100%; max-width: 900px; display: block; margin: 10px auto; }
         .btn-download:hover { background: var(--neon-blue); color: #000; }
-        .close-btn { position: fixed; top: 15px; right: 15px; font-family: 'Orbitron'; color: #fff; background: var(--neon-pink); border: none; padding: 10px; cursor: pointer; z-index: 201; font-size: 0.7rem; }
+        .close-btn { position: fixed; top: 15px; right: 15px; font-family: 'Orbitron'; color: #fff; background: var(--neon-pink); border: none; padding: 10px; cursor: pointer; z-index: 201; }
 
         /* LIGHTBOX */
         #lightbox-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.92); z-index: 300; cursor: zoom-out; justify-content: center; align-items: center; }
         #lightbox-overlay img { max-width: 95%; max-height: 95%; }
 
-        /* FORM */
+        /* MODULO MASTER */
         .master-panel { display: none; background: var(--panel-bg); border: 1px solid var(--neon-yellow); padding: 20px; margin-bottom: 30px; }
         input, textarea { background: #000; border: 1px solid #444; color: #fff; padding: 10px; width: 100%; box-sizing: border-box; margin-bottom: 10px; font-family: 'Rajdhani'; }
         label { color: var(--neon-pink); font-family: 'Orbitron'; font-size: 0.55rem; display: block; }
@@ -88,7 +90,7 @@
 <body>
 
 <header class="nav-header">
-    <h1 class="header-title">KOTRA // THREAT_DATABASE</h1>
+    <h1 class="header-title">KOTRA // THREAT_OS</h1>
     <div>
         <a href="index.html" class="btn-action">HUB</a>
         <button class="btn-action" id="btn-add" style="display:none; border-color:var(--neon-yellow); color:var(--neon-yellow);" onclick="togglePanel()">+ AGGIUNGI</button>
@@ -103,7 +105,7 @@
             <div style="flex:1;"><label>DIFF (1-6)</label><input type="number" id="m-diff" value="1"></div>
             <div style="flex:1;"><label>POT (1-5)</label><input type="number" id="m-pot" value="1"></div>
         </div>
-        <label>URL IMMAGINE</label><input type="text" id="m-img-url">
+        <label>URL IMMAGINE (Obbligatorio)</label><input type="text" id="m-img-url">
         <label>DESCRIZIONE</label><textarea id="m-desc" rows="1"></textarea>
         <label>FERITE (1 per riga)</label><textarea id="m-tratti" rows="2"></textarea>
         <label>EXTRA (1 per riga)</label><textarea id="m-extra" rows="2"></textarea>
@@ -160,7 +162,7 @@
         const grid = document.getElementById('threat-grid');
         grid.innerHTML = allThreats.map(m => `
             <div class="preview-card" onclick="showDetails('${m.id}')">
-                <img src="${m.immagine}" onerror="this.src='https://via.placeholder.com/200x300?text=ERROR'">
+                <img src="${m.immagine}" onerror="this.src='https://via.placeholder.com/300?text=ERROR'">
                 <div class="preview-info">
                     <div class="preview-name">${m.nome}</div>
                 </div>
@@ -172,13 +174,13 @@
         const m = allThreats.find(t => t.id === id);
         const render = document.getElementById('details-render');
         render.innerHTML = `
-            <button class="btn-download" onclick="downloadSheet('${m.nome}')">💾 SCARICA_SCHEDA_PNG</button>
+            <button class="btn-download" id="dl-btn" onclick="downloadSheet('${m.nome}')">💾 SALVA COME IMMAGINE (JPG)</button>
             <div class="details-container" id="capture-area">
-                <img src="${m.immagine}" class="details-img" onclick="openLightbox('${m.immagine}')" crossorigin="anonymous">
+                <img src="${m.immagine}" class="details-img" id="main-img" onclick="openLightbox('${m.immagine}')" crossorigin="anonymous">
                 <div class="details-content">
                     <h2 style="font-family:'Orbitron'; margin:0; color:var(--neon-pink);">${m.nome}</h2>
-                    <span class="badge bg-diff">DIFFICOLTÀ: ${m.diff}</span>
-                    <span class="badge bg-pot">POTENZA: ${m.pot}</span>
+                    <span class="badge bg-diff">DIFF: ${m.diff}</span>
+                    <span class="badge bg-pot">POT: ${m.pot}</span>
                     <p style="color:#aaa; font-size:0.9rem;">${m.desc}</p>
                     
                     <span class="section-label">FERITE // TRATTI VITALI</span>
@@ -187,18 +189,18 @@
                     ${m.extra.length ? `<span class="section-label">TRATTI AGGIUNTIVI</span>` : ''}
                     ${m.extra.map(e => `<div style="font-size:0.8rem; color:var(--neon-blue); margin-top:5px;">» ${e}</div>`).join('')}
 
-                    <span class="section-label">TECNICA MINACCIA</span>
+                    <span class="section-label">TECNICA</span>
                     <div style="background:#111; padding:10px; border:1px solid #333; color:var(--neon-blue); font-size:0.85rem;">${m.tecnica}</div>
 
                     <div style="margin-top:15px; border:1px dashed var(--neon-yellow); padding:10px; color:var(--neon-yellow); font-size:0.85rem;">
-                        <b>VULNERABILITÀ:</b> ${m.debole}
+                        <b>DEBOLEZZA:</b> ${m.debole}
                     </div>
                 </div>
             </div>
             ${auth.currentUser.email === MASTER_EMAIL ? `
                 <div style="max-width:900px; margin: 10px auto; display:flex; gap:10px;">
-                    <button class="btn-action" style="flex:1; border-color:var(--neon-yellow); color:var(--neon-yellow);" onclick="editThreat('${m.id}')">EDIT</button>
-                    <button class="btn-action" style="flex:1; border-color:#ff4444; color:#ff4444;" onclick="deleteThreat('${m.id}')">DEL</button>
+                    <button class="btn-action" style="flex:1; border-color:var(--neon-yellow); color:var(--neon-yellow);" onclick="editThreat('${m.id}')">MODIFICA</button>
+                    <button class="btn-action" style="flex:1; border-color:#ff4444; color:#ff4444;" onclick="deleteThreat('${m.id}')">ELIMINA</button>
                 </div>
             ` : ''}
         `;
@@ -206,27 +208,64 @@
         document.body.style.overflow = 'hidden';
     };
 
-    // FUNZIONE DOWNLOAD AGGIORNATA
-    window.downloadSheet = (nome) => {
+    // FUNZIONE DOWNLOAD DEFINITIVA
+    window.downloadSheet = async (nome) => {
+        const btn = document.getElementById('dl-btn');
         const area = document.getElementById('capture-area');
-        const btn = document.querySelector('.btn-download');
-        btn.innerText = "GENERAZIONE...";
+        const originalImg = document.getElementById('main-img');
+        
+        btn.innerText = "SINCRO DATI IN CORSO...";
+        btn.disabled = true;
 
-        html2canvas(area, {
-            useCORS: true,
-            allowTaint: false,
-            backgroundColor: "#0f1016",
-            scale: 2
-        }).then(canvas => {
-            const link = document.createElement('a');
-            link.download = `KOTRA_Threat_${nome}.png`;
-            link.href = canvas.toDataURL("image/png");
-            link.click();
-            btn.innerText = "💾 SCARICA_SCHEDA_PNG";
-        }).catch(err => {
-            alert("Errore: Il sito che ospita l'immagine impedisce il download per sicurezza (CORS).");
-            btn.innerText = "💾 ERRORE DOWNLOAD";
-        });
+        try {
+            // TRUCCO DEFINITIVO: Convertiamo l'immagine in Base64 prima della cattura
+            // Questo elimina qualsiasi problema di CORS perché l'immagine diventa locale
+            const response = await fetch(originalImg.src);
+            const blob = await response.blob();
+            const reader = new FileReader();
+            
+            reader.onloadend = async () => {
+                const base64data = reader.result;
+                const tempImg = originalImg.cloneNode();
+                tempImg.src = base64data;
+                
+                // Sostituiamo temporaneamente l'immagine con la versione Base64
+                const oldSrc = originalImg.src;
+                originalImg.src = base64data;
+
+                html2canvas(area, {
+                    useCORS: true,
+                    scale: 2,
+                    backgroundColor: "#0f1016"
+                }).then(canvas => {
+                    const link = document.createElement('a');
+                    link.download = `KOTRA_Threat_${nome}.jpg`;
+                    link.href = canvas.toDataURL("image/jpeg", 0.9);
+                    link.click();
+                    
+                    originalImg.src = oldSrc; // Ripristiniamo l'URL originale
+                    btn.innerText = "💾 SALVA COME IMMAGINE (JPG)";
+                    btn.disabled = false;
+                });
+            };
+            reader.readAsDataURL(blob);
+
+        } catch (err) {
+            console.error(err);
+            // Se il fetch fallisce, proviamo il metodo standard come backup
+            html2canvas(area, { useCORS: true, scale: 2 }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = `KOTRA_Threat_${nome}.jpg`;
+                link.href = canvas.toDataURL("image/jpeg", 0.9);
+                link.click();
+                btn.innerText = "💾 SALVA COME IMMAGINE (JPG)";
+                btn.disabled = false;
+            }).catch(e => {
+                alert("ERRORE DI SICUREZZA: Il server dell'immagine blocca il salvataggio automatico.");
+                btn.innerText = "💾 ERRORE DOWNLOAD";
+                btn.disabled = false;
+            });
+        }
     };
 
     window.openLightbox = (url) => {
