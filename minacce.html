@@ -6,15 +6,15 @@
     <title>KOTRA - Threat Database</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
     
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    
+
     <style>
         :root {
             --neon-pink: #ff007a;
             --neon-blue: #00f2ff;
             --neon-yellow: #ffff00;
             --bg-dark: #06070a;
-            --panel-bg: rgba(15, 16, 22, 0.98);
         }
 
         body {
@@ -24,97 +24,66 @@
             margin: 0;
             background-image: radial-gradient(circle at 50% 50%, #1a0a14 0%, #06070a 100%);
             background-attachment: fixed;
-            overflow-x: hidden;
         }
 
         /* HEADER */
         .nav-header { padding: 15px; background: rgba(0,0,0,0.95); border-bottom: 2px solid var(--neon-pink); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
-        .header-title { color: var(--neon-pink); font-family: 'Orbitron'; font-size: 0.9rem; margin: 0; }
+        .header-title { color: var(--neon-pink); font-family: 'Orbitron'; font-size: 0.8rem; margin: 0; }
 
         .btn-action { 
             background: transparent; border: 1px solid var(--neon-pink); color: var(--neon-pink); 
-            padding: 8px 12px; font-family: 'Orbitron'; cursor: pointer; font-size: 0.65rem; transition: 0.2s;
+            padding: 8px 12px; font-family: 'Orbitron'; cursor: pointer; font-size: 0.6rem;
         }
 
         .container { padding: 15px; max-width: 1200px; margin: auto; }
 
         /* GRIGLIA ANTEPRIME */
-        .threat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 15px; }
-        @media (min-width: 768px) { .threat-grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); } }
+        .threat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; }
+        @media (min-width: 768px) { .threat-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); } }
 
         .preview-card { 
             background: #111; border: 1px solid #333; position: relative; cursor: pointer; 
-            overflow: hidden; border-bottom: 2px solid var(--neon-pink); height: 250px;
+            overflow: hidden; border-bottom: 2px solid var(--neon-pink); height: 220px;
         }
-        .preview-card img { width: 100%; height: 100%; object-fit: contain; background: #000; opacity: 0.8; }
-        .preview-info { position: absolute; bottom: 0; left: 0; width: 100%; padding: 10px; background: linear-gradient(transparent, rgba(0,0,0,0.9)); box-sizing: border-box; }
-        .preview-name { font-family: 'Orbitron'; font-size: 0.8rem; color: #fff; text-transform: uppercase; }
+        .preview-card img { width: 100%; height: 100%; object-fit: contain; background: #000; }
+        .preview-name { position: absolute; bottom: 0; width: 100%; padding: 8px; background: rgba(0,0,0,0.8); font-family: 'Orbitron'; font-size: 0.7rem; color: #fff; text-align: center; box-sizing: border-box; }
 
         /* OVERLAY SCHEDA */
-        #details-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 200; overflow-y: auto; padding: 10px; box-sizing: border-box; }
+        #details-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.98); z-index: 200; overflow-y: auto; padding: 10px; box-sizing: border-box; }
         
-        /* AREA CATTURA */
         .details-container { 
-            max-width: 900px; margin: 10px auto; background: #0f1016; border: 1px solid var(--neon-pink);
-            display: grid; grid-template-columns: 1fr;
+            max-width: 800px; margin: 10px auto; background: #0f1016; border: 1px solid var(--neon-pink);
+            display: flex; flex-direction: column;
         }
-        @media (min-width: 768px) { .details-container { grid-template-columns: 350px 1fr; } }
+        @media (min-width: 768px) { .details-container { flex-direction: row; } }
 
-        .details-img { width: 100%; height: auto; max-height: 500px; object-fit: contain; background: #000; cursor: zoom-in; }
-        @media (min-width: 768px) { .details-img { max-height: 100%; border-right: 1px solid #333; } }
+        .details-img { width: 100%; height: auto; max-height: 400px; object-fit: contain; background: #000; }
+        @media (min-width: 768px) { .details-img { width: 350px; max-height: none; border-right: 1px solid #333; } }
 
-        .details-content { padding: 25px; }
-        .section-label { font-family: 'Orbitron'; font-size: 0.6rem; color: var(--neon-pink); margin-top: 20px; display: block; border-bottom: 1px solid rgba(255, 0, 122, 0.2); padding-bottom: 3px; }
-        .badge { display: inline-block; padding: 3px 10px; font-family: 'Orbitron'; font-size: 0.7rem; border: 1px solid; margin-right: 8px; margin-top: 10px; }
+        .details-content { padding: 20px; flex: 1; }
+        .section-label { font-family: 'Orbitron'; font-size: 0.55rem; color: var(--neon-pink); margin-top: 15px; display: block; border-bottom: 1px solid rgba(255, 0, 122, 0.2); }
+        .badge { display: inline-block; padding: 2px 8px; font-family: 'Orbitron'; font-size: 0.65rem; border: 1px solid; margin-right: 5px; margin-top: 8px; }
         .bg-diff { border-color: var(--neon-blue); color: var(--neon-blue); }
         .bg-pot { border-color: var(--neon-yellow); color: var(--neon-yellow); }
 
-        .ferita-item { background: rgba(255,255,255,0.03); padding: 10px; margin: 5px 0; border: 1px solid #222; cursor: pointer; font-size: 0.9rem; }
+        .ferita-item { background: rgba(255,255,255,0.03); padding: 10px; margin: 5px 0; border: 1px solid #222; cursor: pointer; font-size: 0.85rem; }
         .ferita-item.damaged { opacity: 0.3; text-decoration: line-through; color: var(--neon-pink); }
 
-        /* BOTTONI */
-        .btn-download { background: transparent; border: 1px solid var(--neon-blue); color: var(--neon-blue); padding: 10px; font-family: 'Orbitron'; cursor: pointer; font-size: 0.6rem; margin-bottom: 10px; width: 100%; max-width: 900px; display: block; margin: 10px auto; }
-        .btn-download:hover { background: var(--neon-blue); color: #000; }
-        .close-btn { position: fixed; top: 15px; right: 15px; font-family: 'Orbitron'; color: #fff; background: var(--neon-pink); border: none; padding: 10px; cursor: pointer; z-index: 201; }
-
-        /* LIGHTBOX */
-        #lightbox-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.92); z-index: 300; cursor: zoom-out; justify-content: center; align-items: center; }
-        #lightbox-overlay img { max-width: 95%; max-height: 95%; }
-
-        /* MODULO MASTER */
-        .master-panel { display: none; background: var(--panel-bg); border: 1px solid var(--neon-yellow); padding: 20px; margin-bottom: 30px; }
-        input, textarea { background: #000; border: 1px solid #444; color: #fff; padding: 10px; width: 100%; box-sizing: border-box; margin-bottom: 10px; font-family: 'Rajdhani'; }
-        label { color: var(--neon-pink); font-family: 'Orbitron'; font-size: 0.55rem; display: block; }
+        /* PULSANTI DOWNLOAD */
+        .btn-download-container { display: flex; gap: 10px; max-width: 800px; margin: 0 auto 10px; }
+        .btn-dl { flex: 1; background: #000; border: 1px solid var(--neon-blue); color: var(--neon-blue); padding: 12px; font-family: 'Orbitron'; cursor: pointer; font-size: 0.6rem; text-transform: uppercase; }
+        
+        .close-btn { position: sticky; top: 0; float: right; background: var(--neon-pink); color: #fff; border: none; padding: 10px 15px; font-family: 'Orbitron'; font-size: 0.7rem; z-index: 201; cursor: pointer; margin-bottom: 10px; }
     </style>
 </head>
 <body>
 
 <header class="nav-header">
     <h1 class="header-title">KOTRA // THREAT_OS</h1>
-    <div>
-        <a href="index.html" class="btn-action">HUB</a>
-        <button class="btn-action" id="btn-add" style="display:none; border-color:var(--neon-yellow); color:var(--neon-yellow);" onclick="togglePanel()">+ AGGIUNGI</button>
-    </div>
+    <a href="index.html" class="btn-action">HUB</a>
 </header>
 
 <div class="container">
-    <div id="master-panel" class="master-panel">
-        <input type="hidden" id="edit-id">
-        <label>NOME MINACCIA</label><input type="text" id="m-nome">
-        <div style="display:flex; gap:10px;">
-            <div style="flex:1;"><label>DIFF (1-6)</label><input type="number" id="m-diff" value="1"></div>
-            <div style="flex:1;"><label>POT (1-5)</label><input type="number" id="m-pot" value="1"></div>
-        </div>
-        <label>URL IMMAGINE (Obbligatorio)</label><input type="text" id="m-img-url">
-        <label>DESCRIZIONE</label><textarea id="m-desc" rows="1"></textarea>
-        <label>FERITE (1 per riga)</label><textarea id="m-tratti" rows="2"></textarea>
-        <label>EXTRA (1 per riga)</label><textarea id="m-extra" rows="2"></textarea>
-        <label>TECNICA</label><textarea id="m-tecnica" rows="2"></textarea>
-        <label>PUNTO DEBOLE</label><input type="text" id="m-debole">
-        <button class="btn-action" style="width:100%; margin-top:10px; color:var(--neon-yellow); border-color:var(--neon-yellow);" onclick="saveThreat()">SALVA RECORD</button>
-        <button class="btn-action" style="width:100%; margin-top:5px; color:#666; border-color:#666;" onclick="location.reload()">ANNULLA</button>
-    </div>
-
     <div id="threat-grid" class="threat-grid"></div>
 </div>
 
@@ -123,14 +92,9 @@
     <div id="details-render"></div>
 </div>
 
-<div id="lightbox-overlay" onclick="this.style.display='none'">
-    <img id="lightbox-img" src="">
-</div>
-
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getFirestore, collection, addDoc, getDocs, deleteDoc, updateDoc, doc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyCAMvHn28SY3k9TiLvz2afjn0zpj73Lw5Y",
@@ -143,18 +107,7 @@
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
-    const auth = getAuth(app);
-    const MASTER_EMAIL = "t.giuseppeinfante@gmail.com";
     let allThreats = [];
-
-    onAuthStateChanged(auth, user => {
-        if (user) {
-            if (user.email === MASTER_EMAIL) document.getElementById('btn-add').style.display = 'inline-block';
-            loadThreats();
-        } else { window.location.href = "index.html"; }
-    });
-
-    window.togglePanel = () => { document.getElementById('master-panel').style.display = 'block'; };
 
     async function loadThreats() {
         const snap = await getDocs(query(collection(db, "minacce"), orderBy("updatedAt", "desc")));
@@ -162,159 +115,75 @@
         const grid = document.getElementById('threat-grid');
         grid.innerHTML = allThreats.map(m => `
             <div class="preview-card" onclick="showDetails('${m.id}')">
-                <img src="${m.immagine}" onerror="this.src='https://via.placeholder.com/300?text=ERROR'">
-                <div class="preview-info">
-                    <div class="preview-name">${m.nome}</div>
-                </div>
+                <img src="${m.immagine}" onerror="this.src='https://via.placeholder.com/300?text=KOTRA'">
+                <div class="preview-name">${m.nome}</div>
             </div>
         `).join('');
     }
+    loadThreats();
 
     window.showDetails = (id) => {
         const m = allThreats.find(t => t.id === id);
         const render = document.getElementById('details-render');
         render.innerHTML = `
-            <button class="btn-download" id="dl-btn" onclick="downloadSheet('${m.nome}')">💾 SALVA COME IMMAGINE (JPG)</button>
+            <div class="btn-download-container">
+                <button class="btn-dl" onclick="downloadAsPDF('${m.id}')">💾 SCARICA PDF (MOBILE OK)</button>
+            </div>
             <div class="details-container" id="capture-area">
-                <img src="${m.immagine}" class="details-img" id="main-img" onclick="openLightbox('${m.immagine}')" crossorigin="anonymous">
+                <img src="${m.immagine}" class="details-img" crossorigin="anonymous">
                 <div class="details-content">
                     <h2 style="font-family:'Orbitron'; margin:0; color:var(--neon-pink);">${m.nome}</h2>
                     <span class="badge bg-diff">DIFF: ${m.diff}</span>
                     <span class="badge bg-pot">POT: ${m.pot}</span>
                     <p style="color:#aaa; font-size:0.9rem;">${m.desc}</p>
-                    
                     <span class="section-label">FERITE // TRATTI VITALI</span>
-                    ${m.tratti.map(t => `<div class="ferita-item" onclick="this.classList.toggle('damaged')">▢ ${t}</div>`).join('')}
-                    
-                    ${m.extra.length ? `<span class="section-label">TRATTI AGGIUNTIVI</span>` : ''}
-                    ${m.extra.map(e => `<div style="font-size:0.8rem; color:var(--neon-blue); margin-top:5px;">» ${e}</div>`).join('')}
-
-                    <span class="section-label">TECNICA</span>
-                    <div style="background:#111; padding:10px; border:1px solid #333; color:var(--neon-blue); font-size:0.85rem;">${m.tecnica}</div>
-
-                    <div style="margin-top:15px; border:1px dashed var(--neon-yellow); padding:10px; color:var(--neon-yellow); font-size:0.85rem;">
+                    ${m.tratti.map(t => `<div class="ferita-item">▢ ${t}</div>`).join('')}
+                    <span class="section-label">TECNICA SPECIALE</span>
+                    <div style="color:var(--neon-blue); font-size:0.85rem; margin-top:5px;">${m.tecnica}</div>
+                    <div style="margin-top:15px; border:1px dashed var(--neon-yellow); padding:10px; color:var(--neon-yellow); font-size:0.8rem;">
                         <b>DEBOLEZZA:</b> ${m.debole}
                     </div>
                 </div>
             </div>
-            ${auth.currentUser.email === MASTER_EMAIL ? `
-                <div style="max-width:900px; margin: 10px auto; display:flex; gap:10px;">
-                    <button class="btn-action" style="flex:1; border-color:var(--neon-yellow); color:var(--neon-yellow);" onclick="editThreat('${m.id}')">MODIFICA</button>
-                    <button class="btn-action" style="flex:1; border-color:#ff4444; color:#ff4444;" onclick="deleteThreat('${m.id}')">ELIMINA</button>
-                </div>
-            ` : ''}
         `;
         document.getElementById('details-overlay').style.display = 'block';
         document.body.style.overflow = 'hidden';
     };
 
-    // FUNZIONE DOWNLOAD DEFINITIVA
-    window.downloadSheet = async (nome) => {
-        const btn = document.getElementById('dl-btn');
+    // FUNZIONE DOWNLOAD PDF (FUNZIONA SU TUTTI I TELEFONI)
+    window.downloadAsPDF = async (id) => {
+        const { jsPDF } = window.jspdf;
+        const m = allThreats.find(t => t.id === id);
+        const btn = document.querySelector('.btn-dl');
+        btn.innerText = "GENERAZIONE PDF...";
+
         const area = document.getElementById('capture-area');
-        const originalImg = document.getElementById('main-img');
         
-        btn.innerText = "SINCRO DATI IN CORSO...";
-        btn.disabled = true;
-
-        try {
-            // TRUCCO DEFINITIVO: Convertiamo l'immagine in Base64 prima della cattura
-            // Questo elimina qualsiasi problema di CORS perché l'immagine diventa locale
-            const response = await fetch(originalImg.src);
-            const blob = await response.blob();
-            const reader = new FileReader();
-            
-            reader.onloadend = async () => {
-                const base64data = reader.result;
-                const tempImg = originalImg.cloneNode();
-                tempImg.src = base64data;
-                
-                // Sostituiamo temporaneamente l'immagine con la versione Base64
-                const oldSrc = originalImg.src;
-                originalImg.src = base64data;
-
-                html2canvas(area, {
-                    useCORS: true,
-                    scale: 2,
-                    backgroundColor: "#0f1016"
-                }).then(canvas => {
-                    const link = document.createElement('a');
-                    link.download = `KOTRA_Threat_${nome}.jpg`;
-                    link.href = canvas.toDataURL("image/jpeg", 0.9);
-                    link.click();
-                    
-                    originalImg.src = oldSrc; // Ripristiniamo l'URL originale
-                    btn.innerText = "💾 SALVA COME IMMAGINE (JPG)";
-                    btn.disabled = false;
-                });
-            };
-            reader.readAsDataURL(blob);
-
-        } catch (err) {
-            console.error(err);
-            // Se il fetch fallisce, proviamo il metodo standard come backup
-            html2canvas(area, { useCORS: true, scale: 2 }).then(canvas => {
-                const link = document.createElement('a');
-                link.download = `KOTRA_Threat_${nome}.jpg`;
-                link.href = canvas.toDataURL("image/jpeg", 0.9);
-                link.click();
-                btn.innerText = "💾 SALVA COME IMMAGINE (JPG)";
-                btn.disabled = false;
-            }).catch(e => {
-                alert("ERRORE DI SICUREZZA: Il server dell'immagine blocca il salvataggio automatico.");
-                btn.innerText = "💾 ERRORE DOWNLOAD";
-                btn.disabled = false;
+        // Usiamo html2canvas per creare l'immagine interna al PDF
+        html2canvas(area, {
+            useCORS: true,
+            scale: 2,
+            backgroundColor: "#0f1016"
+        }).then(canvas => {
+            const imgData = canvas.toDataURL("image/jpeg", 0.95);
+            const pdf = new jsPDF({
+                orientation: canvas.width > canvas.height ? "l" : "p",
+                unit: "px",
+                format: [canvas.width / 2, canvas.height / 2]
             });
-        }
-    };
 
-    window.openLightbox = (url) => {
-        document.getElementById('lightbox-img').src = url;
-        document.getElementById('lightbox-overlay').style.display = 'flex';
+            pdf.addImage(imgData, 'JPEG', 0, 0, canvas.width / 2, canvas.height / 2);
+            pdf.save(`KOTRA_Threat_${m.nome}.pdf`);
+            btn.innerText = "💾 SCARICA PDF (MOBILE OK)";
+        }).catch(err => {
+            alert("Errore durante la generazione. Prova a fare uno screenshot.");
+            btn.innerText = "💾 ERRORE";
+        });
     };
 
     window.closeDetails = () => {
         document.getElementById('details-overlay').style.display = 'none';
         document.body.style.overflow = 'auto';
-    };
-
-    window.saveThreat = async () => {
-        const editId = document.getElementById('edit-id').value;
-        const data = {
-            nome: document.getElementById('m-nome').value,
-            diff: document.getElementById('m-diff').value,
-            pot: document.getElementById('m-pot').value,
-            immagine: document.getElementById('m-img-url').value,
-            desc: document.getElementById('m-desc').value,
-            tratti: document.getElementById('m-tratti').value.split('\n').filter(t => t.trim()),
-            extra: document.getElementById('m-extra').value.split('\n').filter(t => t.trim()),
-            tecnica: document.getElementById('m-tecnica').value,
-            debole: document.getElementById('m-debole').value,
-            updatedAt: new Date()
-        };
-        if(editId) await updateDoc(doc(db, "minacce", editId), data);
-        else await addDoc(collection(db, "minacce"), data);
-        location.reload();
-    };
-
-    window.editThreat = (id) => {
-        const m = allThreats.find(t => t.id === id);
-        document.getElementById('edit-id').value = m.id;
-        document.getElementById('m-nome').value = m.nome;
-        document.getElementById('m-img-url').value = m.immagine;
-        document.getElementById('m-diff').value = m.diff;
-        document.getElementById('m-pot').value = m.pot;
-        document.getElementById('m-desc').value = m.desc;
-        document.getElementById('m-tratti').value = m.tratti.join('\n');
-        document.getElementById('m-extra').value = m.extra.join('\n');
-        document.getElementById('m-tecnica').value = m.tecnica;
-        document.getElementById('m-debole').value = m.debole;
-        closeDetails();
-        togglePanel();
-    };
-
-    window.deleteThreat = async (id) => {
-        if(confirm("ELIMINARE?")) { await deleteDoc(doc(db, "minacce", id)); location.reload(); }
     };
 </script>
 </body>
