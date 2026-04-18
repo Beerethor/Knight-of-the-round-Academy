@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>KOTRA - Threat Database</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
     <style>
         :root {
             --neon-pink: #ff007a;
@@ -24,115 +26,69 @@
             overflow-x: hidden;
         }
 
-        /* HEADER */
         .nav-header { padding: 15px; background: rgba(0,0,0,0.95); border-bottom: 2px solid var(--neon-pink); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
-        .header-title { color: var(--neon-pink); font-family: 'Orbitron'; font-size: 0.9rem; margin: 0; text-shadow: 0 0 10px var(--neon-pink); }
+        .header-title { color: var(--neon-pink); font-family: 'Orbitron'; font-size: 0.9rem; margin: 0; }
 
         .btn-action { 
             background: transparent; border: 1px solid var(--neon-pink); color: var(--neon-pink); 
             padding: 8px 12px; font-family: 'Orbitron'; cursor: pointer; font-size: 0.65rem; transition: 0.2s;
         }
-        .btn-action:hover { background: var(--neon-pink); color: white; }
 
         .container { padding: 15px; max-width: 1200px; margin: auto; }
 
-        /* GRIGLIA ANTEPRIME */
-        .threat-grid { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); 
-            gap: 15px; 
-        }
+        /* GRIGLIA */
+        .threat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 15px; }
         @media (min-width: 768px) { .threat-grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); } }
 
         .preview-card { 
             background: #111; border: 1px solid #333; position: relative; cursor: pointer; 
-            overflow: hidden; transition: transform 0.2s; border-bottom: 2px solid var(--neon-pink);
-            height: 250px;
+            overflow: hidden; border-bottom: 2px solid var(--neon-pink); height: 250px;
         }
-        .preview-card:hover { transform: scale(1.03); border-color: var(--neon-blue); }
-        .preview-card img { 
-            width: 100%; height: 100%; object-fit: contain; background: #000; 
-            opacity: 0.8; transition: 0.3s; 
-        }
-        .preview-card:hover img { opacity: 1; }
-        .preview-info { 
-            position: absolute; bottom: 0; left: 0; width: 100%; padding: 10px; 
-            background: linear-gradient(transparent, rgba(0,0,0,0.9)); box-sizing: border-box;
-        }
+        .preview-card img { width: 100%; height: 100%; object-fit: contain; background: #000; opacity: 0.8; }
+        .preview-info { position: absolute; bottom: 0; left: 0; width: 100%; padding: 10px; background: linear-gradient(transparent, rgba(0,0,0,0.9)); box-sizing: border-box; }
         .preview-name { font-family: 'Orbitron'; font-size: 0.8rem; color: #fff; text-transform: uppercase; }
 
-        /* OVERLAY SCHEDA COMPLETA */
-        #details-overlay { 
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: rgba(0,0,0,0.95); z-index: 200; overflow-y: auto; padding: 10px; box-sizing: border-box;
-        }
+        /* OVERLAY DETTAGLI */
+        #details-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 200; overflow-y: auto; padding: 10px; box-sizing: border-box; }
+        
+        /* AREA CHE VERRÀ SCARICATA */
         .details-container { 
-            max-width: 900px; margin: 40px auto; background: #0f1016; border: 1px solid var(--neon-pink);
+            max-width: 900px; margin: 10px auto; background: #0f1016; border: 1px solid var(--neon-pink);
             display: grid; grid-template-columns: 1fr;
         }
         @media (min-width: 768px) { .details-container { grid-template-columns: 350px 1fr; } }
 
-        .details-img { 
-            width: 100%; height: auto; max-height: 500px; object-fit: contain; background: #000;
-            cursor: zoom-in; transition: brightness 0.3s;
-        }
-        .details-img:hover { filter: brightness(1.2); }
+        .details-img { width: 100%; height: auto; max-height: 500px; object-fit: contain; background: #000; cursor: zoom-in; }
         @media (min-width: 768px) { .details-img { max-height: 100%; border-right: 1px solid #333; } }
 
         .details-content { padding: 25px; }
-        
-        /* ELEMENTI SCHEDA */
-        .section-label { font-family: 'Orbitron'; font-size: 0.6rem; color: var(--neon-pink); margin-top: 20px; display: block; border-bottom: 1px solid rgba(255, 0, 122, 0.2); padding-bottom: 3px; margin-bottom: 10px; }
-        .badge { display: inline-block; padding: 3px 10px; font-family: 'Orbitron'; font-size: 0.7rem; border: 1px solid; margin-right: 8px; margin-bottom: 10px; }
+        .section-label { font-family: 'Orbitron'; font-size: 0.6rem; color: var(--neon-pink); margin-top: 20px; display: block; border-bottom: 1px solid rgba(255, 0, 122, 0.2); padding-bottom: 3px; }
+        .badge { display: inline-block; padding: 3px 10px; font-family: 'Orbitron'; font-size: 0.7rem; border: 1px solid; margin-right: 8px; margin-top: 10px; }
         .bg-diff { border-color: var(--neon-blue); color: var(--neon-blue); }
         .bg-pot { border-color: var(--neon-yellow); color: var(--neon-yellow); }
 
-        .ferita-item { 
-            background: rgba(255,255,255,0.03); padding: 12px; margin: 8px 0; border: 1px solid #222; 
-            cursor: pointer; display: flex; align-items: center; font-size: 0.95rem;
-        }
-        .ferita-item::before { content: '▢'; margin-right: 12px; color: var(--neon-pink); font-family: 'Orbitron'; }
-        .ferita-item.damaged { opacity: 0.3; text-decoration: line-through; color: var(--neon-pink); background: rgba(255,0,122,0.05); }
-        .ferita-item.damaged::before { content: '▣'; }
+        .ferita-item { background: rgba(255,255,255,0.03); padding: 10px; margin: 5px 0; border: 1px solid #222; cursor: pointer; font-size: 0.9rem; }
+        .ferita-item.damaged { opacity: 0.3; text-decoration: line-through; color: var(--neon-pink); }
+
+        /* TASTI */
+        .btn-download { background: transparent; border: 1px solid var(--neon-blue); color: var(--neon-blue); padding: 10px; font-family: 'Orbitron'; cursor: pointer; font-size: 0.6rem; margin-bottom: 10px; width: 100%; max-width: 900px; display: block; margin-left: auto; margin-right: auto; }
+        .btn-download:hover { background: var(--neon-blue); color: #000; }
+        .close-btn { position: fixed; top: 15px; right: 15px; font-family: 'Orbitron'; color: #fff; background: var(--neon-pink); border: none; padding: 10px; cursor: pointer; z-index: 201; font-size: 0.7rem; }
 
         /* LIGHTBOX */
-        #lightbox-overlay {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: rgba(0,0,0,0.92); z-index: 300; cursor: zoom-out; justify-content: center; align-items: center;
-        }
-        #lightbox-overlay img { max-width: 95%; max-height: 95%; object-fit: contain; }
+        #lightbox-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.92); z-index: 300; cursor: zoom-out; justify-content: center; align-items: center; }
+        #lightbox-overlay img { max-width: 95%; max-height: 95%; }
 
-        /* FORM MASTER */
+        /* FORM */
         .master-panel { display: none; background: var(--panel-bg); border: 1px solid var(--neon-yellow); padding: 20px; margin-bottom: 30px; }
-        input, textarea { background: #000; border: 1px solid #444; color: #fff; padding: 10px; width: 100%; box-sizing: border-box; margin-bottom: 10px; font-family: 'Rajdhani'; font-size: 1rem; }
+        input, textarea { background: #000; border: 1px solid #444; color: #fff; padding: 10px; width: 100%; box-sizing: border-box; margin-bottom: 10px; font-family: 'Rajdhani'; }
         label { color: var(--neon-pink); font-family: 'Orbitron'; font-size: 0.55rem; display: block; }
-
-        .close-btn { position: fixed; top: 15px; right: 15px; font-family: 'Orbitron'; color: #fff; background: var(--neon-pink); border: none; padding: 10px 15px; cursor: pointer; z-index: 201; font-size: 0.7rem; }
-        .btn-download {
-    background: transparent;
-    border: 1px solid var(--neon-blue);
-    color: var(--neon-blue);
-    padding: 8px 12px;
-    font-family: 'Orbitron';
-    cursor: pointer;
-    font-size: 0.6rem;
-    margin-bottom: 15px;
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    transition: 0.3s;
-}
-.btn-download:hover {
-    background: var(--neon-blue);
-    color: #000;
-}
     </style>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
 <body>
 
 <header class="nav-header">
-    <h1 class="header-title">KOTRA // THREAT_OS</h1>
+    <h1 class="header-title">KOTRA // THREAT_DATABASE</h1>
     <div>
         <a href="index.html" class="btn-action">HUB</a>
         <button class="btn-action" id="btn-add" style="display:none; border-color:var(--neon-yellow); color:var(--neon-yellow);" onclick="togglePanel()">+ AGGIUNGI</button>
@@ -144,22 +100,20 @@
         <input type="hidden" id="edit-id">
         <label>NOME MINACCIA</label><input type="text" id="m-nome">
         <div style="display:flex; gap:10px;">
-            <div style="flex:1;"><label>DIFFICOLTÀ (1-6)</label><input type="number" id="m-diff" value="1"></div>
-            <div style="flex:1;"><label>POTENZA (1-5)</label><input type="number" id="m-pot" value="1"></div>
+            <div style="flex:1;"><label>DIFF (1-6)</label><input type="number" id="m-diff" value="1"></div>
+            <div style="flex:1;"><label>POT (1-5)</label><input type="number" id="m-pot" value="1"></div>
         </div>
-        <label>URL IMMAGINE (Link diretto .jpg/.png)</label><input type="text" id="m-img-url">
+        <label>URL IMMAGINE</label><input type="text" id="m-img-url">
         <label>DESCRIZIONE</label><textarea id="m-desc" rows="1"></textarea>
-        <label>FERITE / TRATTI VITALI (1 per riga)</label><textarea id="m-tratti" rows="2"></textarea>
-        <label>TRATTI AGGIUNTIVI (1 per riga)</label><textarea id="m-extra" rows="2"></textarea>
-        <label>TECNICA SPECIALE</label><textarea id="m-tecnica" rows="2"></textarea>
+        <label>FERITE (1 per riga)</label><textarea id="m-tratti" rows="2"></textarea>
+        <label>EXTRA (1 per riga)</label><textarea id="m-extra" rows="2"></textarea>
+        <label>TECNICA</label><textarea id="m-tecnica" rows="2"></textarea>
         <label>PUNTO DEBOLE</label><input type="text" id="m-debole">
-        <button class="btn-action" style="width:100%; margin-top:10px; color:var(--neon-yellow); border-color:var(--neon-yellow);" onclick="saveThreat()">SALVA NEL DATABASE</button>
+        <button class="btn-action" style="width:100%; margin-top:10px; color:var(--neon-yellow); border-color:var(--neon-yellow);" onclick="saveThreat()">SALVA RECORD</button>
         <button class="btn-action" style="width:100%; margin-top:5px; color:#666; border-color:#666;" onclick="location.reload()">ANNULLA</button>
     </div>
 
-    <div id="threat-grid" class="threat-grid">
-        <div style="color:var(--neon-blue); font-family:'Orbitron'; padding:40px; text-align:center; width:100%;">SINCRONIZZAZIONE...</div>
-    </div>
+    <div id="threat-grid" class="threat-grid"></div>
 </div>
 
 <div id="details-overlay">
@@ -198,10 +152,7 @@
         } else { window.location.href = "index.html"; }
     });
 
-    window.togglePanel = () => { 
-        document.getElementById('master-panel').style.display = 'block';
-        window.scrollTo({top: 0, behavior: 'smooth'});
-    };
+    window.togglePanel = () => { document.getElementById('master-panel').style.display = 'block'; };
 
     async function loadThreats() {
         const snap = await getDocs(query(collection(db, "minacce"), orderBy("updatedAt", "desc")));
@@ -209,7 +160,7 @@
         const grid = document.getElementById('threat-grid');
         grid.innerHTML = allThreats.map(m => `
             <div class="preview-card" onclick="showDetails('${m.id}')">
-                <img src="${m.immagine}" onerror="this.src='https://via.placeholder.com/300x400?text=NO_IMAGE'">
+                <img src="${m.immagine}" onerror="this.src='https://via.placeholder.com/200x300?text=ERROR'">
                 <div class="preview-info">
                     <div class="preview-name">${m.nome}</div>
                 </div>
@@ -217,49 +168,69 @@
         `).join('');
     }
 
-window.showDetails = (id) => {
-    const m = allThreats.find(t => t.id === id);
-    const render = document.getElementById('details-render');
-    render.innerHTML = `
-        <div style="text-align:right; max-width:900px; margin: 0 auto;">
-            <button class="btn-download" onclick="downloadSheet('${m.nome}')">💾 SCARICA_ARCHIVIO_VISIVO</button>
-        </div>
-        <div class="details-container" id="capture-area">
-            <img src="${m.immagine}" class="details-img" onclick="openLightbox('${m.immagine}')" crossorigin="anonymous">
-            <div class="details-content">
-                <h2 style="font-family:'Orbitron'; margin:0; color:var(--neon-pink);">${m.nome}</h2>
-                <span class="badge bg-diff">DIFFICOLTÀ: ${m.diff}</span>
-                <span class="badge bg-pot">POTENZA: ${m.pot}</span>
-                <p style="color:#aaa; font-style:italic; line-height:1.4; margin-top:10px;">${m.desc}</p>
-                
-                <span class="section-label">FERITE // TRATTI VITALI</span>
-                ${m.tratti.map(t => `<div class="ferita-item" onclick="this.classList.toggle('damaged')">${t}</div>`).join('')}
-                
-                ${m.extra.length ? `<span class="section-label">TRATTI AGGIUNTIVI</span>` : ''}
-                ${m.extra.map(e => `<div style="font-size:0.85rem; color:var(--neon-blue); margin:5px 0;">» ${e}</div>`).join('')}
+    window.showDetails = (id) => {
+        const m = allThreats.find(t => t.id === id);
+        const render = document.getElementById('details-render');
+        render.innerHTML = `
+            <button class="btn-download" onclick="downloadSheet('${m.nome}')">💾 SCARICA_SCHEDA_PNG</button>
+            <div class="details-container" id="capture-area">
+                <img src="${m.immagine}" class="details-img" onclick="openLightbox('${m.immagine}')" crossorigin="anonymous">
+                <div class="details-content">
+                    <h2 style="font-family:'Orbitron'; margin:0; color:var(--neon-pink);">${m.nome}</h2>
+                    <span class="badge bg-diff">DIFFICOLTÀ: ${m.diff}</span>
+                    <span class="badge bg-pot">POTENZA: ${m.pot}</span>
+                    <p style="color:#aaa; font-size:0.9rem;">${m.desc}</p>
+                    
+                    <span class="section-label">FERITE // TRATTI VITALI</span>
+                    ${m.tratti.map(t => `<div class="ferita-item" onclick="this.classList.toggle('damaged')">▢ ${t}</div>`).join('')}
+                    
+                    ${m.extra.length ? `<span class="section-label">TRATTI AGGIUNTIVI</span>` : ''}
+                    ${m.extra.map(e => `<div style="font-size:0.8rem; color:var(--neon-blue); margin-top:5px;">» ${e}</div>`).join('')}
 
-                <span class="section-label">TECNICA MINACCIA</span>
-                <div style="background:#111; padding:12px; border:1px solid #333; color:var(--neon-blue); font-size:0.9rem;">${m.tecnica}</div>
+                    <span class="section-label">TECNICA MINACCIA</span>
+                    <div style="background:#111; padding:10px; border:1px solid #333; color:var(--neon-blue); font-size:0.85rem;">${m.tecnica}</div>
 
-                <div style="margin-top:20px; border:1px dashed var(--neon-yellow); padding:12px; color:var(--neon-yellow); font-size:0.9rem;">
-                    <b style="font-size:0.6rem; font-family:'Orbitron';">VULNERABILITÀ RILEVATA:</b><br>${m.debole}
+                    <div style="margin-top:15px; border:1px dashed var(--neon-yellow); padding:10px; color:var(--neon-yellow); font-size:0.85rem;">
+                        <b>VULNERABILITÀ:</b> ${m.debole}
+                    </div>
                 </div>
             </div>
-        </div>
-        ${auth.currentUser.email === MASTER_EMAIL ? `
-            <div style="max-width:900px; margin: 10px auto; display:flex; gap:10px; padding: 0 10px;">
-                <button class="btn-action" style="flex:1; border-color:var(--neon-yellow); color:var(--neon-yellow);" onclick="editThreat('${m.id}')">MODIFICA</button>
-                <button class="btn-action" style="flex:1; border-color:#ff4444; color:#ff4444;" onclick="deleteThreat('${m.id}')">ELIMINA</button>
-            </div>
-        ` : ''}
-    `;
-    document.getElementById('details-overlay').style.display = 'block';
-    document.body.style.overflow = 'hidden';
-};
+            ${auth.currentUser.email === MASTER_EMAIL ? `
+                <div style="max-width:900px; margin: 10px auto; display:flex; gap:10px;">
+                    <button class="btn-action" style="flex:1; border-color:var(--neon-yellow); color:var(--neon-yellow);" onclick="editThreat('${m.id}')">EDIT</button>
+                    <button class="btn-action" style="flex:1; border-color:#ff4444; color:#ff4444;" onclick="deleteThreat('${m.id}')">DEL</button>
+                </div>
+            ` : ''}
+        `;
+        document.getElementById('details-overlay').style.display = 'block';
+        document.body.style.overflow = 'hidden';
+    };
+
+    // FUNZIONE DOWNLOAD AGGIORNATA
+    window.downloadSheet = (nome) => {
+        const area = document.getElementById('capture-area');
+        const btn = document.querySelector('.btn-download');
+        btn.innerText = "GENERAZIONE...";
+
+        html2canvas(area, {
+            useCORS: true,
+            allowTaint: false,
+            backgroundColor: "#0f1016",
+            scale: 2
+        }).then(canvas => {
+            const link = document.createElement('a');
+            link.download = `KOTRA_Threat_${nome}.png`;
+            link.href = canvas.toDataURL("image/png");
+            link.click();
+            btn.innerText = "💾 SCARICA_SCHEDA_PNG";
+        }).catch(err => {
+            alert("Errore: Il sito che ospita l'immagine impedisce il download per sicurezza (CORS).");
+            btn.innerText = "💾 ERRORE DOWNLOAD";
+        });
+    };
 
     window.openLightbox = (url) => {
-        const lbImg = document.getElementById('lightbox-img');
-        lbImg.src = url;
+        document.getElementById('lightbox-img').src = url;
         document.getElementById('lightbox-overlay').style.display = 'flex';
     };
 
@@ -271,7 +242,7 @@ window.showDetails = (id) => {
     window.saveThreat = async () => {
         const editId = document.getElementById('edit-id').value;
         const data = {
-            nome: document.getElementById('m-nome').value || "Sconosciuto",
+            nome: document.getElementById('m-nome').value,
             diff: document.getElementById('m-diff').value,
             pot: document.getElementById('m-pot').value,
             immagine: document.getElementById('m-img-url').value,
@@ -282,11 +253,9 @@ window.showDetails = (id) => {
             debole: document.getElementById('m-debole').value,
             updatedAt: new Date()
         };
-        try {
-            if(editId) await updateDoc(doc(db, "minacce", editId), data);
-            else await addDoc(collection(db, "minacce"), data);
-            location.reload();
-        } catch(e) { alert(e.message); }
+        if(editId) await updateDoc(doc(db, "minacce", editId), data);
+        else await addDoc(collection(db, "minacce"), data);
+        location.reload();
     };
 
     window.editThreat = (id) => {
@@ -298,39 +267,16 @@ window.showDetails = (id) => {
         document.getElementById('m-pot').value = m.pot;
         document.getElementById('m-desc').value = m.desc;
         document.getElementById('m-tratti').value = m.tratti.join('\n');
-        document.getElementById('m-extra').value = (m.extra || []).join('\n');
+        document.getElementById('m-extra').value = m.extra.join('\n');
         document.getElementById('m-tecnica').value = m.tecnica;
         document.getElementById('m-debole').value = m.debole;
         closeDetails();
         togglePanel();
-        document.getElementById('btn-save').innerText = "CONFERMA MODIFICHE";
     };
 
     window.deleteThreat = async (id) => {
-        if(confirm("ELIMINARE DEFINITIVAMENTE?")) { await deleteDoc(doc(db, "minacce", id)); location.reload(); }
+        if(confirm("ELIMINARE?")) { await deleteDoc(doc(db, "minacce", id)); location.reload(); }
     };
-    window.downloadSheet = (nomeMinaccia) => {
-    const area = document.getElementById('capture-area');
-    const btn = document.querySelector('.btn-download');
-    
-    btn.innerText = "ELABORAZIONE DATI...";
-    
-    html2canvas(area, {
-        useCORS: true, // Fondamentale per caricare immagini da URL esterni
-        backgroundColor: "#0f1016",
-        scale: 2 // Migliora la qualità dell'immagine finale
-    }).then(canvas => {
-        const link = document.createElement('a');
-        link.download = `KOTRA_THREAT_${nomeMinaccia.replace(/\s+/g, '_')}.png`;
-        link.href = canvas.toDataURL("image/png");
-        link.click();
-        btn.innerText = "💾 SCARICA_ARCHIVIO_VISIVO";
-    }).catch(err => {
-        console.error(err);
-        alert("Errore durante la generazione dell'immagine. Verifica che l'URL dell'immagine permetta l'accesso CORS.");
-        btn.innerText = "💾 ERRORE DOWNLOAD";
-    });
-};
 </script>
 </body>
 </html>
