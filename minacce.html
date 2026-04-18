@@ -21,15 +21,18 @@
             margin: 0;
             background-image: radial-gradient(circle at 50% 50%, #1a0a14 0%, #06070a 100%);
             background-attachment: fixed;
+            overflow-x: hidden;
         }
 
+        /* HEADER */
         .nav-header { padding: 15px; background: rgba(0,0,0,0.95); border-bottom: 2px solid var(--neon-pink); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
         .header-title { color: var(--neon-pink); font-family: 'Orbitron'; font-size: 0.9rem; margin: 0; text-shadow: 0 0 10px var(--neon-pink); }
 
         .btn-action { 
             background: transparent; border: 1px solid var(--neon-pink); color: var(--neon-pink); 
-            padding: 8px 12px; font-family: 'Orbitron'; cursor: pointer; font-size: 0.65rem;
+            padding: 8px 12px; font-family: 'Orbitron'; cursor: pointer; font-size: 0.65rem; transition: 0.2s;
         }
+        .btn-action:hover { background: var(--neon-pink); color: white; }
 
         .container { padding: 15px; max-width: 1200px; margin: auto; }
 
@@ -41,22 +44,16 @@
         }
         @media (min-width: 768px) { .threat-grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); } }
 
-        /* CARD ANTEPRIMA */
         .preview-card { 
             background: #111; border: 1px solid #333; position: relative; cursor: pointer; 
             overflow: hidden; transition: transform 0.2s; border-bottom: 2px solid var(--neon-pink);
+            height: 250px;
         }
         .preview-card:hover { transform: scale(1.03); border-color: var(--neon-blue); }
-       /* Modifica per l'anteprima (Griglia) */
-.preview-card img { 
-    width: 100%; 
-    height: 220px; 
-    object-fit: contain; /* Visualizza tutta la foto senza tagliarla */
-    background: #000;    /* Aggiunge uno sfondo nero per le foto con proporzioni diverse */
-    opacity: 0.8; 
-    transition: 0.3s; 
-}
-
+        .preview-card img { 
+            width: 100%; height: 100%; object-fit: contain; background: #000; 
+            opacity: 0.8; transition: 0.3s; 
+        }
         .preview-card:hover img { opacity: 1; }
         .preview-info { 
             position: absolute; bottom: 0; left: 0; width: 100%; padding: 10px; 
@@ -67,48 +64,50 @@
         /* OVERLAY SCHEDA COMPLETA */
         #details-overlay { 
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: rgba(0,0,0,0.95); z-index: 200; overflow-y: auto; padding: 20px; box-sizing: border-box;
+            background: rgba(0,0,0,0.95); z-index: 200; overflow-y: auto; padding: 10px; box-sizing: border-box;
         }
         .details-container { 
-            max-width: 800px; margin: 20px auto; background: #0f1016; border: 1px solid var(--neon-pink);
+            max-width: 900px; margin: 40px auto; background: #0f1016; border: 1px solid var(--neon-pink);
             display: grid; grid-template-columns: 1fr;
         }
-        @media (min-width: 768px) { .details-container { grid-template-columns: 300px 1fr; } }
+        @media (min-width: 768px) { .details-container { grid-template-columns: 350px 1fr; } }
 
-       /* Modifica per la scheda dettagli (Pop-up) */
-.details-img { 
-    width: 100%; 
-    height: auto;        /* Altezza automatica per mantenere le proporzioni */
-    max-height: 500px;   /* Evita che foto troppo lunghe occupino tutto lo schermo */
-    object-fit: contain; /* Visualizza tutta la foto */
-    background: #000;
-    border-bottom: 2px solid var(--neon-pink); 
-}
+        .details-img { 
+            width: 100%; height: auto; max-height: 500px; object-fit: contain; background: #000;
+            cursor: zoom-in; transition: brightness 0.3s;
+        }
+        .details-img:hover { filter: brightness(1.2); }
+        @media (min-width: 768px) { .details-img { max-height: 100%; border-right: 1px solid #333; } }
 
-@media (min-width: 768px) { 
-    .details-img { 
-        border-bottom: none; 
-        border-right: 1px solid #333; 
-        max-height: 100%; /* Su PC sfrutta tutta l'altezza della colonna sinistra */
-    } 
-}
         .details-content { padding: 25px; }
         
         /* ELEMENTI SCHEDA */
-        .section-label { font-family: 'Orbitron'; font-size: 0.6rem; color: var(--neon-pink); margin-top: 15px; display: block; border-bottom: 1px solid rgba(255, 0, 122, 0.2); }
-        .badge { display: inline-block; padding: 3px 10px; font-family: 'Orbitron'; font-size: 0.7rem; border: 1px solid; margin-right: 8px; margin-top: 10px; }
+        .section-label { font-family: 'Orbitron'; font-size: 0.6rem; color: var(--neon-pink); margin-top: 20px; display: block; border-bottom: 1px solid rgba(255, 0, 122, 0.2); padding-bottom: 3px; margin-bottom: 10px; }
+        .badge { display: inline-block; padding: 3px 10px; font-family: 'Orbitron'; font-size: 0.7rem; border: 1px solid; margin-right: 8px; margin-bottom: 10px; }
+        .bg-diff { border-color: var(--neon-blue); color: var(--neon-blue); }
+        .bg-pot { border-color: var(--neon-yellow); color: var(--neon-yellow); }
+
         .ferita-item { 
             background: rgba(255,255,255,0.03); padding: 12px; margin: 8px 0; border: 1px solid #222; 
-            cursor: pointer; display: flex; align-items: center; 
+            cursor: pointer; display: flex; align-items: center; font-size: 0.95rem;
         }
-        .ferita-item.damaged { opacity: 0.3; text-decoration: line-through; color: var(--neon-pink); }
+        .ferita-item::before { content: '▢'; margin-right: 12px; color: var(--neon-pink); font-family: 'Orbitron'; }
+        .ferita-item.damaged { opacity: 0.3; text-decoration: line-through; color: var(--neon-pink); background: rgba(255,0,122,0.05); }
+        .ferita-item.damaged::before { content: '▣'; }
+
+        /* LIGHTBOX */
+        #lightbox-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(0,0,0,0.92); z-index: 300; cursor: zoom-out; justify-content: center; align-items: center;
+        }
+        #lightbox-overlay img { max-width: 95%; max-height: 95%; object-fit: contain; }
 
         /* FORM MASTER */
         .master-panel { display: none; background: var(--panel-bg); border: 1px solid var(--neon-yellow); padding: 20px; margin-bottom: 30px; }
-        input, textarea { background: #000; border: 1px solid #444; color: #fff; padding: 10px; width: 100%; box-sizing: border-box; margin-bottom: 10px; font-family: 'Rajdhani'; }
+        input, textarea { background: #000; border: 1px solid #444; color: #fff; padding: 10px; width: 100%; box-sizing: border-box; margin-bottom: 10px; font-family: 'Rajdhani'; font-size: 1rem; }
         label { color: var(--neon-pink); font-family: 'Orbitron'; font-size: 0.55rem; display: block; }
 
-        .close-btn { position: fixed; top: 20px; right: 20px; font-family: 'Orbitron'; color: #fff; background: var(--neon-pink); border: none; padding: 10px 20px; cursor: pointer; z-index: 201; }
+        .close-btn { position: fixed; top: 15px; right: 15px; font-family: 'Orbitron'; color: #fff; background: var(--neon-pink); border: none; padding: 10px 15px; cursor: pointer; z-index: 201; font-size: 0.7rem; }
     </style>
 </head>
 <body>
@@ -124,27 +123,33 @@
 <div class="container">
     <div id="master-panel" class="master-panel">
         <input type="hidden" id="edit-id">
-        <label>NOME</label><input type="text" id="m-nome">
+        <label>NOME MINACCIA</label><input type="text" id="m-nome">
         <div style="display:flex; gap:10px;">
-            <div style="flex:1;"><label>DIFF (1-6)</label><input type="number" id="m-diff" value="1"></div>
-            <div style="flex:1;"><label>POT (1-5)</label><input type="number" id="m-pot" value="1"></div>
+            <div style="flex:1;"><label>DIFFICOLTÀ (1-6)</label><input type="number" id="m-diff" value="1"></div>
+            <div style="flex:1;"><label>POTENZA (1-5)</label><input type="number" id="m-pot" value="1"></div>
         </div>
-        <label>URL IMMAGINE</label><input type="text" id="m-img-url">
+        <label>URL IMMAGINE (Link diretto .jpg/.png)</label><input type="text" id="m-img-url">
         <label>DESCRIZIONE</label><textarea id="m-desc" rows="1"></textarea>
-        <label>FERITE (1 per riga)</label><textarea id="m-tratti" rows="2"></textarea>
-        <label>EXTRA</label><textarea id="m-extra" rows="2"></textarea>
-        <label>TECNICA</label><textarea id="m-tecnica" rows="2"></textarea>
+        <label>FERITE / TRATTI VITALI (1 per riga)</label><textarea id="m-tratti" rows="2"></textarea>
+        <label>TRATTI AGGIUNTIVI (1 per riga)</label><textarea id="m-extra" rows="2"></textarea>
+        <label>TECNICA SPECIALE</label><textarea id="m-tecnica" rows="2"></textarea>
         <label>PUNTO DEBOLE</label><input type="text" id="m-debole">
-        <button class="btn-action" style="width:100%; margin-top:10px; color:var(--neon-yellow); border-color:var(--neon-yellow);" onclick="saveThreat()">SALVA RECORD</button>
+        <button class="btn-action" style="width:100%; margin-top:10px; color:var(--neon-yellow); border-color:var(--neon-yellow);" onclick="saveThreat()">SALVA NEL DATABASE</button>
         <button class="btn-action" style="width:100%; margin-top:5px; color:#666; border-color:#666;" onclick="location.reload()">ANNULLA</button>
     </div>
 
-    <div id="threat-grid" class="threat-grid"></div>
+    <div id="threat-grid" class="threat-grid">
+        <div style="color:var(--neon-blue); font-family:'Orbitron'; padding:40px; text-align:center; width:100%;">SINCRONIZZAZIONE...</div>
+    </div>
 </div>
 
 <div id="details-overlay">
     <button class="close-btn" onclick="closeDetails()">CHIUDI [X]</button>
     <div id="details-render"></div>
+</div>
+
+<div id="lightbox-overlay" onclick="this.style.display='none'">
+    <img id="lightbox-img" src="">
 </div>
 
 <script type="module">
@@ -174,7 +179,10 @@
         } else { window.location.href = "index.html"; }
     });
 
-    window.togglePanel = () => { document.getElementById('master-panel').style.display = 'block'; };
+    window.togglePanel = () => { 
+        document.getElementById('master-panel').style.display = 'block';
+        window.scrollTo({top: 0, behavior: 'smooth'});
+    };
 
     async function loadThreats() {
         const snap = await getDocs(query(collection(db, "minacce"), orderBy("updatedAt", "desc")));
@@ -182,7 +190,7 @@
         const grid = document.getElementById('threat-grid');
         grid.innerHTML = allThreats.map(m => `
             <div class="preview-card" onclick="showDetails('${m.id}')">
-                <img src="${m.immagine}" onerror="this.src='https://via.placeholder.com/200x300?text=NO_DATA'">
+                <img src="${m.immagine}" onerror="this.src='https://via.placeholder.com/300x400?text=NO_IMAGE'">
                 <div class="preview-info">
                     <div class="preview-name">${m.nome}</div>
                 </div>
@@ -195,24 +203,24 @@
         const render = document.getElementById('details-render');
         render.innerHTML = `
             <div class="details-container">
-                <img src="${m.immagine}" class="details-img">
+                <img src="${m.immagine}" class="details-img" onclick="openLightbox('${m.immagine}')" title="Clicca per ingrandire">
                 <div class="details-content">
                     <h2 style="font-family:'Orbitron'; margin:0; color:var(--neon-pink);">${m.nome}</h2>
                     <span class="badge bg-diff">DIFFICOLTÀ: ${m.diff}</span>
                     <span class="badge bg-pot">POTENZA: ${m.pot}</span>
-                    <p style="color:#aaa; font-style:italic;">${m.desc}</p>
+                    <p style="color:#aaa; font-style:italic; line-height:1.4; margin-top:10px;">${m.desc}</p>
                     
-                    <span class="section-label">STATO FERITE // TRATTI VITALI</span>
-                    ${m.tratti.map(t => `<div class="ferita-item" onclick="this.classList.toggle('damaged')">▢ ${t}</div>`).join('')}
+                    <span class="section-label">FERITE // TRATTI VITALI</span>
+                    ${m.tratti.map(t => `<div class="ferita-item" onclick="this.classList.toggle('damaged')">${t}</div>`).join('')}
                     
                     ${m.extra.length ? `<span class="section-label">TRATTI AGGIUNTIVI</span>` : ''}
                     ${m.extra.map(e => `<div style="font-size:0.85rem; color:var(--neon-blue); margin:5px 0;">» ${e}</div>`).join('')}
 
                     <span class="section-label">TECNICA MINACCIA</span>
-                    <div style="background:#111; padding:10px; border:1px solid #333; color:var(--neon-blue); margin-top:5px;">${m.tecnica}</div>
+                    <div style="background:#111; padding:12px; border:1px solid #333; color:var(--neon-blue); font-size:0.9rem;">${m.tecnica}</div>
 
-                    <div style="margin-top:20px; border:1px dashed var(--neon-yellow); padding:10px; color:var(--neon-yellow); font-size:0.9rem;">
-                        <b style="font-size:0.6rem; font-family:'Orbitron';">VULNERABILITÀ:</b> ${m.debole}
+                    <div style="margin-top:20px; border:1px dashed var(--neon-yellow); padding:12px; color:var(--neon-yellow); font-size:0.9rem;">
+                        <b style="font-size:0.6rem; font-family:'Orbitron';">VULNERABILITÀ RILEVATA:</b><br>${m.debole}
                     </div>
 
                     ${auth.currentUser.email === MASTER_EMAIL ? `
@@ -228,6 +236,12 @@
         document.body.style.overflow = 'hidden';
     };
 
+    window.openLightbox = (url) => {
+        const lbImg = document.getElementById('lightbox-img');
+        lbImg.src = url;
+        document.getElementById('lightbox-overlay').style.display = 'flex';
+    };
+
     window.closeDetails = () => {
         document.getElementById('details-overlay').style.display = 'none';
         document.body.style.overflow = 'auto';
@@ -236,7 +250,7 @@
     window.saveThreat = async () => {
         const editId = document.getElementById('edit-id').value;
         const data = {
-            nome: document.getElementById('m-nome').value,
+            nome: document.getElementById('m-nome').value || "Sconosciuto",
             diff: document.getElementById('m-diff').value,
             pot: document.getElementById('m-pot').value,
             immagine: document.getElementById('m-img-url').value,
@@ -247,9 +261,11 @@
             debole: document.getElementById('m-debole').value,
             updatedAt: new Date()
         };
-        if(editId) await updateDoc(doc(db, "minacce", editId), data);
-        else await addDoc(collection(db, "minacce"), data);
-        location.reload();
+        try {
+            if(editId) await updateDoc(doc(db, "minacce", editId), data);
+            else await addDoc(collection(db, "minacce"), data);
+            location.reload();
+        } catch(e) { alert(e.message); }
     };
 
     window.editThreat = (id) => {
@@ -261,15 +277,16 @@
         document.getElementById('m-pot').value = m.pot;
         document.getElementById('m-desc').value = m.desc;
         document.getElementById('m-tratti').value = m.tratti.join('\n');
-        document.getElementById('m-extra').value = m.extra.join('\n');
+        document.getElementById('m-extra').value = (m.extra || []).join('\n');
         document.getElementById('m-tecnica').value = m.tecnica;
         document.getElementById('m-debole').value = m.debole;
         closeDetails();
         togglePanel();
+        document.getElementById('btn-save').innerText = "CONFERMA MODIFICHE";
     };
 
     window.deleteThreat = async (id) => {
-        if(confirm("Eliminare definitivamente?")) { await deleteDoc(doc(db, "minacce", id)); location.reload(); }
+        if(confirm("ELIMINARE DEFINITIVAMENTE?")) { await deleteDoc(doc(db, "minacce", id)); location.reload(); }
     };
 </script>
 </body>
