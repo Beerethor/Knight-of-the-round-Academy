@@ -47,7 +47,16 @@
             overflow: hidden; transition: transform 0.2s; border-bottom: 2px solid var(--neon-pink);
         }
         .preview-card:hover { transform: scale(1.03); border-color: var(--neon-blue); }
-        .preview-card img { width: 100%; height: 200px; object-fit: cover; opacity: 0.7; transition: 0.3s; }
+       /* Modifica per l'anteprima (Griglia) */
+.preview-card img { 
+    width: 100%; 
+    height: 220px; 
+    object-fit: contain; /* Visualizza tutta la foto senza tagliarla */
+    background: #000;    /* Aggiunge uno sfondo nero per le foto con proporzioni diverse */
+    opacity: 0.8; 
+    transition: 0.3s; 
+}
+
         .preview-card:hover img { opacity: 1; }
         .preview-info { 
             position: absolute; bottom: 0; left: 0; width: 100%; padding: 10px; 
@@ -66,9 +75,23 @@
         }
         @media (min-width: 768px) { .details-container { grid-template-columns: 300px 1fr; } }
 
-        .details-img { width: 100%; height: 100%; object-fit: cover; border-bottom: 2px solid var(--neon-pink); }
-        @media (min-width: 768px) { .details-img { border-bottom: none; border-right: 1px solid #333; } }
+       /* Modifica per la scheda dettagli (Pop-up) */
+.details-img { 
+    width: 100%; 
+    height: auto;        /* Altezza automatica per mantenere le proporzioni */
+    max-height: 500px;   /* Evita che foto troppo lunghe occupino tutto lo schermo */
+    object-fit: contain; /* Visualizza tutta la foto */
+    background: #000;
+    border-bottom: 2px solid var(--neon-pink); 
+}
 
+@media (min-width: 768px) { 
+    .details-img { 
+        border-bottom: none; 
+        border-right: 1px solid #333; 
+        max-height: 100%; /* Su PC sfrutta tutta l'altezza della colonna sinistra */
+    } 
+}
         .details-content { padding: 25px; }
         
         /* ELEMENTI SCHEDA */
