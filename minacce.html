@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>KOTRA - Database Minacce</title>
+    <title>KOTRA - Threat Database</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -23,103 +23,105 @@
             background-attachment: fixed;
         }
 
-        /* HEADER */
         .nav-header { padding: 15px; background: rgba(0,0,0,0.95); border-bottom: 2px solid var(--neon-pink); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
         .header-title { color: var(--neon-pink); font-family: 'Orbitron'; font-size: 0.9rem; margin: 0; text-shadow: 0 0 10px var(--neon-pink); }
 
         .btn-action { 
             background: transparent; border: 1px solid var(--neon-pink); color: var(--neon-pink); 
-            padding: 8px 12px; font-family: 'Orbitron'; cursor: pointer; font-size: 0.65rem; transition: 0.2s;
+            padding: 8px 12px; font-family: 'Orbitron'; cursor: pointer; font-size: 0.65rem;
         }
-        .btn-action:hover { background: var(--neon-pink); color: white; }
 
         .container { padding: 15px; max-width: 1200px; margin: auto; }
-        
-        /* PANNELLO MASTER (MODULO) */
-        .master-panel { display: none; background: var(--panel-bg); border: 1px solid var(--neon-yellow); padding: 20px; margin-bottom: 30px; box-shadow: 0 0 20px rgba(255, 0, 122, 0.1); }
-        .form-grid { display: grid; grid-template-columns: 1fr; gap: 12px; margin-bottom: 10px; }
-        @media (min-width: 768px) { .form-grid { grid-template-columns: repeat(3, 1fr); } }
 
-        input, textarea { background: #000; border: 1px solid #444; color: #fff; padding: 10px; width: 100%; box-sizing: border-box; font-family: 'Rajdhani'; font-size: 1rem; }
-        input:focus, textarea:focus { border-color: var(--neon-pink); outline: none; }
-        label { color: var(--neon-pink); font-family: 'Orbitron'; font-size: 0.55rem; display: block; margin-bottom: 5px; margin-top: 5px; }
-
-        /* SCHEDA MINACCIA */
-        .threat-grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
-        @media (min-width: 768px) { .threat-grid { grid-template-columns: repeat(2, 1fr); } }
-        @media (min-width: 1100px) { .threat-grid { grid-template-columns: repeat(3, 1fr); } }
-
-        .threat-card { background: rgba(20, 21, 28, 0.95); border: 1px solid #333; overflow: hidden; display: flex; flex-direction: column; border-top: 3px solid var(--neon-pink); position: relative; }
-        .threat-img { width: 100%; height: 220px; object-fit: cover; filter: grayscale(20%) contrast(110%); }
-        .threat-content { padding: 15px; }
-        .threat-name { font-family: 'Orbitron'; font-size: 1.2rem; color: #fff; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
-
-        .badge { display: inline-block; padding: 3px 10px; font-family: 'Orbitron'; font-size: 0.7rem; border: 1px solid; margin-right: 8px; margin-bottom: 10px; }
-        .bg-diff { border-color: var(--neon-blue); color: var(--neon-blue); background: rgba(0, 242, 255, 0.05); }
-        .bg-pot { border-color: var(--neon-yellow); color: var(--neon-yellow); background: rgba(255, 255, 0, 0.05); }
-
-        .section-label { font-family: 'Orbitron'; font-size: 0.55rem; color: var(--neon-pink); margin-top: 15px; display: block; border-bottom: 1px solid rgba(255, 0, 122, 0.2); padding-bottom: 3px; margin-bottom: 8px; }
-        
-        .ferita-item { 
-            background: rgba(255, 255, 255, 0.03); padding: 10px; margin: 5px 0; border: 1px solid #222; 
-            cursor: pointer; display: flex; align-items: center; font-size: 0.95rem; transition: 0.2s;
+        /* GRIGLIA ANTEPRIME */
+        .threat-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); 
+            gap: 15px; 
         }
-        .ferita-item::before { content: '▢'; margin-right: 12px; color: var(--neon-pink); font-family: 'Orbitron'; }
-        .ferita-item.damaged { opacity: 0.3; text-decoration: line-through; border-color: var(--neon-pink); background: rgba(255, 0, 122, 0.1); }
-        .ferita-item.damaged::before { content: '▣'; }
+        @media (min-width: 768px) { .threat-grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); } }
 
-        .tratto-extra { font-size: 0.85rem; color: #ccc; padding-left: 10px; margin: 3px 0; font-style: italic; border-left: 1px solid var(--neon-blue); }
+        /* CARD ANTEPRIMA */
+        .preview-card { 
+            background: #111; border: 1px solid #333; position: relative; cursor: pointer; 
+            overflow: hidden; transition: transform 0.2s; border-bottom: 2px solid var(--neon-pink);
+        }
+        .preview-card:hover { transform: scale(1.03); border-color: var(--neon-blue); }
+        .preview-card img { width: 100%; height: 200px; object-fit: cover; opacity: 0.7; transition: 0.3s; }
+        .preview-card:hover img { opacity: 1; }
+        .preview-info { 
+            position: absolute; bottom: 0; left: 0; width: 100%; padding: 10px; 
+            background: linear-gradient(transparent, rgba(0,0,0,0.9)); box-sizing: border-box;
+        }
+        .preview-name { font-family: 'Orbitron'; font-size: 0.8rem; color: #fff; text-transform: uppercase; }
 
-        .tecnica-box { font-size: 0.9rem; color: var(--neon-blue); border: 1px solid #333; padding: 8px; margin-top: 5px; background: rgba(0, 242, 255, 0.03); }
-        .debole-box { margin-top: 15px; font-size: 0.85rem; color: var(--neon-yellow); border: 1px dashed var(--neon-yellow); padding: 10px; }
+        /* OVERLAY SCHEDA COMPLETA */
+        #details-overlay { 
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(0,0,0,0.95); z-index: 200; overflow-y: auto; padding: 20px; box-sizing: border-box;
+        }
+        .details-container { 
+            max-width: 800px; margin: 20px auto; background: #0f1016; border: 1px solid var(--neon-pink);
+            display: grid; grid-template-columns: 1fr;
+        }
+        @media (min-width: 768px) { .details-container { grid-template-columns: 300px 1fr; } }
 
-        .admin-controls { display: flex; gap: 10px; margin-top: 20px; border-top: 1px solid #333; padding-top: 15px; }
-        .btn-edit { flex: 1; border: 1px solid var(--neon-yellow); color: var(--neon-yellow); background: none; font-family: 'Orbitron'; font-size: 0.6rem; padding: 8px; cursor: pointer; }
-        .btn-del { flex: 1; border: 1px solid #ff4444; color: #ff4444; background: none; font-family: 'Orbitron'; font-size: 0.6rem; padding: 8px; cursor: pointer; }
+        .details-img { width: 100%; height: 100%; object-fit: cover; border-bottom: 2px solid var(--neon-pink); }
+        @media (min-width: 768px) { .details-img { border-bottom: none; border-right: 1px solid #333; } }
+
+        .details-content { padding: 25px; }
+        
+        /* ELEMENTI SCHEDA */
+        .section-label { font-family: 'Orbitron'; font-size: 0.6rem; color: var(--neon-pink); margin-top: 15px; display: block; border-bottom: 1px solid rgba(255, 0, 122, 0.2); }
+        .badge { display: inline-block; padding: 3px 10px; font-family: 'Orbitron'; font-size: 0.7rem; border: 1px solid; margin-right: 8px; margin-top: 10px; }
+        .ferita-item { 
+            background: rgba(255,255,255,0.03); padding: 12px; margin: 8px 0; border: 1px solid #222; 
+            cursor: pointer; display: flex; align-items: center; 
+        }
+        .ferita-item.damaged { opacity: 0.3; text-decoration: line-through; color: var(--neon-pink); }
+
+        /* FORM MASTER */
+        .master-panel { display: none; background: var(--panel-bg); border: 1px solid var(--neon-yellow); padding: 20px; margin-bottom: 30px; }
+        input, textarea { background: #000; border: 1px solid #444; color: #fff; padding: 10px; width: 100%; box-sizing: border-box; margin-bottom: 10px; font-family: 'Rajdhani'; }
+        label { color: var(--neon-pink); font-family: 'Orbitron'; font-size: 0.55rem; display: block; }
+
+        .close-btn { position: fixed; top: 20px; right: 20px; font-family: 'Orbitron'; color: #fff; background: var(--neon-pink); border: none; padding: 10px 20px; cursor: pointer; z-index: 201; }
     </style>
 </head>
 <body>
 
 <header class="nav-header">
-    <h1 class="header-title">KOTRA // THREAT_DATABASE</h1>
+    <h1 class="header-title">KOTRA // THREAT_OS</h1>
     <div>
-        <a href="index.html" class="btn-action">TORNA_HUB</a>
-        <button class="btn-action" id="btn-add" style="display:none; border-color:var(--neon-yellow); color:var(--neon-yellow);" onclick="togglePanel()">+ NUOVA_MINACCIA</button>
+        <a href="index.html" class="btn-action">HUB</a>
+        <button class="btn-action" id="btn-add" style="display:none; border-color:var(--neon-yellow); color:var(--neon-yellow);" onclick="togglePanel()">+ AGGIUNGI</button>
     </div>
 </header>
 
 <div class="container">
     <div id="master-panel" class="master-panel">
-        <input type="hidden" id="edit-id"> <div class="form-grid">
-            <div><label>NOME MINACCIA</label><input type="text" id="m-nome" placeholder="Codice identificativo..."></div>
-            <div><label>DIFFICOLTÀ (1-6)</label><input type="number" id="m-diff" value="1" min="1" max="6"></div>
-            <div><label>POTENZA (1-5)</label><input type="number" id="m-pot" value="1" min="1" max="5"></div>
+        <input type="hidden" id="edit-id">
+        <label>NOME</label><input type="text" id="m-nome">
+        <div style="display:flex; gap:10px;">
+            <div style="flex:1;"><label>DIFF (1-6)</label><input type="number" id="m-diff" value="1"></div>
+            <div style="flex:1;"><label>POT (1-5)</label><input type="number" id="m-pot" value="1"></div>
         </div>
-        
-        <label>URL IMMAGINE ESTERNO</label>
-        <input type="text" id="m-img-url" placeholder="Incolla link .jpg o .png (es. da Imgur o PostImages)">
-        
-        <label style="margin-top:15px">DESCRIZIONE BREVE</label>
-        <textarea id="m-desc" rows="1"></textarea>
-
-        <div class="form-grid" style="margin-top:15px">
-            <div><label>FERITE / TRATTI VITALI (1 per riga)</label><textarea id="m-tratti" rows="3" placeholder="Cuore metallico&#10;Sensori ottici"></textarea></div>
-            <div><label>TRATTI AGGIUNTIVI (1 per riga)</label><textarea id="m-extra" rows="3" placeholder="Volo&#10;Resistenza al fuoco"></textarea></div>
-            <div><label>TECNICA MINACCIA</label><textarea id="m-tecnica" rows="3" placeholder="Effetto della tecnica..."></textarea></div>
-        </div>
-        
-        <label>PUNTO DEBOLE</label>
-        <input type="text" id="m-debole" placeholder="Cosa la rende vulnerabile?">
-
-        <button class="btn-action" style="margin-top:20px; width:100%; height:50px; font-size:1rem; border-color:var(--neon-yellow); color:var(--neon-yellow);" id="btn-save" onclick="saveThreat()">ARCHIVIA RECORD NEL DATABASE</button>
-        <button class="btn-action" style="margin-top:10px; width:100%; border-color:#666; color:#666;" onclick="location.reload()">ANNULLA OPERAZIONE</button>
+        <label>URL IMMAGINE</label><input type="text" id="m-img-url">
+        <label>DESCRIZIONE</label><textarea id="m-desc" rows="1"></textarea>
+        <label>FERITE (1 per riga)</label><textarea id="m-tratti" rows="2"></textarea>
+        <label>EXTRA</label><textarea id="m-extra" rows="2"></textarea>
+        <label>TECNICA</label><textarea id="m-tecnica" rows="2"></textarea>
+        <label>PUNTO DEBOLE</label><input type="text" id="m-debole">
+        <button class="btn-action" style="width:100%; margin-top:10px; color:var(--neon-yellow); border-color:var(--neon-yellow);" onclick="saveThreat()">SALVA RECORD</button>
+        <button class="btn-action" style="width:100%; margin-top:5px; color:#666; border-color:#666;" onclick="location.reload()">ANNULLA</button>
     </div>
 
-    <div id="threat-list" class="threat-grid">
-        <div style="color:var(--neon-blue); font-family:'Orbitron'; padding:40px; text-align:center; width:100%;">
-            SINCRONIZZAZIONE DATABASE IN CORSO...
-        </div>
-    </div>
+    <div id="threat-grid" class="threat-grid"></div>
+</div>
+
+<div id="details-overlay">
+    <button class="close-btn" onclick="closeDetails()">CHIUDI [X]</button>
+    <div id="details-render"></div>
 </div>
 
 <script type="module">
@@ -140,120 +142,95 @@
     const db = getFirestore(app);
     const auth = getAuth(app);
     const MASTER_EMAIL = "t.giuseppeinfante@gmail.com";
-
     let allThreats = [];
 
-    window.togglePanel = () => {
-        document.getElementById('master-panel').style.display = 'block';
-        document.getElementById('edit-id').value = ""; // Reset se era in edit
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    };
-
-    onAuthStateChanged(auth, (user) => {
+    onAuthStateChanged(auth, user => {
         if (user) {
             if (user.email === MASTER_EMAIL) document.getElementById('btn-add').style.display = 'inline-block';
             loadThreats();
         } else { window.location.href = "index.html"; }
     });
 
-    // FUNZIONE DI SALVATAGGIO (Edit o New)
-    window.saveThreat = async () => {
-        const editId = document.getElementById('edit-id').value;
-        const imgUrl = document.getElementById('m-img-url').value;
-        const btn = document.getElementById('btn-save');
+    window.togglePanel = () => { document.getElementById('master-panel').style.display = 'block'; };
 
-        if(!imgUrl) return alert("Errore: URL immagine mancante.");
-
-        btn.disabled = true;
-        btn.innerText = "TRASMISSIONE DATI...";
-
-        try {
-            const data = {
-                nome: document.getElementById('m-nome').value || "Sconosciuto",
-                diff: document.getElementById('m-diff').value,
-                pot: document.getElementById('m-pot').value,
-                desc: document.getElementById('m-desc').value,
-                immagine: imgUrl,
-                tratti: document.getElementById('m-tratti').value.split('\n').filter(t => t.trim() !== ""),
-                extra: document.getElementById('m-extra').value.split('\n').filter(t => t.trim() !== ""),
-                tecnica: document.getElementById('m-tecnica').value,
-                debole: document.getElementById('m-debole').value,
-                updatedAt: new Date()
-            };
-
-            if (editId) {
-                await updateDoc(doc(db, "minacce", editId), data);
-            } else {
-                data.createdAt = new Date();
-                await addDoc(collection(db, "minacce"), data);
-            }
-            
-            location.reload();
-        } catch (e) {
-            alert("Errore critico: " + e.message);
-            btn.disabled = false;
-            btn.innerText = "RIPROVA SALVATAGGIO";
-        }
-    };
-
-    // CARICAMENTO LISTA
     async function loadThreats() {
-        const container = document.getElementById('threat-list');
-        const q = query(collection(db, "minacce"), orderBy("updatedAt", "desc"));
-        const snap = await getDocs(q);
-        container.innerHTML = "";
-        
+        const snap = await getDocs(query(collection(db, "minacce"), orderBy("updatedAt", "desc")));
         allThreats = snap.docs.map(d => ({id: d.id, ...d.data()}));
+        const grid = document.getElementById('threat-grid');
+        grid.innerHTML = allThreats.map(m => `
+            <div class="preview-card" onclick="showDetails('${m.id}')">
+                <img src="${m.immagine}" onerror="this.src='https://via.placeholder.com/200x300?text=NO_DATA'">
+                <div class="preview-info">
+                    <div class="preview-name">${m.nome}</div>
+                </div>
+            </div>
+        `).join('');
+    }
 
-        if(allThreats.length === 0) {
-            container.innerHTML = "<div style='color:#444; padding:40px; text-align:center; width:100%;'>NESSUN RECORD RILEVATO.</div>";
-            return;
-        }
-
-        allThreats.forEach(m => {
-            const card = document.createElement('div');
-            card.className = 'threat-card';
-            card.innerHTML = `
-                <img src="${m.immagine}" class="threat-img" onerror="this.src='https://via.placeholder.com/400x200?text=IMG_NOT_FOUND'">
-                <div class="threat-content">
-                    <div class="threat-name">${m.nome}</div>
-                    <span class="badge bg-diff">DIFF: ${m.diff}</span>
-                    <span class="badge bg-pot">POT: ${m.pot}</span>
+    window.showDetails = (id) => {
+        const m = allThreats.find(t => t.id === id);
+        const render = document.getElementById('details-render');
+        render.innerHTML = `
+            <div class="details-container">
+                <img src="${m.immagine}" class="details-img">
+                <div class="details-content">
+                    <h2 style="font-family:'Orbitron'; margin:0; color:var(--neon-pink);">${m.nome}</h2>
+                    <span class="badge bg-diff">DIFFICOLTÀ: ${m.diff}</span>
+                    <span class="badge bg-pot">POTENZA: ${m.pot}</span>
+                    <p style="color:#aaa; font-style:italic;">${m.desc}</p>
                     
-                    <p style="font-size:0.85rem; color:#bbb; margin:10px 0;">${m.desc}</p>
+                    <span class="section-label">STATO FERITE // TRATTI VITALI</span>
+                    ${m.tratti.map(t => `<div class="ferita-item" onclick="this.classList.toggle('damaged')">▢ ${t}</div>`).join('')}
                     
-                    <span class="section-label">FERITE // TRATTI VITALI</span>
-                    ${m.tratti.map(t => `<div class="ferita-item" onclick="this.classList.toggle('damaged')">${t}</div>`).join('')}
-                    
-                    ${m.extra && m.extra.length > 0 ? `
-                        <span class="section-label">TRATTI AGGIUNTIVI</span>
-                        ${m.extra.map(e => `<div class="tratto-extra">${e}</div>`).join('')}
-                    ` : ''}
+                    ${m.extra.length ? `<span class="section-label">TRATTI AGGIUNTIVI</span>` : ''}
+                    ${m.extra.map(e => `<div style="font-size:0.85rem; color:var(--neon-blue); margin:5px 0;">» ${e}</div>`).join('')}
 
                     <span class="section-label">TECNICA MINACCIA</span>
-                    <div class="tecnica-box">${m.tecnica}</div>
+                    <div style="background:#111; padding:10px; border:1px solid #333; color:var(--neon-blue); margin-top:5px;">${m.tecnica}</div>
 
-                    <div class="debole-box">
-                        <b style="font-size:0.6rem; font-family:'Orbitron';">VULNERABILITÀ:</b><br>${m.debole}
+                    <div style="margin-top:20px; border:1px dashed var(--neon-yellow); padding:10px; color:var(--neon-yellow); font-size:0.9rem;">
+                        <b style="font-size:0.6rem; font-family:'Orbitron';">VULNERABILITÀ:</b> ${m.debole}
                     </div>
 
                     ${auth.currentUser.email === MASTER_EMAIL ? `
-                        <div class="admin-controls">
-                            <button class="btn-edit" onclick="editThreat('${m.id}')">MODIFICA</button>
-                            <button class="btn-del" onclick="deleteThreat('${m.id}')">ELIMINA</button>
+                        <div style="margin-top:30px; display:flex; gap:10px;">
+                            <button class="btn-action" style="flex:1; border-color:var(--neon-yellow); color:var(--neon-yellow);" onclick="editThreat('${m.id}')">MODIFICA</button>
+                            <button class="btn-action" style="flex:1; border-color:#ff4444; color:#ff4444;" onclick="deleteThreat('${m.id}')">ELIMINA</button>
                         </div>
                     ` : ''}
                 </div>
-            `;
-            container.appendChild(card);
-        });
-    }
+            </div>
+        `;
+        document.getElementById('details-overlay').style.display = 'block';
+        document.body.style.overflow = 'hidden';
+    };
 
-    // GESTIONE MODIFICA
+    window.closeDetails = () => {
+        document.getElementById('details-overlay').style.display = 'none';
+        document.body.style.overflow = 'auto';
+    };
+
+    window.saveThreat = async () => {
+        const editId = document.getElementById('edit-id').value;
+        const data = {
+            nome: document.getElementById('m-nome').value,
+            diff: document.getElementById('m-diff').value,
+            pot: document.getElementById('m-pot').value,
+            immagine: document.getElementById('m-img-url').value,
+            desc: document.getElementById('m-desc').value,
+            tratti: document.getElementById('m-tratti').value.split('\n').filter(t => t.trim()),
+            extra: document.getElementById('m-extra').value.split('\n').filter(t => t.trim()),
+            tecnica: document.getElementById('m-tecnica').value,
+            debole: document.getElementById('m-debole').value,
+            updatedAt: new Date()
+        };
+        if(editId) await updateDoc(doc(db, "minacce", editId), data);
+        else await addDoc(collection(db, "minacce"), data);
+        location.reload();
+    };
+
     window.editThreat = (id) => {
         const m = allThreats.find(t => t.id === id);
-        if(!m) return;
-
         document.getElementById('edit-id').value = m.id;
         document.getElementById('m-nome').value = m.nome;
         document.getElementById('m-img-url').value = m.immagine;
@@ -261,21 +238,15 @@
         document.getElementById('m-pot').value = m.pot;
         document.getElementById('m-desc').value = m.desc;
         document.getElementById('m-tratti').value = m.tratti.join('\n');
-        document.getElementById('m-extra').value = (m.extra || []).join('\n');
+        document.getElementById('m-extra').value = m.extra.join('\n');
         document.getElementById('m-tecnica').value = m.tecnica;
         document.getElementById('m-debole').value = m.debole;
-
-        document.getElementById('master-panel').style.display = 'block';
-        document.getElementById('btn-save').innerText = "CONFERMA MODIFICHE RECORD";
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        closeDetails();
+        togglePanel();
     };
 
-    // GESTIONE ELIMINAZIONE
     window.deleteThreat = async (id) => {
-        if(confirm("PROTOCOLLO EPURAZIONE: Eliminare definitivamente questo record?")) {
-            await deleteDoc(doc(db, "minacce", id));
-            location.reload();
-        }
+        if(confirm("Eliminare definitivamente?")) { await deleteDoc(doc(db, "minacce", id)); location.reload(); }
     };
 </script>
 </body>
