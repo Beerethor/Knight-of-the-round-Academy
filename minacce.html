@@ -108,7 +108,26 @@
         label { color: var(--neon-pink); font-family: 'Orbitron'; font-size: 0.55rem; display: block; }
 
         .close-btn { position: fixed; top: 15px; right: 15px; font-family: 'Orbitron'; color: #fff; background: var(--neon-pink); border: none; padding: 10px 15px; cursor: pointer; z-index: 201; font-size: 0.7rem; }
+        .btn-download {
+    background: transparent;
+    border: 1px solid var(--neon-blue);
+    color: var(--neon-blue);
+    padding: 8px 12px;
+    font-family: 'Orbitron';
+    cursor: pointer;
+    font-size: 0.6rem;
+    margin-bottom: 15px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    transition: 0.3s;
+}
+.btn-download:hover {
+    background: var(--neon-blue);
+    color: #000;
+}
     </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
 <body>
 
@@ -198,43 +217,45 @@
         `).join('');
     }
 
-    window.showDetails = (id) => {
-        const m = allThreats.find(t => t.id === id);
-        const render = document.getElementById('details-render');
-        render.innerHTML = `
-            <div class="details-container">
-                <img src="${m.immagine}" class="details-img" onclick="openLightbox('${m.immagine}')" title="Clicca per ingrandire">
-                <div class="details-content">
-                    <h2 style="font-family:'Orbitron'; margin:0; color:var(--neon-pink);">${m.nome}</h2>
-                    <span class="badge bg-diff">DIFFICOLTÀ: ${m.diff}</span>
-                    <span class="badge bg-pot">POTENZA: ${m.pot}</span>
-                    <p style="color:#aaa; font-style:italic; line-height:1.4; margin-top:10px;">${m.desc}</p>
-                    
-                    <span class="section-label">FERITE // TRATTI VITALI</span>
-                    ${m.tratti.map(t => `<div class="ferita-item" onclick="this.classList.toggle('damaged')">${t}</div>`).join('')}
-                    
-                    ${m.extra.length ? `<span class="section-label">TRATTI AGGIUNTIVI</span>` : ''}
-                    ${m.extra.map(e => `<div style="font-size:0.85rem; color:var(--neon-blue); margin:5px 0;">» ${e}</div>`).join('')}
+window.showDetails = (id) => {
+    const m = allThreats.find(t => t.id === id);
+    const render = document.getElementById('details-render');
+    render.innerHTML = `
+        <div style="text-align:right; max-width:900px; margin: 0 auto;">
+            <button class="btn-download" onclick="downloadSheet('${m.nome}')">💾 SCARICA_ARCHIVIO_VISIVO</button>
+        </div>
+        <div class="details-container" id="capture-area">
+            <img src="${m.immagine}" class="details-img" onclick="openLightbox('${m.immagine}')" crossorigin="anonymous">
+            <div class="details-content">
+                <h2 style="font-family:'Orbitron'; margin:0; color:var(--neon-pink);">${m.nome}</h2>
+                <span class="badge bg-diff">DIFFICOLTÀ: ${m.diff}</span>
+                <span class="badge bg-pot">POTENZA: ${m.pot}</span>
+                <p style="color:#aaa; font-style:italic; line-height:1.4; margin-top:10px;">${m.desc}</p>
+                
+                <span class="section-label">FERITE // TRATTI VITALI</span>
+                ${m.tratti.map(t => `<div class="ferita-item" onclick="this.classList.toggle('damaged')">${t}</div>`).join('')}
+                
+                ${m.extra.length ? `<span class="section-label">TRATTI AGGIUNTIVI</span>` : ''}
+                ${m.extra.map(e => `<div style="font-size:0.85rem; color:var(--neon-blue); margin:5px 0;">» ${e}</div>`).join('')}
 
-                    <span class="section-label">TECNICA MINACCIA</span>
-                    <div style="background:#111; padding:12px; border:1px solid #333; color:var(--neon-blue); font-size:0.9rem;">${m.tecnica}</div>
+                <span class="section-label">TECNICA MINACCIA</span>
+                <div style="background:#111; padding:12px; border:1px solid #333; color:var(--neon-blue); font-size:0.9rem;">${m.tecnica}</div>
 
-                    <div style="margin-top:20px; border:1px dashed var(--neon-yellow); padding:12px; color:var(--neon-yellow); font-size:0.9rem;">
-                        <b style="font-size:0.6rem; font-family:'Orbitron';">VULNERABILITÀ RILEVATA:</b><br>${m.debole}
-                    </div>
-
-                    ${auth.currentUser.email === MASTER_EMAIL ? `
-                        <div style="margin-top:30px; display:flex; gap:10px;">
-                            <button class="btn-action" style="flex:1; border-color:var(--neon-yellow); color:var(--neon-yellow);" onclick="editThreat('${m.id}')">MODIFICA</button>
-                            <button class="btn-action" style="flex:1; border-color:#ff4444; color:#ff4444;" onclick="deleteThreat('${m.id}')">ELIMINA</button>
-                        </div>
-                    ` : ''}
+                <div style="margin-top:20px; border:1px dashed var(--neon-yellow); padding:12px; color:var(--neon-yellow); font-size:0.9rem;">
+                    <b style="font-size:0.6rem; font-family:'Orbitron';">VULNERABILITÀ RILEVATA:</b><br>${m.debole}
                 </div>
             </div>
-        `;
-        document.getElementById('details-overlay').style.display = 'block';
-        document.body.style.overflow = 'hidden';
-    };
+        </div>
+        ${auth.currentUser.email === MASTER_EMAIL ? `
+            <div style="max-width:900px; margin: 10px auto; display:flex; gap:10px; padding: 0 10px;">
+                <button class="btn-action" style="flex:1; border-color:var(--neon-yellow); color:var(--neon-yellow);" onclick="editThreat('${m.id}')">MODIFICA</button>
+                <button class="btn-action" style="flex:1; border-color:#ff4444; color:#ff4444;" onclick="deleteThreat('${m.id}')">ELIMINA</button>
+            </div>
+        ` : ''}
+    `;
+    document.getElementById('details-overlay').style.display = 'block';
+    document.body.style.overflow = 'hidden';
+};
 
     window.openLightbox = (url) => {
         const lbImg = document.getElementById('lightbox-img');
@@ -288,6 +309,28 @@
     window.deleteThreat = async (id) => {
         if(confirm("ELIMINARE DEFINITIVAMENTE?")) { await deleteDoc(doc(db, "minacce", id)); location.reload(); }
     };
+    window.downloadSheet = (nomeMinaccia) => {
+    const area = document.getElementById('capture-area');
+    const btn = document.querySelector('.btn-download');
+    
+    btn.innerText = "ELABORAZIONE DATI...";
+    
+    html2canvas(area, {
+        useCORS: true, // Fondamentale per caricare immagini da URL esterni
+        backgroundColor: "#0f1016",
+        scale: 2 // Migliora la qualità dell'immagine finale
+    }).then(canvas => {
+        const link = document.createElement('a');
+        link.download = `KOTRA_THREAT_${nomeMinaccia.replace(/\s+/g, '_')}.png`;
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+        btn.innerText = "💾 SCARICA_ARCHIVIO_VISIVO";
+    }).catch(err => {
+        console.error(err);
+        alert("Errore durante la generazione dell'immagine. Verifica che l'URL dell'immagine permetta l'accesso CORS.");
+        btn.innerText = "💾 ERRORE DOWNLOAD";
+    });
+};
 </script>
 </body>
 </html>
