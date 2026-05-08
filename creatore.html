@@ -34,6 +34,7 @@
             text-decoration: none; color: var(--neon-blue); font-family: 'Orbitron'; 
             font-size: 0.7rem; border: 1px solid var(--neon-blue); padding: 8px 15px; 
             margin-left: 5px; transition: 0.3s; clip-path: polygon(10% 0, 100% 0, 90% 100%, 0 100%);
+            background: transparent; cursor: pointer;
         }
         .btn-nav:hover { background: var(--neon-blue); color: black; }
 
@@ -58,7 +59,7 @@
         }
         input:focus, select:focus { border-color: var(--neon-pink); box-shadow: 0 0 10px rgba(255, 0, 255, 0.1); }
 
-        /* Anteprima Immagine focalizzata sul Viso */
+        /* Anteprima Immagine */
         .img-preview { 
             width: 180px; height: 180px; 
             border: 2px solid var(--neon-blue); 
@@ -68,18 +69,13 @@
             clip-path: polygon(15% 0, 100% 0, 100% 85%, 85% 100%, 0 100%, 0 15%);
             box-shadow: 0 0 15px rgba(0, 242, 255, 0.2);
         }
-        .img-preview img { 
-            width: 100%; height: 100%; 
-            object-fit: cover; 
-            object-position: center 20%; /* Centra leggermente verso l'alto per il viso */
-        }
+        .img-preview img { width: 100%; height: 100%; object-fit: cover; }
         .upload-label {
             display: block; background: #111; border: 1px dashed var(--neon-blue);
             padding: 10px; text-align: center; cursor: pointer; transition: 0.3s; font-size: 0.7rem;
         }
         .upload-label:hover { background: rgba(0, 242, 255, 0.1); color: var(--neon-blue); }
 
-        /* Special Boxes */
         .special-box { padding: 15px; background: rgba(255, 255, 0, 0.05); border: 1px dashed var(--neon-yellow); margin-top: 5px; }
 
         /* Azioni */
@@ -92,7 +88,7 @@
         .btn-save:disabled { border-color: #333; color: #444; cursor: not-allowed; }
         .btn-reset { border-color: var(--neon-pink); color: var(--neon-pink); }
 
-        /* Loading */
+        /* Loading Overlay */
         #loading-overlay { 
             display: none; position: fixed; top:0; left:0; width:100%; height:100%; 
             background: rgba(0,0,0,0.9); z-index: 1000; flex-direction: column; align-items: center; justify-content: center; 
@@ -160,28 +156,25 @@
         </div>
 
         <div class="form-section">
-        <div class="full-width"><h2 style="font-family:'Orbitron'; font-size: 0.9rem; color:var(--neon-blue); margin-top:15px;">[05] CHASSIS_CONFIGURATION</h2></div>
-        <div>
+            <div class="full-width"><h2 style="font-family:'Orbitron'; font-size: 0.9rem; color:var(--neon-blue); margin-top:15px;">[03] CHASSIS_CONFIGURATION</h2></div>
             <div>
                 <label>KNIGHT_CLASS (SCALE)</label>
                 <select id="select-knight-class">
-                    <option value="">-- CARICAMENTO CLASSI... --</option>
+                    <option value="">-- SELEZIONA CLASSE --</option>
+                </select>
+                <label style="margin-top:15px;">KNIGHT_MODEL (CHASSIS)</label>
+                <input type="text" id="knight-model" placeholder="Es: MK-V Paladin">
+            </div>
+            <div>
+                <label>FRAME_TYPE (TACTICAL_ROLE)</label>
+                <select id="select-frame">
+                    <option value="">-- SELEZIONA FRAME --</option>
                 </select>
             </div>
-            <label>KNIGHT_MODEL (CHASSIS)</label>
-            <input type="text" id="knight" placeholder="Es: MK-V Paladin">
         </div>
-        <div>
-            <label>FRAME_TYPE (TACTICAL_ROLE)</label>
-            <select id="select-frame">
-                <option value="">-- CARICAMENTO DATI... --</option>
-            </select>
-        </div>
-            </div>
 
-        
         <div class="form-section">
-            <div class="full-width"><h2 style="font-family:'Orbitron'; font-size: 0.9rem; color:var(--neon-pink); margin:0;">[03] SELECTION_STIRPE_JOB</h2></div>
+            <div class="full-width"><h2 style="font-family:'Orbitron'; font-size: 0.9rem; color:var(--neon-pink); margin:0;">[04] SELECTION_STIRPE_JOB</h2></div>
             <div><label>STIRPE_BASE *</label><select id="select-stirpe" required onchange="aggiornaEredita()"></select></div>
             <div><label>JOB_PRIMARY *</label><select id="select-job" required onchange="validateForm()"></select></div>
             <div class="full-width">
@@ -193,28 +186,23 @@
         </div>
 
         <div id="special-inheritance-section" class="form-section special-section" style="display: none;">
-            <div class="full-width"><h2 style="font-family:'Orbitron'; font-size: 0.9rem; color:var(--neon-yellow); margin:0;">[04] SPECIAL_MODULES_DETECTED</h2></div>
-            
+            <div class="full-width"><h2 style="font-family:'Orbitron'; font-size: 0.9rem; color:var(--neon-yellow); margin:0;">[05] SPECIAL_MODULES_DETECTED</h2></div>
             <div id="box-doppio-core" class="special-box full-width" style="display: none;">
                 <label>SECONDARY_CORE_LINK</label>
                 <input type="text" id="core-secondario" placeholder="Inserisci secondo Core...">
             </div>
-
             <div id="box-talento-naturale" class="special-box full-width" style="display: none;">
                 <label>EXTRA_JOB_ACCESS</label>
                 <select id="select-job-extra"></select>
             </div>
-
             <div id="box-mutante" class="special-box full-width" style="display: none;">
                 <label>MUTATION_DATA</label>
                 <input type="text" id="mutazione" placeholder="Descrizione anomalia...">
             </div>
-
             <div id="box-hybrid" class="special-box full-width" style="display: none;">
                 <label>HYBRID_FRAME_ID</label>
                 <input type="text" id="frame-extra" placeholder="Specifica Frame secondario...">
             </div>
-
             <div id="box-senza-core" class="special-box full-width" style="display: none;">
                 <label>SCINTILLA_ENGINE (VITAL_DRIVE)</label>
                 <input type="text" id="scintilla" placeholder="Cosa ti spinge ad agire?">
@@ -254,13 +242,13 @@
                 isMaster = user.email.toLowerCase().trim() === (configSnap.exists() ? configSnap.data().masterEmail.toLowerCase().trim() : "");
                 document.getElementById('role-display').innerText = isMaster ? "MASTER" : "PLAYER";
                 document.getElementById('role-display').className = `role-badge ${isMaster ? 'master' : 'player'}`;
-                init();
+                await init();
             } else { window.location.href = "index.html"; }
         });
 
         document.getElementById('btn-logout').onclick = () => signOut(auth);
 
-        // Immagine con Ritaglio Centrale (Face Focus)
+        // Gestione Immagine
         window.handleImage = (e) => {
             const file = e.target.files[0];
             if (!file) return;
@@ -269,20 +257,12 @@
                 const img = new Image();
                 img.onload = () => {
                     const canvas = document.createElement('canvas');
-                    const size = 500; // Risoluzione quadrata fissa
-                    canvas.width = size;
-                    canvas.height = size;
+                    const size = 500;
+                    canvas.width = size; canvas.height = size;
                     const ctx = canvas.getContext("2d");
-
                     let sX = 0, sY = 0, sSize = img.width;
-                    if (img.width > img.height) {
-                        sSize = img.height;
-                        sX = (img.width - img.height) / 2;
-                    } else {
-                        sSize = img.width;
-                        sY = (img.height - img.width) / 2;
-                    }
-
+                    if (img.width > img.height) { sSize = img.height; sX = (img.width - img.height) / 2; }
+                    else { sSize = img.width; sY = (img.height - img.width) / 2; }
                     ctx.drawImage(img, sX, sY, sSize, sSize, 0, 0, size, size);
                     currentImgData = canvas.toDataURL("image/jpeg", 0.8);
                     document.getElementById('preview-box').innerHTML = `<img src="${currentImgData}">`;
@@ -292,27 +272,7 @@
             reader.readAsDataURL(file);
         };
 
-        window.checkSpecialInheritance = () => {
-            const eredita = document.getElementById('select-eredita').value;
-            const section = document.getElementById('special-inheritance-section');
-            const boxes = {
-                'Doppio Core': 'box-doppio-core',
-                'Talento naturale': 'box-talento-naturale',
-                'Mutante': 'box-mutante',
-                'Hybrid Frame': 'box-hybrid',
-                'Senza Core': 'box-senza-core'
-            };
-
-            Object.values(boxes).forEach(id => document.getElementById(id).style.display = 'none');
-            
-            if (boxes[eredita]) {
-                document.getElementById(boxes[eredita]).style.display = 'block';
-                section.style.display = 'grid';
-            } else {
-                section.style.display = 'none';
-            }
-        };
-
+        // Logica Eredità e Special Box
         window.aggiornaEredita = () => {
             const isMez = document.getElementById('mezzosangue').checked;
             const stirpeSel = document.getElementById('select-stirpe').value;
@@ -329,6 +289,22 @@
             validateForm();
         };
 
+        window.checkSpecialInheritance = () => {
+            const eredita = document.getElementById('select-eredita').value;
+            const section = document.getElementById('special-inheritance-section');
+            const boxes = { 'Doppio Core': 'box-doppio-core', 'Talento naturale': 'box-talento-naturale', 'Mutante': 'box-mutante', 'Hybrid Frame': 'box-hybrid', 'Senza Core': 'box-senza-core' };
+            Object.values(boxes).forEach(id => document.getElementById(id).style.display = 'none');
+            
+            let found = false;
+            for (let key in boxes) {
+                if (eredita.includes(key)) {
+                    document.getElementById(boxes[key]).style.display = 'block';
+                    found = true;
+                }
+            }
+            section.style.display = found ? 'grid' : 'none';
+        };
+
         window.validateForm = () => {
             const nome = document.getElementById('nome').value.trim();
             const stirpe = document.getElementById('select-stirpe').value;
@@ -336,81 +312,63 @@
             document.getElementById('btn-save').disabled = !(nome && stirpe && job);
         };
 
-       let dbKnightGuide = null;
+        // Inizializzazione Database JSON
+        async function init() {
+            try {
+                const [resS, resJ, resK] = await Promise.all([
+                    fetch('stirpi_database.json'), fetch('classi_database.json'), fetch('knight_guide.json')
+                ]);
+                dbStirpi = (await resS.json()).items;
+                const jobs = (await resJ.json()).items;
+                const dbKnight = await resK.json();
 
-async function init() {
-    try {
-        // Carichiamo tutti i database necessari
-        const [resS, resJ, resK] = await Promise.all([
-            fetch('stirpi_database.json'), 
-            fetch('classi_database.json'),
-            fetch('knight_guide.json') // Il tuo nuovo file
-        ]);
+                // Popola select stirpi e job
+                document.getElementById('select-stirpe').innerHTML = dbStirpi.map(s => `<option value="${s.nome}">${s.nome}</option>`).join('');
+                const jobOpt = jobs.map(j => `<option value="${j.nome}">${j.nome}</option>`).join('');
+                document.getElementById('select-job').innerHTML = jobOpt;
+                document.getElementById('select-job-extra').innerHTML = '<option value="">-- EXTRA JOB --</option>' + jobOpt;
 
-        dbStirpi = (await resS.json()).items;
-        const jobs = (await resJ.json()).items;
-        dbKnightGuide = await resK.json();
+                // Popola Knight Class (Sezione 1)
+                const sezClassi = dbKnight.sezioni.find(s => s.id === 1);
+                if(sezClassi) document.getElementById('select-knight-class').innerHTML += sezClassi.items.map(c => `<option value="${c.nome}">${c.nome}</option>`).join('');
+                
+                // Popola Frame (Sezione 2)
+                const sezFrame = dbKnight.sezioni.find(s => s.id === 2);
+                if(sezFrame) document.getElementById('select-frame').innerHTML += sezFrame.rows.map(f => `<option value="${f.nome}">${f.nome} (${f.specializzazione})</option>`).join('');
 
-        // 1. Popola Stirpi e Job (codice esistente)
-        document.getElementById('select-stirpe').innerHTML = dbStirpi.map(s => `<option value="${s.nome}">${s.nome}</option>`).join('');
-        const jobOptions = jobs.map(j => `<option value="${j.nome}">${j.nome}</option>`).join('');
-        document.getElementById('select-job').innerHTML = jobOptions;
+                aggiornaEredita();
 
-        // 2. Popola i FRAME dalla knight_guide.json
-        // 1. Popola le CLASSI KNIGHT (dalla Sezione 1)
-const sezioneClassi = dbKnightGuide.sezioni.find(s => s.id === 1);
-if (sezioneClassi && sezioneClassi.items) {
-    const classOptions = sezioneClassi.items.map(c => 
-        `<option value="${c.nome}">${c.nome}</option>`
-    ).join('');
-    document.getElementById('select-knight-class').innerHTML = '<option value="">-- SELEZIONA CLASSE --</option>' + classOptions;
-}
-        // Cerchiamo la sezione con id: 2 (I Frame)
-        const sezioneFrame = dbKnightGuide.sezioni.find(s => s.id === 2);
-        if (sezioneFrame && sezioneFrame.rows) {
-            const frameOptions = sezioneFrame.rows.map(f => 
-                `<option value="${f.nome}">${f.nome} (${f.specializzazione})</option>`
-            ).join('');
-            document.getElementById('select-frame').innerHTML = '<option value="">-- SELEZIONA FRAME --</option>' + frameOptions;
+                // Verifica se siamo in modalità modifica
+                currentEditId = sessionStorage.getItem('editModeId');
+                if(currentEditId) await loadCharacterForEdit(currentEditId);
+            } catch (e) { console.error("Database load error:", e); }
         }
-
-        aggiornaEredita();
-        
-        // Gestione Edit Mode
-        currentEditId = sessionStorage.getItem('editModeId');
-        if(currentEditId) await loadCharacterForEdit(currentEditId);
-
-    } catch (e) { 
-        console.error("Errore caricamento database:", e);
-        alert("CRITICAL_ERROR: Database Knight non raggiungibile."); 
-    }
-}
 
         async function loadCharacterForEdit(id) {
             document.getElementById('loading-overlay').style.display = 'flex';
             try {
-                const docSnap = await getDoc(doc(db, "personaggi", id));
-                if(docSnap.exists()) {
-                    const p = docSnap.data();
+                const snap = await getDoc(doc(db, "personaggi", id));
+                if(snap.exists()) {
+                    const p = snap.data();
                     document.getElementById('nome').value = p.nome;
                     document.getElementById('anima').value = p.anima || '';
                     document.getElementById('core').value = p.core || '';
                     document.getElementById('motto').value = p.motto || '';
                     document.getElementById('difetto').value = p.difetto || '';
                     document.getElementById('nemesi').value = p.nemesi || '';
+                    document.getElementById('knight-model').value = p.knightModel || '';
+                    document.getElementById('select-knight-class').value = p.knightClass || '';
+                    document.getElementById('select-frame').value = p.frame || '';
                     
-                    if(p.tratti) {
-                        const inputs = document.querySelectorAll('.tratto-input');
-                        p.tratti.forEach((t, i) => { if(inputs[i]) inputs[i].value = t; });
-                    }
+                    const inputs = document.querySelectorAll('.tratto-input');
+                    if(p.tratti) p.tratti.forEach((t, i) => { if(inputs[i]) inputs[i].value = t; });
 
                     document.getElementById('select-stirpe').value = p.stirpe;
                     document.getElementById('select-job').value = p.job;
                     
                     const sBase = dbStirpi.find(s => s.nome === p.stirpe);
-                    if(sBase && !sBase.eredita.some(e => e.nome === p.eredita)) {
-                        document.getElementById('mezzosangue').checked = true;
-                    }
+                    if(sBase && !sBase.eredita.some(e => e.nome === p.eredita)) document.getElementById('mezzosangue').checked = true;
+                    
                     aggiornaEredita();
                     document.getElementById('select-eredita').value = p.eredita;
                     checkSpecialInheritance();
@@ -426,42 +384,23 @@ if (sezioneClassi && sezioneClassi.items) {
                     currentImgData = p.immagine || '';
                     if(currentImgData) document.getElementById('preview-box').innerHTML = `<img src="${currentImgData}">`;
                     document.getElementById('btn-save').innerText = "UPDATE_IDENTITY";
+                    validateForm();
                 }
-            } catch (e) { console.error(e); }
+            } catch (e) { console.error("Edit load error:", e); }
             document.getElementById('loading-overlay').style.display = 'none';
         }
 
-       window.resetForm = () => {
-    if(confirm("TERMINATE_SESSION? Tutti i dati non salvati verranno sovrascritti.")) {
-        // 1. Pulisce tutti gli input di testo, textarea e select
-        const inputs = document.querySelectorAll('input, select, textarea');
-        inputs.forEach(input => {
-            if (input.type === 'checkbox') {
-                input.checked = false;
-            } else {
-                input.value = '';
+        window.resetForm = () => {
+            if(confirm("TERMINATE_SESSION?")) {
+                sessionStorage.removeItem('editModeId');
+                location.reload();
             }
-        });
+        };
 
-        // 2. Reset specifico per le Stirpi e Job (riporta alle prime opzioni)
-        init(); // Ricarica le opzioni dai JSON per resettare i select
-
-        // 3. Reset dell'immagine
-        currentImgData = "";
-        document.getElementById('preview-box').innerHTML = `<span style="font-size:0.6rem; color:#444;">NO_SIGNAL</span>`;
-
-        // 4. Nasconde le sezioni speciali
-        document.getElementById('special-inheritance-section').style.display = 'none';
-
-        // 5. Disabilita il tasto salva
-        validateForm();
-        
-        console.log("SYSTEM_REBOOT: Campi resettati.");
-    }
-};
-
+        // Salva/Sincronizza su Firebase
         document.getElementById('btn-save').onclick = async () => {
             document.getElementById('loading-overlay').style.display = 'flex';
+            
             const pg = {
                 nome: document.getElementById('nome').value.trim(),
                 anima: document.getElementById('anima').value.trim(),
@@ -473,8 +412,9 @@ if (sezioneClassi && sezioneClassi.items) {
                 stirpe: document.getElementById('select-stirpe').value,
                 job: document.getElementById('select-job').value,
                 eredita: document.getElementById('select-eredita').value,
-                knight: document.getElementById('knight').value.trim(),
-                frame: document.getElementById('frame').value.trim(),
+                knightClass: document.getElementById('select-knight-class').value,
+                knightModel: document.getElementById('knight-model').value.trim(),
+                frame: document.getElementById('select-frame').value,
                 immagine: currentImgData,
                 specialData: {
                     core2: document.getElementById('core-secondario').value,
@@ -487,17 +427,25 @@ if (sezioneClassi && sezioneClassi.items) {
                 lastUpdate: serverTimestamp()
             };
 
-            if(!currentEditId) {
-                pg.creatoDa = isMaster ? "MASTER" : currentUser.uid;
-                pg.timestamp = serverTimestamp();
-            }
-
             try {
-                const docId = currentEditId || `${currentUser.uid}-${Date.now()}`;
-                await setDoc(doc(db, "personaggi", docId), pg, { merge: true });
+                if(!currentEditId) {
+                    // Creazione
+                    pg.creatoDa = currentUser.uid;
+                    pg.timestamp = serverTimestamp();
+                    const docId = `${currentUser.uid}-${Date.now()}`;
+                    await setDoc(doc(db, "personaggi", docId), pg);
+                } else {
+                    // Aggiornamento (senza cambiare creatoDa)
+                    await setDoc(doc(db, "personaggi", currentEditId), pg, { merge: true });
+                }
+                
                 sessionStorage.removeItem('editModeId');
                 window.location.href = "archivio.html";
-            } catch (e) { alert("CRITICAL_SYNC_ERROR"); document.getElementById('loading-overlay').style.display = 'none'; }
+            } catch (e) { 
+                console.error("Sync Error:", e);
+                alert("CRITICAL_SYNC_ERROR: Controlla la tua connessione o i permessi."); 
+                document.getElementById('loading-overlay').style.display = 'none'; 
+            }
         };
     </script>
 </body>
