@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>KOTRA // COMMAND HUB</title>
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#0a0b10">
+    <link rel="icon" type="image/png" href="img/index/icona_app.png">
+    <link rel="apple-touch-icon" href="img/index/icona_app.png">
+
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --neon-blue: #00f2ff;
+            --neon-pink: #ff007a;
+            --neon-purple: #bc13fe;
+            --neon-red: #ff3b3b;
+            --bg-dark: #06070a;
+            --glass: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(0, 242, 255, 0.3);
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        body {
+            background-color: var(--bg-dark);
+            background-image:
+                radial-gradient(circle at 50% 50%, rgba(20, 30, 48, 0.5) 0%, rgba(6, 7, 10, 1) 100%),
+                url('img/index/sfondo.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: #e0e0e0;
+            font-family: 'Rajdhani', sans-serif;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        body::after {
+            content: " ";
+            position: fixed;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%);
+            z-index: 999;
+            background-size: 100% 3px;
+            pointer-events: none;
+            opacity: 0.35;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 25px;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid var(--neon-blue);
+            z-index: 1000;
+        }
+
+        #auth-status button {
+            background: none;
+            border: 1px solid var(--neon-pink);
+            color: var(--neon-pink);
+            padding: 6px 14px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        #auth-status button:hover { background: var(--neon-pink); color: #000; }
+
+        .page { display: none; padding: 20px; width: 100%; max-width: 620px; margin: auto; z-index: 10; flex-direction: column; }
+        .active { display: flex; animation: fadeIn 0.5s ease-out; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes shake {
+            10%, 90% { transform: translateX(-1px); }
+            20%, 80% { transform: translateX(2px); }
+            30%, 50%, 70% { transform: translateX(-4px); }
+            40%, 60% { transform: translateX(4px); }
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .section {
+            background: rgba(10, 11, 16, 0.95);
+            padding: 35px 30px;
+            border-radius: 4px;
+            border: 1px solid var(--glass-border);
+            position: relative;
+            box-shadow: 0 0 40px rgba(0, 242, 255, 0.08);
+        }
+
+        h2 {
+            font-family: 'Orbitron', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: var(--neon-blue);
+        }
+
+        .subtitle {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.6rem;
+            letter-spacing: 2px;
+            color: var(--neon-pink);
+            text-transform: uppercase;
+            margin-bottom: 25px;
+            opacity: 0.8;
+        }
+
+        .field { text-align: left; margin: 14px 0; }
+        .field label {
+            display: block;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.6rem;
+            letter-spacing: 1.5px;
+            color: #888;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+
+        input {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid #333;
+            color: var(--neon-blue);
+            padding: 14px 15px;
+            border-radius: 4px;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1.05rem;
+            transition: 0.25s;
+        }
+        input:focus {
+            outline: none;
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 12px rgba(0, 242, 255, 0.25);
+        }
+        input.input-error { border-color: var(--neon-red); animation: shake 0.4s; }
+
+        .field-hint { font-size: 0.75rem; color: #555; margin-top: 4px; }
+
+        #auth-message {
+            display: none;
+            font-size: 0.85rem;
+            padding: 10px 14px;
+            border-radius: 4px;
+            margin: 15px 0 5px 0;
+            text-align: left;
+            font-family: 'Rajdhani', sans-serif;
+            border-left: 3px solid transparent;
+        }
+        #auth-message.error { display: block; background: rgba(255, 59, 59, 0.1); border-color: var(--neon-red); color: #ff8888; }
+        #auth-message.info { display: block; background: rgba(0, 242, 255, 0.08); border-color: var(--neon-blue); color: #aeefff; }
+
+        .hub-btn {
+            width: 100%;
+            padding: 16px;
+            background: rgba(0, 0, 0, 0.9);
+            border: 2px solid var(--neon-blue);
+            color: white;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: 0.3s;
+            position: relative;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .hub-btn:hover:not(:disabled) {
+            background: var(--neon-blue);
+            color: black;
+            box-shadow: 0 0 25px rgba(0, 242, 255, 0.4);
+        }
+        .hub-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        .btn-primary {
+            border-color: var(--neon-pink);
+            color: white;
+            background: rgba(255, 0, 122, 0.1);
+        }
+        .btn-primary:hover:not(:disabled) {
+            background: var(--neon-pink);
+            border-color: var(--neon-pink);
+            color: black;
+        }
+
+        .spinner {
+            width: 14px; height: 14px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top-color: currentColor;
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+        }
+
+        .toggle-mode {
+            margin-top: 18px;
+            font-size: 0.85rem;
+            color: #888;
+        }
+        .toggle-mode span {
+            color: var(--neon-blue);
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        .hub-menu { display: flex; flex-direction: column; gap: 12px; }
+        .hub-btn .icon { font-size: 1.1rem; }
+
+        .mobile-tip {
+            margin: 20px auto;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid var(--neon-purple);
+            border-radius: 4px;
+            font-size: 0.85rem;
+            color: #ddd;
+            max-width: 90%;
+            text-align: center;
+            line-height: 1.4;
+            display: block;
+        }
+
+        @media (min-width: 769px) {
+            .mobile-tip { display: none; }
+        }
+
+        .login-logo { width: 100px; filter: drop-shadow(0 0 10px var(--neon-blue)); margin-bottom: 15px; }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div id="auth-status"></div>
+    <div id="role-tag"></div>
+</nav>
+
+<div id="login-page" class="page active" style="justify-content: center; min-height: 80vh;">
+    <div class="section" style="text-align: center;">
+        <img src="img/index/icona_app.png" class="login-logo">
+        <h2 id="form-title">System_Login</h2>
+        <div class="subtitle" id="form-subtitle">Accesso operatore tramite username</div>
+
+        <div id="auth-message"></div>
+
+        <div class="field">
+            <label for="username">Username</label>
+            <input type="text" id="username" placeholder="es. kaidra_07" autocomplete="username" maxlength="20">
+            <div class="field-hint">3-20 caratteri: lettere, numeri, underscore.</div>
+        </div>
+
+        <div class="field">
+            <label for="password">Access Code</label>
+            <input type="password" id="password" placeholder="••••••••" autocomplete="current-password">
+        </div>
+
+        <button class="hub-btn" id="submit-btn" style="margin-top: 10px;" onclick="handleAuth()">
+            <span id="submit-label">Inizializza Sessione</span>
+        </button>
+
+        <div class="toggle-mode" id="toggle-mode">
+            Non hai un account? <span onclick="setMode('signup')">Registrati</span>
+        </div>
+    </div>
+</div>
+
+<div id="hub-page" class="page">
+    <div style="text-align: center; margin-bottom: 30px;">
+        <h1 style="font-family: 'Orbitron'; font-size: 1.5rem; color: white; letter-spacing: 5px;">KOTRA_COMMAND</h1>
+        <div style="width: 50px; height: 2px; background: var(--neon-blue); margin: 10px auto;"></div>
+        <div id="welcome-user" style="font-family:'Rajdhani'; color:#888; font-size:0.9rem; margin-top:8px;"></div>
+    </div>
+    <div class="hub-menu">
+         <button class="hub-btn" onclick="window.location.href='archivio.html'"><span class="icon">📂</span> Archivio_Personaggi</button>
+         <button class="hub-btn" style="border-color: var(--neon-pink); color: var(--neon-pink); background: rgba(255, 0, 122, 0.05);" onclick="window.location.href='minacce.html'"><span class="icon">⚠️</span> Archivio_Minacce</button>
+         <button class="hub-btn" style="border-color: var(--neon-purple); color: var(--neon-purple); background: rgba(188, 19, 254, 0.05);" onclick="window.location.href='campagne.html'"><span class="icon">📁</span> Registro_Campagne</button>
+         <button class="hub-btn btn-primary" style="margin-top: 15px;" onclick="window.location.href='creatore.html'"><span class="icon">🧬</span> Inizializza_Matricola</button>
+         <button class="hub-btn" onclick="window.location.href='biblioteca.html'"><span class="icon">📚</span> Biblioteca_Dati</button>
+    </div>
+
+    <div class="mobile-tip">
+        <span style="color: var(--neon-blue);">TERMINAL_TIP:</span><br>
+        Per un'esperienza HUD completa, aggiungi questa pagina alla tua <b>Home Screen</b>.
+    </div>
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
+    import {
+        getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword,
+        onAuthStateChanged, signOut
+    } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-auth.js";
+    import {
+        getFirestore, doc, setDoc, getDoc
+    } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyCAMvHn28SY3k9TiLvz2afjn0zpj73Lw5Y",
+        authDomain: "kotra-8da26.firebaseapp.com",
+        projectId: "kotra-8da26",
+        storageBucket: "kotra-8da26.firebasestorage.app",
+        messagingSenderId: "932848394064",
+        appId: "1:932848394064:web:d368c9ae301b54bab01655"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    // Dominio fittizio usato per derivare un'email valida da uno username.
+    // Deterministico: nessun lookup su database necessario per il login.
+    const FAKE_DOMAIN = "kotra.internal";
+    const USERNAME_REGEX = /^[a-zA-Z0-9_]{3,20}$/;
+
+    let mode = 'login'; // 'login' | 'signup'
+    let currentUser = null;
+
+    function usernameToEmail(username) {
+        return `${username.toLowerCase()}@${FAKE_DOMAIN}`;
+    }
+
+    function setMode(newMode) {
+        mode = newMode;
+        clearMessage();
+        const title = document.getElementById('form-title');
+        const subtitle = document.getElementById('form-subtitle');
+        const label = document.getElementById('submit-label');
+        const toggle = document.getElementById('toggle-mode');
+        if (mode === 'signup') {
+            title.innerText = 'Nuovo_Operatore';
+            subtitle.innerText = 'Registrazione tramite username';
+            label.innerText = 'Registra Matricola';
+            toggle.innerHTML = `Hai già un account? <span onclick="setMode('login')">Accedi</span>`;
+        } else {
+            title.innerText = 'System_Login';
+            subtitle.innerText = 'Accesso operatore tramite username';
+            label.innerText = 'Inizializza Sessione';
+            toggle.innerHTML = `Non hai un account? <span onclick="setMode('signup')">Registrati</span>`;
+        }
+    }
+    window.setMode = setMode;
+
+    function showMessage(text, type = 'error') {
+        const el = document.getElementById('auth-message');
+        el.className = type;
+        el.innerText = text;
+    }
+    function clearMessage() {
+        const el = document.getElementById('auth-message');
+        el.className = '';
+        el.innerText = '';
+        el.style.display = 'none';
+    }
+    function markInvalid(id) {
+        const el = document.getElementById(id);
+        el.classList.add('input-error');
+        setTimeout(() => el.classList.remove('input-error'), 400);
+    }
+
+    function setLoading(isLoading) {
+        const btn = document.getElementById('submit-btn');
+        const label = document.getElementById('submit-label');
+        btn.disabled = isLoading;
+        if (isLoading) {
+            label.innerHTML = `<span class="spinner"></span> Elaborazione...`;
+        } else {
+            label.innerText = mode === 'signup' ? 'Registra Matricola' : 'Inizializza Sessione';
+        }
+    }
+
+    function mapFirebaseError(code) {
+        switch (code) {
+            case 'auth/email-already-in-use': return 'Username già in uso. Scegline un altro.';
+            case 'auth/weak-password': return 'Password troppo debole (minimo 6 caratteri).';
+            case 'auth/invalid-credential':
+            case 'auth/wrong-password':
+            case 'auth/user-not-found': return 'Username o password errati.';
+            case 'auth/too-many-requests': return 'Troppi tentativi. Riprova tra qualche minuto.';
+            case 'auth/network-request-failed': return 'Errore di rete. Controlla la connessione.';
+            default: return 'Errore di sistema. Riprova.';
+        }
+    }
+
+    window.handleAuth = async () => {
+        clearMessage();
+        const usernameEl = document.getElementById('username');
+        const passEl = document.getElementById('password');
+        const username = usernameEl.value.trim();
+        const pass = passEl.value;
+
+        if (!USERNAME_REGEX.test(username)) {
+            markInvalid('username');
+            showMessage('Username non valido: usa 3-20 caratteri tra lettere, numeri e underscore.');
+            return;
+        }
+        if (!pass || pass.length < 6) {
+            markInvalid('password');
+            showMessage('La password deve avere almeno 6 caratteri.');
+            return;
+        }
+
+        const syntheticEmail = usernameToEmail(username);
+        setLoading(true);
+        try {
+            if (mode === 'login') {
+                await signInWithEmailAndPassword(auth, syntheticEmail, pass);
+            } else {
+                const cred = await createUserWithEmailAndPassword(auth, syntheticEmail, pass);
+                await setDoc(doc(db, 'users', cred.user.uid), {
+                    username: username,
+                    createdAt: Date.now()
+                });
+            }
+        } catch (e) {
+            showMessage(mapFirebaseError(e.code));
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    window.showPage = (pageId) => {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.getElementById(pageId).classList.add('active');
+    };
+
+    onAuthStateChanged(auth, async (user) => {
+        currentUser = user;
+        const statusDiv = document.getElementById('auth-status');
+        const roleDiv = document.getElementById('role-tag');
+        const welcomeDiv = document.getElementById('welcome-user');
+
+        if (user) {
+            statusDiv.innerHTML = `<button id="logout-btn">Disconnetti Sessione</button>`;
+            document.getElementById('logout-btn').onclick = () => signOut(auth);
+
+            let profile = null;
+            let isMaster = false;
+            try {
+                const snap = await getDoc(doc(db, 'users', user.uid));
+                if (snap.exists()) profile = snap.data();
+                const configSnap = await getDoc(doc(db, 'config', 'permissions'));
+                const masterEmail = configSnap.exists() ? (configSnap.data().masterEmail || '') : '';
+                isMaster = !!masterEmail && user.email.toLowerCase().trim() === masterEmail.toLowerCase().trim();
+            } catch (e) { console.warn('Profilo/permessi non raggiungibili:', e); }
+
+            const displayName = profile?.username || (user.email || '').split('@')[0];
+            welcomeDiv.innerText = `Operatore: ${displayName}`;
+
+            if (isMaster) {
+                roleDiv.innerHTML = `<span style="background:var(--neon-pink); color:white; padding:3px 8px; font-size:0.7rem; font-family:'Orbitron'; font-weight:bold; border-radius:2px; box-shadow: 0 0 10px var(--neon-pink);">ACCESS: MASTER</span>`;
+            } else {
+                roleDiv.innerHTML = `<span style="border:1px solid var(--neon-blue); color:var(--neon-blue); padding:3px 8px; font-size:0.7rem; font-family:'Orbitron'; border-radius:2px;">OP_LEVEL: 01</span>`;
+            }
+            showPage('hub-page');
+        } else {
+            showPage('login-page');
+            statusDiv.innerHTML = "";
+            roleDiv.innerHTML = "";
+        }
+    });
+</script>
+
+</body>
+</html>

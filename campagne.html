@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KOTRA - Registro Campagne</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --neon-blue: #00f2ff;
+            --neon-pink: #ff00ff;
+            --neon-yellow: #ffff00;
+            --bg-dark: #06070a;
+            --panel-bg: rgba(15, 15, 20, 0.9);
+        }
+        * { box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg-dark);
+            color: #e0e0e0;
+            font-family: 'Rajdhani', sans-serif;
+            margin: 0;
+            background-image: radial-gradient(circle at 50% 50%, rgba(0, 242, 255, 0.04) 0%, transparent 70%);
+            background-attachment: fixed;
+        }
+
+        .nav-header {
+            padding: 15px 20px; background: rgba(0,0,0,0.92); border-bottom: 2px solid var(--neon-blue);
+            display: flex; justify-content: space-between; align-items: center;
+            position: sticky; top: 0; z-index: 100; flex-wrap: wrap; gap: 10px;
+        }
+        .header-title { font-family: 'Orbitron'; color: var(--neon-blue); font-size: 0.9rem; margin: 0; letter-spacing: 1px; }
+        .role-badge { font-family: 'Orbitron'; font-size: 0.55rem; padding: 3px 8px; border: 1px solid var(--neon-blue); color: var(--neon-blue); margin-left: 10px; letter-spacing: 1px; }
+        .role-badge.master { border-color: var(--neon-pink); color: var(--neon-pink); }
+
+        .btn-action {
+            background: transparent; border: 1px solid var(--neon-blue); color: var(--neon-blue);
+            padding: 8px 15px; font-family: 'Orbitron'; font-size: 0.65rem; cursor: pointer; transition: 0.3s;
+            text-decoration: none; display: inline-block;
+        }
+        .btn-action:hover { background: var(--neon-blue); color: #000; box-shadow: 0 0 12px var(--neon-blue); }
+        .btn-master { border-color: var(--neon-yellow); color: var(--neon-yellow); }
+        .btn-master:hover { background: var(--neon-yellow); color: #000; box-shadow: 0 0 12px var(--neon-yellow); }
+        .btn-danger { border-color: #ff4444; color: #ff4444; }
+        .btn-danger:hover { background: #ff4444; color: #000; box-shadow: 0 0 12px #ff4444; }
+        .btn-ghost { border-color: #444; color: #888; }
+        .btn-ghost:hover { background: #333; color: #fff; box-shadow: none; }
+
+        .container { max-width: 1100px; margin: 0 auto; padding: 20px; }
+
+        .toolbar { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 10px; }
+        .toolbar h1 { font-family: 'Orbitron'; font-size: 1.1rem; color: #fff; margin: 0; letter-spacing: 1px; }
+
+        .form-box { background: #111; border: 1px solid var(--neon-yellow); padding: 20px; margin: 15px 0 25px; display: none; }
+        .form-box label { color: var(--neon-yellow); font-family: 'Orbitron'; font-size: 0.6rem; display: block; margin-top: 10px; letter-spacing: 1px; }
+        .form-box input, .form-box select, .form-box textarea {
+            width: 100%; background: #000; border: 1px solid #444; color: #fff;
+            padding: 10px; font-family: 'Rajdhani'; font-size: 0.95rem; margin-bottom: 5px; outline: none;
+        }
+        .form-box input:focus, .form-box select:focus, .form-box textarea:focus { border-color: var(--neon-yellow); }
+        .form-box .actions { display: flex; gap: 10px; margin-top: 15px; }
+        .form-box .actions button { flex: 1; padding: 12px; }
+
+        .campaign-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 18px; margin-top: 15px; }
+        .campaign-grid:empty::after {
+            content: "Nessuna campagna registrata."; grid-column: 1 / -1; text-align: center;
+            padding: 50px 20px; color: #555; font-family: 'Orbitron'; font-size: 0.75rem; letter-spacing: 2px;
+        }
+        .campaign-card {
+            background: var(--panel-bg); border: 1px solid rgba(0, 242, 255, 0.2); border-left: 4px solid var(--neon-blue);
+            padding: 20px; cursor: pointer; transition: 0.3s;
+        }
+        .campaign-card:hover { transform: translateY(-4px); border-left-color: var(--neon-blue); box-shadow: 0 10px 20px rgba(0,242,255,0.12); }
+        .campaign-card h3 { font-family: 'Orbitron'; color: var(--neon-blue); font-size: 1rem; margin: 0 0 8px; }
+        .campaign-card p { font-size: 0.85rem; color: #aaa; margin: 0; line-height: 1.4; }
+        .campaign-card .meta { font-size: 0.7rem; color: #555; margin-top: 10px; font-family: 'Orbitron'; letter-spacing: 1px; }
+
+        #detail-view { display: none; }
+        .btn-back { margin-bottom: 20px; }
+        #d-titolo { font-family: 'Orbitron'; color: var(--neon-blue); font-size: 1.8rem; margin: 0 0 8px; text-shadow: 0 0 12px rgba(0,242,255,0.3); }
+        #d-desc { color: #bbb; font-size: 1rem; margin: 0 0 15px; line-height: 1.5; }
+        .detail-actions { display: flex; gap: 10px; margin-bottom: 10px; }
+
+        section.block { margin-top: 10px; }
+        section.block h2 {
+            font-family: 'Orbitron'; color: var(--neon-pink); font-size: 0.8rem; letter-spacing: 1px;
+            border-bottom: 1px solid rgba(255,0,255,0.2); padding-bottom: 8px; margin-top: 35px;
+        }
+
+        .resource-item { background: rgba(255,255,255,0.03); border: 1px solid #222; padding: 14px; margin-bottom: 10px; }
+        .resource-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 8px; }
+        .resource-type { font-family: 'Orbitron'; font-size: 0.75rem; color: var(--neon-blue); }
+        .resource-item a { color: var(--neon-blue); word-break: break-all; font-size: 0.9rem; }
+        .resource-item pre { white-space: pre-wrap; word-break: break-word; font-family: 'Rajdhani'; font-size: 0.95rem; color: #ccc; margin: 0; }
+        .btn-remove-res { background: none; border: 1px solid #ff4444; color: #ff4444; font-family: 'Orbitron'; font-size: 0.55rem; padding: 4px 8px; cursor: pointer; flex-shrink: 0; }
+        .btn-remove-res:hover { background: #ff4444; color: #000; }
+
+        .mini-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; margin-top: 15px; }
+        .mini-card { background: var(--panel-bg); border: 1px solid rgba(255,255,255,0.1); overflow: hidden; transition: 0.3s; }
+        .mini-card:hover { border-color: var(--neon-blue); transform: translateY(-3px); }
+        .mini-card img { width: 100%; height: 120px; object-fit: cover; background: #000; display: block; }
+        .mini-name { font-family: 'Orbitron'; font-size: 0.68rem; color: #fff; padding: 8px 8px 2px; text-transform: uppercase; }
+        .mini-sub { font-size: 0.7rem; color: #888; padding: 0 8px 8px; }
+
+        .empty-hint { color: #555; font-size: 0.85rem; grid-column: 1 / -1; padding: 15px 0; }
+
+        @media (max-width: 700px) {
+            .container { padding: 14px; }
+            .campaign-grid { grid-template-columns: 1fr; }
+            #d-titolo { font-size: 1.4rem; }
+        }
+    </style>
+</head>
+<body>
+
+<header class="nav-header">
+    <div>
+        <h1 class="header-title" style="display:inline-block;">KOTRA // REGISTRO_CAMPAGNE</h1>
+        <span id="role-display"></span>
+    </div>
+    <div>
+        <a href="index.html" class="btn-action">HUB</a>
+    </div>
+</header>
+
+<div class="container">
+
+    <div id="list-view">
+        <div class="toolbar">
+            <h1>CAMPAGNE ATTIVE</h1>
+            <button class="btn-action btn-master" id="btn-new-campaign" style="display:none;" onclick="toggleNewCampaignForm()">+ NUOVA CAMPAGNA</button>
+        </div>
+
+        <div class="form-box" id="new-campaign-form">
+            <label>TITOLO CAMPAGNA *</label>
+            <input type="text" id="new-camp-titolo" placeholder="Es: L'Ombra su Camelot">
+            <label>DESCRIZIONE (OPZIONALE)</label>
+            <textarea id="new-camp-desc" rows="3" placeholder="Breve sinossi..."></textarea>
+            <div class="actions">
+                <button class="btn-action btn-master" onclick="createCampaign()">CREA CAMPAGNA</button>
+                <button class="btn-action btn-ghost" onclick="toggleNewCampaignForm()">ANNULLA</button>
+            </div>
+        </div>
+
+        <div class="campaign-grid" id="campaign-grid"></div>
+    </div>
+
+    <div id="detail-view">
+        <button class="btn-action btn-back" onclick="closeDetail()">← TORNA ALL'ELENCO</button>
+
+        <h1 id="d-titolo"></h1>
+        <p id="d-desc"></p>
+
+        <div class="detail-actions" id="master-campaign-actions" style="display:none;">
+            <button class="btn-action btn-danger" onclick="deleteCampaign()">ELIMINA CAMPAGNA</button>
+        </div>
+
+        <section class="block">
+            <h2>RISORSE (NOTE &amp; LINK)</h2>
+
+            <div class="form-box" id="master-resource-form">
+                <label>TIPO</label>
+                <select id="res-tipo">
+                    <option value="testo">Nota di testo</option>
+                    <option value="link">Link</option>
+                </select>
+                <label>TITOLO RISORSA *</label>
+                <input type="text" id="res-titolo" placeholder="Es: Mappa della regione">
+                <label>CONTENUTO * (testo libero, oppure URL se Link)</label>
+                <textarea id="res-contenuto" rows="4" placeholder="Incolla qui il testo o l'indirizzo del link..."></textarea>
+                <div class="actions">
+                    <button class="btn-action btn-master" onclick="addResource()">AGGIUNGI RISORSA</button>
+                </div>
+            </div>
+
+            <div id="resource-list"></div>
+        </section>
+
+        <section class="block">
+            <h2>PERSONAGGI COLLEGATI</h2>
+            <div class="mini-grid" id="pg-grid"></div>
+        </section>
+
+        <section class="block">
+            <h2>MINACCE COLLEGATE</h2>
+            <div class="mini-grid" id="minacce-grid"></div>
+        </section>
+    </div>
+
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
+    import {
+        getFirestore, collection, addDoc, getDocs, getDoc, doc, updateDoc, deleteDoc,
+        query, where, arrayUnion, serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-auth.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyCAMvHn28SY3k9TiLvz2afjn0zpj73Lw5Y",
+        authDomain: "kotra-8da26.firebaseapp.com",
+        projectId: "kotra-8da26",
+        storageBucket: "kotra-8da26.firebasestorage.app",
+        messagingSenderId: "932848394064",
+        appId: "1:932848394064:web:d368c9ae301b54bab01655"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
+
+    let isMasterGlobal = false;
+    let campaigns = [];
+    let currentCampaign = null;
+
+    onAuthStateChanged(auth, async (user) => {
+        if (!user) { window.location.href = "index.html"; return; }
+        try {
+            const configSnap = await getDoc(doc(db, "config", "permissions"));
+            const masterEmail = configSnap.exists() ? (configSnap.data().masterEmail || "") : "";
+            isMasterGlobal = !!masterEmail && user.email.toLowerCase().trim() === masterEmail.toLowerCase().trim();
+        } catch (e) { console.warn("Permessi non raggiungibili:", e); }
+
+        document.getElementById('role-display').innerHTML = isMasterGlobal
+            ? `<span class="role-badge master">MASTER</span>`
+            : `<span class="role-badge">OPERATOR</span>`;
+
+        if (isMasterGlobal) document.getElementById('btn-new-campaign').style.display = 'inline-block';
+        loadCampaigns();
+    });
+
+    function escapeHtml(str) {
+        return String(str || "").replace(/[&<>"']/g, c => ({
+            '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+        }[c]));
+    }
+
+    async function loadCampaigns() {
+        try {
+            const snap = await getDocs(collection(db, "campagne"));
+            campaigns = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+            renderCampaignGrid();
+        } catch (e) {
+            console.error("Errore caricamento campagne:", e);
+            document.getElementById('campaign-grid').innerHTML =
+                `<p class="empty-hint">⚠ Errore di caricamento database campagne.</p>`;
+        }
+    }
+
+    function renderCampaignGrid() {
+        const grid = document.getElementById('campaign-grid');
+        grid.innerHTML = campaigns.map(c => `
+            <div class="campaign-card" onclick="openCampaign('${c.id}')">
+                <h3>${escapeHtml(c.titolo)}</h3>
+                ${c.descrizione ? `<p>${escapeHtml(c.descrizione)}</p>` : ''}
+                <div class="meta">${(c.risorse || []).length} RISORSE</div>
+            </div>
+        `).join('');
+    }
+
+    window.toggleNewCampaignForm = () => {
+        const form = document.getElementById('new-campaign-form');
+        form.style.display = form.style.display === 'block' ? 'none' : 'block';
+    };
+
+    window.createCampaign = async () => {
+        const titoloEl = document.getElementById('new-camp-titolo');
+        const titolo = titoloEl.value.trim();
+        if (!titolo) { titoloEl.focus(); return alert("Inserisci un titolo per la campagna."); }
+        const descrizione = document.getElementById('new-camp-desc').value.trim();
+        try {
+            await addDoc(collection(db, "campagne"), {
+                titolo, descrizione, risorse: [],
+                createdBy: auth.currentUser.uid,
+                createdAt: serverTimestamp()
+            });
+            document.getElementById('new-camp-titolo').value = "";
+            document.getElementById('new-camp-desc').value = "";
+            document.getElementById('new-campaign-form').style.display = 'none';
+            loadCampaigns();
+        } catch (e) {
+            console.error("Errore creazione campagna:", e);
+            alert("Impossibile creare la campagna. Controlla i permessi.");
+        }
+    };
+
+    window.openCampaign = async (id) => {
+        currentCampaign = campaigns.find(c => c.id === id);
+        if (!currentCampaign) return;
+
+        document.getElementById('list-view').style.display = 'none';
+        document.getElementById('detail-view').style.display = 'block';
+        document.getElementById('d-titolo').innerText = currentCampaign.titolo;
+        document.getElementById('d-desc').innerText = currentCampaign.descrizione || '';
+        document.getElementById('master-campaign-actions').style.display = isMasterGlobal ? 'flex' : 'none';
+        document.getElementById('master-resource-form').style.display = isMasterGlobal ? 'block' : 'none';
+
+        renderResources();
+        document.getElementById('pg-grid').innerHTML = '<p class="empty-hint">Caricamento...</p>';
+        document.getElementById('minacce-grid').innerHTML = '<p class="empty-hint">Caricamento...</p>';
+        await loadLinkedEntities(id);
+        window.scrollTo(0, 0);
+    };
+
+    window.closeDetail = () => {
+        document.getElementById('detail-view').style.display = 'none';
+        document.getElementById('list-view').style.display = 'block';
+        currentCampaign = null;
+    };
+
+    function renderResources() {
+        const list = document.getElementById('resource-list');
+        const risorse = currentCampaign.risorse || [];
+        if (!risorse.length) {
+            list.innerHTML = '<p class="empty-hint">Nessuna risorsa caricata per questa campagna.</p>';
+            return;
+        }
+        list.innerHTML = risorse.map((r, i) => `
+            <div class="resource-item">
+                <div class="resource-head">
+                    <span class="resource-type">${r.tipo === 'link' ? '🔗' : '📄'} ${escapeHtml(r.titolo)}</span>
+                    ${isMasterGlobal ? `<button class="btn-remove-res" onclick="removeResource(${i})">RIMUOVI</button>` : ''}
+                </div>
+                ${r.tipo === 'link'
+                    ? `<a href="${escapeHtml(r.contenuto)}" target="_blank" rel="noopener noreferrer">${escapeHtml(r.contenuto)}</a>`
+                    : `<pre>${escapeHtml(r.contenuto)}</pre>`}
+            </div>
+        `).join('');
+    }
+
+    window.addResource = async () => {
+        const tipo = document.getElementById('res-tipo').value;
+        const titoloEl = document.getElementById('res-titolo');
+        const contenutoEl = document.getElementById('res-contenuto');
+        const titolo = titoloEl.value.trim();
+        const contenuto = contenutoEl.value.trim();
+
+        if (!titolo || !contenuto) return alert("Compila titolo e contenuto della risorsa.");
+        if (tipo === 'link' && !/^https?:\/\//i.test(contenuto)) {
+            return alert("Il link deve iniziare con http:// o https://");
+        }
+
+        const nuovaRisorsa = { tipo, titolo, contenuto, createdAt: Date.now() };
+        try {
+            await updateDoc(doc(db, "campagne", currentCampaign.id), { risorse: arrayUnion(nuovaRisorsa) });
+            currentCampaign.risorse = [...(currentCampaign.risorse || []), nuovaRisorsa];
+            titoloEl.value = ""; contenutoEl.value = "";
+            renderResources();
+        } catch (e) {
+            console.error("Errore salvataggio risorsa:", e);
+            alert("Impossibile salvare la risorsa. Controlla i permessi.");
+        }
+    };
+
+    window.removeResource = async (index) => {
+        if (!confirm("Rimuovere questa risorsa dalla campagna?")) return;
+        const risorse = [...(currentCampaign.risorse || [])];
+        risorse.splice(index, 1);
+        try {
+            await updateDoc(doc(db, "campagne", currentCampaign.id), { risorse });
+            currentCampaign.risorse = risorse;
+            renderResources();
+        } catch (e) {
+            console.error("Errore rimozione risorsa:", e);
+            alert("Impossibile rimuovere la risorsa. Controlla i permessi.");
+        }
+    };
+
+    window.deleteCampaign = async () => {
+        if (!confirm("Eliminare definitivamente questa campagna?\nI personaggi e le minacce collegate NON verranno eliminati, ma perderanno il collegamento.")) return;
+        try {
+            await deleteDoc(doc(db, "campagne", currentCampaign.id));
+            closeDetail();
+            loadCampaigns();
+        } catch (e) {
+            console.error("Errore eliminazione campagna:", e);
+            alert("Impossibile eliminare la campagna. Controlla i permessi.");
+        }
+    };
+
+    async function loadLinkedEntities(campaignId) {
+        const pgGrid = document.getElementById('pg-grid');
+        const minGrid = document.getElementById('minacce-grid');
+
+        try {
+            const pgSnap = await getDocs(query(collection(db, "personaggi"), where("campagnaId", "==", campaignId)));
+            const pgs = pgSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+            pgGrid.innerHTML = pgs.length ? pgs.map(p => `
+                <div class="mini-card">
+                    <img src="${escapeHtml(p.immagine || '')}" onerror="this.style.display='none'">
+                    <div class="mini-name">${escapeHtml(p.nome || '???')}</div>
+                    <div class="mini-sub">${escapeHtml(p.stirpe || '')} // ${escapeHtml(p.job || '')}</div>
+                </div>
+            `).join('') : '<p class="empty-hint">Nessun personaggio collegato a questa campagna.</p>';
+        } catch (e) {
+            console.error("Errore caricamento personaggi:", e);
+            pgGrid.innerHTML = '<p class="empty-hint">⚠ Errore di caricamento personaggi.</p>';
+        }
+
+        try {
+            const minSnap = await getDocs(query(collection(db, "minacce"), where("campagnaId", "==", campaignId)));
+            const mins = minSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+            minGrid.innerHTML = mins.length ? mins.map(m => `
+                <div class="mini-card">
+                    <img src="${escapeHtml(m.immagine || '')}" onerror="this.style.display='none'">
+                    <div class="mini-name">${escapeHtml(m.nome || '???')}</div>
+                    <div class="mini-sub">D:${escapeHtml(String(m.diff ?? '-'))} // P:${escapeHtml(String(m.pot ?? '-'))}</div>
+                </div>
+            `).join('') : '<p class="empty-hint">Nessuna minaccia collegata a questa campagna.</p>';
+        } catch (e) {
+            console.error("Errore caricamento minacce:", e);
+            minGrid.innerHTML = '<p class="empty-hint">⚠ Errore di caricamento minacce.</p>';
+        }
+    }
+</script>
+</body>
+</html>
